@@ -1,0 +1,13 @@
+[core]
+editor = nano
+
+[user]
+name = David Gasquez
+email = davidgasquez@gmail.com
+
+[color]
+ui = true
+
+[alias]
+cm = commit -m
+st = status
