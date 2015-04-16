@@ -23,6 +23,11 @@ ln -sfT $current_directory/xfce4/terminal/terminalrc ~/.config/xfce4/terminal/te
 echo " - gtkrc-2.0"
 ln -sf $current_directory/xfce4/gtkrc-2.0 ~/.gtkrc-2.0
 
+# Scripts
+echo " - scripts"
+mkdir -p ~/.scripts
+ln -sf $current_directory/scripts/select_sound_card ~/.scripts/select_sound_card
+
 echo
 echo "Done!"
 echo
