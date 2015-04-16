@@ -1,0 +1,29 @@
+{
+	"color_scheme": "Packages/User/SublimeLinter/Solarflare (SL).tmTheme",
+	"ensure_newline_at_eof_on_save": true,
+	"fade_fold_buttons": false,
+	"find_selected_text": true,
+	"font_face": "Deja Vu Sans Mono",
+	"font_options":
+	[
+		"subpixel_antialias"
+	],
+	"font_size": 12,
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
+	"numix_small_tabs": true,
+	"rulers":
+	[
+		79
+	],
+	"save_on_focus_lost": true,
+	"tab_size": 4,
+	"theme": "Numix.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true
+}
