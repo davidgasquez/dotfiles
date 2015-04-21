@@ -28,6 +28,10 @@ echo " - scripts"
 mkdir -p ~/.scripts
 ln -sf $current_directory/scripts/select_sound_card ~/.scripts/select_sound_card
 
+# Task
+echo " - taskwarrior"
+ln -sf $current_directory/taskwarrior/taskrc ~/.taskrc
+
 echo
 echo "Done!"
 echo
