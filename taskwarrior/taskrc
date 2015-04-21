@@ -1,4 +1,3 @@
-# [Created by task 2.2.0 4/17/2015 16:20:26]
 # Taskwarrior program configuration file.
 # For more documentation, see http://taskwarrior.org or try 'man task', 'man task-faq',
 # 'man task-tutorial', 'man task-color', 'man task-sync' or 'man taskrc'
@@ -13,18 +12,7 @@
 # Files
 data.location = ~/.task
 
-# Color theme (uncomment one to use)
-#include /usr/share/task/light-16.theme
-#include /usr/share/task/light-256.theme
-#include /usr/share/task/dark-16.theme
-include /usr/share/task/dark-256.theme
-#include /usr/share/task/dark-red-256.theme
-#include /usr/share/task/dark-green-256.theme
-#include /usr/share/task/dark-blue-256.theme
-#include /usr/share/task/dark-violets-256.theme
-#include /usr/share/task/dark-yellow-green.theme
-#include /usr/share/task/dark-gray-256.theme
-
 # Custom
 fontunderline = off
 weekstart = monday
+color=off
