@@ -24,5 +24,5 @@ MiscScrollAlternateScreen=TRUE
 TabActivityColor=#d6d649493737
 ScrollingBar=TERMINAL_SCROLLBAR_NONE
 ColorSelectionUseDefault=FALSE
-ColorPalette=#000000000000;#d6d649493737;#0000aaaa0000;#d6d699993737;#37378c59d6d6;#aaaa0000aaaa;#0000aaaaaaaa;#dededededede;#555555555555;#ffff55555555;#3737d6d69999;#ffffffff5555;#3737c4c4d6d6;#ffff5555ffff;#5555ffffffff;#ffffffffffff
+ColorPalette=#000000000000;#d6d649493737;#0000aaaa0000;#d6d699993737;#38387575d6d6;#aaaa0000aaaa;#0000aaaaaaaa;#dededededede;#555555555555;#ffff55555555;#3737d6d69999;#ffffffff5555;#3737c4c4d6d6;#d6d638388f8f;#5555ffffffff;#ffffffffffff
 TitleMode=TERMINAL_TITLE_HIDE
