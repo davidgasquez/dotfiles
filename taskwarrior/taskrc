@@ -15,4 +15,4 @@ data.location = ~/.task
 # Custom
 fontunderline = off
 weekstart = monday
-color=off
+color.alternate=color7
