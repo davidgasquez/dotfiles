@@ -18,6 +18,7 @@ ln -sf $current_directory/git/gitconfig ~/.gitconfig
 # xfce-terminal
 echo " - xfce4-terminal config"
 ln -sfT $current_directory/xfce4/terminal/terminalrc ~/.config/xfce4/terminal/terminalrc
+ln -sfT $current_directory/xfce4/xfce4-screenshooter ~/.config/xfce4/xfce4-screenshooter
 
 # gtkrc-2.0
 echo " - gtkrc-2.0"
