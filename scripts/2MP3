@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for a in *.m4a; do
+  ffmpeg -i "$a" -qscale:a 0 -acodec libmp3lame  -ab 320k "${a[@]/%m4a/mp3}"
+done
