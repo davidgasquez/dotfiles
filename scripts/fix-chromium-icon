@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo
+echo "Fixing double icon...";
+
+cp /usr/share/applications/chromium.desktop ~/.local/share/applications/
+
+echo "Done!"
+echo
+
