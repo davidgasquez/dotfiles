@@ -1,0 +1,27 @@
+[global_config]
+[keybindings]
+  go_left = <Shift><Alt>Right
+  go_down = <Shift><Alt>Left
+  go_right = <Shift><Alt>Up
+  go_up = <Shift><Alt>Down
+[profiles]
+  [[default]]
+    scrollbar_position = hidden
+    palette = "#000000:#d64937:#00aa00:#d69937:#3875d6:#aa00aa:#00aaaa:#dedede:#555555:#ff5555:#37d699:#ffff55:#37c4d6:#d6388f:#55ffff:#ffffff"
+    font = DejaVu Sans Mono 12
+    background_image = None
+    audible_bell = True
+    use_system_font = False
+    foreground_color = "#f9f9f9"
+    show_titlebar = False
+    copy_on_selection = True
+    background_color = "#2d2d2d"
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
