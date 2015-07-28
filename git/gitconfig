@@ -11,3 +11,5 @@ ui = true
 [alias]
 cm = commit -m
 st = status
+[push]
+	default = simple
