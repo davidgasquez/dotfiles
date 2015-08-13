@@ -15,7 +15,6 @@ ln -sf ./git/gitconfig ~/.gitconfig
 # Terminator
 echo " - terminator"
 ln -sfT ./terminator/config ~/.config/terminator/config
-ln -sfT ./xfce4/xfce4-screenshooter ~/.config/xfce4/xfce4-screenshooter
 
 # Task
 echo " - taskwarrior"
