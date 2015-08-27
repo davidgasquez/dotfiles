@@ -5,20 +5,20 @@ echo "Updating system dotfiles:"
 
 # Bash
 echo " - bash"
-ln -sf ./bash/bashrc ~/.bashrc
-ln -sf ./bash/bash_aliases ~/.bash_aliases
+ln -sf ~/projects/dotfiles/bash/bashrc ~/.bashrc
+ln -sf ~/projects/dotfiles/bash/bash_aliases ~/.bash_aliases
 
 # Git
 echo " - gitconfig"
-ln -sf ./git/gitconfig ~/.gitconfig
+ln -sf ~/projects/dotfiles/git/gitconfig ~/.gitconfig
 
 # Terminator
 echo " - terminator"
-ln -sfT ./terminator/config ~/.config/terminator/config
+ln -sfT ~/projects/dotfiles/terminator/config ~/.config/terminator/config
 
 # Task
 echo " - taskwarrior"
-ln -sf ./taskwarrior/taskrc ~/.taskrc
+ln -sf ~/projects/dotfiles/taskwarrior/taskrc ~/.taskrc
 
 echo
 echo "Done!"
