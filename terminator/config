@@ -16,6 +16,7 @@
     show_titlebar = False
     copy_on_selection = True
     background_color = "#2d2d2d"
+    scrollback_infinite = True
 [layouts]
   [[default]]
     [[[child1]]]
