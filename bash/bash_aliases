@@ -32,6 +32,13 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias tn='task add'
 alias t='task'
 alias ts='task sync'
+function tw {
+    if [ "$*" == "" ]; then
+        task project:Work $@
+    else
+        task add "$@" pro:Work pri:L;
+    fi
+}
 
 # Fuck
 alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
