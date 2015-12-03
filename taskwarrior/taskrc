@@ -18,3 +18,4 @@ weekstart = monday
 color.alternate = color7
 dateformat.annotation = ·
 uda.priority.default = L
+default.project = Home
