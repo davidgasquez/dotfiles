@@ -31,6 +31,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # Taskwarrior
 alias tn='task add'
 alias t='task'
+alias tl='task list'
 alias ts='task sync'
 
 # Fuck
