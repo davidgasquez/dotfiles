@@ -1,18 +1,20 @@
 "*":
-  welcome:
+  "welcome":
     showOnStartup: false
-  core:
+  "core":
     openEmptyEditorOnStart: false
     themes: [
       "outlander-ui"
       "solarflare-syntax"
     ]
-  editor:
+  "editor":
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
-  minimap:
+  "minimap":
     absoluteMode: true
   "tree-view":
     hideVcsIgnoredFiles: true
   "atom-beautify":
     language_python_beautify_on_save: true
+  "tabs":
+    usePreviewTabs: true
