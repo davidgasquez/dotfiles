@@ -1,6 +1,7 @@
 Dotfiles
------------
+--------
 
 Where my dotfiles lives in harmony and peace most of the time.
 
-![Cinnamon](http://i.imgur.com/42X9PBc.png "Cinnamon")
+Here you can see how it usually looks like:
+![Cinnamon](/assets/clean-desktop.png "Cinnamon")
