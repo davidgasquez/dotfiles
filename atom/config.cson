@@ -8,14 +8,11 @@
       "solarflare-syntax"
     ]
   editor:
-    invisibles: {}
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
   minimap:
     absoluteMode: true
   "tree-view":
     hideVcsIgnoredFiles: true
-  pigments: {}
   "atom-beautify":
-    _analyticsUserId: "32eb96ab-19f7-4664-8c27-b233a9295409"
     language_python_beautify_on_save: true
