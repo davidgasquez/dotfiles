@@ -1,8 +1,10 @@
 ![logo](/assets/logo.png)
 -------------------------
 
-This is a repository with my dotfiles, living in harmony and peace most of the
-time.
+<p align="center">
+    <i>Here you will find with my dotfiles, living in harmony and peace.</i>
+</p>
+
 
 ## Overview
 My primary OS is Linux Mint and some of these configurations are tuned
