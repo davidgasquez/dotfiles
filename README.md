@@ -1,5 +1,4 @@
 ![logo](/assets/logo.png)
--------------------------
 
 <p align="center">
     <i>Here you will find with my dotfiles, living in harmony and peace.</i>
