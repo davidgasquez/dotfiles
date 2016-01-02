@@ -11,11 +11,12 @@
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
     invisibles: {}
+    tabLength: 4
   minimap:
     absoluteMode: true
-  "tree-view":
-    hideVcsIgnoredFiles: true
-  "atom-beautify":
-    language_python_beautify_on_save: true
   tabs:
     usePreviewTabs: true
+  "tree-view":
+    hideVcsIgnoredFiles: true
+  linter:
+    showErrorPanel: false
