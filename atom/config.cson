@@ -7,6 +7,7 @@
       "outlander-ui"
       "atom-material-syntax-dark"
     ]
+    autoHideMenuBar: true
   editor:
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
