@@ -9,7 +9,6 @@ sudo apt-get update > /dev/null 2>&1
 sudo apt-get install atom -y
 
 echo
-
 echo "Installing Atom Packages..."
 
 apm install atom-beautify
@@ -17,10 +16,14 @@ apm install file-icons
 apm install linter
 apm install minimap
 apm install outlander-ui
-# Solarflare Syntax
+apm install script
+apm install linter-flake8
+apm install git-plus
+apm install autocomplete-python
+
+# Solarflare Syntax (TODO)
 
 echo
-
 echo -n "Updating Config Files... "
 
 ln -sf ~/projects/dotfiles/atom/config.cson ~/.atom/config.cson
