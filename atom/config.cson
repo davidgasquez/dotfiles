@@ -18,5 +18,4 @@
     usePreviewTabs: true
   "tree-view":
     hideVcsIgnoredFiles: true
-  linter:
-    showErrorPanel: false
+  linter: {}
