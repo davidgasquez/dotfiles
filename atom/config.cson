@@ -5,7 +5,7 @@
     openEmptyEditorOnStart: false
     themes: [
       "outlander-ui"
-      "solarflare-syntax"
+      "atom-material-syntax-dark"
     ]
   editor:
     fontFamily: "DejaVu Sans Mono"
