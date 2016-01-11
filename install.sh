@@ -20,6 +20,12 @@ ln -sfT ~/projects/dotfiles/terminator/config ~/.config/terminator/config
 echo " - taskwarrior"
 ln -sf ~/projects/dotfiles/taskwarrior/taskrc ~/.taskrc
 
+echo " - atom"
+
+ln -sf ~/projects/dotfiles/atom/config.cson ~/.atom/config.cson
+ln -sf ~/projects/dotfiles/atom/keymap.cson ~/.atom/keymap.cson
+ln -sf ~/projects/dotfiles/atom/snippets.cson ~/.atom/snippets.cson
+
 echo
 echo "Done!"
 echo
