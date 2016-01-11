@@ -5,8 +5,9 @@
     openEmptyEditorOnStart: false
     themes: [
       "outlander-ui"
-      "solarflare-syntax"
+      "atom-material-syntax-dark"
     ]
+    autoHideMenuBar: true
   editor:
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
@@ -18,5 +19,8 @@
     usePreviewTabs: true
   "tree-view":
     hideVcsIgnoredFiles: true
-  linter:
-    showErrorPanel: false
+  linter: {}
+  "autocomplete-python": {}
+  "atom-beautify": {}
+  "git-plus": {}
+  "linter-flake8": {}
