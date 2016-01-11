@@ -1,9 +1,4 @@
 [global_config]
-[keybindings]
-  go_left = <Shift><Alt>Right
-  go_down = <Shift><Alt>Left
-  go_right = <Shift><Alt>Up
-  go_up = <Shift><Alt>Down
 [profiles]
   [[default]]
     scrollbar_position = hidden
