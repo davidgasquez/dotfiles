@@ -21,6 +21,7 @@
     hideVcsIgnoredFiles: true
   linter: {}
   "autocomplete-python": {}
-  "atom-beautify": {}
+  "atom-beautify":
+    language_python_beautify_on_save: true
   "git-plus": {}
   "linter-flake8": {}
