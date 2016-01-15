@@ -14,7 +14,7 @@ ln -sf ~/projects/dotfiles/git/gitconfig ~/.gitconfig
 
 # Terminator
 echo " - terminator"
-ln -sfT ~/projects/dotfiles/terminator/config ~/.config/terminator/config
+ln -sf ~/projects/dotfiles/terminator/config ~/.config/terminator/config
 
 # Task
 echo " - taskwarrior"
@@ -25,6 +25,10 @@ echo " - atom"
 ln -sf ~/projects/dotfiles/atom/config.cson ~/.atom/config.cson
 ln -sf ~/projects/dotfiles/atom/keymap.cson ~/.atom/keymap.cson
 ln -sf ~/projects/dotfiles/atom/snippets.cson ~/.atom/snippets.cson
+
+echo " - redshift"
+
+ln -sf ~/projects/dotfiles/redshift/redshift.conf ~/.config/redshift.conf
 
 echo
 echo "Done!"
