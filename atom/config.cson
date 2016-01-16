@@ -24,3 +24,5 @@
     language_python_beautify_on_save: true
   "git-plus": {}
   "linter-flake8": {}
+  script:
+    stopOnRerun: true
