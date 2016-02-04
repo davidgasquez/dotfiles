@@ -1,13 +1,13 @@
 "*":
-  welcome:
-    showOnStartup: false
+  autosave:
+    enabled: true
   core:
+    autoHideMenuBar: true
     openEmptyEditorOnStart: false
     themes: [
       "outlander-ui"
       "atom-material-syntax-dark"
     ]
-    autoHideMenuBar: true
   editor:
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
@@ -19,10 +19,3 @@
     usePreviewTabs: true
   "tree-view":
     hideVcsIgnoredFiles: true
-  "autocomplete-python": {}
-  "atom-beautify":
-    language_python_beautify_on_save: true
-  "git-plus": {}
-  "linter-flake8": {}
-  script:
-    stopOnRerun: true
