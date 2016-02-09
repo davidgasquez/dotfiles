@@ -1,0 +1,6 @@
+#!/bin/bash
+# This hook is sourced after every virtualenv is activated.
+
+PS1="\[$(tput setaf 1)\]┌─╼ \[$(tput setaf 3)\][\u]\[$(tput setaf 1)\]╺─╸\[$(tput setaf 2)\](`basename \"$VIRTUAL_ENV\"`)\[$(tput setaf 1)\]╺─╸\[$(tput setaf 7)\][\w]\n\[$(tput setaf 1)\]\$(if [[ \$? == 0 ]]; then echo \"\[$(tput setaf 1)\]└────╼ \[$(tput setaf 7)\]\"; else echo \"\[$(tput setaf 1)\]└╼\[$(tput setaf 7)\]\"; fi)\[$(tput setaf 7)\]"
+
+
