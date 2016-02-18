@@ -1,34 +1,38 @@
 #!/bin/sh
 
-echo
+# Get the dir of the current script
+script_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+echo $script_dir
 echo "Updating system dotfiles:"
 
 # Bash
 echo " - bash"
-ln -sf ~/projects/dotfiles/bash/bashrc ~/.bashrc
-ln -sf ~/projects/dotfiles/bash/bash_aliases ~/.bash_aliases
+ln -sf $script_dir/bash/bashrc ~/.bashrc
+ln -sf $script_dir/bash/bash_aliases ~/.bash_aliases
 
 # Git
 echo " - gitconfig"
-ln -sf ~/projects/dotfiles/git/gitconfig ~/.gitconfig
+ln -sf $script_dir/git/gitconfig ~/.gitconfig
 
 # Terminator
 echo " - terminator"
-ln -sf ~/projects/dotfiles/terminator/config ~/.config/terminator/config
+ln -sf $script_dir/terminator/config ~/.config/terminator/config
 
 # Task
 echo " - taskwarrior"
-ln -sf ~/projects/dotfiles/taskwarrior/taskrc ~/.taskrc
+ln -sf $script_dir/taskwarrior/taskrc ~/.taskrc
 
 echo " - atom"
-
-ln -sf ~/projects/dotfiles/atom/config.cson ~/.atom/config.cson
-ln -sf ~/projects/dotfiles/atom/keymap.cson ~/.atom/keymap.cson
-ln -sf ~/projects/dotfiles/atom/snippets.cson ~/.atom/snippets.cson
+ln -sf $script_dir/atom/config.cson ~/.atom/config.cson
+ln -sf $script_dir/atom/keymap.cson ~/.atom/keymap.cson
+ln -sf $script_dir/atom/snippets.cson ~/.atom/snippets.cson
 
 echo " - redshift"
+ln -sf $script_dir/redshift/redshift.conf ~/.config/redshift.conf
 
-ln -sf ~/projects/dotfiles/redshift/redshift.conf ~/.config/redshift.conf
+echo " - tmux"
+ln -sf $script_dir/tmux/tmux.conf ~/.tmux.conf
 
 echo
 echo "Done!"
