@@ -36,3 +36,6 @@ alias ts='task sync'
 
 # Fuck
 alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
+
+# Tmux
+alias mux='tmux attach -t david || tmux new -s david'
