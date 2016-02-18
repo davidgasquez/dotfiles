@@ -97,6 +97,3 @@ if ! shopt -oq posix; then
 fi
 
 export EDITOR="nano"
-
-# Virtualenvwrapper configuration
-source /usr/local/bin/virtualenvwrapper.sh
