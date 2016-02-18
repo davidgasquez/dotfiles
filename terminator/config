@@ -1,4 +1,8 @@
 [global_config]
+  focus = system
+
+[keybindings]
+
 [profiles]
   [[default]]
     scrollbar_position = hidden
@@ -12,13 +16,16 @@
     copy_on_selection = True
     background_color = "#2d2d2d"
     scrollback_infinite = True
+
 [layouts]
   [[default]]
     [[[child1]]]
+      profile = default
       type = Terminal
       parent = window0
     [[[window0]]]
       type = Window
       parent = ""
-      size = 1000, 588
+      size = 1000, 600
+
 [plugins]
