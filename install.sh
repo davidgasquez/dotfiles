@@ -1,38 +1,60 @@
-#!/bin/sh
+#!/bin/bash
 
 # Get the dir of the current script
 script_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-echo $script_dir
-echo "Updating system dotfiles:"
+basic_installation (){
+    echo "Updating system dotfiles:";
 
-# Bash
-echo " - bash"
-ln -sf $script_dir/bash/bashrc ~/.bashrc
-ln -sf $script_dir/bash/bash_aliases ~/.bash_aliases
+    # Bash
+    echo -n " - bash";
+    ln -sf $script_dir/bash/bashrc ~/.bashrc;
+    ln -sf $script_dir/bash/bash_aliases ~/.bash_aliases;
+    echo -e "\t\t✓";
+    # Git
+    echo -n " - gitconfig";
+    ln -sf $script_dir/git/gitconfig ~/.gitconfig;
+    echo -e "\t✓";
 
-# Git
-echo " - gitconfig"
-ln -sf $script_dir/git/gitconfig ~/.gitconfig
+    echo -n " - tmux";
+    ln -sf $script_dir/tmux/tmux.conf ~/.tmux.conf;
+    echo -e "\t\t✓";
+}
 
-# Terminator
-echo " - terminator"
-ln -sf $script_dir/terminator/config ~/.config/terminator/config
+full_installation (){
+    basic_installation;
 
-# Task
-echo " - taskwarrior"
-ln -sf $script_dir/taskwarrior/taskrc ~/.taskrc
+    # Terminator
+    echo -n " - terminator";
+    ln -sf $script_dir/terminator/config ~/.config/terminator/config;
+    echo -e "\t✓";
 
-echo " - atom"
-ln -sf $script_dir/atom/config.cson ~/.atom/config.cson
-ln -sf $script_dir/atom/keymap.cson ~/.atom/keymap.cson
-ln -sf $script_dir/atom/snippets.cson ~/.atom/snippets.cson
+    # Task
+    echo -n " - taskwarrior";
+    ln -sf $script_dir/taskwarrior/taskrc ~/.taskrc;
+    echo -e "\t✓";
 
-echo " - redshift"
-ln -sf $script_dir/redshift/redshift.conf ~/.config/redshift.conf
+    echo -n " - atom";
+    ln -sf $script_dir/atom/config.cson ~/.atom/config.cson;
+    ln -sf $script_dir/atom/keymap.cson ~/.atom/keymap.cson;
+    ln -sf $script_dir/atom/snippets.cson ~/.atom/snippets.cson;
+    echo -e "\t\t✓";
 
-echo " - tmux"
-ln -sf $script_dir/tmux/tmux.conf ~/.tmux.conf
+    echo -n " - redshift";
+    ln -sf $script_dir/redshift/redshift.conf ~/.config/redshift.conf;
+    echo -e "\t✓";
+}
+
+printf 'Installation Method [basic/full](basic): '
+read -r mode
+echo
+
+case "$mode" in
+  "")        basic_installation ;;
+  basic)     basic_installation ;;
+  full)      full_installation ;;
+  *)         echo 'Invalid Option' ;;
+esac
 
 echo
 echo "Done!"
