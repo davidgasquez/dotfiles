@@ -13,6 +13,8 @@
     fontSize: 16
     invisibles: {}
     tabLength: 4
+  linter:
+    showErrorPanel: false
   minimap:
     absoluteMode: true
   tabs:
