@@ -4,7 +4,7 @@
 [profiles]
   [[default]]
     scrollbar_position = hidden
-    palette = "#282828:#d64937:#61bc3b:#d69937:#25a5b5:#744560:#61d0df:#dedede:#333333:#da5c4c:#86df5d:#dfaf61:#37c4d6:#9e5e83:#55ffff:#f9f9f9"
+    palette = "#282828:#d64937:#61bc3b:#d69937:#25a5b5:#744560:#61d0df:#dedede:#555555:#da5c4c:#86df5d:#dfaf61:#37c4d6:#9e5e83:#55ffff:#f9f9f9"
     font = DejaVu Sans Mono 12
     background_image = None
     audible_bell = True
