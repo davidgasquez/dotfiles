@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Steam
+export STEAM_FRAME_FORCE_CLOSE=1
+export STEAM_RUNTIME=0
+
+# Anaconda
+export PATH="/home/david/.anaconda3/bin:$PATH"
+eval "$(register-python-argcomplete conda)"
