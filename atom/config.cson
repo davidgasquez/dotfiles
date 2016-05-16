@@ -4,10 +4,6 @@
   core:
     autoHideMenuBar: true
     openEmptyEditorOnStart: false
-    themes: [
-      "outlander-ui"
-      "atom-material-syntax-dark"
-    ]
   editor:
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
