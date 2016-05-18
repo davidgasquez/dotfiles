@@ -12,6 +12,7 @@ basic_installation (){
     ln -sf $script_dir/bash/bash_aliases ~/.bash_aliases;
     cp $script_dir/bash/bash_local ~/.bash_local;
     echo -e "\t\t✓";
+
     # Git
     echo -n " - gitconfig";
     ln -sf $script_dir/git/gitconfig ~/.gitconfig;
