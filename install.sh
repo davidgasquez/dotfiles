@@ -10,7 +10,7 @@ basic_installation (){
     echo -n " - bash";
     ln -sf $script_dir/bash/bashrc ~/.bashrc;
     ln -sf $script_dir/bash/bash_aliases ~/.bash_aliases;
-    ln -sf $script_dir/bash/bash_local ~/.bash_local;
+    cp $script_dir/bash/bash_local ~/.bash_local;
     echo -e "\t\t✓";
     # Git
     echo -n " - gitconfig";
