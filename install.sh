@@ -18,6 +18,7 @@ basic_installation (){
     ln -sf $script_dir/git/gitconfig ~/.gitconfig;
     echo -e "\t✓";
 
+    # Tmux
     echo -n " - tmux";
     ln -sf $script_dir/tmux/tmux.conf ~/.tmux.conf;
     echo -e "\t\t✓";
@@ -36,12 +37,14 @@ full_installation (){
     ln -sf $script_dir/taskwarrior/taskrc ~/.taskrc;
     echo -e "\t✓";
 
+    # Atom
     echo -n " - atom";
     ln -sf $script_dir/atom/config.cson ~/.atom/config.cson;
     ln -sf $script_dir/atom/keymap.cson ~/.atom/keymap.cson;
     ln -sf $script_dir/atom/snippets.cson ~/.atom/snippets.cson;
     echo -e "\t\t✓";
 
+    # Redshift
     echo -n " - redshift";
     ln -sf $script_dir/redshift/redshift.conf ~/.config/redshift.conf;
     echo -e "\t✓";
