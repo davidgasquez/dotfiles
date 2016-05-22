@@ -14,7 +14,6 @@
 [plugins]
 [profiles]
   [[default]]
-    audible_bell = True
     background_color = "#2f343f"
     background_image = None
     copy_on_selection = True
