@@ -75,7 +75,6 @@ esac
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -83,6 +82,11 @@ fi
 # Set custom local comands
 if [ -f ~/.bash_local ]; then
     . ~/.bash_local
+fi
+
+# Set custom environment variables
+if [ -f ~/.env ]; then
+    . ~/.env
 fi
 
 # enable programmable completion features (you don't need to enable
