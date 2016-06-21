@@ -9,8 +9,6 @@
     fontSize: 16
     invisibles: {}
     tabLength: 4
-  "exception-reporting":
-    userId: "aa61e99b-f179-1842-bacb-cbe6b437b1ba"
   linter:
     showErrorPanel: false
   minimap:
