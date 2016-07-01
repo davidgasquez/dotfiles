@@ -13,7 +13,7 @@
 # 'atom-text-editor':
 #   'enter': 'editor:newline'
 #
-#
+# 'atom-workspace':
 #   'ctrl-shift-p': 'core:move-up'
 #   'ctrl-p': 'core:move-down'
 #
@@ -28,3 +28,6 @@
 
 'atom-workspace':
   'alt': 'null'
+
+'atom-text-editor':
+  'alt-shift-l': 'editor:split-selections-into-lines'
