@@ -1,18 +1,37 @@
 "*":
+  "atom-material-ui":
+    colors:
+      abaseColor:
+        red: 96
+        green: 125
+        blue: 139
+        alpha: 1
+      genAccent: true
+      predefinedColor: "Blue Grey"
+    fonts: {}
   autosave:
     enabled: true
+  "base16-syntax":
+    scheme: "Ocean"
   core:
     autoHideMenuBar: true
     openEmptyEditorOnStart: false
+    themes: [
+      "atom-material-ui"
+      "base16-syntax"
+    ]
   editor:
     fontFamily: "DejaVu Sans Mono"
     fontSize: 16
     invisibles: {}
     tabLength: 4
+  "exception-reporting":
+    userId: "c9c9df71-2011-aac7-d454-6313fe94f6d9"
   linter:
     showErrorPanel: false
   minimap:
     absoluteMode: true
+    adjustAbsoluteModeHeight: true
   tabs:
     usePreviewTabs: true
   "tree-view":
