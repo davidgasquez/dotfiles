@@ -13,7 +13,7 @@
 # 'atom-text-editor':
 #   'enter': 'editor:newline'
 #
-# 'atom-workspace':
+#
 #   'ctrl-shift-p': 'core:move-up'
 #   'ctrl-p': 'core:move-down'
 #
@@ -25,3 +25,6 @@
 # If you are unfamiliar with CSON, you can read more about it in the
 # Atom Flight Manual:
 # https://atom.io/docs/latest/using-atom-basic-customization#cson
+
+'atom-workspace':
+  'alt': 'null'
