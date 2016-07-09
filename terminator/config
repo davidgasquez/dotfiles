@@ -5,13 +5,13 @@
   [[default]]
     scrollbar_position = hidden
     palette = "#282828:#d64937:#61bc3b:#d69937:#25a5b5:#744560:#61d0df:#dedede:#555555:#da5c4c:#86df5d:#dfaf61:#37c4d6:#9e5e83:#55ffff:#f9f9f9"
-    font = DejaVu Sans Mono 12
+    copy_on_selection = True
     background_image = None
     audible_bell = True
     use_system_font = False
     foreground_color = "#f9f9f9"
     show_titlebar = False
-    copy_on_selection = True
+    font = DejaVu Sans Mono 12
     background_color = "#2d2d2d"
     scrollback_infinite = True
 [layouts]
