@@ -87,4 +87,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Autocomplete folder names
+shopt -s autocd
+
 export EDITOR="nano"
