@@ -1,0 +1,18 @@
+# UTF8
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Ignore case when autocompleting
+set completion-ignore-case on
+
+# Smart history search
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+# Move words with control + arrows
+";5C": forward-word
+";5D": backward-word
+
+# Use Alt + Delete to delete the preceding word
+"\e[3;3~": kill-word

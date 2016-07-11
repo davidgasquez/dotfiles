@@ -11,15 +11,23 @@ basic_installation (){
     ln -sf $script_dir/bash/bashrc ~/.bashrc;
     ln -sf $script_dir/bash/bash_aliases ~/.bash_aliases;
     ln -sf $script_dir/bash/bash_local ~/.bash_local;
+    ln -sf $script_dir/bash/functions ~/.functions;
     echo -e "\t\t✓";
+
     # Git
     echo -n " - gitconfig";
     ln -sf $script_dir/git/gitconfig ~/.gitconfig;
     echo -e "\t✓";
 
+    # Tmux
     echo -n " - tmux";
     ln -sf $script_dir/tmux/tmux.conf ~/.tmux.conf;
     echo -e "\t\t✓";
+
+    # Inputrc
+    echo -n " - inputrc";
+    ln -sf $script_dir/inputrc ~/.inputrc;
+    echo -e "\t✓";
 }
 
 full_installation (){

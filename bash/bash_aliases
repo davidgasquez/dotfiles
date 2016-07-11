@@ -7,10 +7,6 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias rm='rm -I --preserve-root'
 
-function md {
-    mkdir -p "$@" && cd $_;
-}
-
 # File management
 alias ls='ls --color=auto'
 alias dir='dir --color=auto'
