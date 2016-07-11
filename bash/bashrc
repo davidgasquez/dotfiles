@@ -63,25 +63,10 @@ xterm*|rxvt*)
     ;;
 esac
 
-# Alias definitions inside ~/.aliases
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
-fi
-
-# function definitions inside ~/.functions
-if [ -f ~/.functions ]; then
-    . ~/.functions
-fi
-
-# Set custom local comands
-if [ -f ~/.bash_local ]; then
-    . ~/.bash_local
-fi
-
-# Set custom environment variables
-if [ -f ~/.env ]; then
-    . ~/.env
-fi
+# Load the shell dotfiles:
+for file in ~/.{env,aliases,functions,bash_local}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
 
 # Autocompletion
 if ! shopt -oq posix; then
