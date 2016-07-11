@@ -63,9 +63,9 @@ xterm*|rxvt*)
     ;;
 esac
 
-# Alias definitions inside ~/.bash_aliases
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+# Alias definitions inside ~/.aliases
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
 fi
 
 # function definitions inside ~/.functions

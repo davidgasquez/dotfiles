@@ -9,7 +9,7 @@ basic_installation (){
     # Bash
     echo -n " - bash";
     ln -sf $script_dir/bash/bashrc ~/.bashrc;
-    ln -sf $script_dir/bash/bash_aliases ~/.bash_aliases;
+    ln -sf $script_dir/bash/aliases ~/.aliases;
     ln -sf $script_dir/bash/bash_local ~/.bash_local;
     ln -sf $script_dir/bash/functions ~/.functions;
     echo -e "\t\t✓";
