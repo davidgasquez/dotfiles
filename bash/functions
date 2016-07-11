@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Get folder or file size in disk
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* ./*;
+	fi;
+}
+
+# Make new directory and move to it
+function md {
+    mkdir -p "$@" && cd $_;
+}

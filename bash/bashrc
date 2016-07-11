@@ -68,6 +68,11 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# function definitions inside ~/.functions
+if [ -f ~/.functions ]; then
+    . ~/.functions
+fi
+
 # Set custom local comands
 if [ -f ~/.bash_local ]; then
     . ~/.bash_local
