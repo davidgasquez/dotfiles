@@ -3,10 +3,9 @@ hexchat
 redshift
 vlc
 plank
-atom
 task
-transmission
-translate-shell
+transmission-gtk
 nemo-fileroller
 gnome-screenshot
 tmux
+xdg-user-dirs
