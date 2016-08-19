@@ -3,7 +3,7 @@ set input-meta on
 set output-meta on
 set convert-meta off
 
-# Ignore case when autocompleting
+# Ignore case when auto-completing
 set completion-ignore-case on
 
 # Smart history search
