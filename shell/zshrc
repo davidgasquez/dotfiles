@@ -40,8 +40,13 @@ antigen bundle sindresorhus/pure
 # Apply
 antigen apply
 
+# History Search
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+# Keyboard movements
+bindkey ";5C" forward-word
+bindkey ";5D" backward-word
 
 # Load the shell dotfiles:
 for file in ~/.{env,aliases,functions,bash_local}; do
