@@ -12,23 +12,24 @@ compinit
 autoload -U colors
 colors
 
+# Auto cd
+setopt auto_cd
+
+# Editor
+export EDITOR='nano'
+
 # Antigen
 source "$HOME/.antigen/antigen/antigen.zsh"
 
 # Load the oh-my-zsh's library.
-antigen use oh-my-zsh
+# antigen use oh-my-zsh
 
 # Bundles
 antigen bundles <<EOBUNDLES
-	extract
     git
     pip
     taskwarrior
-    command-not-found
-	zsh-users/zsh-syntax-highlighting
-	tarruda/zsh-autosuggestions
     zsh-users/zsh-completions
-    esc/conda-zsh-completion
 EOBUNDLES
 
 # Theme
