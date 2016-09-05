@@ -19,7 +19,7 @@
     background_image = None
     copy_on_selection = True
     font = DejaVu Sans Mono 12
-    palette = "#002b36:#dc322f:#859900:#b58900:#268bd2:#6c71c4:#2aa198:#93a1a1:#657b83:#dc322f:#859900:#b58900:#268bd2:#6c71c4:#2aa198:#fdf6e3"
+    palette = "#032c36:#c2454e:#7cbf9e:#8a7a63:#2e3340:#ff5879:#44b5b1:#f2f1b9:#065f73:#ef5847:#a2d9b1:#beb090:#61778d:#ff99a1:#9ed9d8:#f6f6c9"
     scrollback_infinite = True
     scrollbar_position = hidden
     show_titlebar = False
