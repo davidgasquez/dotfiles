@@ -1,0 +1,44 @@
+# History
+export HISTSIZE=100000
+export HISTFILE="$HOME/.history"
+export SAVEHIST=$HISTSIZE
+
+# Completion
+zstyle ':completion:*' menu select
+autoload -Uz compinit
+compinit
+
+# Colors
+autoload -U colors
+colors
+
+# Antigen
+source "$HOME/.antigen/antigen/antigen.zsh"
+
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
+
+# Bundles
+antigen bundles <<EOBUNDLES
+	extract
+    git
+    pip
+    taskwarrior
+    command-not-found
+	zsh-users/zsh-syntax-highlighting
+	tarruda/zsh-autosuggestions
+    zsh-users/zsh-completions
+    esc/conda-zsh-completion
+EOBUNDLES
+
+# Theme
+antigen bundle mafredri/zsh-async
+antigen bundle sindresorhus/pure
+
+# Apply
+antigen apply
+
+# Load the shell dotfiles:
+for file in ~/.{env,aliases,functions,bash_local}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
