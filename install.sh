@@ -7,11 +7,12 @@ basic_installation (){
     echo "Updating system dotfiles:";
 
     # Bash
-    echo -n " - bash";
-    ln -sf $script_dir/bash/bashrc ~/.bashrc;
-    ln -sf $script_dir/bash/aliases ~/.aliases;
-    ln -sf $script_dir/bash/bash_local ~/.bash_local;
-    ln -sf $script_dir/bash/functions ~/.functions;
+    echo -n " - shell";
+    ln -sf $script_dir/shell/bashrc ~/.bashrc;
+    ln -sf $script_dir/shell/aliases ~/.aliases;
+    ln -sf $script_dir/shell/bash_local ~/.bash_local;
+    ln -sf $script_dir/shell/functions ~/.functions;
+    ln -sf $script_dir/shell/zshrc ~/.zshrc;
     echo -e "\t\t✓";
 
     # Git
