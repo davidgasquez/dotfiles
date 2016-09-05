@@ -15,11 +15,11 @@
 [profiles]
   [[default]]
     background_color = "#2f343f"
-    foreground_color = "#f9f9f9"
     background_image = None
     copy_on_selection = True
     font = DejaVu Sans Mono 12
-    palette = "#032c36:#c2454e:#7cbf9e:#8a7a63:#2e3340:#ff5879:#44b5b1:#f2f1b9:#065f73:#ef5847:#a2d9b1:#beb090:#61778d:#ff99a1:#9ed9d8:#f6f6c9"
+    foreground_color = "#f9f9f9"
+    palette = "#065f73:#c2454e:#7cbf9e:#8a7a63:#61778d:#ff5879:#44b5b1:#f2f1b9:#065f73:#ef5847:#a2d9b1:#beb090:#61778d:#ff99a1:#9ed9d8:#f6f6c9"
     scrollback_infinite = True
     scrollbar_position = hidden
     show_titlebar = False
