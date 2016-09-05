@@ -17,9 +17,10 @@
     background_color = "#2f343f"
     background_image = None
     copy_on_selection = True
+    cursor_color = "#b3bdcb"
     font = DejaVu Sans Mono 12
     foreground_color = "#f9f9f9"
-    palette = "#065f73:#c2454e:#7cbf9e:#8a7a63:#61778d:#ff5879:#44b5b1:#f2f1b9:#065f73:#ef5847:#a2d9b1:#beb090:#61778d:#ff99a1:#9ed9d8:#f6f6c9"
+    palette = "#404552:#cc575d:#2679db:#b3bdcb:#5294e2:#404552:#b3bdcb:#e1e5ea:#2a303b:#a3464a:#75a9e8:#cad1db:#97bfee:#686d79:#383c4a:#ffffff"
     scrollback_infinite = True
     scrollbar_position = hidden
     show_titlebar = False
