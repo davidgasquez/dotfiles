@@ -21,7 +21,7 @@
       "base16-syntax"
     ]
   editor:
-    fontFamily: "DejaVu Sans Mono"
+    fontFamily: "Hack"
     fontSize: 16
     invisibles: {}
     softWrap: true
