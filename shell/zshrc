@@ -29,6 +29,7 @@ antigen bundles <<EOBUNDLES
     git
     pip
     taskwarrior
+    zsh-users/zsh-history-substring-search
     zsh-users/zsh-completions
 EOBUNDLES
 
@@ -38,6 +39,9 @@ antigen bundle sindresorhus/pure
 
 # Apply
 antigen apply
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # Load the shell dotfiles:
 for file in ~/.{env,aliases,functions,bash_local}; do
