@@ -13,7 +13,7 @@ basic_installation (){
     ln -sf $script_dir/shell/bash_local ~/.bash_local;
     ln -sf $script_dir/shell/functions ~/.functions;
     ln -sf $script_dir/shell/zshrc ~/.zshrc;
-    echo -e "\t\t✓";
+    echo -e "\t✓";
 
     # Git
     echo -n " - gitconfig";
