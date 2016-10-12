@@ -4,6 +4,8 @@ translate-shell
 python-argcomplete
 gtk-theme-arc
 ttf-ms-fonts
+ttf-mac-fonts
+ttf-liberation
 gpmdp
 numix-circle-icon-theme-git
 pepper-flash
