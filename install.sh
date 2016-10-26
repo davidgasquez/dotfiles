@@ -53,6 +53,10 @@ full_installation (){
     echo -n " - redshift";
     ln -sf $script_dir/redshift/redshift.conf ~/.config/redshift.conf;
     echo -e "\t✓";
+
+    echo -n " - scripts";
+    sudo cp $script_dir/scripts/* /usr/local/bin
+    echo -e "\t✓";
 }
 
 printf 'Installation Method [basic/full](basic): '
