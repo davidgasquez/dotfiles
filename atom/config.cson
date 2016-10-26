@@ -1,11 +1,8 @@
 "*":
   "atom-material-ui":
     colors:
-      abaseColor:
-        red: 96
-        green: 125
-        blue: 139
-        alpha: 1
+      abaseColor: "#2679db"
+      accentColor: "#f59625"
       genAccent: true
       predefinedColor: "Blue Grey"
     fonts: {}
