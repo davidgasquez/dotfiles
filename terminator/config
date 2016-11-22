@@ -20,7 +20,7 @@
     cursor_color = "#b3bdcb"
     font = Hack 12
     foreground_color = "#f9f9f9"
-    palette = "#404552:#cc575d:#2679db:#b3bdcb:#5294e2:#ffcd19:#b3bdcb:#e1e5ea:#2a303b:#a3464a:#75a9e8:#cad1db:#97bfee:#686d79:#383c4a:#ffffff"
+    palette = "#404552:#cc575d:#2679db:#b3bdcb:#5294e2:#ffcd19:#b3bdcb:#e1e5ea:#2a303b:#a3464a:#75a9e8:#cad1db:#97bfee:#686d79:#00d499:#ffffff"
     scrollback_infinite = True
     scrollbar_position = hidden
     show_titlebar = False
