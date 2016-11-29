@@ -49,10 +49,8 @@ bindkey ";5C" forward-word
 bindkey ";5D" backward-word
 bindkey "\e[3~" delete-char
 bindkey "^[[3;3~" delete-word
-
 bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
-
 
 # Load the shell dotfiles:
 for file in ~/.{env,aliases,functions,bash_local}; do
