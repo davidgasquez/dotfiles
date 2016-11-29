@@ -50,10 +50,6 @@ full_installation (){
     ln -sf $script_dir/atom/snippets.cson ~/.atom/snippets.cson;
     echo -e "\t\t✓";
 
-    echo -n " - redshift";
-    ln -sf $script_dir/redshift/redshift.conf ~/.config/redshift.conf;
-    echo -e "\t✓";
-
     echo -n " - scripts";
     sudo cp $script_dir/scripts/* /usr/local/bin
     echo -e "\t✓";
