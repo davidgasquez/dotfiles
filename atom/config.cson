@@ -28,6 +28,8 @@
     userId: "c9c9df71-2011-aac7-d454-6313fe94f6d9"
   linter:
     showErrorPanel: false
+  "linter-write-good":
+    severityLevel: "Warning"
   minimap:
     absoluteMode: true
     adjustAbsoluteModeHeight: true
