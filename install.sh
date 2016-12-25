@@ -10,7 +10,7 @@ basic_installation (){
     echo -n " - shell";
     ln -sf $script_dir/shell/bashrc ~/.bashrc;
     ln -sf $script_dir/shell/aliases ~/.aliases;
-    ln -sf $script_dir/shell/bash_local ~/.bash_local;
+    ln -sf $script_dir/shell/localrc ~/.localrc;
     ln -sf $script_dir/shell/functions ~/.functions;
     ln -sf $script_dir/shell/zshrc ~/.zshrc;
     echo -e "\t✓";

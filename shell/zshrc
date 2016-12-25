@@ -5,7 +5,7 @@ export SAVEHIST=$HISTSIZE
 
 # Completion
 zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 autoload -Uz compinit
 compinit
 
@@ -30,6 +30,7 @@ antigen bundles <<EOBUNDLES
     git
     pip
     taskwarrior
+    atom
     zsh-users/zsh-history-substring-search
     zsh-users/zsh-completions
 EOBUNDLES
@@ -53,7 +54,15 @@ bindkey "^[[3;3~" delete-word
 bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
 
-# Load the shell dotfiles:
-for file in ~/.{env,aliases,functions,bash_local}; do
+# Automatically list directory contents on `cd`.
+auto-ls () {
+	emulate -L zsh;
+	# explicit sexy ls'ing as aliases arent honored in here.
+	hash gls >/dev/null 2>&1 && CLICOLOR_FORCE=1 gls -aFh --color --group-directories-first || ls
+}
+chpwd_functions=( auto-ls $chpwd_functions )
+
+# # Load the shell dotfiles:
+for file in ~/.{env,aliases,functions,localrc}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
