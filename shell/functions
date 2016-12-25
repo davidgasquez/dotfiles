@@ -18,3 +18,12 @@ function fs() {
 function md {
     mkdir -p "$@" && cd $_;
 }
+
+# Open the current directory, otherwise open the given folder (argument)
+function o() {
+	if [ $# -eq 0 ]; then
+		xdg-open .;
+	else
+		xdg-open "$@";
+	fi;
+}
