@@ -30,7 +30,6 @@ antigen bundles <<EOBUNDLES
     git
     pip
     taskwarrior
-    atom
     zsh-users/zsh-history-substring-search
     zsh-users/zsh-completions
 EOBUNDLES
