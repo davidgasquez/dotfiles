@@ -50,15 +50,7 @@ bindkey "^[[3;3~" delete-word
 bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
 
-# Automatically list directory contents on `cd`.
-auto-ls () {
-	emulate -L zsh;
-	# explicit sexy ls'ing as aliases arent honored in here.
-	hash gls >/dev/null 2>&1 && CLICOLOR_FORCE=1 gls -aFh --color --group-directories-first || ls
-}
-chpwd_functions=( auto-ls $chpwd_functions )
-
-# # Load the shell dotfiles:
+# Load the shell dotfiles:
 for file in ~/.{env,aliases,functions,localrc}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
