@@ -7,4 +7,5 @@ export STEAM_RUNTIME=0
 # Conda
 export PATH="/home/$(whoami)/.anaconda3/bin:$PATH"
 
+# Go
 export GOPATH=~/.go
