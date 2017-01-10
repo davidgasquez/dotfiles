@@ -1,33 +1,39 @@
 #!/bin/bash
 
 # Get the dir of the current script
-script_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+USER_HOME=$(eval echo ~${SUDO_USER})
+
+if [ $EUID != 0 ]; then
+    sudo "$0" "$@"
+    exit $?
+fi
 
 basic_installation (){
     echo "Updating system dotfiles:";
 
     # Bash
     echo -n " - shell";
-    ln -sf $script_dir/shell/bashrc ~/.bashrc;
-    ln -sf $script_dir/shell/aliases ~/.aliases;
-    ln -sf $script_dir/shell/localrc ~/.localrc;
-    ln -sf $script_dir/shell/functions ~/.functions;
-    ln -sf $script_dir/shell/zshrc ~/.zshrc;
+    ln -sf $SCRIPT_DIR/shell/bashrc $USER_HOME/.bashrc;
+    ln -sf $SCRIPT_DIR/shell/aliases $USER_HOME/.aliases;
+    ln -sf $SCRIPT_DIR/shell/localrc $USER_HOME/.localrc;
+    ln -sf $SCRIPT_DIR/shell/functions $USER_HOME/.functions;
+    ln -sf $SCRIPT_DIR/shell/zshrc $USER_HOME/.zshrc;
     echo -e "\t✓";
 
     # Git
     echo -n " - gitconfig";
-    ln -sf $script_dir/git/gitconfig ~/.gitconfig;
+    ln -sf $SCRIPT_DIR/git/gitconfig $USER_HOME/.gitconfig;
     echo -e "\t✓";
 
     # Tmux
     echo -n " - tmux";
-    ln -sf $script_dir/tmux/tmux.conf ~/.tmux.conf;
+    ln -sf $SCRIPT_DIR/tmux/tmux.conf $USER_HOME/.tmux.conf;
     echo -e "\t\t✓";
 
     # Inputrc
     echo -n " - inputrc";
-    ln -sf $script_dir/inputrc ~/.inputrc;
+    ln -sf $SCRIPT_DIR/inputrc $USER_HOME/.inputrc;
     echo -e "\t✓";
 }
 
@@ -36,30 +42,36 @@ full_installation (){
 
     # Terminator
     echo -n " - terminator";
-    ln -sf $script_dir/terminator/config ~/.config/terminator/config;
+    ln -sf $SCRIPT_DIR/terminator/config $USER_HOME/.config/terminator/config;
     echo -e "\t✓";
 
     # Task
     echo -n " - taskwarrior";
-    ln -sf $script_dir/taskwarrior/taskrc ~/.taskrc;
+    ln -sf $SCRIPT_DIR/taskwarrior/taskrc $USER_HOME/.taskrc;
+    echo -e "\t✓";
+
+    # Fonts
+    echo -n " - fonts";
+    mkdir -p $USER_HOME/.config/fontconfig/
+    ln -sf $SCRIPT_DIR/fots/local.conf $USER_HOME/.config/fontconfig/local.conf;
     echo -e "\t✓";
 
     echo -n " - atom";
-    ln -sf $script_dir/atom/config.cson ~/.atom/config.cson;
-    ln -sf $script_dir/atom/keymap.cson ~/.atom/keymap.cson;
-    ln -sf $script_dir/atom/snippets.cson ~/.atom/snippets.cson;
+    ln -sf $SCRIPT_DIR/atom/config.cson $USER_HOME/.atom/config.cson;
+    ln -sf $SCRIPT_DIR/atom/keymap.cson $USER_HOME/.atom/keymap.cson;
+    ln -sf $SCRIPT_DIR/atom/snippets.cson $USER_HOME/.atom/snippets.cson;
     echo -e "\t\t✓";
 
     echo -n " - scripts";
-    sudo cp $script_dir/scripts/* /usr/local/bin
+    cp $SCRIPT_DIR/scripts/* /usr/local/bin
     echo -e "\t✓";
 }
 
 printf 'Installation Method [basic/full](basic): '
-read -r mode
+read -r MODE
 echo
 
-case "$mode" in
+case "$MODE" in
   "")        basic_installation ;;
   basic)     basic_installation ;;
   full)      full_installation ;;
