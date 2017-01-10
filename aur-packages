@@ -1,13 +1,9 @@
 atom-editor-bin
-freetype2
-cairo
-fontconfig
 fontconfig-enhanced-defaults
 translate-shell
 gtk-theme-arc-git
 ttf-ms-fonts
 ttf-mac-fonts
-ttf-vista-fonts
 ttf-liberation
 gpmdp
 grub-customizer
