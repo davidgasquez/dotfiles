@@ -1,6 +1,7 @@
 atom-editor-bin
-freetype2-infinality
-fontconfig-infinality
+freetype2
+cairo
+fontconfig
 fontconfig-enhanced-defaults
 translate-shell
 gtk-theme-arc-git
