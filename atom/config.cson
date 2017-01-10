@@ -26,6 +26,9 @@
     tabLength: 4
   "exception-reporting":
     userId: "c9c9df71-2011-aac7-d454-6313fe94f6d9"
+  "git-plus":
+    general:
+      _analyticsUserId: "b0b8fef0-e9f3-4ad9-b6b1-7af19d95e9f9"
   linter:
     showErrorPanel: false
   "linter-write-good":
