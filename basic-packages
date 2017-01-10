@@ -4,7 +4,11 @@ vlc
 task
 deluge
 zsh
+freetype2
+cairo
+fontconfig
 ttf-hack
+ttf-dejavu
 noto-fonts-emoji
 noto-fonts-cjk
 noto-fonts
