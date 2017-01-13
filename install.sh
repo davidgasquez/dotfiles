@@ -4,10 +4,17 @@
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 USER_HOME=$(eval echo ~${SUDO_USER})
 
-if [ $EUID != 0 ]; then
-    sudo "$0" "$@"
-    exit $?
-fi
+ask_for_sudo() {
+    # Ask for the administrator password upfront
+    sudo -v
+
+    while true; do
+        sudo -n true
+        echo
+        sleep 60
+        kill -0 "$$" || exit
+    done &> /dev/null &
+}
 
 basic_installation (){
     echo "Updating system dotfiles:";
@@ -62,8 +69,10 @@ full_installation (){
     ln -sf $SCRIPT_DIR/atom/snippets.cson $USER_HOME/.atom/snippets.cson;
     echo -e "\t\t✓";
 
+    ask_for_sudo;
+
     echo -n " - scripts";
-    cp $SCRIPT_DIR/scripts/* /usr/local/bin
+    sudo cp $SCRIPT_DIR/scripts/* /usr/local/bin
     echo -e "\t✓";
 }
 
