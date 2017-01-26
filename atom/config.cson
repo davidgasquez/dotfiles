@@ -12,6 +12,9 @@
     scheme: "Ocean"
   core:
     autoHideMenuBar: true
+    disabledPackages: [
+      "whitespace"
+    ]
     openEmptyEditorOnStart: false
     telemetryConsent: "limited"
     themes: [

@@ -9,4 +9,3 @@ cp /usr/share/applications/chromium.desktop ~/.local/share/applications/
 
 echo "Done!"
 echo
-
