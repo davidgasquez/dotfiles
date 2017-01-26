@@ -51,6 +51,9 @@ bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
 
 # Load the shell dotfiles:
-for file in ~/.{env,aliases,functions,localrc}; do
+for file in ~/.{aliases,functions,localrc}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
+
+# Export environmental variables
+export $(cat ~/.env | xargs)
