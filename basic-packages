@@ -4,6 +4,7 @@ vlc
 task
 deluge
 zsh
+arc-gtk-theme
 freetype2
 cairo
 fontconfig
