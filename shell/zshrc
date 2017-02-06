@@ -16,6 +16,12 @@ colors
 # Auto cd
 setopt auto_cd
 
+# History management
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+
 # Editor
 export EDITOR='nano'
 
