@@ -61,7 +61,7 @@ full_installation (){
     # Fonts
     echo -n " - fonts";
     mkdir -p $USER_HOME/.config/fontconfig/
-    ln -sf $SCRIPT_DIR/fots/local.conf $USER_HOME/.config/fontconfig/local.conf;
+    ln -sf $SCRIPT_DIR/fonts/local.conf $USER_HOME/.config/fontconfig/local.conf;
     echo -e "\t✓";
 
     echo -n " - atom";
