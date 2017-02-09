@@ -1,0 +1,17 @@
+# Bundles
+antigen bundles <<EOBUNDLES
+    git
+    pip
+    taskwarrior
+    kubectl
+    dotenv
+    zsh-users/zsh-history-substring-search
+    zsh-users/zsh-completions
+EOBUNDLES
+
+# Theme
+antigen bundle mafredri/zsh-async
+antigen bundle sindresorhus/pure
+
+# Apply
+antigen apply

@@ -26,6 +26,7 @@ basic_installation (){
     ln -sf $SCRIPT_DIR/shell/localrc $USER_HOME/.localrc;
     ln -sf $SCRIPT_DIR/shell/functions $USER_HOME/.functions;
     ln -sf $SCRIPT_DIR/shell/zshrc $USER_HOME/.zshrc;
+    ln -sf $SCRIPT_DIR/shell/antigenrc $USER_HOME/.antigen/.antigenrc;
     echo -e "\t✓";
 
     # Git
