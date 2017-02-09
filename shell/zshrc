@@ -27,24 +27,7 @@ export EDITOR='nano'
 
 # Antigen
 source "$HOME/.antigen/antigen/antigen.zsh"
-
-# Bundles
-antigen bundles <<EOBUNDLES
-    git
-    pip
-    taskwarrior
-    kubectl
-    dotenv
-    zsh-users/zsh-history-substring-search
-    zsh-users/zsh-completions
-EOBUNDLES
-
-# Theme
-antigen bundle mafredri/zsh-async
-antigen bundle sindresorhus/pure
-
-# Apply
-antigen apply
+antigen init "$HOME/.antigen/.antigenrc"
 
 # History Search
 bindkey '^[[A' history-substring-search-up
