@@ -5,6 +5,7 @@ antigen bundles <<EOBUNDLES
     taskwarrior
     kubectl
     dotenv
+    jump
     zsh-users/zsh-history-substring-search
     zsh-users/zsh-completions
 EOBUNDLES
