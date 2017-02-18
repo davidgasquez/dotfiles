@@ -6,9 +6,9 @@ DOTFILES := $(shell pwd)
 help:
 	@echo -e "Usage: \tmake [TARGET]\n"
 	@echo -e "Targets:"
-	@echo -e "  setup						Apply minimal configuration to the system"
-	@echo -e "  install-aur-packages		Installs some AUR packages"
-	@echo -e "  install-basic-packages   	Installs basic packages from the oficial repositories"
+	@echo -e "  setup                     Apply minimal configuration to the system"
+	@echo -e "  install-aur-packages      Installs some AUR packages"
+	@echo -e "  install-basic-packages    Installs basic packages from the oficial repositories"
 
 .PHONY: shell
 shell:
