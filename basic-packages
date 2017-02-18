@@ -13,6 +13,7 @@ ttf-dejavu
 noto-fonts-emoji
 noto-fonts-cjk
 noto-fonts
+xdg-user-dirs
 openssh
 htop
 redshift
