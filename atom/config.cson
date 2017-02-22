@@ -26,6 +26,7 @@
     fontSize: 16
     invisibles: {}
     softWrap: true
+    softWrapAtPreferredLineLength: true
     tabLength: 4
   "exception-reporting":
     userId: "c9c9df71-2011-aac7-d454-6313fe94f6d9"
