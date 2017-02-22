@@ -1,0 +1,216 @@
+# i3 config file (v4)
+#
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+# Use Windows as modifier
+set $mod Mod4
+
+# Set font configuration
+font pango:Hack 10
+
+# Use mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+
+# Toggle bar
+bindsym $mod+Shift+b exec i3 bar mode toggle
+
+# Start a terminal
+bindsym $mod+Return exec urxvt
+
+# Start Rofi (program launcher)
+bindsym $mod+BackSpace exec rofi -show run
+
+# Use alt+tab to move between windows
+bindsym Mod1+Tab exec rofi -show window
+
+# Change window focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split in horizontal orientation
+bindsym $mod+h split h
+
+# Split in vertical orientation
+bindsym $mod+v split v
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# Change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# Focus the parent container
+bindsym $mod+a focus parent
+
+# Focus the child container
+bindsym $mod+d focus child
+
+# Set window borders
+for_window [class="^.*"] border pixel 4
+
+# Workspaces Names
+set $WS1 1:    
+set $WS2 2:    
+set $WS3 3:    
+set $WS4 4:    
+set $WS5 5:    
+set $WS6 6:    
+set $WS7 7:    
+set $WS8 8:    
+set $WS9 9:    
+set $WS10 10:    
+
+# Worspace navigation
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+# Switch workspaces
+bindsym $mod+1 workspace $WS1
+bindsym $mod+2 workspace $WS2
+bindsym $mod+3 workspace $WS3
+bindsym $mod+4 workspace $WS4
+bindsym $mod+5 workspace $WS5
+bindsym $mod+6 workspace $WS6
+bindsym $mod+7 workspace $WS7
+bindsym $mod+8 workspace $WS8
+bindsym $mod+9 workspace $WS9
+bindsym $mod+0 workspace $WS10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $WS1
+bindsym $mod+Shift+2 move container to workspace $WS2
+bindsym $mod+Shift+3 move container to workspace $WS3
+bindsym $mod+Shift+4 move container to workspace $WS4
+bindsym $mod+Shift+5 move container to workspace $WS5
+bindsym $mod+Shift+6 move container to workspace $WS6
+bindsym $mod+Shift+7 move container to workspace $WS7
+bindsym $mod+Shift+8 move container to workspace $WS8
+bindsym $mod+Shift+9 move container to workspace $WS9
+bindsym $mod+Shift+0 move container to workspace $WS10
+
+# Move to the previous workspace when pressing again the same key
+workspace_auto_back_and_forth yes
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# Jump to urgent
+bindsym $mod+Shift+minus [urgent=latest] focus
+
+# Exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+        bindsym Left resize shrink width 3 px or 3 ppt
+        bindsym Up resize grow height 3 px or 3 ppt
+        bindsym Down resize shrink height 3 px or 3 ppt
+        bindsym Right resize grow width 3 px or 3 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+# Floating windows
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="zoom"] floating enable
+
+# Default workspaces
+assign [class="Slack"] $WS3
+
+set $Locker i3lock && sleep 1
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+l mode "$mode_system"
+
+# Bar configuration
+bar {
+    status_command i3status
+    font pango: Hack, Noto Emoji 10
+    colors {
+        background #2a303b
+        statusline #5294e2
+        separator #ffffff
+        focused_workspace #5294e2 #2a303b
+        active_workspace #5294e2 #2a303b
+        inactive_workspace #E1E5EA #2a303b
+        urgent_workspace #a3464a #2a303b
+    }
+    separator_symbol " "
+    position top
+    mode dock
+    strip_workspace_numbers yes
+}
+
+# colors                    border      background  text
+client.focused              #CC575D     #5294e2     #FFFFFF
+client.focused_inactive     #77994B     #465C86     #FFFFFF
+client.unfocused            #465C86     #2a303b     #CFCFCF
+client.urgent               #a3464a     #a3464a     #000000
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle
+
+# Media Player Controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20
+
+# Wallpaper
+exec_always --no-startup-id feh --bg-scale /home/david/projects/dotfiles/wallpapers/7783.png
+
+# Background apps
+exec --no-startup-id compton -b
+exec --no-startup-id redshift
+exec --no-startup-id nm-applet
+exec --no-startup-id volumeicon
+exec_always --no-startup-id numlockx on
