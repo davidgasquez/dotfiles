@@ -1,0 +1,115 @@
+! Fonts
+Xft.dpi: 96
+Xft.autohint: false
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintslight
+Xft.hinting: true
+Xft.antialias: true
+Xft.rgba: rgb
+
+Xcursor.size: 8
+
+! URxvt
+URxvt.background: #2a303b
+URxvt.foreground: #dedeee
+URxvt.font: xft:Hack-Regular:pixelsize=16
+URxvt.cursorBlink: true
+URxvt.letterSpace: -1
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.perl-ext-common: default,clipboard,url-select
+URxvt.url-select.launcher: chromium
+URxvt.url-select.underline: true
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.keysym.Shift-Control-C: perl:clipboard:copy
+URxvt.clipboard.autocopy: true
+urxvt.keysym.C-Left:      \033[1;5D
+urxvt.keysym.C-Right:     \033[1;5C
+URxvt.internalBorder: 15
+URxvt.borderless: true
+URxvt*loginShell: true
+URxvt.scrollstyle: plain
+URxvt.scrollBar:     false
+URxvt.scrollBar_right:   false
+URxvt.termName: rxvt-256color
+
+! Rofi
+rofi.color-window: #2a303b, #5294e2, #2a303b
+rofi.color-normal: #2a303b, #5294e2, #2a303b, #2679db, #2a303b
+rofi.color-active: #2a303b, #5294e2, #2a303b, #2679db, #2a303b
+rofi.color-urgent: #2679db, #2a303b, #2679db, #2679db, #2a303b
+rofi.hide-scrollbar: true
+rofi.bw: 4
+rofi.fullscreen: false
+rofi.lines: 10
+rofi.padding: 10
+rofi.separator-style: none
+
+! colors
+*.foreground: #c8d6e9
+*.background: #2a303b
+*.cursorColor: #b3bdcb
+
+! Black + DarkGrey
+*.color0:  #465C86
+*.color8:  #2a303b
+
+! DarkRed + Red
+*.color1:  #cc575d
+*.color9:  #a3464a
+
+! DarkGreen + Green
+*.color2:  #2679db
+*.color10: #75a9e8
+
+! DarkYellow + Yellow
+*.color3:  #b3bdcb
+*.color11: #CAD1DB
+
+! DarkBlue + Blue
+*.color4:  #5294e2
+*.color12: #97bfee
+
+! DarkMagenta + Magenta
+*.color5:  #404552
+*.color13: #686d79
+
+! DarkCyan + Cyan
+*.color6:  #b3bdcb
+*.color14: #383c4a
+
+! LightGrey + White
+*.color7:  #E1E5EA
+*.color15: #ffffff
+
+! for 256 color stuff
+*.color24:  #076678
+*.color66:  #427b58
+*.color88:  #9d0006
+*.color96:  #8f3f71
+*.color100: #79740e
+*.color108: #8ec07c
+*.color109: #83a598
+*.color130: #af3a03
+*.color136: #b57614
+*.color142: #b8bb26
+*.color167: #fb4934
+*.color175: #d3869b
+*.color208: #fe8019
+*.color214: #fabd2f
+*.color223: #ebdbb2
+*.color228: #f4e8ba
+*.color229: #fdf4c1
+*.color230: #ffffc8
+*.color234: #1d2021
+*.color235: #404552
+*.color236: #32302f
+*.color237: #3c3836
+*.color239: #504945
+*.color241: #665c54
+*.color243: #7c6f64
+*.color244: #928374
+*.color245: #928374
+*.color246: #a89984
+*.color248: #bdae93
+*.color250: #d5c4a1

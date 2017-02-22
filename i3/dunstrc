@@ -1,0 +1,63 @@
+[global]
+    font = Hack-12
+
+    format = "[%a] %s\n%b"
+
+    sort = yes
+
+    indicate_hidden = yes
+
+    alignment = center
+
+    bounce_freq = 0
+
+    show_age_threshold = 60;
+
+    allow_markup = yes
+
+    alignment = center
+
+    word_wrap = yes
+
+    geometry = "0x0-0+0"
+    transparency = 20
+
+    idle_threshold = 120
+
+    horizontal_padding = 20
+    padding = 10
+
+    monitor = 0
+
+    follow = none
+
+    sticky_history = yes
+    line_height = 0
+
+    separator_height = 1;
+
+    separator_color = "2a303b"
+
+[frame]
+    width = 2
+    color = "#C8D6E9"
+
+[shortcuts]
+    # close = mod4+ctrl+space
+    # close_all = ctrl+shift+space
+    history = mod4+ctrl+space
+
+[urgency_low]
+    background = "#74A9E8"
+    foreground = "#2a303b"
+    timeout = 4
+
+[urgency_normal]
+    background = "#74A9E8"
+    foreground = "#2a303b"
+    timeout = 4
+
+[urgency_critical]
+    background = "#dc322f"
+    foreground = "#DDDDDD"
+    timeout = 0
