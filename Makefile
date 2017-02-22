@@ -55,10 +55,10 @@ atom:
 .PHONY: i3
 i3:
 	@ echo -n "Symlinking i3 configuration files"
-	@ ln -sf $(shell pwd)/i3/Xdefaults $(HOME)/.Xdefaults
-	@ ln -sf $(shell pwd)/i3/compton.conf $(HOME)/.compton.conf
-	@ ln -sf $(shell pwd)/i3/dunstrc $(HOME)/.config/dunst/dunstrc
-	@ ln -sf $(shell pwd)/i3/i3-config $(HOME)/.config/i3/config
+	@ ln -sf $(shell pwd)/desktop/i3/Xdefaults $(HOME)/.Xdefaults
+	@ ln -sf $(shell pwd)/desktop/i3/compton.conf $(HOME)/.compton.conf
+	@ ln -sf $(shell pwd)/desktop/i3/dunstrc $(HOME)/.config/dunst/dunstrc
+	@ ln -sf $(shell pwd)/desktop/i3/i3-config $(HOME)/.config/i3/config
 	@ echo -e "\t✓"
 
 setup: shell tmux gitconfig scripts fonts
