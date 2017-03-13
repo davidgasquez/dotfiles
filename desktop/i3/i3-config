@@ -209,7 +209,7 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 20
 exec_always --no-startup-id feh --bg-scale /home/david/projects/dotfiles/wallpapers/7783.png
 
 # Background apps
-exec --no-startup-id compton -b
+exec --no-startup-id compton -b --xrender-sync --xrender-sync-fence
 exec --no-startup-id redshift
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
