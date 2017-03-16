@@ -202,7 +202,7 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 # Wallpaper
-exec_always --no-startup-id feh --bg-scale /home/david/projects/dotfiles/wallpapers/7783.png
+exec_always --no-startup-id feh --randomize --bg-center $HOME/projects/dotfiles/wallpapers/*
 
 # Background apps
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
