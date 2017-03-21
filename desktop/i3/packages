@@ -7,3 +7,6 @@ dunst
 rofi
 network-manager-applet
 feh
+rxvt-unicode
+urxvt-perls
+pavucontrol

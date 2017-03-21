@@ -149,14 +149,14 @@ assign [class="Slack"] $WS3
 
 set $Locker i3lock && sleep 1
 
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+    bindsym p exec --no-startup-id systemctl poweroff -i, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -165,24 +165,20 @@ mode "$mode_system" {
 
 bindsym $mod+Shift+l mode "$mode_system"
 
-# Bar configuration
-bar {
-    status_command i3status
-    font pango: Hack, Noto Emoji 10
-    colors {
-        background #2a303b
-        statusline #5294e2
-        separator #ffffff
-        focused_workspace #5294e2 #2a303b
-        active_workspace #5294e2 #2a303b
-        inactive_workspace #E1E5EA #2a303b
-        urgent_workspace #a3464a #2a303b
-    }
-    separator_symbol " "
-    position top
-    mode dock
-    strip_workspace_numbers yes
+
+set $music Music (n) next, (b) prev, (p) play/pause
+mode "$music" {
+  bindsym n exec --no-startup-id playerctl next, mode "default"
+  bindsym b exec --no-startup-id playerctl previous, mode "default"
+  bindsym p exec --no-startup-id playerctl play-pause, mode "default"
+
+  # back to normal
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+
 }
+
+bindsym $mod+Shift+m mode "$music"
 
 # colors                    border      background  text
 client.focused              #CC575D     #5294e2     #FFFFFF
@@ -191,9 +187,9 @@ client.unfocused            #465C86     #2a303b     #CFCFCF
 client.urgent               #a3464a     #a3464a     #000000
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 
 # Media Player Controls
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -202,14 +198,15 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 # Wallpaper
-exec_always --no-startup-id feh --bg-scale /home/david/projects/dotfiles/wallpapers/7783.png
+exec_always --no-startup-id feh --randomize --bg-center $HOME/projects/dotfiles/wallpapers/*
 
 # Background apps
-exec --no-startup-id compton -b
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec --no-startup-id compton -b --xrender-sync --xrender-sync-fence
 exec --no-startup-id redshift
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
