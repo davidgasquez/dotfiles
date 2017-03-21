@@ -147,7 +147,7 @@ for_window [class="zoom"] floating enable
 # Default workspaces
 assign [class="Slack"] $WS3
 
-set $Locker i3lock && sleep 1
+set $Locker i3lock -i $HOME/projects/dotfiles/wallpapers/7783.png && sleep 
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
 mode "$mode_system" {
