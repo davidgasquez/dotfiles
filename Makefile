@@ -42,8 +42,9 @@ taskwarrior:
 
 .PHONY: fonts
 fonts:
-	@mkdir -p $(HOME)/.config/fontconfig/
+	@mkdir -p $(HOME)/.config/fontconfig/conf.d
 	@ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/local.conf
+	@ln -sf $(DOTFILES)/fonts/01-emoji.conf $(HOME)/.config/fontconfig/conf.d/01-emoji.conf
 
 .PHONY: atom
 atom:
