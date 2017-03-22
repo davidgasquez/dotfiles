@@ -80,18 +80,6 @@ bindsym $mod+d focus child
 # Set window borders
 for_window [class="^.*"] border pixel 4
 
-# Workspaces Names
-set $WS1 1:    
-set $WS2 2:    
-set $WS3 3:    
-set $WS4 4:    
-set $WS5 5:    
-set $WS6 6:    
-set $WS7 7:    
-set $WS8 8:    
-set $WS9 9:    
-set $WS10 10:    
-
 # Worspace navigation
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
