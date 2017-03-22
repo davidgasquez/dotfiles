@@ -187,9 +187,9 @@ client.unfocused            #465C86     #2a303b     #CFCFCF
 client.urgent               #a3464a     #a3464a     #000000
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume  @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume  @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute  @DEFAULT_SINK@ toggle
 
 # Media Player Controls
 bindsym XF86AudioPlay exec playerctl play-pause
