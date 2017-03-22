@@ -19,8 +19,8 @@ font-1 = FontAwesome:pixelsize=12;2
 font-2 = Noto Emoji:pixelsize=14;1
 
 modules-left = i3
-modules-center = memory cpu temperature
-modules-right = xbacklight backlight volume wifi eth external_battery internal_battery date power-menu
+modules-center = memory cpu temperature eth wifi
+modules-right = xbacklight backlight volume external_battery internal_battery date power-menu
 
 tray-position = right
 tray-padding = 1
@@ -81,7 +81,8 @@ card = intel_backlight
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-padding = 2sss
+
+format-padding = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 label = %percentage%%
@@ -89,6 +90,7 @@ label = %percentage%%
 [module/memory]
 type = internal/memory
 interval = 2
+
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 label = %percentage_used%%
@@ -98,25 +100,18 @@ type = internal/network
 interface = wlp4s0
 interval = 3.0
 
-format-connected = <ramp-signal> <label-connected>
-label-connected = ↑%upspeed% ↓%downspeed%
-
-ramp-signal-0 = 😱
-ramp-signal-1 = 😠
-ramp-signal-2 = 😒
-ramp-signal-3 = 😊
-ramp-signal-4 = 😃
-ramp-signal-5 = 😈
-ramp-signal-foreground = ${colors.foreground}
+format-connected-padding = 2
+format-connected = <label-connected>
+label-connected =  %upspeed%  %downspeed%
 
 [module/eth]
 type = internal/network
-interface = virbr1-nic
+interface = enp0s25
 interval = 3.0
 
-format-connected-prefix = "ETH "
-format-connected-prefix-foreground = ${colors.foreground}
-label-connected = %local_ip%
+format-connected-padding = 2
+format-connected = <label-connected>
+label-connected =  %upspeed%  %downspeed%
 
 [module/date]
 type = internal/date
