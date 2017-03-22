@@ -1,11 +1,8 @@
 [colors]
-background = #2a303b
-background-alt = #222
-foreground = #dedeee
-foreground-alt = #555
-primary = #cc575d
-secondary = #2679db
-alert = #b3bdcb
+background = #2A303B
+foreground = #C8D6E9
+primary = #5294E2
+alert = #CC575D
 
 [bar/top]
 width = 100%
@@ -18,69 +15,51 @@ module-margin-left = 0
 module-margin-right = 1
 
 font-0 = Hack-Regular:pixelsize=10;2
-font-1 = FontAwesome:pixelsize=10;2
+font-1 = FontAwesome:pixelsize=12;2
 font-2 = Noto Emoji:pixelsize=14;1
-font-3 = siji:pixelsize=10;2
 
-modules-left = bspwm i3
+modules-left = i3
 modules-center = memory cpu temperature
 modules-right = xbacklight backlight volume wifi eth external_battery internal_battery date power-menu
 
 tray-position = right
 tray-padding = 1
 
-[module/bspwm]
-type = internal/bspwm
-
-label-focused = %index%
-label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
-label-focused-padding = 2
-
-label-occupied = %index%
-label-occupied-padding = 2
-
-label-urgent = %index%!
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 2
-
-label-empty = %index%
-label-empty-foreground = ${colors.foreground-alt}
-label-empty-padding = 2
-
 [module/i3]
 type = internal/i3
-format = <label-state> <label-mode>
+
 index-sort = true
 wrapping-scroll = false
 
-; Only show workspaces on the same output as the bar
-;pin-workspaces = true
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
 
+format = <label-state> <label-mode>
+
+label-mode-underline = ${colors.background}
 label-mode-padding = 2
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
-label-focused = %index%
-label-focused-background = ${module/bspwm.label-focused-background}
-label-focused-underline = ${module/bspwm.label-focused-underline}
-label-focused-padding = ${module/bspwm.label-focused-padding}
+label-focused = %icon%
+label-focused-foreground = ${colors.primary}
+label-focused-padding = 2
 
 ; unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
-label-unfocused-padding = ${module/bspwm.label-occupied-padding}
-
-; visible = Active workspace on unfocused monitor
-label-visible = %index%
-label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = ${self.label-focused-padding}
+label-unfocused = %icon%
+label-unfocused-padding = 2
 
 ; urgent = Workspace with urgency hint set
-label-urgent = %index%
-label-urgent-background = ${module/bspwm.label-urgent-background}
-label-urgent-padding = ${module/bspwm.label-urgent-padding}
+label-urgent = %icon%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
 
 [module/xbacklight]
 type = internal/xbacklight
@@ -104,14 +83,14 @@ type = internal/cpu
 interval = 2
 format-padding = 2sss
 format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-foreground = ${colors.foreground}
 label = %percentage%%
 
 [module/memory]
 type = internal/memory
 interval = 2
 format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-foreground = ${colors.foreground}
 label = %percentage_used%%
 
 [module/wifi]
@@ -128,7 +107,7 @@ ramp-signal-2 = 😒
 ramp-signal-3 = 😊
 ramp-signal-4 = 😃
 ramp-signal-5 = 😈
-ramp-signal-foreground = ${colors.foreground-alt}
+ramp-signal-foreground = ${colors.foreground}
 
 [module/eth]
 type = internal/network
@@ -136,7 +115,7 @@ interface = virbr1-nic
 interval = 3.0
 
 format-connected-prefix = "ETH "
-format-connected-prefix-foreground = ${colors.foreground-alt}
+format-connected-prefix-foreground = ${colors.foreground}
 label-connected = %local_ip%
 
 [module/date]
@@ -204,14 +183,14 @@ format-discharging = <ramp-capacity> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
 
 format-full-prefix = "BAT "
-format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-prefix-foreground = ${colors.foreground}
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
 ramp-capacity-2 = 
 ramp-capacity-3 = 
 ramp-capacity-4 = 
-ramp-capacity-foreground = ${colors.foreground-alt}
+ramp-capacity-foreground = ${colors.foreground}
 
 
 animation-charging-0 = 
@@ -219,7 +198,7 @@ animation-charging-1 = 
 animation-charging-2 = 
 animation-charging-3 = 
 animation-charging-4 = 
-animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-foreground = ${colors.foreground}
 animation-charging-framerate = 750
 
 [module/temperature]
@@ -239,7 +218,7 @@ label-warn-foreground = ${colors.primary}
 ramp-0 = ""
 ramp-1 = ""
 ramp-2 = ""
-ramp-foreground = ${colors.foreground-alt}
+ramp-foreground = ${colors.foreground}
 
 [settings]
 screenchange-reload = true
