@@ -158,8 +158,8 @@ for_window [class="Pavucontrol"] floating enable
 for_window [class="zoom"] floating enable
 
 # Default Workspaces
-assign [class="Slack"] $WS3
-assign [class="(?i)google play music"] $WS10
+assign [class="Slack"] 3
+assign [class="(?i)google play music"] 10
 
 set $Locker i3lock -i $HOME/projects/dotfiles/wallpapers/7783.png && sleep 1
 
@@ -178,7 +178,6 @@ mode "$mode_system" {
 }
 
 bindsym $mod+Shift+l mode "$mode_system"
-
 
 set $music (n) , (b) , (p) 
 mode "$music" {
