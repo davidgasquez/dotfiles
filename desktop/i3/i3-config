@@ -180,7 +180,7 @@ mode "$mode_system" {
 bindsym $mod+Shift+l mode "$mode_system"
 
 
-set $music Music (n) next, (b) prev, (p) play/pause
+set $music (n) , (b) , (p) 
 mode "$music" {
   bindsym n exec --no-startup-id playerctl next, mode "default"
   bindsym b exec --no-startup-id playerctl previous, mode "default"
