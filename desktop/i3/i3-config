@@ -157,8 +157,9 @@ for_window [window_type="menu"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="zoom"] floating enable
 
-# Default workspaces
+# Default Workspaces
 assign [class="Slack"] $WS3
+assign [class="(?i)google play music"] $WS10
 
 set $Locker i3lock -i $HOME/projects/dotfiles/wallpapers/7783.png && sleep 1
 
