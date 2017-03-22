@@ -5,6 +5,19 @@
 # Use Windows as modifier
 set $mod Mod4
 
+# Colors
+set $red         #A3464A
+set $darkblue    #5294E2
+set $lightblue   #465C86
+set $white       #DEDEEE
+set $black       #2A303B
+
+# Theme                     border      background  text
+client.focused              #darkblue   $darkblue   $white
+client.focused_inactive     $lightblue  $lightblue  $white
+client.unfocused            $lightblue  $black      $black
+client.urgent               $red        $red        $black
+
 # Set font configuration
 font pango:Hack 10
 
@@ -179,12 +192,6 @@ mode "$music" {
 }
 
 bindsym $mod+Shift+m mode "$music"
-
-# colors                    border      background  text
-client.focused              #CC575D     #5294e2     #FFFFFF
-client.focused_inactive     #77994B     #465C86     #FFFFFF
-client.unfocused            #465C86     #2a303b     #CFCFCF
-client.urgent               #a3464a     #a3464a     #000000
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume  @DEFAULT_SINK@ +5%
