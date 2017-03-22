@@ -20,7 +20,7 @@ font-2 = Noto Emoji:pixelsize=14;1
 
 modules-left = i3
 modules-center = memory cpu temperature eth wifi
-modules-right = xbacklight backlight volume external_battery internal_battery date power-menu
+modules-right = xbacklight backlight external_battery internal_battery calendar-icon date
 
 tray-position = right
 tray-padding = 1
@@ -46,16 +46,13 @@ format = <label-state> <label-mode>
 
 label-mode-padding = 2
 
-; focused = Active workspace on focused monitor
 label-focused = %icon%
 label-focused-foreground = ${colors.primary}
 label-focused-padding = 2
 
-; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
 label-unfocused-padding = 2
 
-; urgent = Workspace with urgency hint set
 label-urgent = %icon%
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
@@ -112,9 +109,18 @@ format-connected-padding = 2
 format-connected = <label-connected>
 label-connected =  %upspeed%  %downspeed%
 
+[module/calendar-icon]
+type = custom/text
+content = 
+click-left = chromium calendar.google.com
+
 [module/date]
 type = internal/date
 interval = 5
+
+format = <label>
+format-padding = 2
+format-offset = -18
 
 date = "%Y-%m-%d"
 date-alt = "%Y-%m-%d"
@@ -123,22 +129,6 @@ time = %H:%M
 time-alt = %H:%M:%S
 
 label = %date% %time%
-
-[module/volume]
-type = internal/volume
-
-format-volume = <ramp-volume>  <label-volume>
-format-muted = <label-muted>
-label-volume = %percentage%
-label-muted = muted
-label-muted-foreground = #aaa
-format-volume-padding = 1
-format-muted-padding = 1
-
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-ramp-headphones-0 = 
 
 [module/internal_battery]
 type = internal/battery
