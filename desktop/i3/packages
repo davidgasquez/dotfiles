@@ -7,9 +7,10 @@ dunst
 rofi
 network-manager-applet
 feh
+i3
+i3lock-fancy
 rxvt-unicode
 urxvt-perls
 pavucontrol
 scrot
 thunar
-
