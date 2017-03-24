@@ -55,7 +55,7 @@ atom:
 
 .PHONY: i3
 i3:
-	@ ln -sf $(shell pwd)/desktop/i3/Xdefaults $(HOME)/.Xdefaults
+	@ ln -sf $(shell pwd)/desktop/i3/Xresources $(HOME)/.Xresources
 	@ ln -sf $(shell pwd)/desktop/i3/compton.conf $(HOME)/.compton.conf
 	@ ln -sf $(shell pwd)/desktop/i3/dunstrc $(HOME)/.config/dunst/dunstrc
 	@ ln -sf $(shell pwd)/desktop/i3/i3-config $(HOME)/.config/i3/config
