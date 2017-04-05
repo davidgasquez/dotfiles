@@ -149,14 +149,14 @@ for_window [class="zoom"] floating enable
 assign [class="Slack"] 3
 assign [class="(?i)google play music"] 10
 
-set $locker i3lock-fancy -t "" -- scrot -z && sleep 1
+set $locker i3lock-fancy -t "" -- scrot -z
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
 mode "$mode_system" {
     bindsym l exec --no-startup-id $locker , mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id $locker && systemctl suspend, mode "default"
-    bindsym h exec --no-startup-id $locker && systemctl hibernate, mode "default"
+    bindsym s exec --no-startup-id i3lock && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id i3lock && systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym p exec --no-startup-id systemctl poweroff -i, mode "default"
 
