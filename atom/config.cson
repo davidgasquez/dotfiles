@@ -33,8 +33,7 @@
   "git-plus":
     general:
       _analyticsUserId: "b0b8fef0-e9f3-4ad9-b6b1-7af19d95e9f9"
-  linter:
-    showErrorPanel: false
+  linter: {}
   "linter-ui-default": {}
   "linter-write-good":
     severityLevel: "Warning"
