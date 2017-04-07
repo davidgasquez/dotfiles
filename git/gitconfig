@@ -1,16 +1,16 @@
 [core]
-editor = nano
+    editor = nano
 
 [user]
-name = David Gasquez
-email = davidgasquez@gmail.com
+    name = David Gasquez
+    email = davidgasquez@gmail.com
 
 [color]
-ui = true
+    ui = true
 
 [alias]
-cm = commit -m
-st = status
+    cm = commit -m
+    st = status
 
 [push]
 	default = simple
