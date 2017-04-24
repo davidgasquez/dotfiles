@@ -4,9 +4,9 @@ export HISTFILE="$HOME/.history"
 export SAVEHIST=$HISTSIZE
 
 # Completion
-setopt menu_complete
 autoload -Uz compinit
-zstyle ':completion:*' menu select
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:functions' ignored-patterns '_*'
 zstyle ':completion:::::' completer _complete _approximate
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 compinit
