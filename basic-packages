@@ -8,6 +8,7 @@ zsh-completions
 arc-gtk-theme
 freetype2
 cairo
+xorg-xrandr
 fontconfig
 ttf-hack
 ttf-dejavu

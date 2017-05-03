@@ -5,6 +5,6 @@
 res=$(xrandr | grep '*' | awk '{ print $1 }')
 fr=$(xrandr | grep '*' | awk '{ print $3 }')
 
-ffmpeg -video_size $res -framerate $fr -f x11grab -i :0.0 -c:v libx264 -qp 0 -preset ultrafast ~/screencast.mkv
+ffmpeg -video_size $res -framerate $fr -f x11grab -i $DISPLAY -c:v libx264 -qp 0 -preset ultrafast ~/screencast.mkv
 
 # ffmpeg -i capture.mkv -c:v libx264 -qp 0 -preset veryslow capture_smaller.mkv
