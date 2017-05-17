@@ -15,6 +15,7 @@
     scheme: "Ocean"
   core:
     autoHideMenuBar: true
+    closeDeletedFileTabs: true
     disabledPackages: [
       "whitespace"
     ]
@@ -22,14 +23,13 @@
     telemetryConsent: "limited"
     themes: [
       "atom-material-ui"
-      "base16-syntax"
+      "base16-ocean-dark-spacegray"
     ]
   editor:
     fontFamily: "Hack"
     fontSize: 16
     invisibles: {}
     softWrap: true
-    softWrapAtPreferredLineLength: true
     tabLength: 4
   "exception-reporting":
     userId: "c9c9df71-2011-aac7-d454-6313fe94f6d9"
