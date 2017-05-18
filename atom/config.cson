@@ -23,7 +23,7 @@
     telemetryConsent: "limited"
     themes: [
       "atom-material-ui"
-      "base16-ocean-dark-spacegray"
+      "base16-syntax"
     ]
   editor:
     fontFamily: "Hack"
