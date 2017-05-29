@@ -147,7 +147,6 @@ for_window [class="zoom"] floating enable
 
 # Default Workspaces
 assign [class="Slack"] 3
-assign [class="(?i)google play music"] 10
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) poweroff
 mode "$mode_system" {
