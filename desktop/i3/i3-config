@@ -194,7 +194,7 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 
 bindsym Print exec scrot  '%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/'
-bindsym --release Shift+Print exec scrot -s '%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/'
+bindsym --release Shift+Print exec scrot -d 1 -s '%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/'
 
 # Wallpaper
 exec_always --no-startup-id feh --randomize --bg-center $HOME/projects/dotfiles/wallpapers/*
