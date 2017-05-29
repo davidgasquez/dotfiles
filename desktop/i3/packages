@@ -8,7 +8,6 @@ rofi
 network-manager-applet
 feh
 i3
-i3lock-fancy-git
 rxvt-unicode
 urxvt-perls
 pavucontrol
