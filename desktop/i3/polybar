@@ -4,6 +4,7 @@ foreground = #C8D6E9
 primary = #5294E2
 alert = #CC575D
 
+
 [bar/top]
 width = 100%
 height = 26
@@ -24,6 +25,7 @@ modules-right = xbacklight backlight external_battery internal_battery calendar-
 
 tray-position = right
 tray-padding = 1
+
 
 [module/i3]
 type = internal/i3
@@ -57,6 +59,7 @@ label-urgent = %icon%
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
 
+
 [module/xbacklight]
 type = internal/xbacklight
 
@@ -69,10 +72,12 @@ ramp-2 = 🌓
 ramp-3 = 🌒
 ramp-4 = 🌑
 
+
 [module/backlight-acpi]
 inherit = module/xbacklight
 type = internal/backlight
 card = intel_backlight
+
 
 [module/cpu]
 type = internal/cpu
@@ -83,6 +88,7 @@ format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 label = %percentage%%
 
+
 [module/memory]
 type = internal/memory
 interval = 2
@@ -90,6 +96,7 @@ interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 label = %percentage_used%%
+
 
 [module/wifi]
 type = internal/network
@@ -100,6 +107,7 @@ format-connected-padding = 2
 format-connected = <label-connected>
 label-connected =  %upspeed%  %downspeed%
 
+
 [module/eth]
 type = internal/network
 interface = enp0s25
@@ -109,10 +117,12 @@ format-connected-padding = 2
 format-connected = <label-connected>
 label-connected =  %upspeed%  %downspeed%
 
+
 [module/calendar-icon]
 type = custom/text
 content = 
 click-left = chromium calendar.google.com
+
 
 [module/date]
 type = internal/date
@@ -130,6 +140,7 @@ time-alt = %H:%M:%S
 
 label = %date% %time%
 
+
 [module/internal_battery]
 type = internal/battery
 battery = BAT0
@@ -138,8 +149,6 @@ full-at = 98
 format-charging = <animation-charging> <label-charging>
 format-discharging = <ramp-capacity> <label-discharging>
 format-full = <ramp-capacity> <label-full>
-
-label-full = 
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
@@ -154,6 +163,7 @@ animation-charging-3 = 
 animation-charging-4 = 
 animation-charging-framerate = 750
 
+
 [module/external_battery]
 type = internal/battery
 battery = BAT1
@@ -161,11 +171,8 @@ adapter = AC
 full-at = 98
 
 format-charging = <animation-charging> <label-charging>
-
 format-discharging = <ramp-capacity> <label-discharging>
-
-format-full-prefix = "BAT "
-format-full-prefix-foreground = ${colors.foreground}
+format-full = <ramp-capacity> <label-full>
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
@@ -182,6 +189,7 @@ animation-charging-3 = 
 animation-charging-4 = 
 animation-charging-foreground = ${colors.foreground}
 animation-charging-framerate = 750
+
 
 [module/temperature]
 type = internal/temperature
