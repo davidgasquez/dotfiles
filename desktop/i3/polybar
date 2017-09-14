@@ -21,7 +21,7 @@ font-2 = Noto Emoji:pixelsize=14;1
 
 modules-left = i3
 modules-center = memory cpu temperature eth wifi
-modules-right = xbacklight backlight external_battery internal_battery calendar-icon date
+modules-right = xbacklight keyboard external_battery internal_battery calendar-icon date
 
 tray-position = right
 tray-padding = 1
@@ -63,7 +63,7 @@ label-urgent-padding = 2
 [module/xbacklight]
 type = internal/xbacklight
 
-format = <ramp> <label>
+format = <label> <ramp>
 label = %percentage%%
 
 ramp-0 = 🌕
@@ -71,12 +71,6 @@ ramp-1 = 🌔
 ramp-2 = 🌓
 ramp-3 = 🌒
 ramp-4 = 🌑
-
-
-[module/backlight-acpi]
-inherit = module/xbacklight
-type = internal/backlight
-card = intel_backlight
 
 
 [module/cpu]
