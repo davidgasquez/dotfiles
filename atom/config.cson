@@ -2,6 +2,8 @@
   "atom-beautify":
     general:
       _analyticsUserId: "de88cca1-62c6-411a-b1c7-54b0f72f39f7"
+    json:
+      beautify_on_save: true
   "atom-material-ui":
     colors:
       abaseColor: "#2679db"
