@@ -8,7 +8,6 @@ if [[ $? -eq 0 ]]; then
     metadata="$(playerctl metadata artist) - $(playerctl metadata title)"
 fi
 
-# Foreground color formatting tags are optional
 if [[ $player_status = "Playing" ]]; then
     echo "$icon %{F#C8D6E9}$metadata"
 elif [[ $player_status = "Paused" ]]; then
