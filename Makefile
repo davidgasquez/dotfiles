@@ -66,7 +66,7 @@ polybar:
 	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
 	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
 
-setup: shell tmux gitconfig scripts fonts
+setup: shell tmux gitconfig scripts fonts i3 polybar
 
 install-basic-packages:
 	sudo pacman -S - < basic-packages
