@@ -55,12 +55,16 @@ atom:
 
 .PHONY: i3
 i3:
-	@ ln -sf $(shell pwd)/desktop/i3/Xresources $(HOME)/.Xresources
-	@ ln -sf $(shell pwd)/desktop/i3/compton.conf $(HOME)/.compton.conf
-	@ ln -sf $(shell pwd)/desktop/i3/dunstrc $(HOME)/.config/dunst/dunstrc
-	@ ln -sf $(shell pwd)/desktop/i3/i3-config $(HOME)/.config/i3/config
-	@ ln -sf $(shell pwd)/desktop/i3/polybar $(HOME)/.config/polybar/config
-	@ ln -sf $(shell pwd)/desktop/i3/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
+	@ ln -sf $(DOTFILES)/desktop/i3/Xresources $(HOME)/.Xresources
+	@ ln -sf $(DOTFILES)/desktop/i3/compton.conf $(HOME)/.compton.conf
+	@ ln -sf $(DOTFILES)/desktop/i3/dunstrc $(HOME)/.config/dunst/dunstrc
+	@ ln -sf $(DOTFILES)/desktop/i3/i3-config $(HOME)/.config/i3/config
+
+.PHONY: polybar
+polybar:
+	@ ln -sf $(DOTFILES)/polybar/config $(HOME)/.config/polybar/config
+	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
+	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
 
 setup: shell tmux gitconfig scripts fonts
 
