@@ -127,10 +127,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 bindsym $mod+r mode "resize"
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-        bindsym Left resize shrink width 3 px or 3 ppt
-        bindsym Up resize grow height 3 px or 3 ppt
-        bindsym Down resize shrink height 3 px or 3 ppt
-        bindsym Right resize grow width 3 px or 3 ppt
+        bindsym Left resize shrink width 2 px or 2 ppt
+        bindsym Up resize grow height 2 px or 2 ppt
+        bindsym Down resize shrink height 2 px or 2 ppt
+        bindsym Right resize grow width 2 px or 2 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -209,3 +209,4 @@ exec --no-startup-id dunst
 exec --no-startup-id redshift
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
+exec --no-startup-id g610-led -a 80
