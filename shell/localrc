@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Local binaries
+export PATH="$PATH:/home/$(whoami)/.local/bin"
+
 # Steam
 export STEAM_FRAME_FORCE_CLOSE=1
 export STEAM_RUNTIME=0
