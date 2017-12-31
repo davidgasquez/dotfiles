@@ -16,7 +16,9 @@ module-margin-left = 0
 module-margin-right = 1
 
 font-0 = Hack-Regular:pixelsize=10;2
-font-1 = FontAwesome:pixelsize=12;2
+font-1 = FontAwesome5Free:style=Solid:pixelsize=11;2
+font-2 = FontAwesome5Brands:style=Solid:pixelsize=11;2
+
 
 modules-left = i3 music
 modules-center = memory cpu temperature eth wifi
@@ -33,11 +35,11 @@ type = internal/i3
 index-sort = true
 wrapping-scroll = false
 
-ws-icon-0 = 1;
+ws-icon-0 = 1;
 ws-icon-1 = 2;
 ws-icon-2 = 3;
 ws-icon-3 = 4;
-ws-icon-4 = 5;
+ws-icon-4 = 5;
 ws-icon-5 = 6;
 ws-icon-6 = 7;
 ws-icon-7 = 8;
@@ -94,7 +96,7 @@ interval = 3.0
 
 format-connected-padding = 2
 format-connected = <label-connected>
-label-connected =  %upspeed%  %downspeed%
+label-connected =  %upspeed%  %downspeed%
 
 
 [module/eth]
@@ -104,7 +106,7 @@ interval = 3.0
 
 format-connected-padding = 2
 format-connected = <label-connected>
-label-connected =  %upspeed%  %downspeed%
+label-connected =  %upspeed%  %downspeed%
 
 
 [module/music]
