@@ -124,8 +124,8 @@ bindsym $mod+Shift+minus [urgent=latest] focus
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Gaps
-gaps inner 20
-gaps outer 20
+gaps inner 30
+gaps outer 0
 smart_gaps on
 smart_borders on
 
@@ -136,8 +136,8 @@ mode "gaps" {
         bindsym Down gaps inner all minus 5
         bindsym Right gaps outer all plus 5
         bindsym Left gaps outer all minus 5
-        bindsym r gaps inner all set 0, gaps outer all set 0G, mode "default"
-        bindsym d gaps inner all set 20, gaps outer all set 20, mode "default"
+        bindsym r gaps inner all set 0, gaps outer all set 0, mode "default"
+        bindsym d gaps inner all set 30, gaps outer all set 0, mode "default"
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
