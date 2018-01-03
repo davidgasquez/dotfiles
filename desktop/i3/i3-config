@@ -6,15 +6,15 @@
 set $mod Mod4
 
 # Colors
-set $red         #A3464A
-set $darkblue    #5294E2
-set $lightblue   #465C86
-set $white       #DEDEEE
+set $red         #BF616A
+set $darkblue    #2679DB
+set $lightblue   #5294E2
+set $white       #ECEFF4
 set $black       #2A303B
 
 # Theme                     border      background  text
 client.focused              #darkblue   $darkblue   $white
-client.focused_inactive     $lightblue  $lightblue  $white
+client.focused_inactive     $lightblue  $black      $white
 client.unfocused            $lightblue  $black      $black
 client.urgent               $red        $red        $black
 
@@ -36,7 +36,7 @@ bindsym $mod+Return exec urxvt
 # Start Rofi (program launcher)
 bindsym $mod+BackSpace exec rofi -show run
 
-# Use alt+tab to move between windows
+# Use Windows+tab to move between windows
 bindsym Mod1+Tab exec rofi -show window
 
 # Change window focus
@@ -109,7 +109,7 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # Move to the previous workspace when pressing again the same key
-workspace_auto_back_and_forth yes
+workspace_auto_back_and_forth no
 
 # Reload the configuration file
 bindsym $mod+Shift+c reload
@@ -122,6 +122,25 @@ bindsym $mod+Shift+minus [urgent=latest] focus
 
 # Exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Gaps
+gaps inner 20
+gaps outer 20
+smart_gaps on
+smart_borders on
+
+bindsym $mod+Shift+g mode "gaps"
+
+mode "gaps" {
+        bindsym Up gaps inner all plus 5
+        bindsym Down gaps inner all minus 5
+        bindsym Right gaps outer all plus 5
+        bindsym Left gaps outer all minus 5
+        bindsym r gaps inner all set 0, gaps outer all set 0G, mode "default"
+        bindsym d gaps inner all set 20, gaps outer all set 20, mode "default"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
 
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"

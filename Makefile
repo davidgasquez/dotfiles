@@ -56,6 +56,7 @@ atom:
 .PHONY: i3
 i3:
 	@ ln -sf $(DOTFILES)/desktop/i3/Xresources $(HOME)/.Xresources
+	@ ln -sf $(DOTFILES)/desktop/i3/theme.Xresources $(HOME)/.theme.Xresources
 	@ ln -sf $(DOTFILES)/desktop/i3/compton.conf $(HOME)/.compton.conf
 	@ ln -sf $(DOTFILES)/desktop/i3/dunstrc $(HOME)/.config/dunst/dunstrc
 	@ ln -sf $(DOTFILES)/desktop/i3/i3-config $(HOME)/.config/i3/config

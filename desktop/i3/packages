@@ -7,7 +7,7 @@ dunst
 rofi
 network-manager-applet
 feh
-i3
+i3-gaps
 rxvt-unicode
 urxvt-perls
 imagemagick
