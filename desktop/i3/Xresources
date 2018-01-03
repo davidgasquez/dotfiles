@@ -12,6 +12,8 @@ Xft.rgba: rgb
 Xcursor.size: 8
 
 ! URxvt
+URxvt.background: #2A303B
+URxvt.foreground: #ECEFF4
 URxvt.font: xft:Hack-Regular:pixelsize=16
 URxvt.cursorBlink: true
 URxvt.letterSpace: -1
