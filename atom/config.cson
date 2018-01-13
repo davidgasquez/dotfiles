@@ -4,6 +4,8 @@
       _analyticsUserId: "de88cca1-62c6-411a-b1c7-54b0f72f39f7"
     json:
       beautify_on_save: true
+    markdown:
+      default_beautifier: "Remark"
   "atom-material-ui":
     colors:
       abaseColor: "#2679db"
@@ -20,6 +22,7 @@
     closeDeletedFileTabs: true
     disabledPackages: [
       "whitespace"
+      "language-gfm"
     ]
     openEmptyEditorOnStart: false
     telemetryConsent: "limited"
