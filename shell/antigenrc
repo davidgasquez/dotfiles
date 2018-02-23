@@ -5,6 +5,10 @@ antigen bundles <<EOBUNDLES
     taskwarrior
     kubectl
     aws
+    docker
+    common-aliases
+    colorize
+    emoji
     dotenv
     jump
     zsh-users/zsh-history-substring-search
