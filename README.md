@@ -1,4 +1,4 @@
-![logo](/assets/logo.png)
+![logo](https://user-images.githubusercontent.com/1682202/37351969-87717a40-26dc-11e8-9a90-ee07a1f4b69a.png)
 
 <p align="center">
     <i>Here you will find with my dotfiles, living in harmony and peace.</i>
