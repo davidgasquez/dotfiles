@@ -7,9 +7,6 @@ export PATH="$PATH:/home/$(whoami)/.local/bin"
 export STEAM_FRAME_FORCE_CLOSE=1
 export STEAM_RUNTIME=0
 
-# Conda
-# export PATH="/home/$(whoami)/.anaconda3/bin:$PATH"
-
 # Go
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
