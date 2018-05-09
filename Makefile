@@ -73,4 +73,4 @@ install-basic-packages:
 	sudo pacman -S - < basic-packages
 
 install-aur-packages:
-	pacaur -S - < aur-packages
+	yay -S - < aur-packages
