@@ -27,3 +27,7 @@ function o() {
 		xdg-open "$@";
 	fi;
 }
+
+function weather() {
+    curl wttr.in/"$@"
+}
