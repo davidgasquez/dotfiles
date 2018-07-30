@@ -5,7 +5,8 @@
     json:
       beautify_on_save: true
     markdown:
-      default_beautifier: "Remark"
+      beautify_on_save: true
+      default_beautifier: "Prettier"
   "atom-material-ui":
     colors:
       abaseColor: "#2679db"
