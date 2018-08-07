@@ -3,7 +3,6 @@ antigen bundles <<EOBUNDLES
     git
     pip
     taskwarrior
-    kubectl
     aws
     docker
     common-aliases
