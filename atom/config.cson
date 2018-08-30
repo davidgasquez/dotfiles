@@ -7,6 +7,8 @@
     markdown:
       beautify_on_save: true
       default_beautifier: "Prettier"
+    python:
+      disabled: true
   "atom-material-ui":
     colors:
       abaseColor: "#2679db"
@@ -48,8 +50,6 @@
       "H238"
     ]
   "linter-ui-default": {}
-  "linter-write-good":
-    severityLevel: "Warning"
   minimap:
     absoluteMode: true
     adjustAbsoluteModeHeight: true
