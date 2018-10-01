@@ -13,5 +13,4 @@ The fastest way to start using them is running `make setup`. It's also possible
 to configure only some tools using the same [Makefile](Makefile).
 
 ## License
-Copyright (c) 2016 David Gasquez
-Licensed under the MIT license.
+MIT © David Gasquez
