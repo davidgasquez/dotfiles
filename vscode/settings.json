@@ -1,0 +1,28 @@
+{
+    "workbench.colorTheme": "One Dark Pro Vivid",
+    "workbench.iconTheme": "vscode-icons",
+    "files.autoSave": "onWindowChange",
+    "python.jediEnabled": false,
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "github.hosts": [
+        {
+            "host": "https://github.com",
+            "username": "oauth",
+            "token": "system"
+        }
+    ],
+    "git.confirmSync": false,
+    "window.menuBarVisibility": "toggle",
+    "editor.multiCursorModifier": "ctrlCmd",
+    "explorer.openEditors.visible": 0,
+    "editor.fontFamily": "Hack, monospace, 'Droid Sans Fallback'",
+    "editor.wordWrapColumn": 100,
+    "editor.smoothScrolling": true,
+    "workbench.startupEditor": "none",
+    "workbench.statusBar.feedback.visible": false,
+    "terminal.external.linuxExec": "urxvt",
+    "terminal.explorerKind": "external",
+    "explorer.confirmDragAndDrop": false,
+}
