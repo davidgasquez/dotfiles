@@ -6,6 +6,9 @@
     "python.formatting.provider": "black",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "window.zoomLevel": 0,
     "github.hosts": [
         {
             "host": "https://github.com",
@@ -18,11 +21,12 @@
     "editor.multiCursorModifier": "ctrlCmd",
     "explorer.openEditors.visible": 0,
     "editor.fontFamily": "Hack, monospace, 'Droid Sans Fallback'",
+    "editor.fontLigatures": true,
     "editor.wordWrapColumn": 100,
     "editor.smoothScrolling": true,
     "workbench.startupEditor": "none",
     "workbench.statusBar.feedback.visible": false,
-    "terminal.external.linuxExec": "urxvt",
-    "terminal.explorerKind": "external",
+    "workbench.sideBar.location": "left",
     "explorer.confirmDragAndDrop": false,
+    "extensions.ignoreRecommendations": false,
 }
