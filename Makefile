@@ -55,8 +55,8 @@ atom:
 
 .PHONY: vscode
 vscode:
-	@mkdir -p $(HOME)/.config/Code/User/
-	@ln -sf $(DOTFILES)/vscode/settings.json $(HOME)/.config/Code/User/settings.json
+	@mkdir -p "$(HOME)/.config/Code - OSS/User/"
+	@ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code - OSS/User/settings.json"
 
 .PHONY: i3
 i3:
