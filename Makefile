@@ -53,6 +53,11 @@ atom:
 	@ln -sf $(DOTFILES)/atom/keymap.cson $(HOME)/.atom/keymap.cson
 	@ln -sf $(DOTFILES)/atom/snippets.cson $(HOME)/.atom/snippets.cson
 
+.PHONY: vscode
+vscode:
+	@mkdir -p "$(HOME)/.config/Code - OSS/User/"
+	@ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code - OSS/User/settings.json"
+
 .PHONY: i3
 i3:
 	@ ln -sf $(DOTFILES)/i3/Xresources $(HOME)/.Xresources
