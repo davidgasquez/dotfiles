@@ -29,4 +29,5 @@
     "workbench.sideBar.location": "left",
     "explorer.confirmDragAndDrop": false,
     "extensions.ignoreRecommendations": false,
+    "explorer.confirmDelete": false,
 }

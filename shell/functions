@@ -28,6 +28,14 @@ function o() {
 	fi;
 }
 
+# Check the weather from the command line
 function weather() {
-    curl wttr.in/"$@"
+    IFS=+ curl "http://wttr.in/$*"
+}
+
+# Get help from the command line. Help Me With...
+function hmw()
+{
+  where="$1"; shift
+  IFS=+ curl "https://cht.sh/$where/$*"
 }
