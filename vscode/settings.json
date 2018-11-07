@@ -30,4 +30,6 @@
     "explorer.confirmDragAndDrop": false,
     "extensions.ignoreRecommendations": false,
     "explorer.confirmDelete": false,
+    "python.workspaceSymbols.enabled": false,
+    "vsicons.dontShowNewVersionMessage": true
 }
