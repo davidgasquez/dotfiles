@@ -11,11 +11,11 @@
         "when": "editorTextFocus && !editorReadonly"
     },
     {
-        "key": "alt+up",
+        "key": "ctrl+shift+up",
         "command": "editor.action.moveLinesUpAction"
     },
     {
-        "key": "alt+down",
+        "key": "ctrl+shift+down",
         "command": "editor.action.moveLinesDownAction"
     }
 ]
