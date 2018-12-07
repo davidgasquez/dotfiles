@@ -9,13 +9,6 @@
     "telemetry.enableTelemetry": false,
     "telemetry.enableCrashReporter": false,
     "window.zoomLevel": 0,
-    "github.hosts": [
-        {
-            "host": "https://github.com",
-            "username": "oauth",
-            "token": "system"
-        }
-    ],
     "git.confirmSync": false,
     "window.menuBarVisibility": "toggle",
     "editor.multiCursorModifier": "ctrlCmd",
@@ -31,5 +24,12 @@
     "extensions.ignoreRecommendations": false,
     "explorer.confirmDelete": false,
     "python.workspaceSymbols.enabled": false,
-    "vsicons.dontShowNewVersionMessage": true
+    "vsicons.dontShowNewVersionMessage": true,
+    "githubPullRequests.hosts": [
+        {
+            "host": "https://github.com",
+            "username": "oauth",
+            "token": "system"
+        }
+    ]
 }
