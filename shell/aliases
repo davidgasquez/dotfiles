@@ -7,6 +7,9 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias rm='rm -I --preserve-root'
 
+# Editor
+alias c='code .'
+
 # File management
 alias ls='ls --color=auto'
 alias dir='dir --color=auto'
