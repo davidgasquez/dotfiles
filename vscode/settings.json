@@ -24,12 +24,5 @@
     "extensions.ignoreRecommendations": false,
     "explorer.confirmDelete": false,
     "python.workspaceSymbols.enabled": false,
-    "vsicons.dontShowNewVersionMessage": true,
-    "githubPullRequests.hosts": [
-        {
-            "host": "https://github.com",
-            "username": "oauth",
-            "token": "system"
-        }
-    ]
+    "vsicons.dontShowNewVersionMessage": true
 }
