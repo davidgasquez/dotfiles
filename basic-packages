@@ -13,6 +13,7 @@ xorg-xrandr
 fontconfig
 ttf-hack
 ttf-dejavu
+ttf-roboto
 ttf-symbola
 noto-fonts-emoji
 noto-fonts-cjk
