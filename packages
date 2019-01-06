@@ -1,3 +1,4 @@
+
 alsa-utils
 antigen-git
 arc-gtk-theme
@@ -5,6 +6,7 @@ chromium
 code
 compton
 deluge
+docker
 dunst
 feh
 file-roller
@@ -12,10 +14,12 @@ git
 htop
 i3-gaps
 imagemagick
+kubectl
 lxappearance
 make
 mpv
 network-manager-applet
+networkmanager
 networkmanager-openvpn
 noto-fonts
 noto-fonts-emoji
@@ -27,6 +31,7 @@ playerctl
 polybar
 pulseaudio
 pulseaudio-alsa
+redshift
 rofi
 rsync
 rxvt-unicode
@@ -50,11 +55,8 @@ ttf-symbola
 tumbler
 udisks2
 urxvt-perls
+volumeicon
 xdg-user-dirs
 zoom
 zsh
 zsh-completions
-
-networkmanager
-redshift
-volumeicon
