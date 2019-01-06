@@ -28,7 +28,7 @@ setopt HIST_EXPIRE_DUPS_FIRST
 export EDITOR='nano'
 
 # Antigen
-source "$HOME/.antigen/antigen/antigen.zsh"
+source "/usr/share/zsh/share/antigen.zsh"
 antigen init "$HOME/.antigen/.antigenrc"
 
 # History Search
@@ -48,10 +48,7 @@ for file in ~/.{aliases,functions,localrc}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 
-# Export environmental variables
-export $(cat ~/.env | xargs)
-
 # Start display
-if [ -z "$DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ]; then
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
   exec startx
 fi

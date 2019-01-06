@@ -220,12 +220,12 @@ exec_always --no-startup-id feh --randomize --bg-center $HOME/projects/dotfiles/
 
 # Background apps
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec_always --no-startup-id numlockx on
 exec --no-startup-id compton -b --xrender-sync --xrender-sync-fence
 exec --no-startup-id dunst
+exec --no-startup-id "setxkbmap -layout es"
 
 # Tray Icons
-exec --no-startup-id redshift
+# exec --no-startup-id redshift
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
 exec --no-startup-id g610-led -a 80

@@ -10,6 +10,10 @@ help:
 	@echo -e "  install-aur-packages      Installs some AUR packages"
 	@echo -e "  install-basic-packages    Installs basic packages from the oficial repositories"
 
+.PHONY: initrc
+initrc:
+	@ln -sf $(DOTFILES)/xinitrc $(HOME)/.xinitrc
+
 .PHONY: shell
 shell:
 	@ln -sf $(DOTFILES)/shell/bashrc $(HOME)/.bashrc
@@ -46,26 +50,20 @@ fonts:
 	@ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/local.conf
 	@ln -sf $(DOTFILES)/fonts/01-emoji.conf $(HOME)/.config/fontconfig/conf.d/01-emoji.conf
 
-.PHONY: atom
-atom:
-	@mkdir -p $(HOME)/.atom
-	@ln -sf $(DOTFILES)/atom/config.cson $(HOME)/.atom/config.cson
-	@ln -sf $(DOTFILES)/atom/keymap.cson $(HOME)/.atom/keymap.cson
-	@ln -sf $(DOTFILES)/atom/snippets.cson $(HOME)/.atom/snippets.cson
-
 .PHONY: vscode
 vscode:
 	@mkdir -p "$(HOME)/.config/Code - OSS/User/"
 	@ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code - OSS/User/settings.json"
 	@ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code - OSS/User/keybindings.json"
 
-.PHONY: i3
+.PHONY: i3L
 i3:
 	@ ln -sf $(DOTFILES)/i3/Xresources $(HOME)/.Xresources
 	@ ln -sf $(DOTFILES)/i3/theme.Xresources $(HOME)/.theme.Xresources
 	@ ln -sf $(DOTFILES)/i3/compton.conf $(HOME)/.compton.conf
 	@ ln -sf $(DOTFILES)/i3/dunstrc $(HOME)/.config/dunst/dunstrc
 	@ ln -sf $(DOTFILES)/i3/i3-config $(HOME)/.config/i3/config
+	@ xrdb $(HOME)/.Xresources
 
 .PHONY: polybar
 polybar:
@@ -75,8 +73,5 @@ polybar:
 
 setup: shell tmux gitconfig scripts fonts i3 polybar
 
-install-basic-packages:
-	sudo pacman -S - < basic-packages
-
-install-aur-packages:
-	yay -S - < aur-packages
+install-packages:
+	yay -S - < packages
