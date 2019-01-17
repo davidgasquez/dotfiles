@@ -11,11 +11,12 @@ dunst
 feh
 file-roller
 git
+google-cloud-sdk
 htop
 i3-gaps
 i3lock
 imagemagick
-kubectl
+kubectl-bin
 lxappearance
 make
 mpv
