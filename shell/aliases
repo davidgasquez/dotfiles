@@ -25,6 +25,7 @@ alias l='ls -CF'
 # System Management
 alias up='yay -Syu --noconfirm --noansweredit --sudoloop'
 alias upup='yay -Syu --noconfirm --noansweredit --devel --sudoloop'
+alias pastebin='curl -F c=@- https://ptpb.pw'
 
 # Add an "alert" alias for long running commands. Use like so:
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
