@@ -219,6 +219,7 @@ bindsym --release Shift+Print exec scrot -d 1 -s '%Y-%m-%d_%H:%M:%S_$wx$h.png' -
 exec_always --no-startup-id feh --randomize --bg-center $HOME/projects/dotfiles/wallpapers/*
 
 # Background apps
+exec_always --no-startup-id numlockx on
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec --no-startup-id compton -b --xrender-sync --xrender-sync-fence
 exec --no-startup-id dunst
