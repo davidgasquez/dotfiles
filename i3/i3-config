@@ -226,7 +226,7 @@ exec --no-startup-id dunst
 exec --no-startup-id "setxkbmap -layout es"
 
 # Tray Icons
-# exec --no-startup-id redshift
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
 exec --no-startup-id g610-led -a 80
+exec --no-startup-id redshift-gtk
