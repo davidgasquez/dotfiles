@@ -24,9 +24,12 @@ network-manager-applet
 networkmanager
 networkmanager-openvpn
 noto-fonts
+noto-fonts-cjk
 noto-fonts-emoji
+noto-fonts-extra
 ntfs-3g
 numix-circle-icon-theme-git
+numlockx
 openssh
 pavucontrol
 playerctl
@@ -46,6 +49,7 @@ thunar
 thunar-archive-plugin
 translate-shell
 ttf-dejavu
+ttf-emojione-color
 ttf-font-awesome
 ttf-hack
 ttf-liberation
