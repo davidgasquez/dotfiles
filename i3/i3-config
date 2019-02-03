@@ -221,7 +221,7 @@ exec_always --no-startup-id feh --randomize --bg-center $HOME/projects/dotfiles/
 # Background apps
 exec_always --no-startup-id numlockx on
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec --no-startup-id compton -b --xrender-sync-fence
+exec --no-startup-id compton --config ~/.compton.conf -CGb --xrender-sync-fence --respect-prop-shadow
 exec --no-startup-id dunst
 exec --no-startup-id "setxkbmap -layout es"
 
