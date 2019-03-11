@@ -4,6 +4,10 @@
     "files.autoSave": "onWindowChange",
     "python.jediEnabled": false,
     "python.formatting.provider": "black",
+    "python.analysis.disabled": [
+        "unresolved-import",
+        "use-before-def"
+    ],
     "editor.formatOnSave": true,
     "editor.formatOnPaste": false,
     "telemetry.enableTelemetry": false,
@@ -25,6 +29,10 @@
     "explorer.confirmDelete": false,
     "python.workspaceSymbols.enabled": false,
     "vsicons.dontShowNewVersionMessage": true,
+    "files.associations": {
+        "*.sql": "jinja-sql",
+        "**/target/**": ""
+    },
     "[yaml]": {
         "editor.autoIndent": true
     },
