@@ -29,9 +29,13 @@
     "explorer.confirmDelete": false,
     "python.workspaceSymbols.enabled": false,
     "vsicons.dontShowNewVersionMessage": true,
+    "vs-kubernetes": {
+        "disable-linters": [
+            "resource-limits"
+        ],
+    },
     "files.associations": {
-        "*.sql": "jinja-sql",
-        "**/target/**": ""
+        "*.sql": "jinja-sql"
     },
     "[yaml]": {
         "editor.autoIndent": true
