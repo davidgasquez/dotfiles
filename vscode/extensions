@@ -1,9 +1,14 @@
 DavidAnson.vscode-markdownlint
 EditorConfig.EditorConfig
+formulahendry.github-actions
 GitHub.vscode-pull-request-github
 mikestead.dotenv
+ms-kubernetes-tools.vscode-kubernetes-tools
 ms-python.python
 PeterJausovec.vscode-docker
 redhat.vscode-yaml
-robertohuertasm.vscode-icons
+vscode-icons-team.vscode-icons
+samuelcolvin.jinjahtml
+sidneys1.gitconfig
 zhuangtongfa.Material-theme
+zxh404.vscode-proto3
