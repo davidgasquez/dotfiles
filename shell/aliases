@@ -42,5 +42,5 @@ alias mux='tmux attach -t david || tmux new -s david'
 # Docker
 alias drmsc='docker rm $(docker ps -a -q)'
 alias drmdi='docker rmi $(docker images -f dangling=true -q)'
-alias dj='docker run -p 8888:8888 -it --rm davidgasquez/dopyter'
-alias djlo='docker run -p 8888:8888 -it --rm -v $PWD:/work davidgasquez/dopyter '
+alias dj='docker run -p 8888:8888 -it --rm davidgasquez/dopyter:2.1.0'
+alias djlo='docker run -p 8888:8888 -it --rm -v $PWD:/work davidgasquez/dopyter:2.1.0'
