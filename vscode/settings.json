@@ -1,6 +1,5 @@
 {
     "workbench.colorTheme": "One Dark Pro Vivid",
-    "workbench.iconTheme": "vscode-icons",
     "files.autoSave": "onWindowChange",
     "python.jediEnabled": false,
     "python.formatting.provider": "black",
@@ -28,7 +27,6 @@
     "extensions.ignoreRecommendations": false,
     "explorer.confirmDelete": false,
     "python.workspaceSymbols.enabled": false,
-    "vsicons.dontShowNewVersionMessage": true,
     "vs-kubernetes": {
         "disable-linters": [
             "resource-limits"
@@ -40,5 +38,6 @@
     "[yaml]": {
         "editor.autoIndent": true
     },
-    "yaml.format.enable": true
+    "yaml.format.enable": true,
+    "workbench.iconTheme": "vscode-icons"
 }
