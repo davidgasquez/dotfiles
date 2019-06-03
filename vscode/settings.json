@@ -38,6 +38,5 @@
     "[yaml]": {
         "editor.autoIndent": true
     },
-    "yaml.format.enable": true,
-    "workbench.iconTheme": "vscode-icons"
+    "yaml.format.enable": true
 }
