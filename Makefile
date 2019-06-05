@@ -35,6 +35,10 @@ gitconfig:
 scripts:
 	@sudo cp $(DOTFILES)/scripts/* /usr/local/bin
 
+.PHONY: network
+network:
+	@sudo ln -sf $(DOTFILES)/network/resolv.conf.head /etc/resolv.conf.head
+
 .PHONY: terminator
 terminator:
 	@mkdir -p $(HOME)/.config/terminator
@@ -47,6 +51,7 @@ taskwarrior:
 .PHONY: fonts
 fonts:
 	@mkdir -p $(HOME)/.config/fontconfig/conf.d
+	@ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/fonts.conf
 	@ln -sf $(DOTFILES)/fonts/01-emoji.conf $(HOME)/.config/fontconfig/conf.d/01-emoji.conf
 
 .PHONY: vscode
