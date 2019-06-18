@@ -20,6 +20,7 @@
     "editor.fontLigatures": true,
     "editor.wordWrapColumn": 100,
     "editor.smoothScrolling": true,
+    "editor.minimap.renderCharacters": false,
     "workbench.startupEditor": "none",
     "workbench.statusBar.feedback.visible": false,
     "workbench.sideBar.location": "left",
