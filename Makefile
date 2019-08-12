@@ -39,11 +39,6 @@ scripts:
 network:
 	@sudo ln -sf $(DOTFILES)/network/resolv.conf.head /etc/resolv.conf.head
 
-.PHONY: terminator
-terminator:
-	@mkdir -p $(HOME)/.config/terminator
-	@ln -sf $(DOTFILES)/terminator/config $(HOME)/.config/terminator/config
-
 .PHONY: taskwarrior
 taskwarrior:
 	@ln -sf $(DOTFILES)/taskwarrior/taskrc $(HOME)/.taskrc
@@ -75,7 +70,7 @@ polybar:
 	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
 	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
 
-setup: shell tmux gitconfig scripts fonts i3 polybar
+setup: shell tmux gitconfig scripts fonts i3 polybar network vscode initrc
 
 install-packages:
 	yay -S - < packages
