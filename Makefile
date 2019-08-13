@@ -7,8 +7,7 @@ help:
 	@echo -e "Usage: \tmake [TARGET]\n"
 	@echo -e "Targets:"
 	@echo -e "  setup                     Apply minimal configuration to the system"
-	@echo -e "  install-aur-packages      Installs some AUR packages"
-	@echo -e "  install-basic-packages    Installs basic packages from the oficial repositories"
+	@echo -e "  install-packages    	  Installs all the packages"
 
 .PHONY: initrc
 initrc:
@@ -70,7 +69,9 @@ polybar:
 	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
 	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
 
-setup: shell tmux gitconfig scripts fonts i3 polybar network vscode initrc
+.PHONY: setup
+setup: shell tmux gitconfig scripts fonts i3 polybar taskwarrior network vscode initrc
 
+.PHONY: install-packages
 install-packages:
 	yay -S - < packages
