@@ -74,4 +74,4 @@ setup: shell tmux gitconfig scripts fonts i3 polybar taskwarrior network vscode 
 
 .PHONY: install-packages
 install-packages:
-	yay -S - < packages
+	yay -S --needed - < packages
