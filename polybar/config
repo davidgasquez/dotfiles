@@ -101,7 +101,7 @@ label-connected =  %upspeed%  %downspeed%
 
 [module/eth]
 type = internal/network
-interface = enp0s25
+interface = enp39s0
 interval = 3.0
 
 format-connected-padding = 2
