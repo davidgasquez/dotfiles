@@ -39,5 +39,9 @@
     "[yaml]": {
         "editor.autoIndent": true
     },
-    "yaml.format.enable": true
+    "yaml.format.enable": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "terminal.explorerKind": "external",
+    "terminal.external.linuxExec": "urxvt"
 }
