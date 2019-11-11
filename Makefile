@@ -54,7 +54,7 @@ vscode:
 	@ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code - OSS/User/settings.json"
 	@ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code - OSS/User/keybindings.json"
 
-.PHONY: i3L
+.PHONY: i3
 i3:
 	@ ln -sf $(DOTFILES)/i3/Xresources $(HOME)/.Xresources
 	@ ln -sf $(DOTFILES)/i3/theme.Xresources $(HOME)/.theme.Xresources
@@ -74,4 +74,4 @@ setup: shell tmux gitconfig scripts fonts i3 polybar taskwarrior network vscode 
 
 .PHONY: install-packages
 install-packages:
-	yay -S --needed - < packages
+	yay -S - < packages
