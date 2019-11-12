@@ -37,11 +37,12 @@
         "*.sql": "jinja-sql"
     },
     "[yaml]": {
-        "editor.autoIndent": true
+        "editor.autoIndent": true,
+        "editor.tabSize": 2
     },
-    "yaml.format.enable": true,
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "terminal.explorerKind": "external",
-    "terminal.external.linuxExec": "urxvt"
+    "terminal.external.linuxExec": "urxvt",
+    "vsicons.dontShowNewVersionMessage": true
 }
