@@ -22,7 +22,7 @@ font-2 = FontAwesome5Brands:style=Solid:pixelsize=11;2
 
 modules-left = i3 music
 modules-center = memory cpu temperature eth wifi
-modules-right = xbacklight keyboard external_battery internal_battery calendar-icon date
+modules-right = xbacklight external_battery internal_battery calendar-icon date
 
 fixed-center = true
 tray-position = right
