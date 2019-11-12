@@ -2,7 +2,3 @@
 
 # Local binaries
 export PATH="$PATH:/home/$(whoami)/.local/bin"
-
-# Go
-# export GOPATH=$HOME/.go
-# export PATH=$PATH:$GOPATH/bin
