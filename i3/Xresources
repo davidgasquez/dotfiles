@@ -1,7 +1,7 @@
 #include ".theme.Xresources"
 
 ! Fonts
-Xft.dpi: 96
+Xft.dpi: 110
 Xft.autohint: false
 Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintslight
