@@ -21,8 +21,8 @@ font-2 = FontAwesome5Brands:style=Solid:pixelsize=11;2
 
 
 modules-left = i3 music
-modules-center = memory cpu temperature eth wifi
-modules-right = xbacklight external_battery internal_battery calendar-icon date
+modules-center = memory cpu eth wifi temperature
+modules-right = xbacklight internal_battery calendar-icon date
 
 fixed-center = true
 tray-position = right
@@ -104,7 +104,6 @@ type = internal/network
 interface = enp39s0
 interval = 3.0
 
-format-connected-padding = 2
 format-connected = <label-connected>
 label-connected =  %upspeed%  %downspeed%
 
@@ -167,34 +166,6 @@ animation-charging-2 = 
 animation-charging-3 = 
 animation-charging-4 = 
 animation-charging-framerate = 750
-
-
-[module/external_battery]
-type = internal/battery
-battery = BAT1
-adapter = AC
-full-at = 98
-
-format-charging = <animation-charging> <label-charging>
-format-discharging = <ramp-capacity> <label-discharging>
-format-full = <ramp-capacity> <label-full>
-
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-ramp-capacity-foreground = ${colors.foreground}
-
-
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-animation-charging-foreground = ${colors.foreground}
-animation-charging-framerate = 750
-
 
 [module/temperature]
 type = internal/temperature
