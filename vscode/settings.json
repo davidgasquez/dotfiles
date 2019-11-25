@@ -1,5 +1,5 @@
 {
-    "workbench.colorTheme": "One Dark Pro Vivid",
+    "workbench.colorTheme": "One Dark Pro",
     "files.autoSave": "onWindowChange",
     "python.jediEnabled": false,
     "python.formatting.provider": "black",
@@ -44,5 +44,7 @@
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "terminal.explorerKind": "external",
     "terminal.external.linuxExec": "urxvt",
-    "vsicons.dontShowNewVersionMessage": true
+    "vsicons.dontShowNewVersionMessage": true,
+    "oneDarkPro.vivid": true,
+    "oneDarkPro.editorTheme": "nord"
 }
