@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# Local binaries
-export PATH="$PATH:/home/$(whoami)/.local/bin"

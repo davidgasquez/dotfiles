@@ -27,6 +27,9 @@ setopt HIST_EXPIRE_DUPS_FIRST
 # Editor
 export EDITOR='nano'
 
+# Local binaries
+export PATH="$PATH:/home/$(whoami)/.local/bin"
+
 # Antigen
 source "/usr/share/zsh/share/antigen.zsh"
 antigen init "$HOME/.antigen/.antigenrc"
