@@ -7,7 +7,9 @@ alert = #CC575D
 
 [bar/top]
 width = 100%
-height = 26
+height = 28
+
+dpi = ${xrdb:Xft.dpi:-1}
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -15,18 +17,19 @@ foreground = ${colors.foreground}
 module-margin-left = 0
 module-margin-right = 1
 
-font-0 = Hack-Regular:pixelsize=10;2
-font-1 = FontAwesome5Free:style=Solid:pixelsize=11;2
-font-2 = FontAwesome5Brands:style=Solid:pixelsize=11;2
-
+font-0 = Hack-Regular:pixelsize=9;2
+font-1 = FontAwesome5Free:style=Solid:pixelsize=10;2
+font-2 = FontAwesome5Brands:style=Solid:pixelsize=10;2
 
 modules-left = i3 music
 modules-center = memory cpu eth wifi temperature
 modules-right = xbacklight internal_battery calendar-icon date
 
 fixed-center = true
+
 tray-position = right
-tray-padding = 1
+tray-padding = 0
+tray-scale = 1.0
 
 
 [module/i3]
