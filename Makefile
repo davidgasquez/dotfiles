@@ -46,6 +46,7 @@ fonts:
 .PHONY: vscode
 vscode:
 	@mkdir -p "$(HOME)/.config/Code - OSS/User/"
+	@cat vscode/extensions | xargs -L 1 code --install-extension
 	@ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code - OSS/User/settings.json"
 	@ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code - OSS/User/keybindings.json"
 
