@@ -46,5 +46,6 @@
     "terminal.external.linuxExec": "urxvt",
     "vsicons.dontShowNewVersionMessage": true,
     "oneDarkPro.vivid": true,
-    "oneDarkPro.editorTheme": "nord"
+    "oneDarkPro.editorTheme": "nord",
+    "workbench.iconTheme": "vscode-icons"
 }
