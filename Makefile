@@ -15,16 +15,11 @@ initrc:
 
 .PHONY: shell
 shell:
-	@ln -sf $(DOTFILES)/shell/bashrc $(HOME)/.bashrc
 	@ln -sf $(DOTFILES)/shell/aliases $(HOME)/.aliases
 	@ln -sf $(DOTFILES)/shell/localrc $(HOME)/.localrc
 	@ln -sf $(DOTFILES)/shell/functions $(HOME)/.functions
 	@ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
 	@ln -sf $(DOTFILES)/shell/antigenrc $(HOME)/.antigen/.antigenrc
-
-.PHONY: tmux
-tmux:
-	@ln -sf $(DOTFILES)/tmux/tmux.conf $(HOME)/.tmux.conf
 
 .PHONY: gitconfig
 gitconfig:
@@ -68,9 +63,6 @@ polybar:
 	@ ln -sf $(DOTFILES)/polybar/config $(HOME)/.config/polybar/config
 	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
 	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
-
-.PHONY: setup
-setup: shell tmux gitconfig scripts fonts i3 polybar taskwarrior network vscode initrc
 
 .PHONY: install-packages
 install-packages:
