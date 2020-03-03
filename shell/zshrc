@@ -30,7 +30,7 @@ export EDITOR='nano'
 # Local binaries
 export PATH="$PATH:/home/$(whoami)/.local/bin"
 
-# Antigen
+# Antibody
 source ~/.zsh_plugins.sh
 
 # History Search
