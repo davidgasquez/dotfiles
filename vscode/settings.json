@@ -16,7 +16,7 @@
     "window.menuBarVisibility": "toggle",
     "editor.multiCursorModifier": "ctrlCmd",
     "explorer.openEditors.visible": 0,
-    "editor.fontFamily": "Hack, monospace, 'Droid Sans Fallback'",
+    "editor.fontFamily": "Hack, monospace, 'Droid Sans Fallback', 'Noto Color Emoji'",
     "editor.fontLigatures": true,
     "editor.wordWrapColumn": 100,
     "editor.smoothScrolling": true,
