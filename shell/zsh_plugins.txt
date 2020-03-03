@@ -1,0 +1,17 @@
+robbyrussell/oh-my-zsh path:plugins/aws
+robbyrussell/oh-my-zsh path:plugins/taskwarrior
+robbyrussell/oh-my-zsh path:plugins/git
+robbyrussell/oh-my-zsh path:plugins/docker
+robbyrussell/oh-my-zsh path:plugins/common-aliases
+
+caarlos0/zsh-open-github-pr
+MichaelAquilina/zsh-auto-notify
+djui/alias-tips
+mafredri/zsh-async
+sindresorhus/pure
+
+# denysdovhan/spaceship-prompt
+
+zsh-users/zsh-completions
+zsh-users/zsh-history-substring-search
+zsh-users/zsh-syntax-highlighting

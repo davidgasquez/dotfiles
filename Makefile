@@ -19,7 +19,7 @@ shell:
 	@ln -sf $(DOTFILES)/shell/localrc $(HOME)/.localrc
 	@ln -sf $(DOTFILES)/shell/functions $(HOME)/.functions
 	@ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
-	@ln -sf $(DOTFILES)/shell/antigenrc $(HOME)/.antigen/.antigenrc
+	@antibody bundle < $(DOTFILES)/shell/zsh_plugins.txt > ~/.zsh_plugins.sh
 
 .PHONY: gitconfig
 gitconfig:

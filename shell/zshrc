@@ -31,8 +31,7 @@ export EDITOR='nano'
 export PATH="$PATH:/home/$(whoami)/.local/bin"
 
 # Antigen
-source "/usr/share/zsh/share/antigen.zsh"
-antigen init "$HOME/.antigen/.antigenrc"
+source ~/.zsh_plugins.sh
 
 # History Search
 bindkey '^[[A' history-substring-search-up
