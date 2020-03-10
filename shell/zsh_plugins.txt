@@ -5,7 +5,6 @@ robbyrussell/oh-my-zsh path:plugins/docker
 robbyrussell/oh-my-zsh path:plugins/common-aliases
 # robbyrussell/oh-my-zsh path:plugins/kubectl # Waiting for https://github.com/kubernetes/kubectl/issues/125 to get fixed
 
-caarlos0/zsh-open-github-pr
 MichaelAquilina/zsh-auto-notify
 djui/alias-tips
 mafredri/zsh-async
