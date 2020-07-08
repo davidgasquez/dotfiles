@@ -15,6 +15,7 @@ initrc:
 .PHONY: shell
 shell:
 	@ ln -sf $(DOTFILES)/shell/aliases $(HOME)/.aliases
+	@ ln -sf $(DOTFILES)/shell/config.fish $(HOME)/.config/fish/config.fish
 	@ ln -sf $(DOTFILES)/shell/localrc $(HOME)/.localrc
 	@ ln -sf $(DOTFILES)/shell/functions $(HOME)/.functions
 	@ ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
@@ -48,6 +49,10 @@ vscode:
 	@ cat vscode/extensions | xargs -L 1 code --install-extension
 	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code - OSS/User/settings.json"
 	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code - OSS/User/keybindings.json"
+
+.PHONY: terminal
+terminal:
+	@ ln -sf $(DOTFILES)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
 .PHONY: i3
 i3:
