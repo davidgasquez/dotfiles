@@ -64,6 +64,11 @@ i3:
 	@ ln -sf $(DOTFILES)/i3/i3-config $(HOME)/.config/i3/config
 	@ xrdb $(HOME)/.Xresources
 
+.PHONY: sway
+sway:
+	@ ln -sf $(DOTFILES)/sway/config $(HOME)/.config/sway/config
+	@ ln -sf $(DOTFILES)/sway/env $(HOME)/.pam_environment
+
 .PHONY: polybar
 polybar:
 	@ ln -sf $(DOTFILES)/polybar/config $(HOME)/.config/polybar/config

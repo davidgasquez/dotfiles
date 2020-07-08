@@ -3,7 +3,6 @@ antibody
 arc-gtk-theme
 chromium
 code
-compton
 docker
 dunst
 feh
@@ -36,7 +35,6 @@ polybar
 pulseaudio
 pulseaudio-alsa
 qbittorrent
-redshift
 rofi
 rsync
 rxvt-unicode
