@@ -47,5 +47,6 @@
     "vsicons.dontShowNewVersionMessage": true,
     "oneDarkPro.vivid": true,
     "oneDarkPro.editorTheme": "nord",
-    "workbench.iconTheme": "vscode-icons"
+    "workbench.iconTheme": "vscode-icons",
+    "python.languageServer": "Microsoft"
 }
