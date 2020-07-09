@@ -7,6 +7,7 @@ docker
 dunst
 feh
 file-roller
+fontconfig-emoji-git
 git
 google-cloud-sdk
 gvfs
