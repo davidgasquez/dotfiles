@@ -66,8 +66,11 @@ i3:
 
 .PHONY: sway
 sway:
+	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar
 	@ ln -sf $(DOTFILES)/sway/config $(HOME)/.config/sway/config
 	@ ln -sf $(DOTFILES)/sway/env $(HOME)/.pam_environment
+	@ ln -sf $(DOTFILES)/sway/waybar/config.jsonc $(HOME)/.config/waybar/config
+	@ ln -sf $(DOTFILES)/sway/waybar/style.css $(HOME)/.config/waybar/style.css
 
 .PHONY: polybar
 polybar:
