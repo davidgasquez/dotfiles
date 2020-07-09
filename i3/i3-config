@@ -31,7 +31,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+b exec i3 bar mode toggle
 
 # Start a terminal
-bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec alacritty
 
 # Start Rofi (program launcher)
 bindsym $mod+BackSpace exec rofi -show run
@@ -209,8 +209,8 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+bindsym XF86MonBrightnessUp exec xbacklight -inc 2
+bindsym XF86MonBrightnessDown exec xbacklight -dec 2
 
 bindsym Print exec scrot  '%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/'
 bindsym --release Shift+Print exec scrot -d 1 -s '%Y-%m-%d_%H:%M:%S_$wx$h.png' -e 'mv $f ~/Pictures/'
@@ -219,9 +219,7 @@ bindsym --release Shift+Print exec scrot -d 1 -s '%Y-%m-%d_%H:%M:%S_$wx$h.png' -
 exec_always --no-startup-id feh --randomize --bg-center $HOME/projects/dotfiles/wallpapers/*
 
 # Background apps
-exec_always --no-startup-id numlockx on
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-exec --no-startup-id compton --config ~/.compton.conf -CGb --xrender-sync-fence --respect-prop-shadow
 exec --no-startup-id dunst
 exec --no-startup-id "setxkbmap -layout es"
 
@@ -229,4 +227,3 @@ exec --no-startup-id "setxkbmap -layout es"
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
 exec --no-startup-id g610-led -a 80
-exec --no-startup-id redshift-gtk
