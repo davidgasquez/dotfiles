@@ -186,7 +186,7 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
-set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI
+set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (p) shutdown, (R) UEFI
 mode "$mode_system" {
     bindsym l exec $lock, mode "default"
     bindsym e exit
