@@ -1,0 +1,74 @@
+/* window {
+    border: 2px solid hsl(0, 0%, 0%);
+    background-color: #2A303B;
+}
+
+#input {
+    border: 2px solid #5E81AC;
+    background-color: #2A303B;
+    font-size: 18px;
+}
+
+
+#outer-box {
+    margin: 10px;
+}
+
+#scroll {
+    margin: 5px 0px;
+    font-size: 16px;
+    color: #ccc;
+}
+
+#scroll label {
+    margin: 2px 0px;
+}
+
+#entry:selected {
+    background-color: #D8DEE9;
+}
+
+#text:selected {
+    font-size: large;
+    color: #BF616A;
+} */
+
+* {
+    font-weight: bold;
+    border-radius: 0;
+}
+
+window {
+	background-color: rgba(0, 0, 0, 0);
+}
+
+#input {
+	padding: 5px;
+	border: 2px solid #5294E2;
+	color: #ffffff;
+	font-size: 18px;
+	background-color: #2A303B;
+}
+
+#input image {
+    margin: 6px;
+}
+
+#scroll {
+    font-size: 18px;
+	color: #5294E2;
+    background-color: #2A303B;
+}
+
+#inner-box flowboxchild {
+	padding: 2px;
+}
+
+#inner-box flowboxchild:selected {
+    background-color: #5294E2;
+    color: #ffffff;
+}
+
+list {
+	background-color: #2A303B;
+}
