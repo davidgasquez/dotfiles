@@ -130,7 +130,7 @@ font:
         style: Bold Italic
 
     # Point size
-    size: 12.0
+    # size: 12.0
 
 # Offset is the extra space around each character. `offset.y` can be thought of
 # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -154,6 +154,29 @@ colors:
     primary:
         background: "#2A303B"
         foreground: "#ECEFF4"
+
+    # Normal colors
+    normal:
+        black: "#282C34"
+        red: "#E06C75"
+        green: "#98C379"
+        yellow: "#D19A66"
+        blue: "#61AFEF"
+        magenta: "#C678DD"
+        cyan: "#56B6C2"
+        white: "#ABB2BF"
+
+    # Bright colors
+    bright:
+        black: "#5C6370"
+        red: "#E06C75"
+        green: "#98C379"
+        yellow: "#D19A66"
+        blue: "#61AFEF"
+        magenta: "#C678DD"
+        cyan: "#56B6C2"
+        white: "#FFFFFF"
+
 # Bright and dim foreground colors
 #
 # The dimmed foreground color is calculated automatically if it is not present.
@@ -178,28 +201,6 @@ colors:
 #selection:
 #  text: '#eaeaea'
 #  background: '#404040'
-
-# Normal colors
-#normal:
-#  black:   '#000000'
-#  red:     '#d54e53'
-#  green:   '#b9ca4a'
-#  yellow:  '#e6c547'
-#  blue:    '#7aa6da'
-#  magenta: '#c397d8'
-#  cyan:    '#70c0ba'
-#  white:   '#eaeaea'
-
-# Bright colors
-#bright:
-#  black:   '#666666'
-#  red:     '#ff3334'
-#  green:   '#9ec400'
-#  yellow:  '#e7c547'
-#  blue:    '#7aa6da'
-#  magenta: '#b77ee0'
-#  cyan:    '#54ced6'
-#  white:   '#ffffff'
 
 # Dim colors
 #
