@@ -16,6 +16,7 @@ initrc:
 shell:
 	@ ln -sf $(DOTFILES)/shell/aliases $(HOME)/.aliases
 	@ ln -sf $(DOTFILES)/shell/config.fish $(HOME)/.config/fish/config.fish
+	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
 	@ ln -sf $(DOTFILES)/shell/localrc $(HOME)/.localrc
 	@ ln -sf $(DOTFILES)/shell/functions $(HOME)/.functions
 	@ ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
