@@ -48,5 +48,12 @@
     "oneDarkPro.vivid": true,
     "oneDarkPro.editorTheme": "nord",
     "workbench.iconTheme": "vscode-icons",
-    "python.languageServer": "Microsoft"
+    "python.languageServer": "Microsoft",
+    "cSpell.userWords": [
+        "antifragile",
+        "antifragility",
+        "incentivized",
+        "journaling",
+        "overfitting"
+    ]
 }
