@@ -1,0 +1,7 @@
+background-color=#2A303B
+font=hack
+text-color=#ffffff
+default-timeout=5000
+ignore-timeout=1
+border-size=4
+border-color=#5294E2

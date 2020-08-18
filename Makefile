@@ -68,13 +68,14 @@ i3:
 
 .PHONY: sway
 sway:
-	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar $(HOME)/.config/wofi
+	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar $(HOME)/.config/wofi $(HOME)/.config/mako
 	@ ln -sf $(DOTFILES)/sway/config $(HOME)/.config/sway/config
 	@ ln -sf $(DOTFILES)/sway/env $(HOME)/.pam_environment
 	@ ln -sf $(DOTFILES)/sway/waybar/config.jsonc $(HOME)/.config/waybar/config
 	@ ln -sf $(DOTFILES)/sway/waybar/style.css $(HOME)/.config/waybar/style.css
 	@ ln -sf $(DOTFILES)/sway/wofi/config $(HOME)/.config/wofi/config
 	@ ln -sf $(DOTFILES)/sway/wofi/style.css $(HOME)/.config/wofi/style.css
+	@ ln -sf $(DOTFILES)/sway/mako/config $(HOME)/.config/mako/config
 
 .PHONY: polybar
 polybar:
