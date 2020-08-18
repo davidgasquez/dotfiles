@@ -37,8 +37,8 @@ output * bg /home/david/projects/dotfiles/wallpapers/default.jpg fill
 # output eDP-1 scale 2
 
 # Desktop
-output DP-1 mode 3440x1440@75.050003Hz
-output DP-1 adaptive_sync on
+# output DP-1 mode 3440x1440@75.050003Hz
+# output DP-1 adaptive_sync on
 
 ### Window configuration
 default_border pixel 4
@@ -192,8 +192,8 @@ mode "resize" {
     # up will shrink the containers height
     # down will grow the containers height
     bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
+    bindsym Up resize grow height 10px
+    bindsym Down resize shrink height 10px
     bindsym Right resize grow width 10px
 
     # Return to default mode
@@ -243,4 +243,6 @@ bindsym XF86AudioPrev exec playerctl previous
 # Notifications
 exec_always mako
 
+exec --no-startup-id 'nm-applet --indicator'
+exec --no-startup-id 'g610-led -a 99'
 include /etc/sway/config.d/*
