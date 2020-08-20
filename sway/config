@@ -38,7 +38,6 @@ output * bg /home/david/projects/dotfiles/wallpapers/default.jpg fill
 
 # Desktop
 # output DP-1 mode 3440x1440@75.050003Hz
-# output DP-1 adaptive_sync on
 
 ### Window configuration
 default_border pixel 4
@@ -229,7 +228,6 @@ bindsym XF86MonBrightnessUp exec light -A 5
 bindsym XF86MonBrightnessDown exec light -U 5
 
 # Multimedia
-# Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume  @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume  @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec pactl set-sink-mute  @DEFAULT_SINK@ toggle
@@ -239,6 +237,10 @@ bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPause exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+
+# Screen
+bindsym --release Print exec grim ~/Pictures/$(date +%s).png
+bindsym --release Shift+Print exec grim -g "$(slurp)" ~/Pictures/$(date +%s).png
 
 # Notifications
 exec_always mako
