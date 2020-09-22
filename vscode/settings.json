@@ -55,5 +55,6 @@
     "incentivized",
     "journaling",
     "overfitting"
-  ]
+  ],
+  "python.showStartPage": false
 }
