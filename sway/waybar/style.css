@@ -7,7 +7,7 @@
 }
 
 window#waybar {
-    background-color: #2A303B;
+    background-color: #2E3440;
     color: #ECEFF4;
     transition-property: background-color;
     transition-duration: .5s;

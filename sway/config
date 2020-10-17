@@ -9,7 +9,7 @@ set $red         #BF616A
 set $darkblue    #2679DB
 set $lightblue   #5294E2
 set $white       #ECEFF4
-set $background  #2A303B
+set $background  #2E3440
 
 # Theme                     border      background      text
 client.focused              $darkblue   $darkblue       $white
