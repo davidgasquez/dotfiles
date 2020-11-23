@@ -28,11 +28,6 @@
   "extensions.ignoreRecommendations": false,
   "explorer.confirmDelete": false,
   "python.workspaceSymbols.enabled": false,
-  "vs-kubernetes": {
-    "disable-linters": [
-      "resource-limits"
-    ],
-  },
   "files.associations": {
     "*.sql": "jinja-sql"
   },
@@ -49,12 +44,6 @@
   "oneDarkPro.editorTheme": "nord",
   "workbench.iconTheme": "vscode-icons",
   "python.languageServer": "Microsoft",
-  "cSpell.userWords": [
-    "antifragile",
-    "antifragility",
-    "incentivized",
-    "journaling",
-    "overfitting"
-  ],
-  "python.showStartPage": false
+  "python.showStartPage": false,
+  "git.enableSmartCommit": true
 }

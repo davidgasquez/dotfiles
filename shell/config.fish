@@ -1,3 +1,6 @@
+# Add local bin
+set PATH /home/david/.local/bin/ $PATH
+
 # Editor
 alias c="code ."
 
