@@ -1,49 +1,19 @@
 {
-  "workbench.colorTheme": "One Dark Pro",
-  "files.autoSave": "onWindowChange",
-  "python.jediEnabled": false,
-  "python.formatting.provider": "black",
-  "python.analysis.disabled": [
-    "unresolved-import",
-    "use-before-def"
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter.notebook.ipynb",
+      "filenamePattern": "*.ipynb"
+    }
   ],
+  "workbench.colorTheme": "Nord",
+  "workbench.startupEditor": "none",
+  "python.languageServer": "Pylance",
+  "python.formatting.provider": "black",
+  "editor.suggestSelection": "first",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
-  "telemetry.enableTelemetry": false,
-  "telemetry.enableCrashReporter": false,
-  "window.zoomLevel": 0,
-  "git.confirmSync": false,
-  "window.menuBarVisibility": "toggle",
   "editor.multiCursorModifier": "ctrlCmd",
-  "explorer.openEditors.visible": 0,
-  "editor.fontFamily": "Hack, monospace, 'monospace', 'Noto Color Emoji'",
-  "editor.fontLigatures": true,
-  "editor.wordWrapColumn": 100,
-  "editor.smoothScrolling": true,
-  "editor.minimap.renderCharacters": false,
-  "workbench.startupEditor": "none",
-  "workbench.statusBar.feedback.visible": false,
-  "workbench.sideBar.location": "left",
-  "explorer.confirmDragAndDrop": false,
-  "extensions.ignoreRecommendations": false,
-  "explorer.confirmDelete": false,
-  "python.workspaceSymbols.enabled": false,
-  "files.associations": {
-    "*.sql": "jinja-sql"
-  },
-  "[yaml]": {
-    "editor.autoIndent": true,
-    "editor.tabSize": 2
-  },
-  "editor.suggestSelection": "first",
+  "window.menuBarVisibility": "toggle",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "terminal.explorerKind": "external",
-  "terminal.external.linuxExec": "urxvt",
-  "vsicons.dontShowNewVersionMessage": true,
-  "oneDarkPro.vivid": true,
-  "oneDarkPro.editorTheme": "nord",
-  "workbench.iconTheme": "vscode-icons",
-  "python.languageServer": "Microsoft",
-  "python.showStartPage": false,
-  "git.enableSmartCommit": true
+  "files.autoSave": "onWindowChange"
 }
