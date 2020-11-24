@@ -36,6 +36,7 @@ pulseaudio-bluetooth
 qbittorrent
 rsync
 scrot
+subliminal-git
 slack-desktop
 spotify
 systemd-numlockontty
@@ -59,6 +60,7 @@ udisks2
 visual-studio-code-bin
 volumeicon
 waybar
+wlroots
 wofi
 xdg-user-dirs
 zoom
