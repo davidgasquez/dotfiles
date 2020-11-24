@@ -8,14 +8,6 @@ help:
 	@ echo -e "Targets:"
 	@ echo -e "  install-packages    	  Installs all the packages"
 
-.PHONY: build
-build:
-	@ docker build -t darchlinux .
-
-.PHONY: dev
-dev: build
-	@ docker run --rm -it -v $(PWD):/home/david darchlinux
-
 .PHONY: initrc
 initrc:
 	@ ln -sf $(DOTFILES)/xinitrc $(HOME)/.xinitrc
