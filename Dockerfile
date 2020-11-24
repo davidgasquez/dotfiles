@@ -1,3 +1,5 @@
-FROM archlinux
+FROM archlinux:latest
 
-RUN pacman -Sy python --noconfirm
+RUN pacman -Sy python openssh curl bash make --noconfirm
+
+WORKDIR /home/david
