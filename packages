@@ -6,6 +6,7 @@ visual-studio-code-bin
 docker
 dunst
 feh
+ferdi
 file-roller
 fontconfig-emoji-git
 git
@@ -46,6 +47,7 @@ systemd-numlockontty
 task
 thunar
 thunar-archive-plugin
+todoist-electron
 translate-shell
 ttf-croscore
 ttf-dejavu
@@ -61,7 +63,6 @@ tumbler
 udisks2
 urxvt-perls
 volumeicon
-whatsapp-nativefier
 xdg-user-dirs
 xorg-xbacklight
 zoom
