@@ -15,5 +15,7 @@
   "editor.multiCursorModifier": "ctrlCmd",
   "window.menuBarVisibility": "toggle",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "files.autoSave": "onWindowChange"
+  "files.autoSave": "onWindowChange",
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false
 }
