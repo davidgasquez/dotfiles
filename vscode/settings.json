@@ -13,9 +13,19 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
   "editor.multiCursorModifier": "ctrlCmd",
+  "editor.fontFamily": "'Hack', 'monospace', 'Droid Sans Fallback'",
+  "editor.minimap.renderCharacters": false,
+  "files.autoSave": "onWindowChange",
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
   "window.menuBarVisibility": "toggle",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "files.autoSave": "onWindowChange",
-  "git.enableSmartCommit": true,
-  "git.confirmSync": false
+  "remote.containers.repositoryConfigurationPaths": [
+    "editorconfig.editorconfig",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "visualstudioexptteam.vscodeintellicode"
+  ]
 }
