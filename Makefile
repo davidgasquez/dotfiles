@@ -51,6 +51,10 @@ vscode:
 	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code/User/settings.json"
 	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
 
+.PHONY: chromium
+chromium:
+	@ ln -sf $(DOTFILES)/chromium-flags.conf $(HOME)/.config/chromium-flags.conf
+
 .PHONY: terminal
 terminal:
 	@ mkdir -p "$(HOME)/.config/alacritty"
