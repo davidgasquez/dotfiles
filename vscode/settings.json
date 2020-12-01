@@ -21,5 +21,6 @@
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
   "window.menuBarVisibility": "toggle",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "explorer.confirmDelete": false
 }

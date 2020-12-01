@@ -135,6 +135,7 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
+
 # Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
@@ -146,9 +147,13 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
-# Note: workspaces can have any name you want, not just numbers.
-# We just use 1-10 as the default.
-#
+
+# Assign default workspaces
+assign [class="Slack"] workspace 3
+assign [class="Ferdi"] workspace 3
+assign [class="Spotify"] workspace 10
+assign [class="Todoist"] workspace 2
+
 # Layout stuff:
 #
 # You can "split" the current object of your focus with
@@ -173,6 +178,7 @@ bindsym $mod+space focus mode_toggle
 
 # Move focus to the parent container
 bindsym $mod+a focus parent
+
 #
 # Scratchpad:
 #
@@ -185,6 +191,7 @@ bindsym $mod+Shift+minus move scratchpad
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
+
 #
 # Resizing containers:
 #
@@ -220,6 +227,21 @@ mode "$mode_system" {
 bindsym $mod+Shift+l mode "$mode_system"
 
 #
+# Resizing gaps:
+#
+bindsym $mod+Shift+g mode "gaps"
+mode "gaps" {
+    bindsym Up gaps inner all plus 5
+    bindsym Down gaps inner all minus 5
+    bindsym Right gaps outer all plus 5
+    bindsym Left gaps outer all minus 5
+    bindsym r gaps inner all set 0, gaps outer all set 0, mode "default"
+    bindsym d gaps inner all set 30, gaps outer all set 0, mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+#
 # Status Bar:
 #
 bar {
@@ -227,6 +249,7 @@ bar {
     swaybar_command waybar
 }
 
+# Backlight
 bindsym XF86MonBrightnessUp exec light -A 5
 bindsym XF86MonBrightnessDown exec light -U 5
 
@@ -248,6 +271,9 @@ bindsym --release Shift+Print exec grim -g "$(slurp)" ~/Pictures/$(date +%s).png
 # Notifications
 exec_always mako
 
+# Autostart
 exec --no-startup-id 'nm-applet --indicator'
 exec --no-startup-id 'g610-led -a 99'
+exec --no-startup-id 'todoist'
+
 include /etc/sway/config.d/*
