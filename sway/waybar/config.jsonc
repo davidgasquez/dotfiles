@@ -1,7 +1,7 @@
 {
   "layer": "top", // Waybar at top layer
   "position": "top", // Waybar position (top|bottom|left|right)
-  // Choose the order of the modules
+
   "modules-left": [
     "sway/workspaces",
     "sway/mode"
@@ -37,11 +37,11 @@
     "format-alt": "{:%Y-%m-%d}"
   },
   "cpu": {
-    "format": "{usage}% ",
+    "format": "{usage}% 🧮",
     "tooltip": false
   },
   "memory": {
-    "format": "{}% "
+    "format": "{}% 📚"
   },
   "temperature": {
     // "thermal-zone": 2,
@@ -50,9 +50,9 @@
     // "format-critical": "{temperatureC}°C {icon}",
     "format": "{temperatureC}°C {icon}",
     "format-icons": [
-      "",
-      "",
-      ""
+      "🌡️",
+      "🌡️",
+      "🌡️"
     ]
   },
   "backlight": {
@@ -85,31 +85,31 @@
   },
   "network": {
     // "interface": "wlp2*", // (Optional) To force the use of this interface
-    "format-wifi": "{essid} ({signalStrength}%) ",
-    "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": "Disconnected ⚠",
+    "format-wifi": "{essid} ({signalStrength}%) 📡",
+    "format-ethernet": "{ifname}: {ipaddr}/{cidr} 🔗",
+    "format-linked": "{ifname} (No IP) 🔗",
+    "format-disconnected": "Disconnected ⚠️",
     "format-alt": "{ifname}: {ipaddr}/{cidr}"
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
     "format": "{volume}% {icon}",
-    "format-bluetooth": "{volume}% {icon}",
-    "format-bluetooth-muted": " {icon} {format_source}",
-    "format-muted": " {format_source}",
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
+    "format-bluetooth": "{volume}% {icon} 🔉",
+    "format-bluetooth-muted": "🔇 {icon} 🔇",
+    "format-muted": "🔇",
+    "format-source": "{volume}% 🔇",
+    "format-source-muted": "🔇",
     "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
+      "headphone": "🎧",
+      "hands-free": "🎧",
+      "headset": "🎧",
+      "phone": "🎧",
+      "portable": "🎧",
+      "car": "🎧",
       "default": [
+        "🔈",
         "🔉",
-        "",
-        ""
+        "🔊"
       ]
     },
     "on-click": "pavucontrol"
