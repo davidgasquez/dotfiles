@@ -14,13 +14,8 @@ initrc:
 
 .PHONY: shell
 shell:
-	@ ln -sf $(DOTFILES)/shell/aliases $(HOME)/.aliases
 	@ ln -sf $(DOTFILES)/shell/config.fish $(HOME)/.config/fish/config.fish
 	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
-	@ ln -sf $(DOTFILES)/shell/localrc $(HOME)/.localrc
-	@ ln -sf $(DOTFILES)/shell/functions $(HOME)/.functions
-	@ ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
-	@ antibody bundle < $(DOTFILES)/shell/zsh_plugins.txt > ~/.zsh_plugins.sh
 
 .PHONY: gitconfig
 gitconfig:
@@ -74,7 +69,6 @@ i3:
 sway:
 	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar $(HOME)/.config/wofi $(HOME)/.config/mako
 	@ ln -sf $(DOTFILES)/sway/config $(HOME)/.config/sway/config
-	@ ln -sf $(DOTFILES)/sway/env $(HOME)/.pam_environment
 	@ ln -sf $(DOTFILES)/sway/waybar/config.jsonc $(HOME)/.config/waybar/config
 	@ ln -sf $(DOTFILES)/sway/waybar/style.css $(HOME)/.config/waybar/style.css
 	@ ln -sf $(DOTFILES)/sway/wofi/config $(HOME)/.config/wofi/config
@@ -87,6 +81,10 @@ polybar:
 	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
 	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
 
+.PHONY: chrome
+chrome:
+	@ ln -sf $(DOTFILES)/chrome-beta-flags.conf $(HOME)/.config/chrome-beta-flags.conf
+
 .PHONY: install-packages
 install-packages:
-	yay --needed -S - < packages
+	@ yay --needed -S - < packages
