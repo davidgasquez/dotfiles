@@ -9,11 +9,11 @@ alias up="yay -Syu --noconfirm --noansweredit --sudoloop"
 alias upup="yay -Syu --noconfirm --noansweredit --devel --sudoloop"
 alias pastebin="curl -F c @- https://ptpb.pw"
 
-# Taskwarrior
-alias tn="task add"
-alias t="task"
-alias tl="task list"
-alias ts="task sync"
+# Tasks
+alias t="todo --color l -f 'today'"
+alias tn="todo q"
+alias ts="todo s"
+alias td="todo c"
 
 # Docker
 alias drmsc="docker rm (docker ps -a -q)"
