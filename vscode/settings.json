@@ -22,5 +22,6 @@
   "git.confirmSync": false,
   "window.menuBarVisibility": "toggle",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "explorer.confirmDelete": false
+  "explorer.confirmDelete": false,
+  "python.showStartPage": false
 }
