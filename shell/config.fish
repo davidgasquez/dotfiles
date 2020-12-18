@@ -12,7 +12,7 @@ alias pastebin="curl -F c @- https://ptpb.pw"
 # Tasks
 alias t="todo --color l -f 'today'"
 alias tn="todo q"
-alias ts="todo s &"
+alias ts="todo s"
 alias td="todo c"
 
 # Docker
