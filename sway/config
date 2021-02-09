@@ -277,5 +277,6 @@ exec_always mako
 # Autostart
 exec --no-startup-id 'nm-applet --indicator'
 exec --no-startup-id 'g610-led -a 99'
+exec --no-startup-id 'gammastep'
 
 include /etc/sway/config.d/*

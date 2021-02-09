@@ -74,6 +74,7 @@ sway:
 	@ ln -sf $(DOTFILES)/sway/wofi/config $(HOME)/.config/wofi/config
 	@ ln -sf $(DOTFILES)/sway/wofi/style.css $(HOME)/.config/wofi/style.css
 	@ ln -sf $(DOTFILES)/sway/mako/config $(HOME)/.config/mako/config
+	@ ln -sf $(DOTFILES)/gammaset.conf $(HOME)/.config/gammastep/config.ini
 
 .PHONY: polybar
 polybar:

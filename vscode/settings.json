@@ -1,10 +1,5 @@
 {
-  "workbench.editorAssociations": [
-    {
-      "viewType": "jupyter.notebook.ipynb",
-      "filenamePattern": "*.ipynb"
-    }
-  ],
+  "workbench.editorAssociations": [],
   "workbench.colorTheme": "Nord",
   "workbench.startupEditor": "none",
   "python.languageServer": "Pylance",
