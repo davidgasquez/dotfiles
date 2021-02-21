@@ -82,9 +82,9 @@ polybar:
 	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
 	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
 
-.PHONY: chrome
-chrome:
-	@ ln -sf $(DOTFILES)/chrome-beta-flags.conf $(HOME)/.config/chrome-beta-flags.conf
+.PHONY: brave
+brave:
+	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
 
 .PHONY: install-packages
 install-packages:
