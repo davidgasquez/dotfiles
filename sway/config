@@ -278,5 +278,7 @@ exec_always mako
 exec --no-startup-id 'nm-applet --indicator'
 exec --no-startup-id 'g610-led -a 99'
 exec --no-startup-id 'gammastep'
+exec eval $(gnome-keyring-daemon --start)
+exec export SSH_AUTH_SOCK
 
 include /etc/sway/config.d/*
