@@ -7,6 +7,7 @@ ferdi-bin
 file-roller
 fish
 git
+gnome-keyring
 google-chrome-beta
 google-cloud-sdk
 grim
@@ -16,6 +17,7 @@ gvfs-mtp
 htop
 imagemagick
 kubectl
+libsecret
 make
 mako
 mpv
