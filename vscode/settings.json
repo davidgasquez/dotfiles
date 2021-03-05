@@ -18,5 +18,6 @@
   "window.menuBarVisibility": "toggle",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "explorer.confirmDelete": false,
-  "python.showStartPage": false
+  "python.showStartPage": false,
+  "terminal.external.linuxExec": "alacritty"
 }
