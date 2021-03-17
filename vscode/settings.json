@@ -19,5 +19,6 @@
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "explorer.confirmDelete": false,
   "python.showStartPage": false,
-  "terminal.external.linuxExec": "alacritty"
+  "terminal.external.linuxExec": "alacritty",
+  "markdown.extension.italic.indicator": "_"
 }
