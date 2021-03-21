@@ -1,6 +1,10 @@
 {
-  "workbench.editorAssociations": [],
-  "workbench.colorTheme": "Nord",
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter.notebook.ipynb",
+      "filenamePattern": "*.ipynb"
+    }
+  ],
   "workbench.startupEditor": "none",
   "python.languageServer": "Pylance",
   "python.formatting.provider": "black",
@@ -20,5 +24,6 @@
   "explorer.confirmDelete": false,
   "python.showStartPage": false,
   "terminal.external.linuxExec": "alacritty",
-  "markdown.extension.italic.indicator": "_"
+  "markdown.extension.italic.indicator": "_",
+  "workbench.colorTheme": "Nord"
 }
