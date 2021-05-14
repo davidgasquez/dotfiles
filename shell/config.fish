@@ -23,7 +23,7 @@ alias dj="docker run -p 8888:8888 -it --rm davidgasquez/dopyter:latest"
 alias djlo="docker run -p 8888:8888 -it --user (id -u):(id -g) --rm -v $PWD:/work davidgasquez/dopyter:latest"
 
 # Custom
-alias handbook="code ~/projects/handbook"
+alias handbook="code-insiders ~/projects/handbook"
 
 # SSH Agent
 function __ssh_agent_is_started -d "check if ssh agent is already started"
