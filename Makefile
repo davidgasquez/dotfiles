@@ -82,6 +82,10 @@ polybar:
 brave:
 	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
 
+.PHONY: espanso
+espanso:
+	@ ln -sf $(DOTFILES)/espanso.yml $(HOME)/.config/espanso/default.yml
+
 .PHONY: install-packages
 install-packages:
 	@ yay --needed -S - < packages

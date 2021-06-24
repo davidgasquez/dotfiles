@@ -1,0 +1,20 @@
+# https://espanso.org/docs/
+
+matches:
+  # Email
+  - trigger: ":email"
+    replace: "davidgasquez@gmail"
+
+  # Date
+  - trigger: ":date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: ":cheers"
+    replace: |
+      Cheers,
+      David.
