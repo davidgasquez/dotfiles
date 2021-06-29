@@ -35,7 +35,6 @@
     "default": "right",
     "jupyter-notebook": "left"
   },
-  "python.insidersChannel": "weekly",
   "jupyter.askForKernelRestart": false,
   "files.associations": {
     "*.sql": "sql"
