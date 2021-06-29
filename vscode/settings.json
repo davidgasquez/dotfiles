@@ -1,10 +1,7 @@
 {
-  "workbench.editorAssociations": [
-    {
-      "viewType": "jupyter.notebook.ipynb",
-      "filenamePattern": "*.ipynb"
-    }
-  ],
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
   "workbench.startupEditor": "none",
   "python.languageServer": "Pylance",
   "python.formatting.provider": "black",
@@ -25,5 +22,30 @@
   "python.showStartPage": false,
   "terminal.external.linuxExec": "alacritty",
   "markdown.extension.italic.indicator": "_",
-  "workbench.colorTheme": "Nord"
+  "workbench.colorTheme": "Nord",
+  "terminal.integrated.inheritEnv": false,
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "bash"
+    }
+  },
+  "jupyter.allowLiveShare": false,
+  "jupyter.ignoreVscodeTheme": true,
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "python.insidersChannel": "weekly",
+  "jupyter.askForKernelRestart": false,
+  "files.associations": {
+    "*.sql": "sql"
+  },
+  "jupyter.allowInput": false,
+  "jupyter.allowImportFromNotebook": false,
+  "jupyter.addGotoCodeLenses": false,
+  "jupyter.askForLargeDataFrames": false,
+  "jupyter.collapseCellInputCodeByDefault": false,
+  "jupyter.debugJustMyCode": false,
+  "redhat.telemetry.enabled": true,
+  "python.defaultInterpreterPath": "/usr/local/bin/python"
 }
