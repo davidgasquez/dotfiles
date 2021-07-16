@@ -3,10 +3,12 @@
     "*.ipynb": "jupyter-notebook"
   },
   "workbench.startupEditor": "none",
+  "python.defaultInterpreterPath": "/usr/local/bin/python",
   "python.languageServer": "Pylance",
   "python.formatting.provider": "black",
   "editor.suggestSelection": "first",
   "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
   "editor.formatOnPaste": false,
   "editor.multiCursorModifier": "ctrlCmd",
   "editor.fontFamily": "'Hack', 'monospace', 'Droid Sans Fallback'",
@@ -45,6 +47,5 @@
   "jupyter.askForLargeDataFrames": false,
   "jupyter.collapseCellInputCodeByDefault": false,
   "jupyter.debugJustMyCode": false,
-  "redhat.telemetry.enabled": true,
-  "python.defaultInterpreterPath": "/usr/local/bin/python"
+  "redhat.telemetry.enabled": true
 }
