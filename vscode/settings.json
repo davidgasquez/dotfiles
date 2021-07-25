@@ -47,5 +47,8 @@
   "jupyter.askForLargeDataFrames": false,
   "jupyter.collapseCellInputCodeByDefault": false,
   "jupyter.debugJustMyCode": false,
-  "redhat.telemetry.enabled": true
+  "redhat.telemetry.enabled": true,
+  "github.copilot.enable": {
+    "*": true
+  }
 }

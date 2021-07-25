@@ -1,4 +1,5 @@
 arcticicestudio.nord-visual-studio-code
+EditorConfig.EditorConfig
 GitHub.codespaces
 GitHub.copilot
 GitHub.vscode-pull-request-github
@@ -7,7 +8,6 @@ ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
 ms-vscode-remote.remote-containers
-ms-vscode-remote.remote-wsl
 ms-vsliveshare.vsliveshare
 samuelcolvin.jinjahtml
 skyapps.fish-vscode
