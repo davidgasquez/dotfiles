@@ -4,7 +4,6 @@ blueman
 bluez-utils
 brave
 docker
-ferdi
 file-roller
 fish
 git
@@ -51,6 +50,7 @@ tumbler
 unzip
 visual-studio-code-bin
 waybar
+whatsapp-nativefier
 wofi
 xdg-user-dirs
 xdg-utils
