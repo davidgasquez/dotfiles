@@ -46,5 +46,5 @@
   "jupyter.addGotoCodeLenses": false,
   "jupyter.askForLargeDataFrames": false,
   "jupyter.collapseCellInputCodeByDefault": false,
-  "jupyter.debugJustMyCode": false
+  "redhat.telemetry.enabled": true
 }
