@@ -51,16 +51,6 @@ terminal:
 	@ mkdir -p "$(HOME)/.config/alacritty"
 	@ ln -sf $(DOTFILES)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
-.PHONY: i3
-i3:
-	@ ln -sf $(DOTFILES)/i3/Xresources $(HOME)/.Xresources
-	@ ln -sf $(DOTFILES)/i3/theme.Xresources $(HOME)/.theme.Xresources
-	@ ln -sf $(DOTFILES)/i3/compton.conf $(HOME)/.compton.conf
-	@ mkdir -p "$(HOME)/.config/dunst"
-	@ ln -sf $(DOTFILES)/i3/dunstrc $(HOME)/.config/dunst/dunstrc
-	@ ln -sf $(DOTFILES)/i3/i3-config $(HOME)/.config/i3/config
-	@ xrdb $(HOME)/.Xresources
-
 .PHONY: sway
 sway:
 	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar $(HOME)/.config/wofi $(HOME)/.config/mako
