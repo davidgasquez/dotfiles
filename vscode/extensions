@@ -1,4 +1,5 @@
 arcticicestudio.nord-visual-studio-code
+eamodio.gitlens
 EditorConfig.EditorConfig
 GitHub.codespaces
 GitHub.copilot
@@ -7,6 +8,7 @@ ms-azuretools.vscode-docker
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
+ms-toolsai.jupyter-keymap
 ms-vscode-remote.remote-containers
 ms-vsliveshare.vsliveshare
 samuelcolvin.jinjahtml

@@ -1,5 +1,5 @@
 [core]
-    editor = nano
+    editor = code
 
 [user]
     name = David Gasquez
@@ -9,6 +9,14 @@
     ui = true
 
 [alias]
+    a = add --all
+    b = branch
+    c = checkout
+    d = diff
+    e = edit
+    f = fetch
+    g = log --graph --decorate --oneline --all
+    h = help
     cm = commit -m
     st = status
     prune = fetch --prune
