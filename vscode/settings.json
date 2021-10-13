@@ -14,8 +14,8 @@
   "editor.fontFamily": "'Hack', 'monospace', 'Droid Sans Fallback'",
   "editor.minimap.renderCharacters": false,
   "files.autoSave": "onWindowChange",
-  "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
   "window.menuBarVisibility": "toggle",
@@ -46,5 +46,8 @@
   "jupyter.addGotoCodeLenses": false,
   "jupyter.askForLargeDataFrames": false,
   "jupyter.collapseCellInputCodeByDefault": false,
-  "redhat.telemetry.enabled": false
+  "redhat.telemetry.enabled": true,
+  "github.copilot.enable": {
+    "*": true
+  }
 }
