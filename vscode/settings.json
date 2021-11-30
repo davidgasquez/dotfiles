@@ -24,6 +24,7 @@
   "python.showStartPage": false,
   "terminal.external.linuxExec": "alacritty",
   "markdown.extension.italic.indicator": "_",
+  "jupyter.alwaysTrustNotebooks": true,
   "workbench.colorTheme": "Nord",
   "terminal.integrated.inheritEnv": false,
   "terminal.integrated.profiles.linux": {
@@ -52,5 +53,6 @@
     "yaml": true,
     "plaintext": true,
     "markdown": true
-  }
+  },
+  "explorer.confirmDragAndDrop": false
 }
