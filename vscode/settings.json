@@ -11,7 +11,7 @@
   "editor.inlineSuggest.enabled": true,
   "editor.formatOnPaste": false,
   "editor.multiCursorModifier": "ctrlCmd",
-  "editor.fontFamily": "'Hack', 'monospace', 'Droid Sans Fallback'",
+  "editor.fontFamily": "'Hack', 'monospace', 'Droid Sans Fallback', 'Noto Color Emoji'",
   "editor.minimap.renderCharacters": false,
   "files.autoSave": "onWindowChange",
   "files.trimFinalNewlines": true,
