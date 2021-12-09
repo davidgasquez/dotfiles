@@ -29,10 +29,6 @@ scripts:
 network:
 	@ sudo ln -sf $(DOTFILES)/network/resolv.conf.head /etc/resolv.conf.head
 
-.PHONY: taskwarrior
-taskwarrior:
-	@ ln -sf $(DOTFILES)/taskwarrior/taskrc $(HOME)/.taskrc
-
 .PHONY: fonts
 fonts:
 	@ mkdir -p $(HOME)/.config/fontconfig/conf.d
@@ -75,3 +71,8 @@ brave:
 .PHONY: install-packages
 install-packages:
 	@ yay --needed -S - < packages
+
+.PHONY: post-installation
+post-installation:
+	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
+	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
