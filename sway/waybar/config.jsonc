@@ -50,15 +50,15 @@
   },
   "battery": {
     "states": {
-      "good": 95,
       "warning": 30,
       "critical": 15
     },
     "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% 🔋",
-    "format-plugged": "{capacity}% 🔌",
-    "format-alt": "{time} {icon}",
-    "format-no": ""
+    "format-icons": {
+      "charging": "⚡",
+      "discharging": "🔋",
+      "full": "🔌"
+    }
   },
   "network": {
     "format-wifi": "{essid} ({signalStrength}%) 📡",
