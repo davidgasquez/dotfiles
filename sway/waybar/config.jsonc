@@ -1,24 +1,24 @@
 {
-  "layer": "top", // Waybar at top layer
-  "position": "top", // Waybar position (top|bottom|left|right)
+  "layer": "top",
+  "position": "top",
   "modules-left": [
     "sway/workspaces",
     "sway/mode"
   ],
   "modules-center": [
+    "bluetooth",
     "network",
     "cpu",
     "memory",
     "temperature"
   ],
   "modules-right": [
-    "pulseaudio",
-    "backlight",
     "battery",
+    "backlight",
+    "pulseaudio",
     "clock",
     "tray"
   ],
-  // Modules configuration
   "sway/workspaces": {
     "disable-scroll": true,
     "all-outputs": true,
@@ -32,66 +32,49 @@
   },
   "clock": {
     "format": "{:%Y-%m-%d %H:%M}",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%Y-%m-%d}"
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
   },
   "cpu": {
-    "format": "{usage}% 🧮",
-    "tooltip": false
+    "format": "{usage}% 🧮"
   },
   "memory": {
     "format": "{}% 📚"
   },
   "temperature": {
-    // "thermal-zone": 2,
-    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
     "critical-threshold": 80,
-    // "format-critical": "{temperatureC}°C {icon}",
-    "format": "{temperatureC}°C {icon}",
-    "format-icons": [
-      "🌡️",
-      "🌡️",
-      "🌡️"
-    ]
+    "format-critical": "🔥 🔥 {temperatureC}°C 🔥 🔥",
+    "format": "{temperatureC}°C 🔥"
   },
   "backlight": {
-    // "device": "acpi_video1",
-    "format": "{percent}% {icon}",
-    "format-icons": [
-      "",
-      ""
-    ]
+    "format": "{percent}% 🕯"
   },
   "battery": {
     "states": {
-      // "good": 95,
+      "good": 95,
       "warning": 30,
       "critical": 15
     },
     "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% ",
-    "format-plugged": "{capacity}% ",
+    "format-charging": "{capacity}% 🔋",
+    "format-plugged": "{capacity}% 🔌",
     "format-alt": "{time} {icon}",
-    // "format-good": "", // An empty format will hide the module
-    // "format-full": "",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
+    "format-no": ""
   },
   "network": {
-    // "interface": "wlp2*", // (Optional) To force the use of this interface
     "format-wifi": "{essid} ({signalStrength}%) 📡",
-    "format-ethernet": "{ifname}: {ipaddr}/{cidr} 🔗",
+    "format-ethernet": "{ifname} 🔗",
     "format-linked": "{ifname} (No IP) 🔗",
-    "format-disconnected": "Disconnected ⚠️",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    "format-disconnected": "Disconnected"
+  },
+  "bluetooth": {
+    "format": "{icon} ",
+    "on-click": "blueman-manager",
+    "format-icons": {
+      "enabled": "",
+      "disabled": ""
+    }
   },
   "pulseaudio": {
-    // "scroll-step": 1, // %, can be a float
     "format": "{volume}% {icon}",
     "format-bluetooth": "{volume}% {icon} 🔉",
     "format-bluetooth-muted": "🔇 {icon} 🔇",
