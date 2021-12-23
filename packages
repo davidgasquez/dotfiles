@@ -1,8 +1,9 @@
+1password
 alacritty
 alsa-utils
 blueman
 bluez-utils
-brave
+brave-bin
 docker
 file-roller
 fish
@@ -55,4 +56,4 @@ whatsapp-nativefier
 wofi
 xdg-user-dirs
 xdg-utils
-zoom
+zoom-system-qt
