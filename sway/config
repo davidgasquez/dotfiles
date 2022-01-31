@@ -275,9 +275,9 @@ bindsym --release Shift+Print exec grim -g "$(slurp)" ~/Pictures/$(date +%s).png
 exec_always mako
 
 # Autostart
-exec --no-startup-id 'nm-applet --indicator'
-exec --no-startup-id 'g610-led -a 99'
-exec --no-startup-id 'gammastep'
+exec 'g610-led -a 99'
+exec 'nm-applet --indicator'
+exec 'gammastep'
 exec eval $(gnome-keyring-daemon --start)
 exec export SSH_AUTH_SOCK
 

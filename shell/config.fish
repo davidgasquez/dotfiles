@@ -2,8 +2,7 @@
 set PATH /home/david/.local/bin/ $PATH
 
 # Editor
-alias c="code --enable-features=UseOzonePlatform --ozone-platform=wayland ."
-alias code="code --enable-features=UseOzonePlatform --ozone-platform=wayland"
+alias c="code ."
 
 # System Management
 alias up="yay -Syu --noconfirm --noansweredit --sudoloop"
