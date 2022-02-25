@@ -23,7 +23,7 @@ gitconfig:
 
 .PHONY: scripts
 scripts:
-	@ sudo cp $(DOTFILES)/scripts/* /usr/local/bin
+	@ ln -sf $(DOTFILES)/scripts/* $(HOME)/.local/bin
 
 .PHONY: network
 network:
