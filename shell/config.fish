@@ -14,6 +14,9 @@ alias tn="todo q"
 alias ts="todo s"
 alias td="todo c"
 
+alias notes='open "obsidian://open?vault=notes"'
+alias hb='open "obsidian://open?vault=handbook"'
+
 # SSH Agent
 function __ssh_agent_is_started -d "check if ssh agent is already started"
 	if begin; test -f $SSH_ENV; and test -z "$SSH_AGENT_PID"; end
