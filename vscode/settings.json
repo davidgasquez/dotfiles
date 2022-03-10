@@ -26,6 +26,12 @@
   "markdown.extension.italic.indicator": "_",
   "jupyter.alwaysTrustNotebooks": true,
   "workbench.colorTheme": "Nord",
+  "remote.containers.defaultExtensions": [
+    "eamodio.gitlens",
+    "GitHub.copilot",
+    "editorconfig.editorconfig",
+    "Vtrois.gitmoji-vscode"
+  ],
   "terminal.integrated.inheritEnv": false,
   "terminal.integrated.profiles.linux": {
     "bash": {
