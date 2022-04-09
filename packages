@@ -1,4 +1,3 @@
-1password
 alacritty
 alsa-utils
 blueman
@@ -9,7 +8,6 @@ file-roller
 fish
 git
 gnome-keyring
-google-cloud-sdk
 grim
 grimshot
 gvfs
@@ -36,7 +34,6 @@ pulseaudio-alsa
 pulseaudio-bluetooth
 slack-desktop
 spotify
-subdl
 systemd-numlockontty
 swaylock
 thunar
@@ -57,4 +54,3 @@ whatsapp-nativefier
 wofi
 xdg-user-dirs
 xdg-utils
-zoom-system-qt
