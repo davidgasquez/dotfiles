@@ -151,6 +151,8 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 # Assign default workspaces
 assign [class="Slack"] workspace 3
+assign [class="discord"] workspace 3
+assign [class="whatsapp-nativefier"] workspace 3
 
 # Floating windows
 for_window [app_id=pavucontrol] floating enable
@@ -278,5 +280,13 @@ exec 'nm-applet --indicator'
 exec 'gammastep'
 exec eval $(gnome-keyring-daemon --start)
 exec export SSH_AUTH_SOCK
+
+# Start Applications
+exec 'whatsapp-nativefier'
+exec 'spotify'
+exec 'slack'
+
+# Move to Workspace
+exec 'swaymsg workspace 2'
 
 include /etc/sway/config.d/*
