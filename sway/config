@@ -284,6 +284,7 @@ exec export SSH_AUTH_SOCK
 # Start Applications
 exec 'whatsapp-nativefier'
 exec 'spotify'
+exec 'discord'
 exec 'slack'
 
 # Move to Workspace
