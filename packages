@@ -1,8 +1,6 @@
 alacritty
-alsa-utils
 blueman
-bluez-utils
-brave-bin
+brave-beta-bin
 docker
 file-roller
 fish
@@ -24,16 +22,9 @@ noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 ntfs-3g
-obsidian-appimage
 openssh
 openvpn
-pavucontrol
 playerctl
-pulseaudio
-pulseaudio-alsa
-pulseaudio-bluetooth
-slack-desktop
-spotify
 systemd-numlockontty
 swaylock
 thunar
@@ -48,9 +39,8 @@ ttf-ms-fonts
 ttf-roboto
 tumbler
 unzip
-visual-studio-code-bin
+visual-studio-code-insiders-bin
 waybar
-whatsapp-nativefier
 wofi
 xdg-user-dirs
 xdg-utils
