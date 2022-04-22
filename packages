@@ -29,11 +29,11 @@ openssh
 openvpn
 pavucontrol
 playerctl
+psst-git-bin
 pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
 slack-desktop
-spotify
 systemd-numlockontty
 swaylock
 thunar
