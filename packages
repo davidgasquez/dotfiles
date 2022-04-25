@@ -1,11 +1,12 @@
 alacritty
 blueman
-brave-beta-bin
+brave-bin
 docker
 file-roller
 fish
 git
 gnome-keyring
+gammastep
 grim
 grimshot
 gvfs
@@ -38,7 +39,7 @@ ttf-mac-fonts
 ttf-ms-fonts
 ttf-roboto
 tumbler
-unzip
+starship
 visual-studio-code-insiders-bin
 waybar
 wofi
