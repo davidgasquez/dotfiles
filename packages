@@ -26,6 +26,10 @@ ntfs-3g
 openssh
 openvpn
 playerctl
+psst-git-bin
+pulseaudio
+pulseaudio-alsa
+pulseaudio-bluetooth
 systemd-numlockontty
 swaylock
 thunar
@@ -45,3 +49,4 @@ waybar
 wofi
 xdg-user-dirs
 xdg-utils
+
