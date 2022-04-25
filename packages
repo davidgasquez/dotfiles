@@ -25,6 +25,7 @@ noto-fonts-extra
 ntfs-3g
 openssh
 openvpn
+pavucontrol
 playerctl
 pulseaudio
 pulseaudio-alsa
@@ -49,3 +50,4 @@ waybar
 wofi
 xdg-user-dirs
 xdg-utils
+yt-dlp
