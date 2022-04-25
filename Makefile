@@ -14,6 +14,7 @@ initrc:
 
 .PHONY: shell
 shell:
+	@ mkdir -p $(HOME)/.config/fish
 	@ ln -sf $(DOTFILES)/shell/config.fish $(HOME)/.config/fish/config.fish
 	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
 
@@ -38,9 +39,10 @@ fonts:
 .PHONY: vscode
 vscode:
 	@ mkdir -p "$(HOME)/.config/Code/User/"
-	@ cat vscode/extensions | xargs -L 1 code --install-extension
+	@ cat vscode/extensions | xargs -L 1 code-insiders --install-extension
 	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code/User/settings.json"
 	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
+	@ ln -sf $(DOTFILES)/vscode/code-flags.conf $(HOME)/.config/code-flags.conf
 
 .PHONY: terminal
 terminal:
@@ -49,7 +51,7 @@ terminal:
 
 .PHONY: sway
 sway:
-	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar $(HOME)/.config/wofi $(HOME)/.config/mako
+	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar $(HOME)/.config/wofi $(HOME)/.config/mako $(HOME)/.config/gammastep
 	@ ln -sf $(DOTFILES)/sway/config $(HOME)/.config/sway/config
 	@ ln -sf $(DOTFILES)/sway/waybar/config.jsonc $(HOME)/.config/waybar/config
 	@ ln -sf $(DOTFILES)/sway/waybar/style.css $(HOME)/.config/waybar/style.css
