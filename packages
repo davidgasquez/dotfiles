@@ -18,6 +18,7 @@ libsecret
 make
 mako
 mpv
+network-manager-applet
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
