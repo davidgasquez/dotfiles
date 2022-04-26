@@ -46,7 +46,7 @@
     "format": "{temperatureC}°C 🔥"
   },
   "backlight": {
-    "format": "{percent}% 🕯"
+    "format": "{percent}% 🔆"
   },
   "battery": {
     "states": {
