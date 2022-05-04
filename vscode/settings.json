@@ -60,5 +60,6 @@
     "plaintext": true,
     "markdown": true
   },
-  "explorer.confirmDragAndDrop": false
+  "explorer.confirmDragAndDrop": false,
+  "security.workspace.trust.untrustedFiles": "open"
 }
