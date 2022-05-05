@@ -155,8 +155,7 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 # Assign default workspaces
 assign [class="Slack"] workspace 3
-assign [class="discord"] workspace 3
-assign [class="whatsapp-nativefier"] workspace 3
+assign [class="ferdi"] workspace 3
 
 # Floating windows
 for_window [app_id=pavucontrol] floating enable
@@ -286,9 +285,8 @@ exec eval $(gnome-keyring-daemon --start)
 exec export SSH_AUTH_SOCK
 
 # Start Applications
-exec 'whatsapp-nativefier'
+exec 'ferdi'
 exec 'spotify'
-exec 'discord'
 exec 'slack'
 
 # Move to Workspace
