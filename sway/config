@@ -86,6 +86,10 @@ input * {
 # Start a terminal
 bindsym $mod+Return exec $term
 
+# Emoji Picker
+bindsym $mod+i exec wofi-emoji
+
+# Todoist
 bindsym $mod+Shift+Return exec todoist
 
 # Kill focused window
