@@ -24,9 +24,12 @@ noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 ntfs-3g
+obsidian
 openssh
 openvpn
 pavucontrol
+pipewire
+pipewire-media-session
 playerctl
 pulseaudio
 pulseaudio-alsa
@@ -50,6 +53,7 @@ visual-studio-code-bin
 waybar
 wofi
 wofi-emoji
+xdg-desktop-portal-wlr
 xdg-user-dirs
 xdg-utils
 yt-dlp
