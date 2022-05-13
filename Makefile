@@ -71,6 +71,11 @@ brave:
 	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
 	@ ln -sf $(DOTFILES)/electron17-flags.conf $(HOME)/.config/electron17-flags.conf
 
+.PHONY: theme
+theme:
+	gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
+	gsettings set org.gnome.desktop.interface icon-theme 'Arc'
+
 .PHONY: install-packages
 install-packages:
 	@ yay --needed -S - < packages
