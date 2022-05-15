@@ -8,10 +8,6 @@ help:
 	@ echo -e "Targets:"
 	@ echo -e "  install-packages    	  Installs all the packages"
 
-.PHONY: initrc
-initrc:
-	@ ln -sf $(DOTFILES)/xinitrc $(HOME)/.xinitrc
-
 .PHONY: shell
 shell:
 	@ mkdir -p $(HOME)/.config/fish
@@ -24,6 +20,7 @@ gitconfig:
 
 .PHONY: scripts
 scripts:
+	@ mkdir -p $(HOME)/.local/bin
 	@ ln -sf $(DOTFILES)/scripts/* $(HOME)/.local/bin
 
 .PHONY: network
@@ -39,7 +36,7 @@ fonts:
 .PHONY: vscode
 vscode:
 	@ mkdir -p "$(HOME)/.config/Code/User/"
-	@ cat vscode/extensions | xargs -L 1 code-insiders --install-extension
+	@ cat vscode/extensions | xargs -L 1 code --install-extension
 	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code/User/settings.json"
 	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
 	@ ln -sf $(DOTFILES)/vscode/code-flags.conf $(HOME)/.config/code-flags.conf
@@ -59,12 +56,6 @@ sway:
 	@ ln -sf $(DOTFILES)/sway/wofi/style.css $(HOME)/.config/wofi/style.css
 	@ ln -sf $(DOTFILES)/sway/mako/config $(HOME)/.config/mako/config
 	@ ln -sf $(DOTFILES)/gammaset.conf $(HOME)/.config/gammastep/config.ini
-
-.PHONY: polybar
-polybar:
-	@ ln -sf $(DOTFILES)/polybar/config $(HOME)/.config/polybar/config
-	@ ln -sf $(DOTFILES)/polybar/music.sh $(HOME)/.config/polybar/music.sh
-	@ ln -sf $(DOTFILES)/polybar/launch-polybar.sh $(HOME)/.config/polybar/launch.sh
 
 .PHONY: brave
 brave:
