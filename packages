@@ -36,7 +36,6 @@ playerctl
 pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
-spotify
 starship
 swaylock
 systemd-numlockontty
