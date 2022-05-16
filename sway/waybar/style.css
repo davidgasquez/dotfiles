@@ -1,47 +1,47 @@
 * {
-    border: none;
-    border-radius: 0;
-    font-family: Hack, Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: Hack, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  min-height: 0;
 }
 
 window#waybar {
-    background-color: #2E3440;
-    color: #ECEFF4;
-    transition-property: background-color;
-    transition-duration: .5s;
+  background-color: #2E3440;
+  color: #ECEFF4;
+  transition-property: background-color;
+  transition-duration: .5s;
 }
 
 window#waybar.hidden {
-    opacity: 0.2;
+  opacity: 0.2;
 }
 
 window#waybar.termite {
-    background-color: #3F3F3F;
+  background-color: #3F3F3F;
 }
 
 window#waybar.chromium {
-    background-color: #000000;
-    border: none;
+  background-color: #000000;
+  border: none;
 }
 
 #workspaces button {
-    background-color: transparent;
-    color: #ffffff;
+  background-color: transparent;
+  color: #ffffff;
 }
 
 #workspaces button:hover {
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow: inherit;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inherit;
 }
 
 #workspaces button.focused {
-    background-color: #64727D;
+  background-color: #64727D;
 }
 
 #workspaces button.urgent {
-    background-color: #eb4d4b;
+  background-color: #eb4d4b;
 }
 
 #clock,
@@ -57,45 +57,45 @@ window#waybar.chromium {
 #mode,
 #idle_inhibitor,
 #mpd {
-    padding: 0 4px;
-    margin: 0 4px;
-    color: #ffffff;
+  padding: 0 4px;
+  margin: 0 4px;
+  color: #ffffff;
 }
 
 #battery.charging {
-    color: #eb4d4b;
+  color: #eb4d4b;
 }
 
 @keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #000000;
-    }
+  to {
+    background-color: #ffffff;
+    color: #000000;
+  }
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
-    color: #ffffff;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  background-color: #f53c3c;
+  color: #ffffff;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 label:focus {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 #network.disconnected {
-    background-color: #f53c3c;
+  background-color: #f53c3c;
 }
 
 #pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+  background-color: #90b1b1;
+  color: #2a5c45;
 }
 
 #temperature.critical {
-    background-color: #eb4d4b;
+  background-color: #eb4d4b;
 }
