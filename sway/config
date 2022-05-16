@@ -277,6 +277,9 @@ bindsym --release Shift+Print exec grim -g "$(slurp)" ~/Pictures/$(date +%s).png
 # Notifications
 exec_always mako
 
+# Clipboard
+exec wl-paste -t text --watch clipman store
+
 # Autostart
 exec 'g610-led -a 99'
 exec 'nm-applet --indicator'
@@ -287,6 +290,6 @@ exec export SSH_AUTH_SOCK
 # Move to Workspace
 exec 'swaymsg workspace 2'
 
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+# exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 include /etc/sway/config.d/*
