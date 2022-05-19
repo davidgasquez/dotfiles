@@ -1,0 +1,3 @@
+#!/bin/sh
+
+brave --app=https://open.spotify.com/
