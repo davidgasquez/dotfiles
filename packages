@@ -37,6 +37,8 @@ playerctl
 pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
+qt6-wayland
+qbittorrent
 starship
 swaylock
 systemd-numlockontty
