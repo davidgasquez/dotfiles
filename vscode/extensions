@@ -11,6 +11,8 @@ ms-toolsai.jupyter
 ms-toolsai.jupyter-keymap
 ms-toolsai.jupyter-renderers
 ms-vscode-remote.remote-containers
+ms-vscode-remote.remote-ssh
+ms-vscode-remote.remote-ssh-edit
 ms-vsliveshare.vsliveshare
 samuelcolvin.jinjahtml
 seatonjiang.gitmoji-vscode

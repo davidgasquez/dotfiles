@@ -61,5 +61,5 @@
     "markdown": true
   },
   "explorer.confirmDragAndDrop": false,
-  "security.workspace.trust.untrustedFiles": "open"
+  "terminal.integrated.copyOnSelection": true
 }

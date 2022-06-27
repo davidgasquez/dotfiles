@@ -17,15 +17,5 @@
   {
     "key": "ctrl+shift+down",
     "command": "editor.action.moveLinesDownAction"
-  },
-  {
-    "key": "ctrl+c",
-    "command": "workbench.action.terminal.copySelection",
-    "when": "terminalFocus && terminalHasBeenCreated && terminalTextSelected || terminalFocus && terminalProcessSupported && terminalTextSelected"
-  },
-  {
-    "key": "ctrl+shift+c",
-    "command": "-workbench.action.terminal.copySelection",
-    "when": "terminalFocus && terminalHasBeenCreated && terminalTextSelected || terminalFocus && terminalProcessSupported && terminalTextSelected"
   }
 ]
