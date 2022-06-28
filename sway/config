@@ -274,6 +274,9 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym --release Print exec grim ~/Pictures/$(date +%s).png
 bindsym --release Shift+Print exec grim -g "$(slurp)" ~/Pictures/$(date +%s).png
 
+# Allow shorcuts from Brave Apps
+for_window [app_id="^brave-.*-.*$"] shortcuts_inhibitor disable
+
 # Notifications
 exec_always mako
 
