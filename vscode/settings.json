@@ -61,5 +61,6 @@
     "markdown": true
   },
   "explorer.confirmDragAndDrop": false,
-  "terminal.integrated.copyOnSelection": true
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.enableMultiLinePasteWarning": false
 }
