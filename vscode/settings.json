@@ -29,8 +29,7 @@
   "remote.containers.defaultExtensions": [
     "eamodio.gitlens",
     "GitHub.copilot",
-    "editorconfig.editorconfig",
-    "Vtrois.gitmoji-vscode"
+    "editorconfig.editorconfig"
   ],
   "terminal.integrated.inheritEnv": false,
   "terminal.integrated.profiles.linux": {
@@ -63,5 +62,8 @@
   "explorer.confirmDragAndDrop": false,
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.enableMultiLinePasteWarning": false,
-  "conventionalCommits.emojiFormat": "emoji"
+  "conventionalCommits.emojiFormat": "emoji",
+  "conventionalCommits.promptScopes": false,
+  "conventionalCommits.promptFooter": false,
+  "conventionalCommits.promptBody": false
 }
