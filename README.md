@@ -9,7 +9,7 @@
 ## Overview
 
 My primary OS is **Arch Linux** at this moment and some of these configurations
-are tuned to work on it. I'm using Arc Theme colors as base for my system.
+are tuned to work on it. I'm using Nord Theme colors as base for my system.
 
 ## Installation
 
