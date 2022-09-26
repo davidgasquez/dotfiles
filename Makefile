@@ -60,7 +60,7 @@ sway:
 .PHONY: brave
 brave:
 	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
-	@ ln -sf $(DOTFILES)/electron17-flags.conf $(HOME)/.config/electron17-flags.conf
+	@ ln -sf $(DOTFILES)/electron-flags.conf $(HOME)/.config/electron17-flags.conf
 
 .PHONY: theme
 theme:
