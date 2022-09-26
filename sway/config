@@ -31,34 +31,10 @@ set $term alacritty
 output * bg /home/david/projects/dotfiles/wallpapers/default.jpg fill
 
 # You can get the names of your outputs by running: swaymsg -t get_outputs
-
-# Laptop
+# Then, modify the scale or resolution
+# Example:
 # output eDP-1 scale 2
-
-# Desktop
 # output DP-1 mode 3440x1440@75.050003Hz
-
-### Window configuration
-default_border pixel 4
-default_floating_border normal
-hide_edge_borders smart
-
-smart_gaps on
-gaps inner 30
-
-### Idle configuration
-#
-# Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' \
-#               resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
 
 ### Input configuration
 #
@@ -75,9 +51,19 @@ gaps inner 30
 # Read `man 5 sway-input` for more information about this section.
 
 input * {
-    xkb_layout "es"
+    xkb_layout es
     xkb_numlock enabled
 }
+
+### Window configuration
+
+default_border pixel 4
+default_floating_border normal
+hide_edge_borders smart
+
+# Smart Gaps
+smart_gaps on
+gaps inner 30
 
 ### Key bindings
 #
@@ -85,9 +71,6 @@ input * {
 #
 # Start a terminal
 bindsym $mod+Return exec $term
-
-# Emoji Picker
-bindsym $mod+i exec wofi-emoji
 
 # Todoist
 bindsym $mod+Shift+Return exec todoist
@@ -111,7 +94,7 @@ bindsym $mod+Shift+r reload
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
-#
+
 # Moving around:
 #
 # $mod+[up|down|left|right]
