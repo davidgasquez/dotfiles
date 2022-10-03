@@ -1,27 +1,28 @@
 [core]
-    editor = code
+  editor = code
 
 [user]
-    name = David Gasquez
-    email = davidgasquez@gmail.com
+  name = David Gasquez
+  email = davidgasquez@gmail.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtW5FVRPG50LgeOIIIjMkNt2uOXOVFet75TiFODb4wF
 
 [color]
-    ui = true
+  ui = true
 
 [alias]
-    a = add --all
-    b = branch
-    c = checkout
-    d = diff
-    e = edit
-    f = fetch
-    g = log --graph --decorate --oneline --all
-    h = help
-    cm = commit -m
-    st = status
-    prune = fetch --prune
-    undo = reset --soft HEAD^
-    glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+  a = add --all
+  b = branch
+  c = checkout
+  d = diff
+  e = edit
+  f = fetch
+  g = log --graph --decorate --oneline --all
+  h = help
+  cm = commit -m
+  st = status
+  prune = fetch --prune
+  undo = reset --soft HEAD^
+  glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
 [push]
 	default = simple
@@ -40,3 +41,9 @@
 
 [credential "https://github.com"]
 	helper = !/usr/bin/gh auth git-credential
+
+[commit]
+	gpgsign = true
+
+[gpg]
+	format = ssh
