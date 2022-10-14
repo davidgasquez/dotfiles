@@ -1,4 +1,3 @@
-arcticicestudio.nord-visual-studio-code
 eamodio.gitlens
 EditorConfig.EditorConfig
 GitHub.codespaces
@@ -10,6 +9,8 @@ ms-python.vscode-pylance
 ms-toolsai.jupyter
 ms-toolsai.jupyter-keymap
 ms-toolsai.jupyter-renderers
+ms-toolsai.vscode-jupyter-cell-tags
+ms-toolsai.vscode-jupyter-slideshow
 ms-vscode-remote.remote-containers
 ms-vscode-remote.remote-ssh
 ms-vscode-remote.remote-ssh-edit
@@ -17,6 +18,7 @@ ms-vsliveshare.vsliveshare
 samuelcolvin.jinjahtml
 skyapps.fish-vscode
 timonwong.shellcheck
+VisualStudioExptTeam.intellicode-api-usage-examples
 VisualStudioExptTeam.vscodeintellicode
 vivaxy.vscode-conventional-commits
 yzhang.markdown-all-in-one
