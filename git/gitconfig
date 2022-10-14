@@ -4,7 +4,6 @@
 [user]
   name = David Gasquez
   email = davidgasquez@gmail.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKtW5FVRPG50LgeOIIIjMkNt2uOXOVFet75TiFODb4wF
 
 [color]
   ui = true
@@ -42,8 +41,3 @@
 [credential "https://github.com"]
 	helper = !/usr/bin/gh auth git-credential
 
-[commit]
-	gpgsign = true
-
-[gpg]
-	format = ssh
