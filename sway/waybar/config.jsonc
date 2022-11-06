@@ -6,7 +6,6 @@
     "sway/mode"
   ],
   "modules-center": [
-    "bluetooth",
     "network",
     "cpu",
     "memory",
