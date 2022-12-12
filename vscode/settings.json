@@ -65,5 +65,9 @@
   "conventionalCommits.emojiFormat": "emoji",
   "conventionalCommits.promptScopes": false,
   "conventionalCommits.promptFooter": false,
-  "conventionalCommits.promptBody": false
+  "conventionalCommits.promptBody": false,
+  "dev.containers.defaultExtensions": [
+    "vivaxy.vscode-conventional-commits",
+    "GitHub.copilot"
+  ]
 }
