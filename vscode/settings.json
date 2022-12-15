@@ -68,6 +68,7 @@
   "conventionalCommits.promptBody": false,
   "dev.containers.defaultExtensions": [
     "vivaxy.vscode-conventional-commits",
+    "eamodio.gitlens",
     "GitHub.copilot"
   ]
 }
