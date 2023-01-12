@@ -69,6 +69,7 @@
   "dev.containers.defaultExtensions": [
     "vivaxy.vscode-conventional-commits",
     "eamodio.gitlens",
-    "GitHub.copilot"
+    "GitHub.copilot",
+    "GitHub.copilot-labs"
   ]
 }

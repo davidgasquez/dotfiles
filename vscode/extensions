@@ -2,6 +2,7 @@ eamodio.gitlens
 EditorConfig.EditorConfig
 GitHub.codespaces
 GitHub.copilot
+GitHub.copilot-labs
 GitHub.vscode-pull-request-github
 ms-azuretools.vscode-docker
 ms-python.python
