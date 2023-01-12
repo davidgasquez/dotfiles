@@ -1,3 +1,4 @@
+arcticicestudio.nord-visual-studio-code
 eamodio.gitlens
 EditorConfig.EditorConfig
 GitHub.codespaces
@@ -5,6 +6,8 @@ GitHub.copilot
 GitHub.copilot-labs
 GitHub.vscode-pull-request-github
 ms-azuretools.vscode-docker
+ms-python.black-formatter
+ms-python.isort
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
@@ -15,7 +18,9 @@ ms-toolsai.vscode-jupyter-slideshow
 ms-vscode-remote.remote-containers
 ms-vscode-remote.remote-ssh
 ms-vscode-remote.remote-ssh-edit
+ms-vscode.remote-explorer
 ms-vsliveshare.vsliveshare
+redhat.vscode-yaml
 samuelcolvin.jinjahtml
 skyapps.fish-vscode
 timonwong.shellcheck
