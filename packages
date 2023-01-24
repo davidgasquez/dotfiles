@@ -2,6 +2,7 @@ alacritty
 arc-gtk-theme
 arc-icon-theme
 blueman
+bottom
 brave-bin
 clipman
 docker
@@ -39,6 +40,7 @@ pipewire-pulse
 qbittorrent
 qt6-wayland
 starship
+swaybg
 swaylock
 thunar
 thunar-archive-plugin

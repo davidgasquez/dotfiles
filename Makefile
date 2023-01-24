@@ -73,5 +73,7 @@ install-packages:
 
 .PHONY: post-installation
 post-installation:
+	@ echo "Make zswap (https://wiki.archlinux.org/title/zswap)"
+	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)"
 	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
