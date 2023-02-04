@@ -71,5 +71,6 @@
     "eamodio.gitlens",
     "GitHub.copilot",
     "GitHub.copilot-labs"
-  ]
+  ],
+  "git.autofetch": true
 }
