@@ -76,5 +76,8 @@
     "GitHub.copilot-labs"
   ],
   "git.autofetch": true,
-  "notebook.formatOnSave.enabled": true
+  "notebook.formatOnSave.enabled": true,
+  "[python]": {
+    "editor.formatOnType": true
+  }
 }

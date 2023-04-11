@@ -1,13 +1,14 @@
 arcticicestudio.nord-visual-studio-code
+bierner.emojisense
 eamodio.gitlens
 EditorConfig.EditorConfig
+foam.foam-vscode
 GitHub.codespaces
 GitHub.copilot
 GitHub.copilot-labs
+github.vscode-github-actions
 GitHub.vscode-pull-request-github
 ms-azuretools.vscode-docker
-ms-python.black-formatter
-ms-python.isort
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
