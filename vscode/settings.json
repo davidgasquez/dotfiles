@@ -71,6 +71,7 @@
     "EditorConfig.EditorConfig",
     "timonwong.shellcheck",
     "GitHub.vscode-github-actions",
+    "GitHub.vscode-pull-request-github",
     "eamodio.gitlens",
     "GitHub.copilot",
     "GitHub.copilot-labs"
