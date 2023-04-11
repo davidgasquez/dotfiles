@@ -1,7 +1,7 @@
 ![logo](https://user-images.githubusercontent.com/1682202/37351969-87717a40-26dc-11e8-9a90-ee07a1f4b69a.png)
 
 <p align="center">
-    <i>Here you will find with my dotfiles, living in harmony and peace.</i>
+  <i>Here you will find with my dotfiles, living in harmony and peace.</i>
 </p>
 
 ![1608132943](https://user-images.githubusercontent.com/1682202/102369963-d4b58700-3fbc-11eb-8da5-3a1d4877d0ad.png)

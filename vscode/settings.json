@@ -49,7 +49,6 @@
   },
   "jupyter.allowInput": false,
   "jupyter.allowImportFromNotebook": false,
-  "jupyter.addGotoCodeLenses": false,
   "jupyter.askForLargeDataFrames": false,
   "jupyter.collapseCellInputCodeByDefault": false,
   "redhat.telemetry.enabled": true,
@@ -68,9 +67,13 @@
   "conventionalCommits.promptBody": false,
   "dev.containers.defaultExtensions": [
     "vivaxy.vscode-conventional-commits",
+    "EditorConfig.EditorConfig",
+    "timonwong.shellcheck",
+    "GitHub.vscode-github-actions",
     "eamodio.gitlens",
     "GitHub.copilot",
     "GitHub.copilot-labs"
   ],
-  "git.autofetch": true
+  "git.autofetch": true,
+  "notebook.formatOnSave.enabled": true
 }
