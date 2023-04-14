@@ -1,5 +1,7 @@
 arcticicestudio.nord-visual-studio-code
 bierner.emojisense
+charliermarsh.ruff
+DavidAnson.vscode-markdownlint
 eamodio.gitlens
 EditorConfig.EditorConfig
 foam.foam-vscode
@@ -9,6 +11,7 @@ GitHub.copilot-labs
 github.vscode-github-actions
 GitHub.vscode-pull-request-github
 ms-azuretools.vscode-docker
+ms-python.black-formatter
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
@@ -22,7 +25,6 @@ ms-vscode-remote.remote-ssh-edit
 ms-vscode.remote-explorer
 ms-vsliveshare.vsliveshare
 redhat.vscode-yaml
-samuelcolvin.jinjahtml
 skyapps.fish-vscode
 timonwong.shellcheck
 VisualStudioExptTeam.intellicode-api-usage-examples

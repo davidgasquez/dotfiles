@@ -80,5 +80,15 @@
   "notebook.formatOnSave.enabled": true,
   "[python]": {
     "editor.formatOnType": true
+  },
+  "foam.openDailyNote.directory": "Journal",
+  "dev.containers.defaultFeatures": {
+    "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
+  },
+  "markdownlint.config": {
+    "no-bare-urls": false,
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
 }
