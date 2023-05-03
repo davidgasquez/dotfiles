@@ -1,6 +1,7 @@
 {
   "workbench.editorAssociations": {
-    "*.ipynb": "jupyter-notebook"
+    "*.ipynb": "jupyter-notebook",
+    "*.db": "default"
   },
   "workbench.startupEditor": "none",
   "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -81,7 +82,7 @@
   "[python]": {
     "editor.formatOnType": true
   },
-  "foam.openDailyNote.directory": "Journal",
+  "foam.openDailyNote.directory": "Log",
   "dev.containers.defaultFeatures": {
     "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
   },
