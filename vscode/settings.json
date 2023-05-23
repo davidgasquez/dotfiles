@@ -54,12 +54,6 @@
   "jupyter.askForLargeDataFrames": false,
   "jupyter.collapseCellInputCodeByDefault": false,
   "redhat.telemetry.enabled": true,
-  "github.copilot.enable": {
-    "*": true,
-    "yaml": true,
-    "plaintext": true,
-    "markdown": true
-  },
   "explorer.confirmDragAndDrop": false,
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.enableMultiLinePasteWarning": false,
