@@ -54,9 +54,6 @@
   "jupyter.askForLargeDataFrames": false,
   "jupyter.collapseCellInputCodeByDefault": false,
   "redhat.telemetry.enabled": true,
-  "github.copilot.enable": {
-    "*": true
-  },
   "explorer.confirmDragAndDrop": false,
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.enableMultiLinePasteWarning": false,
@@ -88,5 +85,10 @@
   },
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true
   }
 }
