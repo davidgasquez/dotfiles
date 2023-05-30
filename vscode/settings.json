@@ -87,8 +87,9 @@
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
   "github.copilot.enable": {
+    "quarto": true,
     "*": true,
-    "plaintext": false,
+    "plaintext": true,
     "markdown": true
   }
 }
