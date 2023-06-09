@@ -63,6 +63,7 @@
   "conventionalCommits.promptBody": false,
   "dev.containers.defaultExtensions": [
     "vivaxy.vscode-conventional-commits",
+    "VisualStudioExptTeam.vscodeintellicode",
     "EditorConfig.EditorConfig",
     "timonwong.shellcheck",
     "GitHub.vscode-github-actions",
