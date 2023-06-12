@@ -4,6 +4,11 @@ set PATH /home/david/.local/bin/ $PATH
 # Set desktop manually
 set XDG_CURRENT_DESKTOP "sway"
 
+# Environment variables
+if test -e ~/.env
+  export (cat ~/.env | xargs -L 1)
+end
+
 # Editor
 alias c="code ."
 
