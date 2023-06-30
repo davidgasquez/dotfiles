@@ -21,5 +21,10 @@
   {
     "key": "ctrl+shift+/",
     "command": "extension.conventionalCommits"
+  },
+  {
+    "key": "ctrl+shift+insert",
+    "command": "workbench.action.terminal.new",
+    "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
   }
 ]

@@ -10,6 +10,7 @@ GitHub.copilot
 GitHub.copilot-labs
 github.vscode-github-actions
 GitHub.vscode-pull-request-github
+hashicorp.terraform
 ms-azuretools.vscode-docker
 ms-python.black-formatter
 ms-python.python
@@ -26,6 +27,8 @@ ms-vscode.remote-explorer
 ms-vsliveshare.vsliveshare
 redhat.vscode-yaml
 skyapps.fish-vscode
+streetsidesoftware.code-spell-checker
+tamasfe.even-better-toml
 timonwong.shellcheck
 VisualStudioExptTeam.intellicode-api-usage-examples
 VisualStudioExptTeam.vscodeintellicode
