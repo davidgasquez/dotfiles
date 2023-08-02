@@ -70,6 +70,7 @@
     "GitHub.vscode-pull-request-github",
     "eamodio.gitlens",
     "GitHub.copilot",
+    "GitHub.copilot-chat",
     "GitHub.copilot-labs"
   ],
   "git.autofetch": true,

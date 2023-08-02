@@ -7,6 +7,7 @@ EditorConfig.EditorConfig
 foam.foam-vscode
 GitHub.codespaces
 GitHub.copilot
+GitHub.copilot-chat
 GitHub.copilot-labs
 github.vscode-github-actions
 GitHub.vscode-pull-request-github
