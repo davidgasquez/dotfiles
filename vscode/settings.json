@@ -1,12 +1,6 @@
 {
-  "workbench.editorAssociations": {
-    "*.ipynb": "jupyter-notebook",
-    "*.db": "default"
-  },
   "workbench.startupEditor": "none",
-  "python.defaultInterpreterPath": "/usr/local/bin/python",
-  "python.languageServer": "Pylance",
-  "python.formatting.provider": "black",
+  "workbench.colorTheme": "Nord",
   "editor.suggestSelection": "first",
   "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
@@ -21,18 +15,11 @@
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
   "window.menuBarVisibility": "toggle",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "explorer.confirmDelete": false,
+  "python.defaultInterpreterPath": "/usr/local/bin/python",
   "python.showStartPage": false,
-  "terminal.external.linuxExec": "alacritty",
   "markdown.extension.italic.indicator": "_",
   "jupyter.alwaysTrustNotebooks": true,
-  "workbench.colorTheme": "Nord",
-  "remote.containers.defaultExtensions": [
-    "eamodio.gitlens",
-    "GitHub.copilot",
-    "editorconfig.editorconfig"
-  ],
   "terminal.integrated.inheritEnv": false,
   "terminal.integrated.profiles.linux": {
     "bash": {
@@ -74,16 +61,9 @@
     "GitHub.copilot-labs"
   ],
   "git.autofetch": true,
-  "notebook.formatOnSave.enabled": true,
-  "[python]": {
-    "editor.formatOnType": true
-  },
   "foam.openDailyNote.directory": "Log",
   "dev.containers.defaultFeatures": {
     "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
-  },
-  "markdownlint.config": {
-    "no-bare-urls": false,
   },
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"

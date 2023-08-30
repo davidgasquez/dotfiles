@@ -254,8 +254,8 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Screen
-bindsym --release Print exec grim ~/Pictures/$(date +%s).png
-bindsym --release Shift+Print exec grim -g "$(slurp)" ~/Pictures/$(date +%s).png
+bindsym --release Print exec --no-startup-id 'wayshot --stdout | wl-copy'
+bindsym --release Shift+Print exec --no-startup-id 'wayshot --slurp "$(slurp)" --stdout | wl-copy'
 
 # Allow shorcuts from Brave Apps
 for_window [app_id="^brave-.*-.*$"] shortcuts_inhibitor disable
