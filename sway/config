@@ -5,11 +5,11 @@
 # Read `man 5 sway` for a complete reference.
 
 # Colors
-set $red         #BF616A
-set $darkblue    #2679DB
-set $lightblue   #5294E2
-set $white       #ECEFF4
-set $background  #2E3440
+set $red         #E78284
+set $darkblue    #8CAAEE
+set $lightblue   #8CAAEE
+set $white       #C6D0F5
+set $background  #303446
 
 # Theme                     border      background      text
 client.focused              $darkblue   $darkblue       $white

@@ -13,8 +13,8 @@ end
 alias c="code ."
 
 # System Management
-alias up="yay -Syu --noconfirm --noansweredit --sudoloop"
-alias upup="yay -Syu --noconfirm --noansweredit --devel --sudoloop"
+alias up="paru -Syu --noconfirm --sudoloop"
+alias upup="paru -Syu --noconfirm --devel --sudoloop"
 
 # SSH Agent
 function __ssh_agent_is_started -d "check if ssh agent is already started"

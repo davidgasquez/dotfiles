@@ -1,6 +1,8 @@
 {
   "workbench.startupEditor": "none",
-  "workbench.colorTheme": "Nord",
+  "workbench.colorTheme": "Catppuccin Frappé",
+  "workbench.iconTheme": "catppuccin-frappe",
+  "catppuccin.accentColor": "blue",
   "editor.suggestSelection": "first",
   "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
@@ -15,9 +17,9 @@
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
   "window.menuBarVisibility": "toggle",
+  "window.titleBarStyle": "custom",
   "explorer.confirmDelete": false,
   "python.defaultInterpreterPath": "/usr/local/bin/python",
-  "python.showStartPage": false,
   "markdown.extension.italic.indicator": "_",
   "jupyter.alwaysTrustNotebooks": true,
   "terminal.integrated.inheritEnv": false,
@@ -65,13 +67,12 @@
   "dev.containers.defaultFeatures": {
     "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  },
   "github.copilot.enable": {
     "quarto": true,
     "*": true,
-    "plaintext": true,
     "markdown": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
 }
