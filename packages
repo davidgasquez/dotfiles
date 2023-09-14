@@ -1,24 +1,25 @@
 alacritty
-arc-gtk-theme
-arc-icon-theme
+# arc-gtk-theme
+# arc-icon-theme
 blueman
 bottom
 brave-bin
-clipman
+cliphist
+wl-clip-persist
 docker
 file-roller
-fish
 gammastep
 git
 github-cli
 gnome-keyring
-wayshot
+grim
 gvfs
 gvfs-mtp
 htop
 imagemagick
 kubectl
 libsecret
+nwg-look
 make
 mako
 mpv
@@ -45,10 +46,12 @@ thunar
 thunar-archive-plugin
 translate-shell
 ttf-croscore
+inter-font
 ttf-dejavu
 ttf-hack
 ttf-liberation
 ttf-mac-fonts
+otf-font-awesome
 ttf-ms-fonts
 ttf-roboto
 tumbler

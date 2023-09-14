@@ -10,8 +10,7 @@ help:
 
 .PHONY: shell
 shell:
-	@ mkdir -p $(HOME)/.config/fish
-	@ ln -sf $(DOTFILES)/shell/config.fish $(HOME)/.config/fish/config.fish
+	@ ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
 	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
 
 .PHONY: gitconfig
@@ -45,6 +44,17 @@ vscode:
 terminal:
 	@ mkdir -p "$(HOME)/.config/alacritty"
 	@ ln -sf $(DOTFILES)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
+
+.PHONY: hypr
+hypr:
+	@ mkdir -p "$(HOME)/.config/hypr" "$(HOME)/.config/waybar" "$(HOME)/.config/mako"
+	@ ln -sf $(DOTFILES)/hypr/frappe.conf $(HOME)/.config/hypr/frappe.conf
+	@ ln -sf $(DOTFILES)/hypr/hyprland.conf $(HOME)/.config/hypr/hyprland.conf
+	@ ln -sf $(DOTFILES)/hypr/hyprpaper.conf $(HOME)/.config/hypr/hyprpaper.conf
+	@ ln -sf $(DOTFILES)/hypr/waybar/config.jsonc $(HOME)/.config/waybar/config
+	@ ln -sf $(DOTFILES)/hypr/waybar/style.css $(HOME)/.config/waybar/style.css
+	@ ln -sf $(DOTFILES)/hypr/waybar/frappe.css $(HOME)/.config/waybar/frappe.css
+	@ ln -sf $(DOTFILES)/hypr/mako/config $(HOME)/.config/mako/config
 
 .PHONY: sway
 sway:

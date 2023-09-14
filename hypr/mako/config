@@ -1,0 +1,16 @@
+sort=-priority
+
+on-button-left=invoke-default-action
+on-button-right=dismiss-all
+on-button-middle=dismiss
+
+
+background-color=#303446
+font=Inter
+text-color=#C6D0F5
+
+border-radius=4
+border-size=4
+border-color=#8CAAEE
+
+margin=66,16,0

@@ -82,54 +82,70 @@ scrolling:
   # Number of lines the viewport will move for every line scrolled when
   # scrollback is enabled (history > 0).
   multiplier: 3
-# Font configuration
+  # Font configuration
+  # font:
+  #   # Normal (roman) font face
+  #   normal:
+  #     # Font family
+  #     #
+  #     # Default:
+  #     #   - (macOS) Menlo
+  #     #   - (Linux/BSD) monospace
+  #     #   - (Windows) Consolas
+  #     family: "Hack"
+  #     # The `style` can be specified to pick a specific face.
+  #     style: Regular
+
+  #   # Bold font face
+  #   bold:
+  #     # Font family
+  #     #
+  #     # If the bold family is not specified, it will fall back to the
+  #     # value specified for the normal font.
+  #     family: "Hack"
+
+  #     # The `style` can be specified to pick a specific face.
+  #     style: Bold
+
+  #   # Italic font face
+  #   italic:
+  #     # Font family
+  #     #
+  #     # If the italic family is not specified, it will fall back to the
+  #     # value specified for the normal font.
+  #     family: "Hack"
+
+  #     # The `style` can be specified to pick a specific face.
+  #     style: Italic
+
+  #   # Bold italic font face
+  #   bold_italic:
+  #     # Font family
+  #     #
+  #     # If the bold italic family is not specified, it will fall back to the
+  #     # value specified for the normal font.
+  #     family: "Hack"
+
+  #     # The `style` can be specified to pick a specific face.
+  #     style: Bold Italic
+
 font:
-  # Normal (roman) font face
   normal:
-    # Font family
-    #
-    # Default:
-    #   - (macOS) Menlo
-    #   - (Linux/BSD) monospace
-    #   - (Windows) Consolas
-    family: "Hack"
-    # The `style` can be specified to pick a specific face.
+    family: JetBrains Mono Nerd Font
     style: Regular
 
-  # Bold font face
   bold:
-    # Font family
-    #
-    # If the bold family is not specified, it will fall back to the
-    # value specified for the normal font.
-    family: "Hack"
-
-    # The `style` can be specified to pick a specific face.
+    family: JetBrains Mono Nerd Font
     style: Bold
 
-  # Italic font face
   italic:
-    # Font family
-    #
-    # If the italic family is not specified, it will fall back to the
-    # value specified for the normal font.
-    family: "Hack"
-
-    # The `style` can be specified to pick a specific face.
+    family: JetBrains Mono Nerd Font
     style: Italic
 
-  # Bold italic font face
   bold_italic:
-    # Font family
-    #
-    # If the bold italic family is not specified, it will fall back to the
-    # value specified for the normal font.
-    family: "Hack"
-
-    # The `style` can be specified to pick a specific face.
+    family: JetBrains Mono Nerd Font
     style: Bold Italic
 
-  # Point size
   size: 12.0
 
 # Offset is the extra space around each character. `offset.y` can be thought of

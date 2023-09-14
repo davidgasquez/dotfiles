@@ -1,0 +1,34 @@
+# ZSH
+
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+
+setopt autocd extendedglob
+
+bindkey -e
+
+# Completions
+zstyle :compinstall filename '/home/david/.zshrc'
+zstyle ':completion:*' menu select
+autoload -Uz compinit
+compinit
+
+# Shell
+eval "$(starship init zsh)"
+
+# Aliases
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -la'
+alias up='paru -Syu --devel --skipreview'
+alias c='code-insiders .'
+
+# Move cursor
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
+# Hyprland
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec Hyprland
+fi
