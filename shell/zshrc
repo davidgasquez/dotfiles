@@ -24,6 +24,23 @@ alias la='ls -la'
 alias up='paru -Syu --devel --skipreview'
 alias c='code-insiders .'
 
+# Expand PATH with $HOME/.local/bin
+export PATH="$HOME/.local/bin:$PATH"
+
+# SSH Agent
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  # Check for a currently running instance of the agent
+  RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
+  if [ "$RUNNING_AGENT" = "0" ]; then
+    # Launch a new instance of the agent
+    ssh-agent -s &> $HOME/.ssh/ssh-agent
+  fi
+  eval `cat $HOME/.ssh/ssh-agent` > /dev/null
+
+  # Add all keys
+  ssh-add
+fi
+
 # Move cursor
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word

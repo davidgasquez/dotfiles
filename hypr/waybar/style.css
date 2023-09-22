@@ -1,7 +1,6 @@
 @import "frappe.css";
 
 * {
-  /* `otf-font-awesome` is required to be installed for icons */
   font-family: Inter, FontAwesome, Roboto, Helvetica, Arial, sans-serif;
   font-size: 13px;
 }
@@ -109,9 +108,9 @@ button:hover {
   margin-right: 0;
 }
 
-#clock {
+/* #clock {
   background-color: #64727D;
-}
+} */
 
 #battery {
   background-color: #ffffff;
@@ -170,10 +169,10 @@ label:focus {
   background-color: #f53c3c;
 }
 
-#pulseaudio {
+/* #pulseaudio {
   background-color: #f1c40f;
   color: #000000;
-}
+} */
 
 #pulseaudio.muted {
   background-color: #90b1b1;
@@ -204,16 +203,18 @@ label:focus {
 }
 
 #temperature {
-  background-color: #f0932b;
+  /* background-color: #f0932b; */
+  color: @yellow;
 }
 
 #temperature.critical {
-  background-color: #eb4d4b;
+  color: @red;
+  /* background-color: #eb4d4b; */
 }
 
-#tray {
+/* #tray {
   background-color: #2980b9;
-}
+} */
 
 #tray>.passive {
   -gtk-icon-effect: dim;

@@ -4,6 +4,7 @@ on-button-left=invoke-default-action
 on-button-right=dismiss-all
 on-button-middle=dismiss
 
+default-timeout=6000
 
 background-color=#303446
 font=Inter
