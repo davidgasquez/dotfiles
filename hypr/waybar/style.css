@@ -2,7 +2,7 @@
 
 * {
   font-family: Inter, FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 window#waybar {
@@ -89,7 +89,7 @@ button:hover {
 #idle_inhibitor,
 #scratchpad,
 #mpd {
-  padding: 0 10px;
+  padding: 0 6px;
   color: #ffffff;
 }
 
@@ -108,9 +108,9 @@ button:hover {
   margin-right: 0;
 }
 
-/* #clock {
-  background-color: #64727D;
-} */
+#clock {
+  font-size: 14px;
+}
 
 #battery {
   background-color: #ffffff;

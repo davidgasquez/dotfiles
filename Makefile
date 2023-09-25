@@ -72,18 +72,13 @@ brave:
 	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
 	@ ln -sf $(DOTFILES)/electron-flags.conf $(HOME)/.config/electron-flags.conf
 
-.PHONY: theme
-theme:
-	gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
-	gsettings set org.gnome.desktop.interface icon-theme 'Arc'
-
 .PHONY: install-packages
 install-packages:
 	@ yay --needed -S - < packages
 
 .PHONY: post-installation
 post-installation:
-	@ echo "Make zswap (https://wiki.archlinux.org/title/zswap)"
 	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)"
 	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
+	@ echo "Setup DNS" (Via nm-applet)

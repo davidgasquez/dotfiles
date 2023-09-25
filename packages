@@ -1,23 +1,19 @@
 alacritty
-# arc-gtk-theme
-# arc-icon-theme
-blueman
+# blueman
 bottom
 brave-bin
 cliphist
 wl-clip-persist
 docker
 file-roller
-gammastep
+# gammastep
 git
 github-cli
-gnome-keyring
+# gnome-keyring
 grim
 gvfs
 gvfs-mtp
 htop
-imagemagick
-kubectl
 libsecret
 nwg-look
 make
@@ -37,30 +33,29 @@ pipewire
 pipewire-alsa
 pipewire-jack
 pipewire-pulse
-qbittorrent
-qt6-wayland
+# qbittorrent
+# qt6-wayland
 starship
-swaybg
-swaylock
+# swaybg
+# swaylock
 thunar
 thunar-archive-plugin
-translate-shell
 ttf-croscore
 inter-font
 ttf-dejavu
-ttf-hack
+ttf-jetbrains-mono-nerd
 ttf-liberation
 ttf-mac-fonts
 otf-font-awesome
 ttf-ms-fonts
 ttf-roboto
 tumbler
-visual-studio-code-bin
+visual-studio-code-insiders-bin
 waybar
 wget
 wireplumber
 wofi
-xdg-desktop-portal-wlr
+xdg-desktop-portal-hyprland
 xdg-user-dirs
 xdg-utils
 yt-dlp

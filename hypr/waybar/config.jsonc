@@ -14,12 +14,12 @@
   ],
   "modules-right": [
     // "idle_inhibitor",
-    "tray",
     "pulseaudio",
     // "network",
     // "cpu",
     // "memory",
     "temperature",
+    "tray",
     // "backlight",
     // "keyboard-state",
     // "wlr/language",
@@ -109,12 +109,7 @@
     // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
     "critical-threshold": 80,
     // "format-critical": "{temperatureC}°C {icon}",
-    "format": "{temperatureC}°C {icon}",
-    "format-icons": [
-      "",
-      "",
-      ""
-    ]
+    "format": "🌡️ {temperatureC}°C"
   },
   // "backlight": {
   //   // "device": "acpi_video1",
@@ -165,24 +160,20 @@
   // },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
-    "format": "{volume}% {icon}",
+    "format": "{icon} {volume}%",
     "format-bluetooth": "{volume}% {icon}",
-    "format-bluetooth-muted": " {icon}",
-    "format-muted": "",
+    "format-bluetooth-muted": "🔇 {icon}",
+    "format-muted": "🔇",
     "format-source": "{volume}% ",
     "format-source-muted": "",
     "format-icons": {
-      "headphone": "",
+      "headphone": "🎧",
       "hands-free": "",
       "headset": "",
       "phone": "",
       "portable": "",
       "car": "",
-      "default": [
-        "",
-        "",
-        ""
-      ]
+      "default": "🔊"
     },
     "on-click": "pavucontrol"
   }
