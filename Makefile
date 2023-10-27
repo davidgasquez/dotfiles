@@ -12,6 +12,7 @@ help:
 shell:
 	@ ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
 	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
+	@ ln -sf $(DOTFILES)/shell/sheldon/plugins.toml $(HOME)/.config/sheldon/plugins.toml
 
 .PHONY: gitconfig
 gitconfig:
@@ -47,7 +48,7 @@ terminal:
 
 .PHONY: hypr
 hypr:
-	@ mkdir -p "$(HOME)/.config/hypr" "$(HOME)/.config/waybar" "$(HOME)/.config/mako"
+	@ mkdir -p "$(HOME)/.config/hypr" "$(HOME)/.config/waybar" "$(HOME)/.config/mako" "$(HOME)/.config/fuzzel"
 	@ ln -sf $(DOTFILES)/hypr/frappe.conf $(HOME)/.config/hypr/frappe.conf
 	@ ln -sf $(DOTFILES)/hypr/hyprland.conf $(HOME)/.config/hypr/hyprland.conf
 	@ ln -sf $(DOTFILES)/hypr/hyprpaper.conf $(HOME)/.config/hypr/hyprpaper.conf
@@ -55,6 +56,7 @@ hypr:
 	@ ln -sf $(DOTFILES)/hypr/waybar/style.css $(HOME)/.config/waybar/style.css
 	@ ln -sf $(DOTFILES)/hypr/waybar/frappe.css $(HOME)/.config/waybar/frappe.css
 	@ ln -sf $(DOTFILES)/hypr/mako/config $(HOME)/.config/mako/config
+	@ ln -sf $(DOTFILES)/hypr/fuzzel/fuzzel.ini $(HOME)/.config/fuzzel/fuzzel.ini
 
 .PHONY: sway
 sway:

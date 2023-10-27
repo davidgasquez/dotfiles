@@ -1,0 +1,17 @@
+# See the documentation for more https://github.com/rossmacarthur/sheldon#readme
+
+shell = "zsh"
+
+[plugins]
+
+[plugins.completions]
+github = "zsh-users/zsh-completions"
+
+[plugins.autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.substring]
+github = "zsh-users/zsh-history-substring-search"
+
+[plugins.highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
