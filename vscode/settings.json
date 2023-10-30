@@ -1,51 +1,14 @@
 {
-  "workbench.startupEditor": "none",
   "workbench.colorTheme": "Catppuccin Frappé",
   "workbench.iconTheme": "catppuccin-frappe",
   "catppuccin.accentColor": "blue",
-  "editor.suggestSelection": "first",
-  "editor.formatOnSave": true,
-  "editor.inlineSuggest.enabled": true,
-  "editor.formatOnPaste": false,
-  "editor.multiCursorModifier": "ctrlCmd",
-  "editor.fontFamily": "'Hack', 'monospace', 'Droid Sans Fallback', 'Noto Color Emoji'",
-  "editor.minimap.renderCharacters": false,
-  "files.autoSave": "onWindowChange",
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "git.enableSmartCommit": true,
-  "git.confirmSync": false,
   "window.menuBarVisibility": "toggle",
   "window.titleBarStyle": "custom",
-  "explorer.confirmDelete": false,
   "python.defaultInterpreterPath": "/usr/local/bin/python",
-  "markdown.extension.italic.indicator": "_",
-  "jupyter.alwaysTrustNotebooks": true,
-  "terminal.integrated.inheritEnv": false,
-  "terminal.integrated.profiles.linux": {
-    "bash": {
-      "path": "bash"
-    }
-  },
-  "jupyter.allowLiveShare": false,
-  "jupyter.ignoreVscodeTheme": true,
-  "notebook.cellToolbarLocation": {
-    "default": "right",
-    "jupyter-notebook": "left"
-  },
-  "jupyter.askForKernelRestart": false,
-  "files.associations": {
-    "*.sql": "sql"
-  },
-  "jupyter.allowInput": false,
-  "jupyter.allowImportFromNotebook": false,
-  "jupyter.askForLargeDataFrames": false,
-  "jupyter.collapseCellInputCodeByDefault": false,
-  "redhat.telemetry.enabled": true,
-  "explorer.confirmDragAndDrop": false,
   "terminal.integrated.copyOnSelection": true,
-  "terminal.integrated.enableMultiLinePasteWarning": false,
   "conventionalCommits.emojiFormat": "emoji",
   "conventionalCommits.promptScopes": false,
   "conventionalCommits.promptFooter": false,
@@ -60,19 +23,43 @@
     "eamodio.gitlens",
     "GitHub.copilot",
     "GitHub.copilot-chat",
-    "GitHub.copilot-labs"
+    "GitHub.copilot-labs",
+    "tamasfe.even-better-toml"
   ],
-  "git.autofetch": true,
   "foam.openDailyNote.directory": "Log",
   "dev.containers.defaultFeatures": {
     "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
   },
+  "editor.fontFamily": "'JetBrainsMono Nerd Font'",
+  "editor.formatOnSave": true,
+  "files.autoSave": "onWindowChange",
+  "markdown.extension.italic.indicator": "_",
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
   "github.copilot.enable": {
     "quarto": true,
     "*": true,
+    "plaintext": true,
     "markdown": true
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  "update.mode": "manual",
+  "workbench.startupEditor": "none",
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "editor.inlineSuggest.enabled": true,
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "redhat.telemetry.enabled": true,
+  "gitdoc.enabled": true,
+  "[yaml]": {
+    "editor.defaultFormatter": "quarto.quarto"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
   }
 }

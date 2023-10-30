@@ -19,7 +19,7 @@
     "command": "editor.action.moveLinesDownAction"
   },
   {
-    "key": "ctrl+shift+/",
+    "key": "ctrl+shift+[Backslash]",
     "command": "extension.conventionalCommits"
   },
   {
