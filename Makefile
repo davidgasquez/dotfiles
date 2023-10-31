@@ -35,10 +35,10 @@ fonts:
 
 .PHONY: vscode
 vscode:
-	@ mkdir -p "$(HOME)/.config/Code/User/"
-	@ cat vscode/extensions | xargs -L 1 code --install-extension
-	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code/User/settings.json"
-	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
+	@ mkdir -p "$(HOME)/.config/Code - Insiders/User/"
+	@ cat vscode/extensions | xargs -L 1 code-insiders --install-extension
+	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code - Insiders/User/settings.json"
+	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code - Insiders/User/keybindings.json"
 	@ ln -sf $(DOTFILES)/vscode/code-flags.conf $(HOME)/.config/code-flags.conf
 
 .PHONY: terminal

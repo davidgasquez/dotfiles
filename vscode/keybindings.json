@@ -1,4 +1,3 @@
-// Place your key bindings in this file to overwrite the defaults
 [
   {
     "key": "ctrl+[Backslash]",
@@ -19,7 +18,7 @@
     "command": "editor.action.moveLinesDownAction"
   },
   {
-    "key": "ctrl+shift+/",
+    "key": "ctrl+shift+[Backslash]",
     "command": "extension.conventionalCommits"
   },
   {
