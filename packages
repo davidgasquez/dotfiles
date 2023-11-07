@@ -33,11 +33,8 @@ pipewire
 pipewire-alsa
 pipewire-jack
 pipewire-pulse
-# qbittorrent
-# qt6-wayland
+qbittorrent
 starship
-# swaybg
-# swaylock
 thunar
 thunar-archive-plugin
 ttf-croscore
@@ -50,7 +47,7 @@ otf-font-awesome
 ttf-ms-fonts
 ttf-roboto
 tumbler
-visual-studio-code-insiders-bin
+visual-studio-code-bin
 waybar
 wget
 wireplumber

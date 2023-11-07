@@ -54,5 +54,10 @@
   "markdownlint.config": {
     "default": true,
     "no-bare-urls": false
-  }
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "redhat.telemetry.enabled": false,
+  "git.autofetch": true
 }

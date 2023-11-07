@@ -23,7 +23,7 @@ alias ls='ls --color=auto'
 alias ll='ls -l'
 alias la='ls -la'
 alias up='paru -Syu --devel --skipreview'
-alias c='code-insiders .'
+alias c='code .'
 
 # Expand PATH with $HOME/.local/bin
 export PATH=$HOME/.local/bin:$PATH
