@@ -14,17 +14,17 @@
   "conventionalCommits.promptFooter": false,
   "conventionalCommits.promptBody": false,
   "dev.containers.defaultExtensions": [
-    "vivaxy.vscode-conventional-commits",
-    "VisualStudioExptTeam.vscodeintellicode",
-    "EditorConfig.EditorConfig",
-    "timonwong.shellcheck",
-    "GitHub.vscode-github-actions",
-    "GitHub.vscode-pull-request-github",
     "eamodio.gitlens",
-    "GitHub.copilot",
+    "EditorConfig.EditorConfig",
     "GitHub.copilot-chat",
     "GitHub.copilot-labs",
-    "tamasfe.even-better-toml"
+    "GitHub.copilot",
+    "GitHub.vscode-github-actions",
+    "GitHub.vscode-pull-request-github",
+    "tamasfe.even-better-toml",
+    "timonwong.shellcheck",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "vivaxy.vscode-conventional-commits"
   ],
   "foam.openDailyNote.directory": "Log",
   "dev.containers.defaultFeatures": {
@@ -51,15 +51,14 @@
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "editor.inlineSuggest.enabled": true,
-  "[astro]": {
-    "editor.defaultFormatter": "astro-build.astro-vscode"
-  },
-  "redhat.telemetry.enabled": true,
   "gitdoc.enabled": true,
-  "[yaml]": {
-    "editor.defaultFormatter": "quarto.quarto"
+  "markdownlint.config": {
+    "default": true,
+    "no-bare-urls": false
   },
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
-  }
+  },
+  "redhat.telemetry.enabled": false,
+  "git.autofetch": true
 }
