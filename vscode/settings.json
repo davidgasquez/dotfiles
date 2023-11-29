@@ -29,7 +29,7 @@
   "dev.containers.defaultFeatures": {
     "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
   },
-  "editor.fontFamily": "'JetBrainsMono Nerd Font'",
+  "editor.fontFamily": "JetBrainsMono NF",
   "editor.formatOnSave": true,
   "files.autoSave": "onWindowChange",
   "markdown.extension.italic.indicator": "_",

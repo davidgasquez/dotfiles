@@ -117,7 +117,6 @@ scrolling:
 
   #     # The `style` can be specified to pick a specific face.
   #     style: Italic
-
   #   # Bold italic font face
   #   bold_italic:
   #     # Font family
@@ -131,19 +130,19 @@ scrolling:
 
 font:
   normal:
-    family: JetBrains Mono Nerd Font
+    family: JetBrainsMono NF
     style: Regular
 
   bold:
-    family: JetBrains Mono Nerd Font
+    family: JetBrainsMono NF
     style: Bold
 
   italic:
-    family: JetBrains Mono Nerd Font
+    family: JetBrainsMono NF
     style: Italic
 
   bold_italic:
-    family: JetBrains Mono Nerd Font
+    family: JetBrainsMono NF
     style: Bold Italic
 
   size: 12.0
