@@ -44,7 +44,7 @@ vscode:
 .PHONY: terminal
 terminal:
 	@ mkdir -p "$(HOME)/.config/alacritty"
-	@ ln -sf $(DOTFILES)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
+	@ ln -sf $(DOTFILES)/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
 
 .PHONY: hypr
 hypr:
