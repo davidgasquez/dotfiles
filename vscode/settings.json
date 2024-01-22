@@ -55,5 +55,6 @@
     "default": true,
     "no-bare-urls": false
   },
-  "git.autofetch": true
+  "git.autofetch": true,
+  "redhat.telemetry.enabled": false
 }
