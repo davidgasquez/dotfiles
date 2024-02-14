@@ -36,12 +36,6 @@
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
-  "[python]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit",
-      "source.organizeImports": "explicit"
-    }
-  },
   "github.copilot.enable": {
     "quarto": true,
     "*": true,
@@ -62,5 +56,12 @@
     "no-bare-urls": false
   },
   "git.autofetch": true,
-  "redhat.telemetry.enabled": false
+  "remote.autoForwardPortsSource": "hybrid",
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+  "redhat.telemetry.enabled": true
 }
