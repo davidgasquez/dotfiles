@@ -74,6 +74,10 @@ brave:
 	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
 	@ ln -sf $(DOTFILES)/electron-flags.conf $(HOME)/.config/electron-flags.conf
 
+.PHONY: llm
+llm:
+	@ ln -sf $(DOTFILES)/llm/gitcommit.yaml $(HOME)/.config/io.datasette.llm/templates/gitcommit.yaml
+
 .PHONY: install-packages
 install-packages:
 	@ yay --needed -S - < packages
