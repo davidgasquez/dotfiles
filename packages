@@ -1,15 +1,12 @@
 alacritty
-# blueman
 bottom
 brave-bin
 cliphist
 wl-clip-persist
 docker
 file-roller
-# gammastep
 git
 github-cli
-# gnome-keyring
 grim
 gvfs
 gvfs-mtp
@@ -46,6 +43,7 @@ ttf-mac-fonts
 otf-font-awesome
 ttf-ms-fonts
 ttf-roboto
+tod-bin
 tumbler
 visual-studio-code-bin
 waybar

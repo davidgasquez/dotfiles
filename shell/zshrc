@@ -24,6 +24,9 @@ alias ll='ls -l'
 alias la='ls -la'
 alias up='paru -Syu --devel --skipreview'
 alias c='code .'
+alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
+alias tnw='tod task create -p Personal -u Today -l "" --priority 1 -c'
+alias tls='tod task list -f "Today"'
 
 # Expand PATH with $HOME/.local/bin
 export PATH=$HOME/.local/bin:$PATH
