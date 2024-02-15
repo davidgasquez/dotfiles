@@ -77,6 +77,7 @@ brave:
 .PHONY: llm
 llm:
 	@ ln -sf $(DOTFILES)/llm/gitcommit.yaml $(HOME)/.config/io.datasette.llm/templates/gitcommit.yaml
+	@ ln -sf $(DOTFILES)/llm/emojidea.yaml $(HOME)/.config/io.datasette.llm/templates/emojidea.yaml
 
 .PHONY: install-packages
 install-packages:
