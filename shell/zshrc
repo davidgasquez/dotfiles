@@ -25,7 +25,7 @@ alias la='ls -la'
 alias up='paru -Syu --devel --skipreview'
 alias c='code .'
 alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
-alias tnw='tod task create -p Personal -u Today -l "" --priority 1 -c'
+alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod task list -f "Today"'
 
 # Functions

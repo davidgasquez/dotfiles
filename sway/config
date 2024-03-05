@@ -56,7 +56,6 @@ input * {
 }
 
 ### Window configuration
-
 default_border pixel 4
 default_floating_border normal
 hide_edge_borders smart
