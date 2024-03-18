@@ -86,6 +86,8 @@ install-packages:
 .PHONY: post-installation
 post-installation:
 	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)"
+	@ echo "Setup ZRAM" (https://wiki.archlinux.org/title/Zram#Using_zram-generator)
 	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
+	@ echo "Improve Power Management" (auto-cpufreq)
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
 	@ echo "Setup DNS" (Via nm-applet)
