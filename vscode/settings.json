@@ -6,7 +6,6 @@
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "window.menuBarVisibility": "toggle",
-  "window.titleBarStyle": "custom",
   "terminal.integrated.copyOnSelection": true,
   "conventionalCommits.emojiFormat": "emoji",
   "conventionalCommits.promptScopes": false,

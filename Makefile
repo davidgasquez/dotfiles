@@ -10,6 +10,7 @@ help:
 
 .PHONY: shell
 shell:
+	@ mkdir -p $(HOME)/.config/sheldon
 	@ ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
 	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
 	@ ln -sf $(DOTFILES)/shell/sheldon/plugins.toml $(HOME)/.config/sheldon/plugins.toml
@@ -36,7 +37,6 @@ fonts:
 .PHONY: vscode
 vscode:
 	@ mkdir -p "$(HOME)/.config/Code/User/"
-	@ cat vscode/extensions | xargs -L 1 code --install-extension
 	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code/User/settings.json"
 	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
 	@ ln -sf $(DOTFILES)/vscode/code-flags.conf $(HOME)/.config/code-flags.conf
