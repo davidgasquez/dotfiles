@@ -6,8 +6,6 @@
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "window.menuBarVisibility": "toggle",
-  "window.titleBarStyle": "custom",
-  "python.defaultInterpreterPath": "/usr/local/bin/python",
   "terminal.integrated.copyOnSelection": true,
   "conventionalCommits.emojiFormat": "emoji",
   "conventionalCommits.promptScopes": false,
@@ -30,7 +28,7 @@
   "dev.containers.defaultFeatures": {
     "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
   },
-  "editor.fontFamily": "'JetBrainsMono Nerd Font'",
+  "editor.fontFamily": "JetBrainsMono NF",
   "editor.formatOnSave": true,
   "files.autoSave": "onWindowChange",
   "markdown.extension.italic.indicator": "_",
@@ -56,9 +54,13 @@
     "default": true,
     "no-bare-urls": false
   },
+  "git.autofetch": true,
+  "remote.autoForwardPortsSource": "hybrid",
   "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
   },
-  "redhat.telemetry.enabled": false,
-  "git.autofetch": true
+  "redhat.telemetry.enabled": true
 }

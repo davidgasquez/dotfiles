@@ -1,0 +1,70 @@
+# ZSH
+
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+
+# Shell
+eval "$(sheldon source)"
+eval "$(starship init zsh)"
+
+setopt autocd extendedglob
+
+bindkey -e
+
+# Completions
+zstyle :compinstall filename '/home/david/.zshrc'
+zstyle ':completion:*' menu select
+autoload -Uz compinit
+compinit
+
+# Aliases
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -la'
+alias up='paru -Syu --devel --skipreview'
+alias c='code .'
+alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
+alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
+alias tls='tod task list -f "Today"'
+
+# Functions
+aigcm() {
+  git add -A .
+  git diff --minimal --cached | \
+    llm -t gitcommit > $(git rev-parse --git-dir)/COMMIT_EDITMSG && \
+    git commit --verbose --edit --file=$(git rev-parse --git-dir)/COMMIT_EDITMSG
+}
+
+# Expand PATH with $HOME/.local/bin
+export PATH=$HOME/.local/bin:$PATH
+
+# SSH Agent
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  # Check for a currently running instance of the agent
+  RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
+  if [ "$RUNNING_AGENT" = "0" ]; then
+    # Launch a new instance of the agent
+    ssh-agent -s &> $HOME/.ssh/ssh-agent
+  fi
+  eval `cat $HOME/.ssh/ssh-agent` > /dev/null
+
+  # Add all keys
+  ssh-add
+fi
+
+# Move cursor
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;5D" backward-word
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=blue,fg=black,bold'
+
+# Hyprland
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec Hyprland
+fi

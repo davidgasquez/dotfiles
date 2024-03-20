@@ -1,0 +1,11 @@
+model: gpt-4-turbo-preview
+prompt: >
+  Write a descriptive commit following the Conventional Commits specification describing the changes in the following diff.
+  Keep the commit message brief, but informative. Avoid stating the obvious. Don't add anything (like ```)
+  Focus on important changes a reviewer would care about.
+  Template:
+    <type>: <gitmoji> <description>
+
+    [optional body]
+
+  The diff: $input
