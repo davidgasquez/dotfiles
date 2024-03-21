@@ -1,13 +1,5 @@
 DOTFILES := $(shell pwd)
 
-.DEFAULT_GOAL := help
-
-.PHONY: help
-help:
-	@ echo -e "Usage: \tmake [TARGET]\n"
-	@ echo -e "Targets:"
-	@ echo -e "  install-packages    	  Installs all the packages"
-
 .PHONY: shell
 shell:
 	@ mkdir -p $(HOME)/.config/sheldon
@@ -23,10 +15,6 @@ gitconfig:
 scripts:
 	@ mkdir -p $(HOME)/.local/bin
 	@ ln -sf $(DOTFILES)/scripts/* $(HOME)/.local/bin
-
-.PHONY: network
-network:
-	@ sudo ln -sf $(DOTFILES)/network/resolv.conf.head /etc/resolv.conf.head
 
 .PHONY: fonts
 fonts:
@@ -58,17 +46,6 @@ hypr:
 	@ ln -sf $(DOTFILES)/hypr/mako/config $(HOME)/.config/mako/config
 	@ ln -sf $(DOTFILES)/hypr/fuzzel/fuzzel.ini $(HOME)/.config/fuzzel/fuzzel.ini
 
-.PHONY: sway
-sway:
-	@ mkdir -p $(HOME)/.config/sway $(HOME)/.config/waybar $(HOME)/.config/wofi $(HOME)/.config/mako $(HOME)/.config/gammastep
-	@ ln -sf $(DOTFILES)/sway/config $(HOME)/.config/sway/config
-	@ ln -sf $(DOTFILES)/sway/waybar/config.jsonc $(HOME)/.config/waybar/config
-	@ ln -sf $(DOTFILES)/sway/waybar/style.css $(HOME)/.config/waybar/style.css
-	@ ln -sf $(DOTFILES)/sway/wofi/config $(HOME)/.config/wofi/config
-	@ ln -sf $(DOTFILES)/sway/wofi/style.css $(HOME)/.config/wofi/style.css
-	@ ln -sf $(DOTFILES)/sway/mako/config $(HOME)/.config/mako/config
-	@ ln -sf $(DOTFILES)/gammaset.conf $(HOME)/.config/gammastep/config.ini
-
 .PHONY: brave
 brave:
 	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
@@ -78,10 +55,6 @@ brave:
 llm:
 	@ ln -sf $(DOTFILES)/llm/gitcommit.yaml $(HOME)/.config/io.datasette.llm/templates/gitcommit.yaml
 	@ ln -sf $(DOTFILES)/llm/emojidea.yaml $(HOME)/.config/io.datasette.llm/templates/emojidea.yaml
-
-.PHONY: install-packages
-install-packages:
-	@ yay --needed -S - < packages
 
 .PHONY: post-installation
 post-installation:
