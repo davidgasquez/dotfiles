@@ -79,7 +79,7 @@ button:hover {
 #memory,
 #disk,
 #temperature,
-#backlight,
+/* #backlight, */
 #network,
 #pulseaudio,
 #wireplumber,
@@ -90,7 +90,6 @@ button:hover {
 #scratchpad,
 #mpd {
   padding: 0 6px;
-  color: #ffffff;
 }
 
 #window,
@@ -113,15 +112,20 @@ button:hover {
 }
 
 #battery {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: transparent;
+  margin-right: 5px;
 }
 
-#battery.charging,
+#backlight {
+  background-color: transparent;
+  margin-right: 5px;
+}
+
+/* #battery.charging,
 #battery.plugged {
   color: #ffffff;
   background-color: #26A65B;
-}
+} */
 
 @keyframes blink {
   to {
@@ -155,10 +159,6 @@ label:focus {
 
 #disk {
   background-color: #964B00;
-}
-
-#backlight {
-  background-color: #90b1b1;
 }
 
 #network {
