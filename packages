@@ -1,12 +1,10 @@
-docker
-# libsecret
-tod-bin
 alacritty
 base-devel
 bottom
 brave-bin
 catppuccin-gtk-theme-frappe
 cliphist
+docker
 file-roller
 fuzzel
 fwupd
@@ -45,6 +43,7 @@ slurp
 starship
 thunar
 thunar-archive-plugin
+tod-bin
 ttf-croscore
 ttf-dejavu
 ttf-jetbrains-mono-nerd
@@ -62,4 +61,5 @@ xdg-desktop-portal-hyprland
 xdg-user-dirs
 xdg-utils
 yt-dlp
+zenith
 zsh

@@ -23,7 +23,8 @@
     "DavidAnson.vscode-markdownlint",
     "timonwong.shellcheck",
     "VisualStudioExptTeam.vscodeintellicode",
-    "vivaxy.vscode-conventional-commits"
+    "vivaxy.vscode-conventional-commits",
+    "Supermaven.supermaven"
   ],
   "foam.openDailyNote.directory": "Log",
   "dev.containers.defaultFeatures": {
@@ -33,13 +34,9 @@
   "editor.formatOnSave": true,
   "files.autoSave": "onWindowChange",
   "markdown.extension.italic.indicator": "_",
+  "markdown.extension.completion.enabled": true,
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  },
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": true,
-    "markdown": true
   },
   "workbench.startupEditor": "none",
   "git.confirmSync": false,
@@ -67,5 +64,6 @@
     "notebook.source.fixAll": "explicit",
     "notebook.source.organizeImports": "explicit"
   },
-  "redhat.telemetry.enabled": true
+  "supermaven.allowGitignore": true,
+  "github.copilot.editor.enableAutoCompletions": false
 }
