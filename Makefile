@@ -11,11 +11,6 @@ shell:
 gitconfig:
 	@ ln -sf $(DOTFILES)/git/gitconfig $(HOME)/.gitconfig
 
-.PHONY: scripts
-scripts:
-	@ mkdir -p $(HOME)/.local/bin
-	@ ln -sf $(DOTFILES)/scripts/* $(HOME)/.local/bin
-
 .PHONY: fonts
 fonts:
 	@ mkdir -p $(HOME)/.config/fontconfig/conf.d

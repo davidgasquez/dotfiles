@@ -58,10 +58,6 @@ foreground = "#C6D0F5"
 background = "#A6D189"
 foreground = "#303446"
 
-# [colors.search.footer_bar]
-# background = "#A5ADCE"
-# foreground = "#303446"
-
 [colors.search.matches]
 background = "#A5ADCE"
 foreground = "#303446"
@@ -108,14 +104,11 @@ action = "PasteSelection"
 mouse = "Middle"
 
 [scrolling]
-history = 10000
+history = 20000
 multiplier = 3
 
 [selection]
 save_to_clipboard = true
-
-# [url.launcher]
-# program = "xdg-open"
 
 [window]
 decorations = "none"
@@ -123,4 +116,4 @@ dynamic_padding = false
 
 [window.padding]
 x = 15
-y = 15
+y = 10

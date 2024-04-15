@@ -1,3 +1,0 @@
-#!/bin/sh
-
-brave --app=https://todoist.com/app/today
