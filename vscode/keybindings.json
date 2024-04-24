@@ -25,5 +25,9 @@
     "key": "ctrl+shift+insert",
     "command": "workbench.action.terminal.new",
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
+  },
+  {
+    "key": "shift+alt+r",
+    "command": "remote-containers.reopenInContainer"
   }
 ]
