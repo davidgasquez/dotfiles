@@ -23,8 +23,7 @@
     "DavidAnson.vscode-markdownlint",
     "timonwong.shellcheck",
     "VisualStudioExptTeam.vscodeintellicode",
-    "vivaxy.vscode-conventional-commits",
-    "Supermaven.supermaven"
+    "vivaxy.vscode-conventional-commits"
   ],
   "foam.openDailyNote.directory": "Log",
   "dev.containers.defaultFeatures": {
@@ -64,8 +63,6 @@
     "notebook.source.fixAll": "explicit",
     "notebook.source.organizeImports": "explicit"
   },
-  "supermaven.allowGitignore": true,
-  "supermaven.otherWarning": false,
   "remote.autoForwardPortsSource": "hybrid",
   "redhat.telemetry.enabled": false,
   "terminal.integrated.allowChords": false,
