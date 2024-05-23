@@ -27,6 +27,7 @@ alias c='code .'
 alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
 alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod task list -f "Today"'
+alias chat='llm chat -m llama3'
 
 # Functions
 aigcm() {
@@ -35,6 +36,9 @@ aigcm() {
     llm -t gitcommit > $(git rev-parse --git-dir)/COMMIT_EDITMSG && \
     git commit --verbose --edit --file=$(git rev-parse --git-dir)/COMMIT_EDITMSG
 }
+
+# FZF
+source <(fzf --zsh)
 
 # Expand PATH with $HOME/.local/bin
 export PATH=$HOME/.local/bin:$PATH

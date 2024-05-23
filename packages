@@ -8,6 +8,7 @@ docker
 file-roller
 fuzzel
 fwupd
+fzf
 git
 github-cli
 grim

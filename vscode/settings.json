@@ -12,7 +12,6 @@
   "conventionalCommits.promptFooter": false,
   "conventionalCommits.promptBody": false,
   "dev.containers.defaultExtensions": [
-    "eamodio.gitlens",
     "EditorConfig.EditorConfig",
     "GitHub.copilot-chat",
     "GitHub.copilot-labs",
