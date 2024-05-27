@@ -68,5 +68,6 @@
   "terminal.integrated.sendKeybindingsToShell": true,
   "github.copilot.enable": {
     "*": true
-  }
+  },
+  "github.copilot.editor.enableAutoCompletions": true
 }
