@@ -19,9 +19,9 @@ autoload -Uz compinit
 compinit
 
 # Aliases
-alias ls='ls --color=auto'
-alias ll='ls -l'
-alias la='ls -la'
+alias ls='eza'
+alias ll='eza -l'
+alias la='eza -la'
 alias up='paru -Syu --devel --skipreview'
 alias c='code .'
 alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
