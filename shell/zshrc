@@ -19,6 +19,7 @@ autoload -Uz compinit
 compinit
 
 # Aliases
+alias cd='z'
 alias ls='eza'
 alias ll='eza -l'
 alias la='eza -la'
@@ -39,6 +40,9 @@ aigcm() {
 
 # FZF
 source <(fzf --zsh)
+
+# Zoxide
+eval "$(zoxide init zsh)"
 
 # Expand PATH with $HOME/.local/bin
 export PATH=$HOME/.local/bin:$PATH
