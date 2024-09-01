@@ -1,0 +1,8 @@
+{
+  "workbench.colorTheme": "Catppuccin Frappé",
+  "workbench.iconTheme": "catppuccin-frappe",
+  "catppuccin.accentColor": "blue",
+  "window.titleBarStyle": "native",
+  "window.menuBarVisibility": "toggle",
+  "cursor.cpp.enablePartialAccepts": true
+}

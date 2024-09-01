@@ -9,6 +9,12 @@ eval "$(sheldon source)"
 eval "$(starship init zsh)"
 
 setopt autocd extendedglob
+setopt hist_ignore_all_dups
+setopt hist_reduce_blanks
+setopt inc_append_history
+setopt share_history 
+setopt correct
+setopt auto_menu
 
 bindkey -e
 

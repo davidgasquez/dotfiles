@@ -1,0 +1,33 @@
+[
+  {
+    "key": "ctrl+[Backslash]",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+d",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+shift+up",
+    "command": "editor.action.moveLinesUpAction"
+  },
+  {
+    "key": "ctrl+shift+down",
+    "command": "editor.action.moveLinesDownAction"
+  },
+  {
+    "key": "ctrl+shift+[Backslash]",
+    "command": "extension.conventionalCommits"
+  },
+  {
+    "key": "ctrl+shift+insert",
+    "command": "workbench.action.terminal.new",
+    "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
+  },
+  {
+    "key": "shift+alt+r",
+    "command": "remote-containers.reopenInContainer"
+  }
+]

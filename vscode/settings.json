@@ -70,5 +70,7 @@
     "*": true
   },
   "github.copilot.editor.enableAutoCompletions": true,
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "continue.enableQuickActions": true,
+  "continue.enableTabAutocomplete": false,
 }

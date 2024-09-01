@@ -24,6 +24,12 @@ vscode:
 	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
 	@ ln -sf $(DOTFILES)/vscode/code-flags.conf $(HOME)/.config/code-flags.conf
 
+.PHONY: cursor
+cursor:
+	@ mkdir -p "$(HOME)/.config/Cursor/User/"
+	@ ln -sf $(DOTFILES)/cursor/settings.json "$(HOME)/.config/Cursor/User/settings.json"
+	@ ln -sf $(DOTFILES)/cursor/keybindings.json "$(HOME)/.config/Cursor/User/keybindings.json"
+
 .PHONY: terminal
 terminal:
 	@ mkdir -p "$(HOME)/.config/alacritty"
