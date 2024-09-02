@@ -4,5 +4,7 @@
   "catppuccin.accentColor": "blue",
   "window.titleBarStyle": "native",
   "window.menuBarVisibility": "toggle",
-  "cursor.cpp.enablePartialAccepts": true
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true
 }

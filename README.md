@@ -8,14 +8,14 @@
 
 ![image](https://github.com/davidgasquez/dotfiles/assets/1682202/6c4492d8-98ce-4430-9921-4d7ba70f4193)
 
-## Overview
+## 🔍 Overview
 
 My primary OS is **Arch Linux**. These configurations are tuned to work on it. I'm using the [Catppuccin theme colors](https://github.com/catppuccin/catppuccin) across the system.
 
-## Installation
+## 🚀 Installation
 
 The fastest way to start using them is running the different `make` targets.
 
-## License
+## 📜 License
 
 MIT © David Gasquez

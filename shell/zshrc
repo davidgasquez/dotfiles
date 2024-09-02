@@ -12,7 +12,7 @@ setopt autocd extendedglob
 setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
 setopt inc_append_history
-setopt share_history 
+setopt share_history
 setopt correct
 setopt auto_menu
 
@@ -30,7 +30,7 @@ alias ls='eza'
 alias ll='eza -l'
 alias la='eza -la'
 alias up='paru -Syu --devel --skipreview'
-alias c='code .'
+alias c='nohup cursor --ozone-platform=wayland --enable-features=UseOzonePlatform . >/dev/null 2>&1 & disown'
 alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
 alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod list view -f "Today"'
