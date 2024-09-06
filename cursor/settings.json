@@ -6,5 +6,12 @@
   "window.menuBarVisibility": "toggle",
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
-  "git.autofetch": true
+  "git.autofetch": true,
+  "editor.formatOnSave": true,
+  "editor.fontFamily": "JetBrainsMono NF",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "terminal.integrated.copyOnSelection": true,
+  "explorer.confirmDragAndDrop": false
 }
