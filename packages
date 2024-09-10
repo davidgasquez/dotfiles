@@ -20,6 +20,7 @@ hyprpaper
 inter-font
 jq
 mako
+mkinitcpio-firmware
 mpv
 network-manager-applet
 noto-fonts
@@ -33,6 +34,7 @@ obsidian
 openssh
 openvpn
 otf-font-awesome
+papirus-icon-theme
 pavucontrol
 pipewire
 pipewire-alsa
@@ -41,6 +43,8 @@ pipewire-pulse
 polkit-kde-agent
 qbittorrent
 qt6-wayland
+qt6ct
+sheldon
 slurp
 starship
 thunar

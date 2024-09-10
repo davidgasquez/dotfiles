@@ -69,8 +69,5 @@
   "github.copilot.enable": {
     "*": true
   },
-  "github.copilot.editor.enableAutoCompletions": true,
-  "git.openRepositoryInParentFolders": "never",
-  "continue.enableQuickActions": true,
-  "continue.enableTabAutocomplete": false,
+  "github.copilot.editor.enableAutoCompletions": true
 }

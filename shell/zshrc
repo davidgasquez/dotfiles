@@ -30,11 +30,11 @@ alias ls='eza'
 alias ll='eza -l'
 alias la='eza -la'
 alias up='paru -Syu --devel --skipreview'
-alias c='nohup cursor --ozone-platform=wayland --enable-features=UseOzonePlatform . >/dev/null 2>&1 & disown'
+alias c='code .'
 alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
 alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod list view -f "Today"'
-alias chat='llm chat -m llama3'
+alias chat='llm chat -m gpt-4o'
 
 # Functions
 aigcm() {
