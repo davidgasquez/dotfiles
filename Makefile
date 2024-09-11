@@ -67,3 +67,5 @@ post-installation:
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
 	@ echo "Setup DNS" (Via nm-applet)
 	@ echo "Improve battery life" (https://github.com/AdnanHodzic/auto-cpufreq)
+	@ echo "Enable Scheduled fstrim" (https://wiki.archlinux.org/title/Solid_state_drive#Periodic_TRIM)
+	@ echo "Enable Scheduled Mirrorlist Updates" (https://wiki.archlinux.org/title/Reflector)
