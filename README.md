@@ -14,7 +14,11 @@ My primary OS is **Arch Linux**. These configurations are tuned to work on it. I
 
 ## 🚀 Installation
 
-The fastest way to start using them is running the different `make` targets.
+Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to setup your system.
+
+## 📦 Configuration
+
+The fastest way to setup the system is running the different `make` targets.
 
 ## 📜 License
 
