@@ -5,6 +5,7 @@ brave-bin
 catppuccin-gtk-theme-frappe
 cliphist
 docker
+docker-buildx
 eza
 file-roller
 fuzzel
