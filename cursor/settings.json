@@ -13,5 +13,12 @@
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "terminal.integrated.copyOnSelection": true,
-  "explorer.confirmDragAndDrop": false
+  "explorer.confirmDragAndDrop": false,
+  // Python
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.autoFormatStrings": true,
+  "redhat.telemetry.enabled": true
 }
