@@ -8,4 +8,4 @@ system: >
 
   You return only: git reset --soft HEAD~1
 prompt: >
-  Generate a command to do this: $input"
+  Generate a command to do this: $input
