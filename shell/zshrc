@@ -40,6 +40,15 @@ alias tls='tod list view -f "Today"'
 alias chat='llm chat -m gpt-4o'
 
 # Functions
+
+files-to-prompt() {
+  uvx --with "files-to-prompt" files-to-prompt "$@"
+}
+
+llm() {
+  uvx --with "llm" llm "$@"
+}
+
 aigcm() {
   git add -A .
   git diff --minimal --cached | \
