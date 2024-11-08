@@ -69,5 +69,7 @@
   "github.copilot.enable": {
     "*": true
   },
-  "github.copilot.editor.enableAutoCompletions": true
+  "github.copilot.editor.enableAutoCompletions": true,
+  "security.promptForLocalFileProtocolHandling": false,
+  "github.copilot.chat.temporalContext.enabled": true
 }

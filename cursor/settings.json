@@ -20,5 +20,6 @@
   "python.analysis.autoSearchPaths": true,
   "python.analysis.useLibraryCodeForTypes": true,
   "python.analysis.autoFormatStrings": true,
-  "redhat.telemetry.enabled": true
+  "cursor.cmdk.useThemedDiffBackground": true,
+  "extensions.ignoreRecommendations": true
 }
