@@ -21,5 +21,6 @@
   "python.analysis.useLibraryCodeForTypes": true,
   "python.analysis.autoFormatStrings": true,
   "cursor.cmdk.useThemedDiffBackground": true,
-  "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true,
+  "explorer.confirmDelete": false
 }
