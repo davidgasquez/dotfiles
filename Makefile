@@ -69,3 +69,5 @@ post-installation:
 	@ echo "Improve battery life" (https://github.com/AdnanHodzic/auto-cpufreq)
 	@ echo "Enable Scheduled fstrim" (https://wiki.archlinux.org/title/Solid_state_drive#Periodic_TRIM)
 	@ echo "Enable Scheduled Mirrorlist Updates" (https://wiki.archlinux.org/title/Reflector)
+	@ echo "Enable keyring" (https://wiki.archlinux.org/title/GNOME/Keyring)
+	@ echo "Add FilePicker and Desktop Portals" (https://wiki.archlinux.org/title/XDG_Desktop_Portal)
