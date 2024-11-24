@@ -11,7 +11,8 @@
     "bindings": {
       "ctrl-_": "workspace::NewTerminal",
       // Tasks
-      "alt-g alt-c": ["task::Spawn", { "task_name": "Commit" }]
+      "alt-g alt-c": ["task::Spawn", { "task_name": "Commit" }],
+      "alt-g alt-p": ["task::Spawn", { "task_name": "Push" }]
     }
   },
   {
