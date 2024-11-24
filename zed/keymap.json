@@ -9,7 +9,7 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-shift-insert": "workspace::NewTerminal"
+      "ctrl-_": "workspace::NewTerminal"
     }
   },
   {
