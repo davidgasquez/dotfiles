@@ -9,7 +9,9 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-_": "workspace::NewTerminal"
+      "ctrl-_": "workspace::NewTerminal",
+      // Tasks
+      "alt-g alt-c": ["task::Spawn", { "task_name": "Commit" }]
     }
   },
   {
