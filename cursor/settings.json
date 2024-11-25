@@ -28,5 +28,14 @@
   "cursor.aipreview.enabled": true,
   "cursor.cpp.enablePartialAccepts": true,
   "cursor.general.enableShadowWorkspace": true,
-  "cursor.general.gitGraphIndexing": "enabled"
+  "cursor.general.gitGraphIndexing": "enabled",
+  "terminal.integrated.profiles.linux": {
+    "zsh": {
+      "path": "/bin/zsh",
+      "args": [
+        "-l",
+        "-i"
+      ]
+    }
+  }
 }
