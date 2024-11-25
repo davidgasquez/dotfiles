@@ -34,5 +34,10 @@
     "key": "alt+g alt+c",
     "command": "workbench.action.tasks.runTask",
     "args": "AI Git Commit"
+  },
+  {
+    "key": "alt+g alt+p",
+    "command": "git.push",
+    "when": "!operationInProgress"
   }
 ]
