@@ -22,7 +22,7 @@
     "command": "extension.conventionalCommits"
   },
   {
-    "key": "ctrl+shift+insert",
+    "key": "ctrl+shift+-",
     "command": "workbench.action.terminal.new",
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
   },
