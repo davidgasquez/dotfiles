@@ -22,5 +22,11 @@
   "python.analysis.autoFormatStrings": true,
   "cursor.cmdk.useThemedDiffBackground": true,
   "extensions.ignoreRecommendations": true,
-  "explorer.confirmDelete": false
+  "explorer.confirmDelete": false,
+  "files.autoSave": "onFocusChange",
+  "editor.wordWrap": "on",
+  "cursor.aipreview.enabled": true,
+  "cursor.cpp.enablePartialAccepts": true,
+  "cursor.general.enableShadowWorkspace": true,
+  "cursor.general.gitGraphIndexing": "enabled"
 }

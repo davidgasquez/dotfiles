@@ -29,5 +29,10 @@
   {
     "key": "shift+alt+r",
     "command": "remote-containers.reopenInContainer"
+  },
+  {
+    "key": "alt+g alt+c",
+    "command": "workbench.action.tasks.runTask",
+    "args": "AI Git Commit"
   }
 ]
