@@ -1,4 +1,4 @@
-model: gpt-4o
+model: claude-3.5-sonnet-latest
 system: >
   Return only the command to be executed as a raw string, no string delimiters
   wrapping it (like ```), no yapping, no markdown, no fenced code, what you return
