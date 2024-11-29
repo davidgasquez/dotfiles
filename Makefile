@@ -67,6 +67,10 @@ llm:
 	@ ln -sf $(DOTFILES)/llm/emojidea.yaml $(HOME)/.config/io.datasette.llm/templates/emojidea.yaml
 	@ ln -sf $(DOTFILES)/llm/cmd.yaml $(HOME)/.config/io.datasette.llm/templates/cmd.yaml
 
+.PHONY: interpreter
+interpreter:
+	@ ln -sf $(DOTFILES)/interpreter/default.yaml $(HOME)/.config/open-interpreter/profiles/default.yaml
+
 .PHONY: post-installation
 post-installation:
 	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)"
@@ -79,3 +83,4 @@ post-installation:
 	@ echo "Enable Scheduled Mirrorlist Updates" (https://wiki.archlinux.org/title/Reflector)
 	@ echo "Enable keyring" (https://wiki.archlinux.org/title/GNOME/Keyring)
 	@ echo "Add FilePicker and Desktop Portals" (https://wiki.archlinux.org/title/XDG_Desktop_Portal)
+	@ echo "Install uv tools: llm, files-to-prompt, open-interpreter"
