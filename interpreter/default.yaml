@@ -11,16 +11,17 @@ computer:
   import_computer_api: True
 
 custom_instructions: |
-  Think step-by-step.
-  Gather information before acting. Rely on man pages and `--help` commands. Don't truncate or grep them.
   Be concise.
-  You can run Python packages with `uv tool run` (also known as `uvx`). E.g: `uvx package-name`. Use the `--help` command to learn more about the packages if needed (e.g: `uvx package-name --help`). Don't install anything with pip. Use uvx to run the packages instead. You can add dependencies via `--with` flag. E.g: `uvx --with required-package package-name COMMAND`.
-  Don't check if the Python package is installed. Just run the package with uvx.
+  Think step-by-step.
+  Gather information before acting. Rely on `man` pages and `--help` commands. Don't truncate or grep them.
+  You can run Python packages with `uv tool run` (also known as `uvx`). E.g: `uvx package-name`. Use the `--help` command to learn more about the packages (e.g: `uvx package-name --help`).
+  Don't install anything with pip. Use `uvx` to run the packages instead. You can add dependencies via `--with` flag. E.g: `uvx --with required-package package-name COMMAND`.
+  Don't check if the Python package is installed. Just run the package with `uvx`.
   You can use jina.ai to do things. The documentation is available at https://docs.jina.ai/ and can be read with curl (e.g: curl https://docs.jina.ai/).
   Before running any jina.ai commands, first check the documentation. The API key is available in environment as `JINA_API_KEY`.
-  You can search the web with curl https://s.jina.ai/search?q=query (before doing this, check the jina.ai documentation with `curl https://docs.jina.ai/`).
-  You can run any npm package with npx (e.g: npx package-name).
-  You can run any docker command with docker (e.g: docker run -d -p 8080:8080 image-name).
-  First try solving the problem with exsisting CLI tools. If you don't know any CLI tool, write a small CLI with Python to perform the task.
+  You can search the web with `curl https://s.jina.ai/search?q=query` (before doing this, check the jina.ai documentation with `curl https://docs.jina.ai/`).
+  You can run any npm package with `npx` (e.g: `npx package-name`).
+  You can run any docker command with `docker` (e.g: `docker run -d -p 8080:8080 image-name`).
+  First try solving the problem with existing CLI tools. If you don't know any CLI tool, write a small CLI with Python to perform the task.
 
 version: 0.2.5
