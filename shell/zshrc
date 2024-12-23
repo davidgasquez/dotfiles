@@ -72,6 +72,14 @@ q() {
   llm prompt "$question" -s "$system"
 }
 
+yt2srt() {
+  local url="$1"
+
+  # Fetch subtitles and process them
+  yt-dlp -q --skip-download --write-auto-subs --convert-subs srt "$url"
+}
+
+
 qv() {
   local url="$1"
   local question="$2"
@@ -105,7 +113,7 @@ source <(fzf --zsh)
 eval "$(zoxide init zsh)"
 
 # Expand PATH with $HOME/.local/bin
-export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/projects/dotfiles/scripts:$PATH
 
 # SSH Agent
 if [ -z "$SSH_AUTH_SOCK" ]; then
