@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Exit on error
+set -e
+
+url="$1"
+question="$2"
+
+if [ -z "$url" ] || [ -z "$question" ]; then
+  echo "Usage: q <url> <question>"
+  exit 1
+fi
+
+# Check if URL is a YouTube video
+if [[ "$url" =~ ^https?://(www\.)?(youtube\.com|youtu\.be) ]]; then
+  # Fetch video subtitles
+  subtitle_url=$(yt-dlp -q --skip-download --convert-subs srt --write-sub --sub-langs "en" --write-auto-sub --print "requested_subtitles.en.url" "$url")
+  content=$(curl -s "$subtitle_url" | sed '/^$/d' | grep -v '^[0-9]*$' | grep -v '\-->' | sed 's/<[^>]*>//g' | tr '\n' ' ')
+
+  system="
+  You are a helpful assistant that can answer questions about YouTube videos.
+  Reply concisely, in a few sentences.
+
+  The content:
+  ${content}
+  "
+else
+  # Fetch webpage content through Jina
+  content=$(curl -s "https://r.jina.ai/$url")
+
+  system="
+  You are a helpful assistant that can answer questions about the content.
+  Reply concisely, in a few sentences.
+
+  The content:
+  ${content}
+  "
+fi
+
+# Check if content was retrieved successfully
+if [ -z "$content" ]; then
+  echo "Failed to retrieve content from the URL."
+  exit 1
+fi
+
+# Use llm with the fetched content as system prompt
+llm prompt "$question" -s "$system"

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Exit on error
+set -e
+
+# Check if URL argument is provided
+if [ -z "$1" ]; then
+  echo "Usage: yt2srt <youtube-url>"
+  exit 1
+fi
+
+url="$1"
+
+# Fetch subtitles and process them
+yt-dlp -q --skip-download --write-auto-subs --convert-subs srt "$url"
+
+# Ideally, deduplicate the subtitles: https://github.com/yt-dlp/yt-dlp/issues/1734
