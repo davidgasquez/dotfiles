@@ -14,7 +14,7 @@ fi
 # Check if URL is a YouTube video
 if [[ "$url" =~ ^https?://(www\.)?(youtube\.com|youtu\.be) ]]; then
   # Fetch video subtitles
-  subtitle_url=$(yt-dlp -q --skip-download --convert-subs srt --write-sub --sub-langs "en" --write-auto-sub --print "requested_subtitles.en.url" "$url")
+  subtitle_url=$(yt-dlp -q --skip-download --sub-format ttml --convert-subs srt --write-sub --sub-langs "en" --write-auto-sub --print "requested_subtitles.en.url" "$url")
   content=$(curl -s "$subtitle_url" | sed '/^$/d' | grep -v '^[0-9]*$' | grep -v '\-->' | sed 's/<[^>]*>//g' | tr '\n' ' ')
 
   system="

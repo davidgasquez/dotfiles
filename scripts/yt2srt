@@ -12,6 +12,4 @@ fi
 url="$1"
 
 # Fetch subtitles and process them
-yt-dlp -q --skip-download --write-auto-subs --convert-subs srt "$url"
-
-# Ideally, deduplicate the subtitles: https://github.com/yt-dlp/yt-dlp/issues/1734
+yt-dlp -q --skip-download --write-auto-subs --sub-format ttml "$url"

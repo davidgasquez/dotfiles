@@ -20,6 +20,12 @@
   "python.analysis.autoSearchPaths": true,
   "python.analysis.useLibraryCodeForTypes": true,
   "python.analysis.autoFormatStrings": true,
+  "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.fixAll": "explicit",
+    "notebook.source.organizeImports": "explicit"
+  },
   "ruff.nativeServer": "on",
   "[python]": {
     "editor.formatOnSave": true,

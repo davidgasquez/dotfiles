@@ -3,6 +3,8 @@
 # requires-python = ">=3.12"
 # ///
 
+# Source: https://gist.github.com/yhoiseth/c80c1e44a7036307e424fce616eed25e?permalink_comment_id=5335497#gistcomment-5335497
+
 import re
 import subprocess
 from pathlib import Path
