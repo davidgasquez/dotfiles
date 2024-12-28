@@ -38,5 +38,9 @@
   {
     "key": "ctrl+shift+k",
     "command": "composer.openAsPane"
+  },
+  {
+    "key": "shift+alt+d",
+    "command": "editor.debug.action.selectionToRepl"
   }
 ]
