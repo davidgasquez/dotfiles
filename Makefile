@@ -69,6 +69,7 @@ maintenance:
 	@ uv cache clean
 	@ sheldon lock --update
 	@ pacman -Sc
+	@ uv tool upgrade --all
 
 .PHONY: post-installation
 post-installation:
