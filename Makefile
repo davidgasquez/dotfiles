@@ -63,6 +63,13 @@ llm:
 interpreter:
 	@ ln -sf $(DOTFILES)/interpreter/default.yaml $(HOME)/.config/open-interpreter/profiles/default.yaml
 
+.PHONY: maintenance
+maintenance:
+	@ docker system prune --volumes --all
+	@ uv cache clean
+	@ sheldon lock --update
+	@ pacman -Sc
+
 .PHONY: post-installation
 post-installation:
 	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)"
