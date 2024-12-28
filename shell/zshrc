@@ -4,6 +4,9 @@ HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 
+# Editor
+export EDITOR=cursor
+
 # Avoid % in prompt
 set +o prompt_cr +o prompt_sp
 
