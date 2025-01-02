@@ -1,8 +1,9 @@
 # ZSH
 
+# History
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=5000
+SAVEHIST=5000
 
 # Editor
 export EDITOR=cursor
@@ -14,6 +15,7 @@ set +o prompt_cr +o prompt_sp
 eval "$(sheldon -q --non-interactive source)"
 eval "$(starship init zsh)"
 
+# Options
 setopt autocd extendedglob
 setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
@@ -22,6 +24,7 @@ setopt share_history
 setopt correct
 setopt auto_menu
 
+# Bindkeys
 bindkey -e
 
 # Completions
@@ -84,6 +87,10 @@ bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 bindkey "^[[1;5D" backward-word
 
+# Supr delete
+bindkey "^[[3~" delete-char
+
+# History substring search
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
