@@ -51,6 +51,10 @@ aigcm() {
     git commit --verbose --edit --file=$(git rev-parse --git-dir)/COMMIT_EDITMSG
 }
 
+subdl() {
+  uvx subliminal download -l es -s "$1"
+}
+
 # FZF
 source <(fzf --zsh)
 
