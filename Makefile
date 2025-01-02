@@ -83,4 +83,4 @@ post-installation:
 	@ echo "Enable Scheduled Mirrorlist Updates" (https://wiki.archlinux.org/title/Reflector)
 	@ echo "Enable keyring" (https://wiki.archlinux.org/title/GNOME/Keyring)
 	@ echo "Add FilePicker and Desktop Portals" (https://wiki.archlinux.org/title/XDG_Desktop_Portal)
-	@ echo "Install uv tools: llm, files-to-prompt, open-interpreter"
+	@ echo "Install uv tools: llm, markitdown, copychat, open-interpreter"

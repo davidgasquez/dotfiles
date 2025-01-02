@@ -25,8 +25,9 @@ if [[ "$url" =~ ^https?://(www\.)?(youtube\.com|youtu\.be) ]]; then
   ${content}
   "
 else
-  # Fetch webpage content through Jina
-  content=$(curl -s "https://r.jina.ai/$url")
+  # Fetch webpage content through MarkItDown
+  # Alternative: content=$(curl -s "https://r.jina.ai/$url")
+  content=$(markitdown "$url")
 
   system="
   You are a helpful assistant that can answer questions about the content.
