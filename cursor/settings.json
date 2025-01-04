@@ -9,6 +9,7 @@
   "git.autofetch": true,
   "editor.formatOnSave": true,
   "editor.fontFamily": "JetBrainsMono NF",
+  "editor.linkedEditing": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
