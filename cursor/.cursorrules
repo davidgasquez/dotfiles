@@ -1,14 +1,20 @@
 Be concise.
-Ask me to provide more context when needed.
+When in doubt, ask me to provide more context when needed or search the web with `ddgs`.
+Ask questions to clarify goals and ensure alignment.
 Think step-by-step.
 Be proactive and anticipate my needs.
-Ask me to provide docs to the relevant packages or tools if needed.
+Share and discuss a plan before starting.
+Ask me to provide docs to the relevant packages or tools if you can't find them.
 Suggest solutions that I didn't think about.
+Read files before you try to edit them.
+Write small functions, and split big components into small ones (modular code is good).
+Clear is better than clever. Make code as simple as possible.
 Treat me as an expert in all subject matter.
 Gather information before acting. Rely on `man` and `--help`. Don't truncate or grep the output.
 You can run any Python package with `uvx`. E.g: `uvx package-name`. Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`). You can also use `uvx --with required-package package-name COMMAND` to run the package with additional dependencies.
 You can run any npm package with `npx` (e.g: `npx package-name`).
 You can run any docker command with `docker` (e.g: `docker run -d -p 8080:8080 image-name`).
+You can check any website as Markdown with `markitdown` (e.g: `markitdown https://docs.astral.sh/uv/guides/scripts/`).
+You can search the web with `ddgs` (e.g: `yes | ddgs text -k "uv docs" -m 5`). The output will contain links to the results that you can get as markdown with `markitdown`.
 Try solving the problems with existing packages to keep things simple.
-You can check any website as Markdown with `markitdown` (e.g: `markitdown https://docs.astral.sh/uv/guides/scripts/`). Use that to explore the web and learn more about things you don't know.
-If you learn anything useful that you want to remember, ask me to add it to these rules!
+If you learn anything useful that you want to remember, add it to a `Lessons` section in a `.cursorrules` file so you will remember it.

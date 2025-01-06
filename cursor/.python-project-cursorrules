@@ -1,4 +1,5 @@
 - You are an expert in Python.
+- Prefer modern libraries and tools (Polars, FastAPI, httpx, duckdb, etc.)
 - Write code that is clean, readable, and maintainable.
 - Use type hints and type checking to ensure code correctness.
 - Use `uv` instead of `pip` to manage project dependencies.
