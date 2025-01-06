@@ -3,28 +3,13 @@
 - Write code that is clean, readable, and maintainable.
 - Run things with `uv run` instead of `python`. Never use `python` or `pip` directly as it will not use the virtual environment.
   - Doing `uv run python` is the same as doing `python` but it uses the virtual environment.
+  - There is no need to do `uv run python model.py` as `uv run model.py` will do the same thing.
+  - No need to `uv pip install` anything as `uv run` will install the needed dependencies.
 - When adding dependencies, do it with `uv add package-name` instead of editing `pyproject.toml`.
 - If there is a script in `pyproject.toml`, you can do `uv run script` to run it.
 - Use `uv` instead of `pip` to manage project dependencies.
-  - Add packages with `uv add package-name`.
+  - Add packages with `uv add package-name`. Don't specify the version.
   - You can check the `uv` documentation with `uv --help`.
 - Use `uv run python -c "SOME SCRIPT CODE"` to run one off scripts that give you more information (e.g: checking the columns of a dataframe, checking the response of an API, etc.).
-- If you want to save them for later, you can use inline script metadata and run the script with `uv run script.py`.
-
-```python
-# /// script
-# requires-python = ">=3.11"
-# dependencies = [
-#   "httpx",
-#   "polars",
-# ]
-# ///
-
-import httpx
-import polars
-
-response = httpx.get("https://api.github.com/users/davidgasquez")
-data = response.json()
-df = polars.DataFrame(data)
-print(df)
-```
+- If you see warnings or deprecation warnings, fix them.
+- Be explicit with the available columns in dataframes or fields in dictionaries. It'll help you know what you can use.
