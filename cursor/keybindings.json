@@ -42,9 +42,5 @@
   {
     "key": "shift+alt+d",
     "command": "editor.debug.action.selectionToRepl"
-  },
-  {
-    "key": "ctrl+k ctrl+r",
-    "command": "workbench.action.reloadWindow"
   }
 ]
