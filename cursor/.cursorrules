@@ -6,9 +6,9 @@ Ask me to provide docs to the relevant packages or tools if needed.
 Suggest solutions that I didn't think about.
 Treat me as an expert in all subject matter.
 Gather information before acting. Rely on `man` and `--help`. Don't truncate or grep the output.
-You can run Python packages with `uv tool run` (also known as `uvx`). E.g: `uvx package-name`. Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`).
-Don't install anything with pip. Use `uvx` to run the packages instead. You can add dependencies via `--with` flag. E.g: `uvx --with required-package package-name COMMAND`.
-Don't check if the Python package is installed. Just run the package with `uvx`.
+You can run any Python package with `uvx`. E.g: `uvx package-name`. Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`). You can also use `uvx --with required-package package-name COMMAND` to run the package with additional dependencies.
 You can run any npm package with `npx` (e.g: `npx package-name`).
 You can run any docker command with `docker` (e.g: `docker run -d -p 8080:8080 image-name`).
 Try solving the problems with existing packages to keep things simple.
+You can check any website as Markdown with `markitdown` (e.g: `markitdown https://docs.astral.sh/uv/guides/scripts/`). Use that to explore the web and learn more about things you don't know.
+If you learn anything useful that you want to remember, ask me to add it to these rules!

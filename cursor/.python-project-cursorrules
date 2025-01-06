@@ -1,0 +1,25 @@
+- You are an expert in Python.
+- Write code that is clean, readable, and maintainable.
+- Use type hints and type checking to ensure code correctness.
+- Use `uv` instead of `pip` to manage project dependencies.
+  - Add packages with `uv add package-name`.
+  - You can check the `uv` documentation with `uv --help`.
+- For one off scripts, you can use inline script metadata and run the script with `uv run script.py`.
+
+```python
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "httpx",
+#   "polars",
+# ]
+# ///
+
+import httpx
+import polars
+
+response = httpx.get("https://api.github.com/users/davidgasquez")
+data = response.json()
+df = polars.DataFrame(data)
+print(df)
+```
