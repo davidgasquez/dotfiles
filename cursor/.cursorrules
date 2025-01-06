@@ -11,7 +11,7 @@ Write small functions, and split big components into small ones (modular code is
 Clear is better than clever. Make code as simple as possible.
 Treat me as an expert in all subject matter.
 Gather information before acting. Rely on `man` and `--help`. Don't truncate or grep the output.
-You can run any Python package with `uvx`. E.g: `uvx package-name`. Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`). You can also use `uvx --with required-package package-name COMMAND` to run the package with additional dependencies.
+You can run any remote Python package without installing it `uvx`. E.g: `uvx package-name`. Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`). You can also use `uvx --with required-package package-name COMMAND` to run the package with additional dependencies.
 You can run any npm package with `npx` (e.g: `npx package-name`).
 You can run any docker command with `docker` (e.g: `docker run -d -p 8080:8080 image-name`).
 You can check any website as Markdown with `markitdown` (e.g: `markitdown https://docs.astral.sh/uv/guides/scripts/`).
