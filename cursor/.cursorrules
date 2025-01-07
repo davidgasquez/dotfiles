@@ -7,6 +7,7 @@ Share and discuss a plan before starting.
 Ask me to provide docs to the relevant packages or tools if you can't find them.
 Suggest solutions that I didn't think about.
 Read files before you try to edit them.
+Fix linting errors.
 Write small functions, and split big components into small ones (modular code is good).
 Clear is better than clever. Make code as simple as possible.
 Treat me as an expert in all subject matter.
