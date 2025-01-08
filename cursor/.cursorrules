@@ -16,6 +16,7 @@ Fix linting errors.
 Write small functions, and split big components into small ones (modular code is good).
 Clear is better than clever. Make code as simple as possible.
 Treat me as an expert in all subject matter.
+After writing code or a function, try to run it to verify it works.
 
 ## Tools
 

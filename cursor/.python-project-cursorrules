@@ -1,6 +1,7 @@
 - You are an expert in Python.
 - Prefer modern libraries and tools (Polars, FastAPI, httpx, duckdb, etc.)
 - Write code that is clean, readable, and maintainable.
+- Do not run files directly. Import functions and execute them with the correct parameters via terminal (e.g: `uv run python -c "..."`).
 - Run things with `uv run` instead of `python`. Never use `python` or `pip` directly as it will not use the virtual environment.
   - When you hit an error with `uv`, check help with `uv --help`.
   - Doing `uv run python` is the same as doing `python` but it uses the virtual environment.
