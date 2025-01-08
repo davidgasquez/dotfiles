@@ -23,7 +23,13 @@
   },
   {
     "key": "ctrl+shift+-",
-    "command": "workbench.action.terminal.new",
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "workbench.action.terminal.new",
+        "workbench.action.terminal.moveIntoNewWindow"
+      ]
+    },
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
   },
   {
@@ -37,7 +43,14 @@
   },
   {
     "key": "ctrl+shift+k",
-    "command": "composer.openAsPane"
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "composer.openAsEditor",
+        "composer.createNew",
+        "workbench.action.moveEditorToNewWindow"
+      ]
+    }
   },
   {
     "key": "shift+alt+d",

@@ -1,21 +1,34 @@
+# Rules
+
+## General
+
 Be concise.
-When in doubt, ask me to provide more context when needed or search the web with `ddgs`.
+Understand the task: grasp the main objective, goals, requirements, constraints, and expected output.
+Ask me to provide more context when needed or search the web with `ddgs`.
 Ask questions to clarify goals and ensure alignment.
 Think step-by-step.
 Be proactive and anticipate my needs.
+Gather information before acting. Rely on `man` and `--help`. Don't truncate, `grep`, or `cat` the output.
 Share and discuss a plan before starting.
-Ask me to provide docs to the relevant packages or tools if you can't find them.
-Suggest solutions that I didn't think about.
+Ask me to provide docs to the relevant packages or tools if you can't find them (locally, on your knowledge or online with `ddgs`).
 Read files before you try to edit them.
 Fix linting errors.
 Write small functions, and split big components into small ones (modular code is good).
 Clear is better than clever. Make code as simple as possible.
 Treat me as an expert in all subject matter.
-Gather information before acting. Rely on `man` and `--help`. Don't truncate or grep the output.
-You can run any remote Python package without installing it `uvx`. E.g: `uvx package-name`. Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`). You can also use `uvx --with required-package package-name COMMAND` to run the package with additional dependencies.
-You can run any npm package with `npx` (e.g: `npx package-name`).
-You can run any docker command with `docker` (e.g: `docker run -d -p 8080:8080 image-name`).
-You can check any website as Markdown with `markitdown` (e.g: `markitdown https://docs.astral.sh/uv/guides/scripts/`).
-You can search the web with `ddgs` (e.g: `yes | ddgs text -k "uv docs" -m 5`). The output will contain links to the results that you can get as markdown with `markitdown`.
-Try solving the problems with existing packages to keep things simple.
+
+## Tools
+
+You have access to the following CLI tools you can use any time.
+
+- `uvx`. Let's you run any Python package without installing it. E.g: `uvx package-name`.
+  - Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`).
+  - You can specify dependencies like `uvx --with required-package --with another-required-package package-name COMMAND`.
+- `npx`. Let's you run any npm package without installing it. E.g: `npx package-name`.
+- `ddgs`. Let's you search the web. E.g: `yes | ddgs text -k "uv docs" -m 5`. The output will contain links to the results that you can get as markdown with `markitdown`.
+- `markitdown`. Let's you check any website as Markdown. E.g: `markitdown https://docs.astral.sh/uv/guides/scripts/`. Useful when combining results from `ddgs` to explore online docs.
+  - When exploring documentation, don't be afraid of mixing `ddgs` and `markitdown` iteratively to explore all the different pages / sections.
+
+## Lessons
+
 If you learn anything useful that you want to remember, add it to a `Lessons` section in a `.cursorrules` file so you will remember it.
