@@ -59,9 +59,9 @@ llm:
 	@ ln -sf $(DOTFILES)/llm/emojidea.yaml $(HOME)/.config/io.datasette.llm/templates/emojidea.yaml
 	@ ln -sf $(DOTFILES)/llm/cmd.yaml $(HOME)/.config/io.datasette.llm/templates/cmd.yaml
 
-.PHONY: interpreter
-interpreter:
-	@ ln -sf $(DOTFILES)/interpreter/default.yaml $(HOME)/.config/open-interpreter/profiles/default.yaml
+# .PHONY: interpreter
+# interpreter:
+# 	@ ln -sf $(DOTFILES)/interpreter/default.yaml $(HOME)/.openinterpreter/default.yaml
 
 .PHONY: maintenance
 maintenance:

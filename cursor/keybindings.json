@@ -23,13 +23,7 @@
   },
   {
     "key": "ctrl+shift+-",
-    "command": "runCommands",
-    "args": {
-      "commands": [
-        "workbench.action.terminal.new",
-        "workbench.action.terminal.moveIntoNewWindow"
-      ]
-    },
+    "command": "workbench.action.terminal.new",
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
   },
   {
