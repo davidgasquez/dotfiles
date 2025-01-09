@@ -5,9 +5,10 @@ prompt: >
 
   Don't add fluff. No string delimiters wrapping it (like ```), no yapping, no markdown, no fenced code.
 
-  Template:
-    <type>: <gitmoji> <description>
+  <template>
+  <type>: <gitmoji> <description>
 
-    [optional body]
+  [optional body]
+  </template>
 
   The diff: $input

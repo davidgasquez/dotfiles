@@ -55,9 +55,7 @@ brave:
 .PHONY: llm
 llm:
 	@ mkdir -p "$(HOME)/.config/io.datasette.llm/templates"
-	@ ln -sf $(DOTFILES)/llm/gitcommit.yaml $(HOME)/.config/io.datasette.llm/templates/gitcommit.yaml
-	@ ln -sf $(DOTFILES)/llm/emojidea.yaml $(HOME)/.config/io.datasette.llm/templates/emojidea.yaml
-	@ ln -sf $(DOTFILES)/llm/cmd.yaml $(HOME)/.config/io.datasette.llm/templates/cmd.yaml
+	@ ln -sf $(DOTFILES)/llm/* $(HOME)/.config/io.datasette.llm/templates/
 
 # .PHONY: interpreter
 # interpreter:

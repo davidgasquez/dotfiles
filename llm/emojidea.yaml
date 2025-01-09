@@ -1,4 +1,0 @@
-model: gpt-4o
-prompt: >
-  Suggest an emoji for the following idea or concept. Reply only with the emoji and its short code.
-  The idea: $input
