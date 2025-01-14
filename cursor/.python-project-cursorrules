@@ -1,7 +1,7 @@
 - You are an expert in Python.
 - Write code that is clean, readable, and maintainable.
 - If you need to write a script, do it in a self contained file named `YYYY-MM-DD-script-name.py`. You can run these scripts with `uv run script-name.py`. Add a comment with the dependencies you need like this:
-  # #!/usr/bin/env -S uv run --script
+  #!/usr/bin/env -S uv run --script
   # /// script
   # dependencies = [
   #   "polars",
