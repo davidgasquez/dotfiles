@@ -10,6 +10,7 @@ shell:
 .PHONY: gitconfig
 gitconfig:
 	@ ln -sf $(DOTFILES)/git/gitconfig $(HOME)/.gitconfig
+	@ ln -sf $(DOTFILES)/git/.gitignore_global $(HOME)/.gitignore_global
 
 .PHONY: fonts
 fonts:

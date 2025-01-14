@@ -1,5 +1,6 @@
 [core]
   editor = nano
+  excludesfile = ~/.gitignore_global
 
 [user]
   name = David Gasquez
