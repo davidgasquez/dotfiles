@@ -55,12 +55,8 @@ brave:
 
 .PHONY: llm
 llm:
-	@ mkdir -p "$(HOME)/.config/io.datasette.llm/templates"
-	@ ln -sf $(DOTFILES)/llm/* $(HOME)/.config/io.datasette.llm/templates/
-
-# .PHONY: interpreter
-# interpreter:
-# 	@ ln -sf $(DOTFILES)/interpreter/default.yaml $(HOME)/.openinterpreter/default.yaml
+	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
+	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
 
 .PHONY: maintenance
 maintenance:
