@@ -53,5 +53,8 @@
         "-i"
       ]
     }
+  },
+  "workbench.editorAssociations": {
+    "file:/**/*.parquet": "jupyter-data-wrangler"
   }
 }
