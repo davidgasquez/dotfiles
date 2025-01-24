@@ -49,5 +49,10 @@
   {
     "key": "shift+alt+d",
     "command": "editor.debug.action.selectionToRepl"
+  },
+  {
+    "key": "alt+g alt+c",
+    "command": "git.commitAll",
+    "when": "!operationInProgress"
   }
 ]
