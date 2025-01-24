@@ -65,7 +65,7 @@ maintenance:
 	@ docker system prune --volumes --all
 	@ uv cache clean
 	@ sheldon lock --update
-	@ pacman -Sc
+	@ sudo pacman -Sc
 	@ uv tool upgrade --all
 
 .PHONY: post-installation
