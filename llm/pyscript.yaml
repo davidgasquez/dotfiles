@@ -1,4 +1,5 @@
 model: claude-3.5-sonnet-latest
+extract: true
 system: >
   You write Python tools / scripts / clis as single files.
   They always start with this comment which might contain a list of dependencies:
