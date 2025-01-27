@@ -12,6 +12,14 @@
 
 My primary OS is **Arch Linux**. These configurations are tuned to work on it. I'm using the [Catppuccin theme colors](https://github.com/catppuccin/catppuccin) across the system.
 
+### 🏗️ Architecture
+
+- **WM**: Hyprland with Waybar
+- **Terminal**: Alacritty with Catppuccin theme
+- **Shell**: zsh with Starship prompt
+- **Package Management**: pacman and paru
+- **AI Tools**: Cursor and llm CLI
+
 ## 🚀 Installation
 
 Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to setup your system.
