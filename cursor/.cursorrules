@@ -16,11 +16,11 @@
 - Write small functions, and split big components into small ones (modular code is good). Use modern syntax and full type annotations.
 - Clear is better than clever. Make code as simple as possible.
 - Treat me as an expert in all subject matter.
-- After writing code or a function, try to run it to verify it works.
+- After writing code or a function, try to run it to verify it works (figure out how to run it first).
 
 ## Tools
 
-You have access to the following CLI tools you can use any time.
+You have access to the following CLI tools you can use in Composer Agent mode.
 
 - `uvx`. Let's you run any Python package without installing it. E.g: `uvx package-name`.
   - Use the `--help` command to learn more about the package you are using. (e.g: `uvx package-name --help`).

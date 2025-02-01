@@ -45,7 +45,8 @@ alias c='cursor --ozone-platform=wayland --enable-features=UseOzonePlatform .'
 alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
 alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod list view -f "Today"'
-alias chat='llm chat -m gpt-4o'
+alias chat='llm chat'
+alias cmd='llm -t cmd'
 
 # Functions
 aigcm() {
