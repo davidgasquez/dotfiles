@@ -56,7 +56,7 @@ brave:
 
 .PHONY: llm
 llm:
-	@ uv tool install llm --with llm-gemini --with llm-claude-3 --with llm-deepseek --with llm-groq
+	@ uv tool install llm --with llm-gemini --with llm-anthropic --with llm-deepseek --with llm-groq
 	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
 	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
 
