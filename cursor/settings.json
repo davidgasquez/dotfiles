@@ -45,15 +45,10 @@
   "cursor.cpp.enablePartialAccepts": true,
   "cursor.general.enableShadowWorkspace": true,
   "cursor.general.gitGraphIndexing": "enabled",
-  "terminal.integrated.profiles.linux": {
-    "zsh": {
-      "path": "/bin/zsh",
-      "args": [
-        "-l",
-        "-i"
-      ]
-    }
-  },
+  "terminal.integrated.hideOnStartup": "whenEmpty",
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.suggest.enableExtensionCompletions": true,
+  "terminal.integrated.suggest.enabled": true,
   "workbench.editorAssociations": {
     "file:/**/*.parquet": "jupyter-data-wrangler"
   },

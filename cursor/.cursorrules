@@ -29,3 +29,4 @@ You have access to the following CLI tools you can use in Composer Agent mode.
 - `ddgs`. Let's you search the web. E.g: `yes | ddgs text -k "uv docs" -m 5`. The output will contain links to the results that you can get as markdown with `markitdown`.
 - `markitdown`. Let's you check any website as Markdown. E.g: `markitdown https://docs.astral.sh/uv/guides/scripts/`. Useful when combining results from `ddgs` to explore online docs.
   - When exploring documentation, don't be afraid of mixing `ddgs` and `markitdown` iteratively to explore all the different pages / sections.
+- `llm`. Let's you talk to any LLM. E.g: `llm "What is the capital of France?"`. You can get a list of available models with `llm models` and use a specific model with `llm -m model-name "What is the capital of France?"`.
