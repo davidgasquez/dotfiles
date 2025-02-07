@@ -16,7 +16,6 @@ gitconfig:
 fonts:
 	@ mkdir -p $(HOME)/.config/fontconfig/conf.d
 	@ ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/fonts.conf
-	@ ln -sf $(DOTFILES)/fonts/01-emoji.conf $(HOME)/.config/fontconfig/conf.d/01-emoji.conf
 
 .PHONY: vscode
 vscode:
