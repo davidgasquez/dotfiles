@@ -63,6 +63,7 @@ llm:
 goose:
 	@ mkdir -p "$(HOME)/.config/goose"
 	@ ln -sf $(DOTFILES)/goose/config.yaml $(HOME)/.config/goose/config.yaml
+	@ ln -sf $(DOTFILES)/goose/.goosehints $(HOME)/.config/goose/.goosehints
 
 .PHONY: maintenance
 maintenance:
