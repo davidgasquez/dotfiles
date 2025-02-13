@@ -59,6 +59,11 @@ llm:
 	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
 	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
 
+.PHONY: goose
+goose:
+	@ mkdir -p "$(HOME)/.config/goose"
+	@ ln -sf $(DOTFILES)/goose/config.yaml $(HOME)/.config/goose/config.yaml
+
 .PHONY: maintenance
 maintenance:
 	@ docker system prune --volumes --all

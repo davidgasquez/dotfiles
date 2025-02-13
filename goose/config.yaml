@@ -1,0 +1,12 @@
+GOOSE_MODEL: gemini-2.0-flash-exp
+GOOSE_PROVIDER: google
+
+extensions:
+  computercontroller:
+    enabled: false
+    name: computercontroller
+    type: builtin
+  developer:
+    enabled: true
+    name: developer
+    type: builtin
