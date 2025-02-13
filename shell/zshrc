@@ -47,6 +47,7 @@ alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod list view -f "Today"'
 alias chat='llm chat'
 alias cmd='llm -t cmd'
+alias dirty='for dir in */; do (cd "$dir"; if git status --porcelain | grep . > /dev/null; then echo "$dir"; fi) done'
 
 # Functions
 aigcm() {
