@@ -35,7 +35,7 @@ zed:
 	@ mkdir -p "$(HOME)/.config/zed/"
 	@ ln -sf $(DOTFILES)/zed/settings.json "$(HOME)/.config/zed/settings.json"
 	@ ln -sf $(DOTFILES)/zed/keymap.json "$(HOME)/.config/zed/keymap.json"
-	# @ ln -sf $(DOTFILES)/zed/tasks.json "$(HOME)/.config/zed/tasks.json"
+	@ ln -sf $(DOTFILES)/zed/tasks.json "$(HOME)/.config/zed/tasks.json"
 
 .PHONY: terminal
 terminal:
