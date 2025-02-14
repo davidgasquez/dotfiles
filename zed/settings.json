@@ -14,7 +14,8 @@
       "provider": "copilot_chat",
       "model": "claude-3-5-sonnet"
     },
-    "version": "2"
+    "version": "2",
+    "enable_experimental_live_diffs": true
   },
   "features": {
     "edit_prediction_provider": "zed"
