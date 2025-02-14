@@ -4,8 +4,8 @@
     "command": "aigcm",
     "use_new_terminal": true,
     "allow_concurrent_runs": false,
-    "reveal": "never",
-    "hide": "always",
+    "reveal": "no_focus",
+    "hide": "on_success",
     "shell": "system"
   },
   {
@@ -13,8 +13,8 @@
     "command": "git push",
     "use_new_terminal": true,
     "allow_concurrent_runs": false,
-    "reveal": "never",
-    "hide": "always",
+    "reveal": "no_focus",
+    "hide": "on_success",
     "shell": "system"
   }
 ]
