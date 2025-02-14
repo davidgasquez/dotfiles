@@ -41,11 +41,6 @@
       ]
     }
   },
-  "terminal": {
-    "env": {
-      "EDITOR": "zed --wait"
-    }
-  },
   "autosave": "on_focus_change",
   "format_on_save": "on",
   "theme": "Catppuccin Frappé",

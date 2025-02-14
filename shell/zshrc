@@ -6,7 +6,7 @@ HISTSIZE=5000
 SAVEHIST=5000
 
 # Editor
-export EDITOR=cursor
+export EDITOR="zeditor --wait"
 
 # Avoid % in prompt
 set +o prompt_cr +o prompt_sp
