@@ -48,6 +48,7 @@ alias tls='tod list view -f "Today"'
 alias chat='llm chat'
 alias cmd='llm -t cmd'
 alias dirty='for dir in */; do (cd "$dir"; if git status --porcelain | grep . > /dev/null; then echo "$dir"; fi) done'
+alias pull='for dir in */; do (cd "$dir"; if git remote update && git status -uno | grep -q "Your branch is behind"; then echo "$dir needs pulling"; git pull; fi) done'
 
 # Functions
 aigcm() {
