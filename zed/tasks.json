@@ -2,7 +2,7 @@
   {
     "label": "Commit",
     "command": "aigcm",
-    "use_new_terminal": false,
+    "use_new_terminal": true,
     "allow_concurrent_runs": false,
     "reveal": "never",
     "hide": "always",
@@ -11,7 +11,7 @@
   {
     "label": "Push",
     "command": "git push",
-    "use_new_terminal": false,
+    "use_new_terminal": true,
     "allow_concurrent_runs": false,
     "reveal": "never",
     "hide": "always",
