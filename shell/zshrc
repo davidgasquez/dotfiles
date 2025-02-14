@@ -6,7 +6,7 @@ HISTSIZE=5000
 SAVEHIST=5000
 
 # Editor
-export EDITOR="zeditor --wait"
+export EDITOR="zeditor" # "cursor --ozone-platform=wayland --enable-features=UseOzonePlatform"
 
 # Avoid % in prompt
 set +o prompt_cr +o prompt_sp
@@ -41,7 +41,7 @@ alias la='eza -la --icons'
 alias tree='eza --tree --icons'
 alias cat='bat -p'
 alias up='paru -Syu --devel --skipreview'
-alias c='cursor --ozone-platform=wayland --enable-features=UseOzonePlatform .'
+alias c='$EDITOR .'
 alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
 alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod list view -f "Today"'
