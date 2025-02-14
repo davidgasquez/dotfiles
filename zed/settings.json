@@ -7,8 +7,13 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "buffer_font_size": 14.0,
+  "buffer_font_size": 15.0,
   "buffer_font_family": "JetBrainsMono Nerd Font",
+  "terminal": {
+    "copy_on_select": true,
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_size": 15.0
+  },
   "assistant": {
     "default_model": {
       "provider": "copilot_chat",
@@ -39,6 +44,12 @@
           }
         }
       ]
+    }
+  },
+  "soft_wrap": "editor_width",
+  "scrollbar": {
+    "axes": {
+      "horizontal": false
     }
   },
   "autosave": "on_focus_change",
