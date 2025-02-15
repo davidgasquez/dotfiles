@@ -16,5 +16,14 @@
     "reveal": "no_focus",
     "hide": "on_success",
     "shell": "system"
+  },
+  {
+    "label": "pull",
+    "command": "git pull",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "no_focus",
+    "hide": "on_success",
+    "shell": "system"
   }
 ]

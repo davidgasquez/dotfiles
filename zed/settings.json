@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "show_edit_predictions": true,
   "buffer_font_size": 15.0,
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "terminal": {
@@ -30,7 +31,7 @@
   },
   "languages": {
     "Python": {
-      "language_servers": ["ruff"],
+      "language_servers": ["ruff", "pyright"],
       "formatter": [
         {
           "code_actions": {
@@ -44,6 +45,19 @@
           }
         }
       ]
+    }
+  },
+  "lsp": {
+    "pyright": {
+      "settings": {
+        "python.analysis": {
+          "diagnosticMode": "workspace",
+          "typeCheckingMode": "strict"
+        },
+        "python": {
+          "pythonPath": ".venv/bin/python"
+        }
+      }
     }
   },
   "soft_wrap": "editor_width",
