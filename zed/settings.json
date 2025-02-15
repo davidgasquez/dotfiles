@@ -26,9 +26,21 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
+  "inlay_hints": {
+    "enabled": true
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "tabs": {
+    "git_status": true,
+    "file_icons": true
+  },
   "collaboration_panel": {
     "button": false
   },
+  "always_treat_brackets_as_autoclosed": true,
   "languages": {
     "Python": {
       "language_servers": ["ruff", "pyright"],
