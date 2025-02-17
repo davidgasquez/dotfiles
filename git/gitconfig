@@ -1,5 +1,4 @@
 [core]
-  editor = zeditor --wait
   excludesfile = ~/.gitignore_global
 
 [user]

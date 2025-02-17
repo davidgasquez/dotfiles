@@ -5,9 +5,6 @@ HISTFILE=~/.histfile
 HISTSIZE=5000
 SAVEHIST=5000
 
-# Editor
-export EDITOR="zeditor" # "cursor --ozone-platform=wayland --enable-features=UseOzonePlatform"
-
 # Avoid % in prompt
 set +o prompt_cr +o prompt_sp
 
