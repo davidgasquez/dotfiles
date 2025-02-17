@@ -12,7 +12,8 @@
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": false,
-                "revealProblems": "onProblem"
+                "revealProblems": "onProblem",
+                "close": true
             },
             "problemMatcher": []
         }
