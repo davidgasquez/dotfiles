@@ -4,7 +4,7 @@
         {
             "label": "AI Git Commit",
             "type": "shell",
-            "command": "git add -A . && git diff --minimal --cached | llm -t gitcommit > $(git rev-parse --git-dir)/COMMIT_EDITMSG && git commit --verbose --edit --file=$(git rev-parse --git-dir)/COMMIT_EDITMSG",
+            "command": "git add -A . && git diff --minimal --cached | llm -t gitcommit > $(git rev-parse --git-dir)/COMMIT_EDITMSG && $EDITOR --wait $(git rev-parse --git-dir)/COMMIT_EDITMSG && git commit --verbose --file=$(git rev-parse --git-dir)/COMMIT_EDITMSG",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
