@@ -29,6 +29,7 @@ cursor:
 	@ mkdir -p "$(HOME)/.config/Cursor/User/"
 	@ ln -sf $(DOTFILES)/cursor/settings.json "$(HOME)/.config/Cursor/User/settings.json"
 	@ ln -sf $(DOTFILES)/cursor/keybindings.json "$(HOME)/.config/Cursor/User/keybindings.json"
+	@ ln -sf $(DOTFILES)/cursor/tasks.json "$(HOME)/.config/Cursor/User/tasks.json"
 	@ ln -sf $(DOTFILES)/cursor/cursor-flags.conf "$(HOME)/.config/cursor-flags.conf"
 
 .PHONY: zed

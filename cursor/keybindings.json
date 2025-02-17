@@ -52,7 +52,7 @@
   },
   {
     "key": "alt+g alt+c",
-    "command": "git.commitAll",
-    "when": "!operationInProgress"
+    "command": "workbench.action.tasks.runTask",
+    "args": "AI Git Commit"
   }
 ]
