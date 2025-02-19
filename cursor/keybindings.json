@@ -52,7 +52,8 @@
   },
   {
     "key": "alt+g alt+c",
-    "command": "workbench.action.tasks.runTask",
-    "args": "AI Git Commit"
+    "command": "cursor.generateGitCommitMessage"
+    // "command": "workbench.action.tasks.runTask",
+    // "args": "AI Git Commit"
   }
 ]
