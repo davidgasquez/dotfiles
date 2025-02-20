@@ -71,5 +71,8 @@
   },
   "github.copilot.editor.enableAutoCompletions": true,
   "security.promptForLocalFileProtocolHandling": false,
-  "github.copilot.chat.editor.temporalContext.enabled": true
+  "github.copilot.chat.editor.temporalContext.enabled": true,
+  "githubPullRequests.experimental.chat": true,
+  "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
+  "github.copilot.nextEditSuggestions.enabled": true
 }
