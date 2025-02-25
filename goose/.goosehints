@@ -18,3 +18,11 @@
     - You can specify dependencies like `uvx --with required-package --with another-required-package package-name COMMAND`.
   - `npx`. Let's you run any npm package without installing it. E.g: `npx package-name`.
   - `llm`. Let's you talk to any LLM. E.g: `llm "What is the capital of France?"`. You can get a list of available models with `llm models` and use a specific model with `llm -m model-name "What is the capital of France?"`.
+  - `files-to-prompts`. Takes paths and outputs every file, recursively. Check the help for more info.
+  - `git`. Let's you run any git command. E.g: `git clone`.
+    - If you have to clone a repo, do it in `/tmp` and cd into it.
+- You are operating in the following environment:
+  - Arch Linux (with pacman and paru as package managers).
+  - Hyprland.
+  - Alacritty.
+  - Brave browser.
