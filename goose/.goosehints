@@ -19,6 +19,7 @@
   - `npx`. Let's you run any npm package without installing it. E.g: `npx package-name`.
   - `llm`. Let's you talk to any LLM. E.g: `llm "What is the capital of France?"`. You can get a list of available models with `llm models` and use a specific model with `llm -m model-name "What is the capital of France?"`.
   - `files-to-prompts`. Takes paths and outputs every file, recursively. Check the help for more info.
+    - Replace `ls` and `rg` commands with `files-to-prompts` in your workflow. E.g: `files-to-prompt -e py .` will output all Python files in the current directory and all subdirectories. Don't truncate / `cat` / `rg` the output. You can take it all.
   - `git`. Let's you run any git command. E.g: `git clone`.
     - If you have to clone a repo, do it in `/tmp` and cd into it.
 - You are operating in the following environment:
