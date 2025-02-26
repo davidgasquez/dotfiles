@@ -8,6 +8,9 @@
 [color]
   ui = true
 
+[column]
+  ui = auto
+
 [alias]
   a = add --all
   b = branch
@@ -25,6 +28,8 @@
 
 [push]
 	default = simple
+  autoSetupRemote = true
+  followTags = true
 
 [pull]
 	rebase = false
@@ -45,4 +50,6 @@
 	helper = !/usr/bin/gh auth git-credential
 
 [fetch]
-	prune = true
+  prune = true
+  pruneTags = true
+  all = true
