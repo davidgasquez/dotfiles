@@ -21,6 +21,8 @@ setopt share_history
 setopt correct
 setopt auto_menu
 
+# More aliases AI!
+
 # Bindkeys
 bindkey -e
 
