@@ -8,7 +8,9 @@
 - Ask questions to clarify goals and ensure alignment.
 - Think step-by-step.
 - Be proactive and anticipate my needs.
-- Gather information before acting. Rely on `man` and `--help`. Don't truncate, `grep`, or `cat` the output.
+- Never truncate, `grep`, or `cat` any commands output. Look at the full output.
+- Never use `cat`.
+- Gather information before acting. Rely on `man` and `--help`.
 - Share and discuss a plan before starting.
 - Ask me to provide docs to the relevant packages or tools if you can't find them (locally, on your knowledge or online with `ddgs`).
 - Read files before you try to edit them.
