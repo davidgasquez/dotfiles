@@ -31,6 +31,7 @@ cursor:
 	@ ln -sf $(DOTFILES)/cursor/keybindings.json "$(HOME)/.config/Cursor/User/keybindings.json"
 	@ ln -sf $(DOTFILES)/cursor/tasks.json "$(HOME)/.config/Cursor/User/tasks.json"
 	@ ln -sf $(DOTFILES)/cursor/cursor-flags.conf "$(HOME)/.config/cursor-flags.conf"
+	@ sudo install -m 755 $(DOTFILES)/cursor/cursor.sh /usr/bin/cursor
 
 .PHONY: zed
 zed:
