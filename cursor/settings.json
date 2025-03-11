@@ -21,6 +21,8 @@
   "python.analysis.autoSearchPaths": true,
   "python.analysis.useLibraryCodeForTypes": true,
   "python.analysis.autoFormatStrings": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.REPL.sendToNativeREPL": true,
   "jupyter.interactiveWindow.textEditor.executeSelection": true,
   "notebook.formatOnSave.enabled": true,
   "notebook.codeActionsOnSave": {
@@ -51,6 +53,5 @@
   "terminal.integrated.suggest.enabled": true,
   "workbench.editorAssociations": {
     "file:/**/*.parquet": "jupyter-data-wrangler"
-  },
-  "jupyter.askForKernelRestart": false
+  }
 }

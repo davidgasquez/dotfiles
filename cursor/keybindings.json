@@ -36,24 +36,11 @@
     "when": "!operationInProgress"
   },
   {
-    "key": "ctrl+shift+k",
-    "command": "runCommands",
-    "args": {
-      "commands": [
-        "composer.openAsEditor",
-        "composer.createNew",
-        "workbench.action.moveEditorToNewWindow"
-      ]
-    }
-  },
-  {
     "key": "shift+alt+d",
     "command": "editor.debug.action.selectionToRepl"
   },
   {
     "key": "alt+g alt+c",
     "command": "cursor.generateGitCommitMessage"
-    // "command": "workbench.action.tasks.runTask",
-    // "args": "AI Git Commit"
   }
 ]
