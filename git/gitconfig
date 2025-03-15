@@ -53,3 +53,6 @@
   prune = true
   pruneTags = true
   all = true
+
+[credential]
+	helper = store

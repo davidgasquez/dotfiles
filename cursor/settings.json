@@ -24,6 +24,8 @@
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.REPL.sendToNativeREPL": true,
   "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  "notebook.output.scrolling": true,
+  "notebook.output.minimalErrorRendering": true,
   "notebook.formatOnSave.enabled": true,
   "notebook.codeActionsOnSave": {
     "notebook.source.fixAll": "explicit",
