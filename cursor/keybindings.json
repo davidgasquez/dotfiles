@@ -42,5 +42,9 @@
   {
     "key": "alt+g alt+c",
     "command": "cursor.generateGitCommitMessage"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "composerMode.agent"
   }
 ]
