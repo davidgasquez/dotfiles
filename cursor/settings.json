@@ -57,5 +57,6 @@
     "file:/**/*.parquet": "jupyter-data-wrangler"
   },
   "cursor.composer.shouldAllowCustomModes": true,
-  "cursor.composer.shouldChimeAfterChatFinishes": true
+  "cursor.composer.shouldChimeAfterChatFinishes": true,
+  "cursor.diffs.useCharacterLevelDiffs": true
 }

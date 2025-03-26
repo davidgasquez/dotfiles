@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+extract_spanish_subs() {
+  local input_file="$1"
+  local output_file="${input_file%.*}.srt"
+
+  # Check if input file exists
+  if [[ ! -f "$input_file" ]]; then
+    echo "Error: Input file '$input_file' does not exist."
+    return 1
+  fi
+
+  echo "Analyzing subtitle tracks in $input_file..."
+
+  # Get subtitle track information
+  local sub_info=$(ffprobe -v error -select_streams s -show_entries stream=index:stream_tags=language -of csv=p=0 "$input_file")
+
+  # Find Spanish subtitle track index
+  local spa_track=""
+  while IFS="," read -r index lang; do
+    if [[ "$lang" == "spa" || "$lang" == "es" || "$lang" == "spanish" ]]; then
+      spa_track="$index"
+      break
+    fi
+  done <<< "$sub_info"
+
+  # Extract subtitle if Spanish track found
+  if [[ -n "$spa_track" ]]; then
+    echo "Found Spanish subtitle track at index $spa_track. Extracting to $output_file..."
+    ffmpeg -v error -i "$input_file" -map 0:$spa_track -c:s srt "$output_file"
+    echo "✅ Spanish subtitles extracted to $output_file"
+    return 0
+  else
+    echo "❌ No Spanish subtitle track found in $input_file."
+    return 1
+  fi
+}
+
+# Run the function if script is executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: $(basename "$0") <media_file>"
+    exit 1
+  fi
+
+  extract_spanish_subs "$1"
+fi
