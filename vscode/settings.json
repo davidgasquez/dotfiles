@@ -66,13 +66,11 @@
   "redhat.telemetry.enabled": false,
   "terminal.integrated.allowChords": false,
   "terminal.integrated.sendKeybindingsToShell": true,
-  "github.copilot.enable": {
-    "*": true
-  },
-  "github.copilot.editor.enableAutoCompletions": true,
   "security.promptForLocalFileProtocolHandling": false,
   "github.copilot.chat.editor.temporalContext.enabled": true,
   "githubPullRequests.experimental.chat": true,
-  "github.copilot.selectedCompletionModel": "gpt-4o-copilot",
-  "github.copilot.nextEditSuggestions.enabled": true
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "github.copilot.chat.edits.temporalContext.enabled": true,
+  "github.copilot.chat.newWorkspaceCreation.enabled": true,
+  "github.copilot.chat.search.semanticTextResults": true
 }
