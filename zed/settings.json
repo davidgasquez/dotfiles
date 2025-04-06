@@ -80,6 +80,7 @@
   },
   "autosave": "on_focus_change",
   "format_on_save": "on",
+  "auto_update": false,
   "theme": "Catppuccin Frappé",
   "icon_theme": "Catppuccin Frappé"
 }
