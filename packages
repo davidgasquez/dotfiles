@@ -25,6 +25,7 @@ jq
 mako
 mkinitcpio-firmware
 mpv
+netcat
 network-manager-applet
 noto-fonts
 noto-fonts-cjk
