@@ -17,8 +17,8 @@
   },
   "assistant": {
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "claude-3-5-sonnet"
+      "provider": "google",
+      "model": "gemini-2.5-pro-exp-03-25"
     },
     "version": "2",
     "enable_experimental_live_diffs": true
@@ -43,7 +43,10 @@
   "always_treat_brackets_as_autoclosed": true,
   "languages": {
     "Python": {
-      "language_servers": ["ruff", "pyright"],
+      "language_servers": [
+        "ruff",
+        "pyright"
+      ],
       "formatter": [
         {
           "code_actions": {
