@@ -58,5 +58,8 @@
   },
   "cursor.composer.shouldAllowCustomModes": true,
   "cursor.composer.shouldChimeAfterChatFinishes": true,
-  "cursor.diffs.useCharacterLevelDiffs": true
+  "cursor.diffs.useCharacterLevelDiffs": true,
+  "cursor.cpp.disabledLanguages": [
+    "plaintext"
+  ]
 }
