@@ -16,7 +16,7 @@
     "font_size": 15.0
   },
   "assistant": {
-    "default_profile": "ask",
+    "default_profile": "write",
     "profiles": {
       "ask": {
         "name": "Ask",
@@ -93,10 +93,7 @@
   "always_treat_brackets_as_autoclosed": true,
   "languages": {
     "Python": {
-      "language_servers": [
-        "ruff",
-        "pyright"
-      ],
+      "language_servers": ["ruff", "pyright"],
       "formatter": [
         {
           "code_actions": {
