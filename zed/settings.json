@@ -8,7 +8,6 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "show_edit_predictions": true,
-  "buffer_font_size": 15.0,
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "terminal": {
     "copy_on_select": true,
@@ -16,29 +15,9 @@
     "font_size": 15.0
   },
   "assistant": {
-    "default_profile": "write",
+    "always_allow_tool_actions": true,
+    "default_profile": "ask",
     "profiles": {
-      "ask": {
-        "name": "Ask",
-        "tools": {
-          "symbol_info": true,
-          "open": true,
-          "move_path": true,
-          "code_symbols": true,
-          "batch_tool": true,
-          "diagnostics": true,
-          "fetch": true,
-          "list_directory": true,
-          "now": true,
-          "path_search": true,
-          "read_file": true,
-          "regex_search": true,
-          "thinking": true,
-          "bash": true
-        },
-        "enable_all_context_servers": false,
-        "context_servers": {}
-      },
       "write": {
         "name": "Write",
         "tools": {
@@ -46,21 +25,20 @@
           "bash": true,
           "batch_tool": true,
           "code_symbols": true,
-          "copy_path": true,
+          "copy_path": false,
           "create_file": true,
           "delete_path": false,
           "diagnostics": true,
           "find_replace_file": true,
           "fetch": true,
           "list_directory": true,
-          "move_path": true,
+          "move_path": false,
           "now": true,
           "path_search": true,
           "read_file": true,
           "regex_search": true,
           "symbol_info": true,
-          "thinking": true,
-          "create_directory": true
+          "thinking": true
         },
         "enable_all_context_servers": true,
         "context_servers": {}
