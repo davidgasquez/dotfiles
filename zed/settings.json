@@ -16,29 +16,9 @@
     "font_size": 15.0
   },
   "assistant": {
-    "default_profile": "write",
+    "always_allow_tool_actions": true,
+    "default_profile": "ask",
     "profiles": {
-      "ask": {
-        "name": "Ask",
-        "tools": {
-          "symbol_info": true,
-          "open": true,
-          "move_path": true,
-          "code_symbols": true,
-          "batch_tool": true,
-          "diagnostics": true,
-          "fetch": true,
-          "list_directory": true,
-          "now": true,
-          "path_search": true,
-          "read_file": true,
-          "regex_search": true,
-          "thinking": true,
-          "bash": true
-        },
-        "enable_all_context_servers": false,
-        "context_servers": {}
-      },
       "write": {
         "name": "Write",
         "tools": {
@@ -93,7 +73,7 @@
   "always_treat_brackets_as_autoclosed": true,
   "languages": {
     "Python": {
-      "language_servers": ["ruff", "pyright"],
+      "language_servers": ["ruff", "basedpyright", "!pyright"],
       "formatter": [
         {
           "code_actions": {
@@ -110,14 +90,19 @@
     }
   },
   "lsp": {
-    "pyright": {
+    "basedpyright": {
       "settings": {
-        "python.analysis": {
-          "diagnosticMode": "workspace",
-          "typeCheckingMode": "strict"
-        },
         "python": {
           "pythonPath": ".venv/bin/python"
+        },
+        "basedpyright.analysis": {
+          "diagnosticMode": "workspace",
+          "inlayHints": {
+            "callArgumentNames": true,
+            "functionReturnTypes": true,
+            "genericTypes": true,
+            "variableTypes": true
+          }
         }
       }
     }
