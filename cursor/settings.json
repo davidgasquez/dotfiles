@@ -10,17 +10,26 @@
   "editor.formatOnSave": true,
   "editor.fontFamily": "JetBrainsMono NF",
   "editor.linkedEditing": true,
+  "editor.wordWrap": "on",
+  "extensions.ignoreRecommendations": true,
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.hideOnStartup": "whenEmpty",
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.suggest.enableExtensionCompletions": true,
+  "terminal.integrated.suggest.enabled": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "terminal.integrated.copyOnSelection": true,
+  "files.autoSave": "onFocusChange",
+  "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  // Python
-  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "strict",
   "python.analysis.autoImportCompletions": true,
   "python.analysis.autoSearchPaths": true,
   "python.analysis.useLibraryCodeForTypes": true,
   "python.analysis.autoFormatStrings": true,
+  "python.analysis.cacheLSPData": true,
+  "python.analysis.diagnosticMode": "workspace",
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.REPL.sendToNativeREPL": true,
   "jupyter.interactiveWindow.textEditor.executeSelection": true,
@@ -32,6 +41,8 @@
     "notebook.source.organizeImports": "explicit"
   },
   "ruff.nativeServer": "on",
+  "ruff.format.preview": true,
+  "ruff.lint.preview": true,
   "[python]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -41,25 +52,11 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "cursor.cmdk.useThemedDiffBackground": true,
-  "extensions.ignoreRecommendations": true,
-  "explorer.confirmDelete": false,
-  "files.autoSave": "onFocusChange",
-  "editor.wordWrap": "on",
   "cursor.aipreview.enabled": true,
   "cursor.cpp.enablePartialAccepts": true,
   "cursor.general.enableShadowWorkspace": true,
   "cursor.general.gitGraphIndexing": "enabled",
-  "terminal.integrated.hideOnStartup": "whenEmpty",
-  "terminal.integrated.persistentSessionReviveProcess": "never",
-  "terminal.integrated.suggest.enableExtensionCompletions": true,
-  "terminal.integrated.suggest.enabled": true,
-  "workbench.editorAssociations": {
-    "file:/**/*.parquet": "jupyter-data-wrangler"
-  },
   "cursor.composer.shouldAllowCustomModes": true,
   "cursor.composer.shouldChimeAfterChatFinishes": true,
-  "cursor.diffs.useCharacterLevelDiffs": true,
-  "cursor.cpp.disabledLanguages": [
-    "plaintext"
-  ]
+  "cursor.diffs.useCharacterLevelDiffs": true
 }

@@ -22,7 +22,7 @@
         "name": "Write",
         "tools": {
           "open": true,
-          "bash": true,
+          "terminal": true,
           "batch_tool": true,
           "code_symbols": true,
           "copy_path": false,
@@ -71,7 +71,11 @@
   "always_treat_brackets_as_autoclosed": true,
   "languages": {
     "Python": {
-      "language_servers": ["ruff", "basedpyright", "!pyright"],
+      "language_servers": [
+        "ruff",
+        "basedpyright",
+        "!pyright"
+      ],
       "formatter": [
         {
           "code_actions": {
