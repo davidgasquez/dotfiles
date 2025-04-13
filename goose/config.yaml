@@ -12,4 +12,4 @@ extensions:
     name: memory
     type: builtin
 GOOSE_PROVIDER: google
-GOOSE_MODEL: gemini-2.0-flash-exp
+GOOSE_MODEL: gemini-2.5-pro-exp-03-25
