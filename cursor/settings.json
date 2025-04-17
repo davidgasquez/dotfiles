@@ -23,7 +23,7 @@
   "files.autoSave": "onFocusChange",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  "python.analysis.typeCheckingMode": "strict",
+  "python.analysis.typeCheckingMode": "basic",
   "python.analysis.autoImportCompletions": true,
   "python.analysis.autoSearchPaths": true,
   "python.analysis.useLibraryCodeForTypes": true,

@@ -44,7 +44,11 @@
     "command": "cursor.generateGitCommitMessage"
   },
   {
-    "key": "ctrl+i",
+    "key": "ctrl+shift+[Minus]",
     "command": "composerMode.agent"
+  },
+  {
+    "key": "ctrl+[Minus]",
+    "command": "composerMode.chat"
   }
 ]
