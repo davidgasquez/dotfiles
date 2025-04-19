@@ -1,12 +1,11 @@
 model: anthropic/claude-3-7-sonnet-latest
 prompt: >
-  Write a descriptive commit following the Conventional Commits specification describing the changes in the following diff.
-  Keep the commit message brief, but informative. Avoid stating the obvious. Focus on important changes a reviewer would care about.
+  Write a descriptive commit following the following specification describing the changes in the following diff.
 
-  Don't add fluff. No string delimiters wrapping it (like ```), no yapping, no markdown, no fenced code.
+  Keep the commit message brief, but informative. Avoid stating the obvious. Focus on important changes a reviewer would care about. Start with the related emoji and then add a description (first letter uppercase, no string delimiters wrapping it, no yapping, no markdown, no fenced code). Don't add fluff.
 
   <template>
-  <gitmoji> <Description>
+  <related_emoji> <Description>
 
   [optional body]
   </template>
