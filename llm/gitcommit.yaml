@@ -6,7 +6,7 @@ prompt: >
   Don't add fluff. No string delimiters wrapping it (like ```), no yapping, no markdown, no fenced code.
 
   <template>
-  <type>: <gitmoji> <description>
+  <gitmoji> <Description>
 
   [optional body]
   </template>
