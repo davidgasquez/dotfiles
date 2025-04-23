@@ -9,46 +9,22 @@
 - Follow existing code conventions in the codebase
 - No code comments unless specifically requested or for complex code
 
-## Communication Guidelines
+## Agent Mode Best Practices
 
-- Ask questions to clarify goals when needed
-- Request more context or documentation when necessary
-- Present a plan before implementing solutions
-- Treat the user as an expert in all subject matter
-
-## Command Line Best Practices
-
-- You have access to a shell where you can run all the commands you want
-- IMPORTANT: Never truncate command outputs or use `cat` to display them
+- Gather information using `man` and `--help` before acting.
+- When working with data, write small inline Python scripts to get a sample and the schema of the datasets.
 - When running non-trivial bash commands, explain what they do and why
-- Gather information using `man` and `--help` before acting
-
-## Useful CLI Tools
-
-- `uvx` and `npx`: Run Python and npm packages without installation
-  - Example: `uvx package-name`
-  - For dependencies: `uvx --with required-package package-name COMMAND`
-- `ddgs`: Web search tool
-  - Example: `ddgs text -k "search query" -m 5`
-- `markitdown`: Convert websites to Markdown
-  - Example: `markitdown https://example.com`
-- `llm`: Access language models
-  - Example: `llm "Your question here"`
-  - List models: `llm models`
-  - Specify model: `llm -m model-name "Your question"`
 
 ## Task Workflow
 
 1. Implement the solution keeping in mind the codebase, requirements and principles
 2. Verify linting and typechecking, and run tests if available
-3. IMPORTANT: Always run the code and verify it works as expected
-  - In case of long running processes like `npm run dev`, ask the user to verify the output
-4. Commit changes using conventional commits
+3. ALWAYS run the code and verify it works as expected
 
 ## Code Quality Standards
 
 - Make code as simple as possible
 - Clear is better than clever
 - Use small functions and split large components
-- Verify libraries are already used in the codebase before using them (`uv` instead of `pip`)
-- Match existing code style, libraries, and patterns
+- Prefer libraries/tools that are already installed in the codebase (`altair` instead of `matplotlib`, `polars` instead of `pandas`)
+- In Python, prefer `uv` over `pip`. I.e `uv pip install n` instead of `pip install n` and `uv run <script>` instead of `python <script>`
