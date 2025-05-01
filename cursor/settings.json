@@ -31,7 +31,12 @@
   "python.analysis.cacheLSPData": true,
   "python.analysis.diagnosticMode": "workspace",
   "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.analysis.experimentalserver": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
   "python.REPL.sendToNativeREPL": true,
+  "python.analysis.ignore": [
+    "eggs"
+  ],
   "jupyter.interactiveWindow.textEditor.executeSelection": true,
   "notebook.output.scrolling": true,
   "notebook.output.minimalErrorRendering": true,
@@ -58,8 +63,5 @@
   "cursor.general.gitGraphIndexing": "enabled",
   "cursor.composer.shouldAllowCustomModes": true,
   "cursor.composer.shouldChimeAfterChatFinishes": true,
-  "cursor.diffs.useCharacterLevelDiffs": true,
-  "cursor.cpp.disabledLanguages": [
-    "plaintext"
-  ]
+  "cursor.diffs.useCharacterLevelDiffs": true
 }
