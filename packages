@@ -3,10 +3,11 @@ base-devel
 bat
 bemoji
 bottom
-btop
 brave-bin
+btop
 catppuccin-gtk-theme-frappe
 cliphist
+cloudflare-warp-bin
 docker
 docker-buildx
 eza
@@ -51,8 +52,8 @@ qt6-wayland
 qt6ct
 reflector
 sheldon
-solaar
 slurp
+solaar
 starship
 thunar
 thunar-archive-plugin

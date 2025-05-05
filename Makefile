@@ -98,3 +98,4 @@ post-installation:
 	@ echo "Enable keyring" (https://wiki.archlinux.org/title/GNOME/Keyring)
 	@ echo "Add FilePicker and Desktop Portals" (https://wiki.archlinux.org/title/XDG_Desktop_Portal)
 	@ echo "Install uv tools: llm, markitdown, copychat, open-interpreter"
+	@ echo "Configure Cloudflare WARP"

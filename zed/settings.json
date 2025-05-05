@@ -15,35 +15,8 @@
     "font_size": 15.0
   },
   "assistant": {
+    "default_profile": "write",
     "always_allow_tool_actions": true,
-    "default_profile": "ask",
-    "profiles": {
-      "write": {
-        "name": "Write",
-        "tools": {
-          "open": true,
-          "terminal": true,
-          "batch_tool": true,
-          "code_symbols": true,
-          "copy_path": false,
-          "create_file": true,
-          "delete_path": false,
-          "diagnostics": true,
-          "find_replace_file": true,
-          "fetch": true,
-          "list_directory": true,
-          "move_path": false,
-          "now": true,
-          "path_search": true,
-          "read_file": true,
-          "regex_search": true,
-          "symbol_info": true,
-          "thinking": true
-        },
-        "enable_all_context_servers": true,
-        "context_servers": {}
-      }
-    },
     "default_model": {
       "provider": "google",
       "model": "gemini-2.5-pro-exp-03-25"
@@ -71,11 +44,7 @@
   "always_treat_brackets_as_autoclosed": true,
   "languages": {
     "Python": {
-      "language_servers": [
-        "ruff",
-        "basedpyright",
-        "!pyright"
-      ],
+      "language_servers": ["ruff", "basedpyright", "!pyright"],
       "formatter": [
         {
           "code_actions": {
