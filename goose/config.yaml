@@ -1,3 +1,4 @@
+GOOSE_MODE: auto
 extensions:
   computercontroller:
     enabled: true
@@ -8,8 +9,9 @@ extensions:
     name: developer
     type: builtin
   memory:
-    enabled: true
+    enabled: false
     name: memory
     type: builtin
+GOOSE_CLI_MIN_PRIORITY: 0.2
 GOOSE_PROVIDER: google
-GOOSE_MODEL: gemini-2.5-pro-exp-03-25
+GOOSE_MODEL: gemini-2.5-flash-preview-04-17

@@ -8,6 +8,7 @@
 - Write clean, modular code with modern syntax and full type annotations
 - Follow existing code conventions in the codebase
 - No code comments unless specifically requested or for complex code
+- Don't tell me to do things that you can do yourself
 
 ## Agent Mode Best Practices
 
