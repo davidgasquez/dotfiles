@@ -9,23 +9,25 @@
 {
   "show_edit_predictions": true,
   "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_size": 14.0,
   "terminal": {
     "copy_on_select": true,
     "font_family": "JetBrainsMono Nerd Font",
-    "font_size": 15.0
+    "font_size": 14.0
   },
   "agent": {
     "default_profile": "write",
     "always_allow_tool_actions": true,
+    "stream_edits": true,
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "claude-3-7-sonnet"
+      "provider": "google",
+      "model": "gemini-2.5-pro-exp-03-25"
     },
     "version": "2",
     "enable_experimental_live_diffs": true
   },
   "features": {
-    "edit_prediction_provider": "zed"
+    "edit_prediction_provider": "copilot"
   },
   "inlay_hints": {
     "enabled": true
