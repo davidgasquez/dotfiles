@@ -64,6 +64,7 @@
   "cursor.composer.shouldAllowCustomModes": true,
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.diffs.useCharacterLevelDiffs": true,
+  "cursor.composer.shouldQueueWhenGenerating": true,
   "cursor.cpp.disabledLanguages": [
     "plaintext"
   ]
