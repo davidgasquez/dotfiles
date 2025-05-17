@@ -56,8 +56,6 @@
     },
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
-  "cursor.cmdk.useThemedDiffBackground": true,
-  "cursor.aipreview.enabled": true,
   "cursor.cpp.enablePartialAccepts": true,
   "cursor.general.enableShadowWorkspace": true,
   "cursor.general.gitGraphIndexing": "enabled",
