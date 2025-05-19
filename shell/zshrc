@@ -68,7 +68,7 @@ source <(fzf --zsh)
 eval "$(zoxide init zsh)"
 
 # Expand PATH with $HOME/.local/bin
-export PATH=$HOME/.local/bin:$HOME/projects/dotfiles/scripts:$PATH
+export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$HOME/projects/dotfiles/scripts:$PATH
 
 # SSH Agent
 if [ -z "$SSH_AUTH_SOCK" ]; then
