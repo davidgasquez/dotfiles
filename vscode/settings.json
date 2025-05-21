@@ -72,5 +72,12 @@
   "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.chat.edits.temporalContext.enabled": true,
   "github.copilot.chat.newWorkspaceCreation.enabled": true,
-  "github.copilot.chat.search.semanticTextResults": true
+  "github.copilot.chat.search.semanticTextResults": true,
+  "github.copilot.chat.scopeSelection": true,
+  "github.copilot.chat.agent.thinkingTool": true,
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use gitmoji commit message format. Examples:\n⚡️ Lazyload home screen images.\n🐛 Fix `onClick` event handler\n🔖 Bump version `1.2.0`\n♻️ Transform classes to hooks\n📈 Add analytics to the dashboard\n🌐 Support Japanese language\n Deploy new pipeline"
+    }
+  ]
 }

@@ -1,15 +1,18 @@
 alacritty
+amd-ucode
+aria2
 base-devel
 bat
 bemoji
-bottom
 brave-bin
+btop
 btop
 catppuccin-gtk-theme-frappe
 cliphist
 cloudflare-warp-bin
 docker
 docker-buildx
+espanso
 eza
 file-roller
 fuzzel
@@ -17,10 +20,13 @@ fwupd
 fzf
 git
 github-cli
+gnome-keyring
 grim
 gvfs
 gvfs-mtp
 htop
+hyprland
+hyprlock
 hyprpaper
 inter-font
 jq
@@ -51,6 +57,7 @@ qbittorrent
 qt6-wayland
 qt6ct
 reflector
+ripgrep
 sheldon
 slurp
 solaar
@@ -80,4 +87,5 @@ xdg-utils
 yt-dlp
 zenith
 zoxide
+zram-generator
 zsh
