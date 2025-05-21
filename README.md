@@ -3,30 +3,75 @@
 ![logo](https://user-images.githubusercontent.com/1682202/37351969-87717a40-26dc-11e8-9a90-ee07a1f4b69a.png)
 
 <center>
-  <i>Here you will find with my dotfiles, living in harmony and peace.</i>
+  <i>Here you will find my dotfiles, living in harmony and peace.</i>
 </center>
 
 ![image](https://github.com/davidgasquez/dotfiles/assets/1682202/6c4492d8-98ce-4430-9921-4d7ba70f4193)
 
 ## 🔍 Overview
 
-My primary OS is **Arch Linux**. These configurations are tuned to work on it. I'm using the [Catppuccin theme colors](https://github.com/catppuccin/catppuccin) across the system.
+My primary OS is **Arch Linux**. These configurations are tuned to work on it. I'm using the [Catppuccin theme colors](https://github.com/catppuccin/catppuccin) (Frappe flavor) across the system for a consistent look and feel.
 
 ### 🏗️ Architecture
 
-- **WM**: Hyprland with Waybar
-- **Terminal**: Alacritty with Catppuccin theme
-- **Shell**: zsh with Starship prompt
-- **Package Management**: pacman and paru
-- **AI Tools**: Cursor and llm CLI
+- **WM**: [Hyprland](https://hyprland.org/) with [Waybar](https://github.com/Alexays/Waybar)
+- **Terminal**: [Alacritty](https://github.com/alacritty/alacritty) with Catppuccin theme
+- **Shell**: zsh with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
+- **Package Management**: pacman and [uv](https://github.com/astral-sh/uv) for Python
+- **Text Expansion**: [Espanso](https://espanso.org/)
+- **Editors**: VS Code, Cursor, and Zed
+- **Notification**: [Mako](https://github.com/emersion/mako)
+- **Launcher**: [Fuzzel](https://codeberg.org/dnkl/fuzzel)
+- **CLI Tools**: [llm](https://llm.datasette.io/), [goose](https://github.com/goose-language/goose)
 
 ## 🚀 Installation
 
-Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to setup your system.
+1. Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to setup your system.
+2. Clone this repository:
+
+   ```bash
+   git clone https://github.com/davidgasquez/dotfiles.git ~/dotfiles
+   cd ~/dotfiles
+   ```
+
+3. Install the required packages:
+
+   ```bash
+   # Review the packages file first
+   cat packages | sudo pacman -S --needed -
+   ```
 
 ## 📦 Configuration
 
-The fastest way to setup the system is running the different `make` targets.
+The fastest way to set up the system is by running the different `make` targets defined in the `Makefile`. Each target handles the configuration for different components of the system.
+
+```bash
+# See all available targets
+make -n
+```
+
+For example, to set up your shell configuration:
+
+```bash
+make shell
+```
+
+### 🧰 Utility Scripts
+
+The repository includes several useful scripts in the `scripts/` directory:
+
+- `extract-subs` - Extract subtitles from video files
+- `q` - Quick search utility
+- `vupgrade` - Version upgrade helper
+- `yt2srt` - Convert YouTube subtitles to SRT format
+
+### 🔧 Post-Installation Steps
+
+After setting up the basic configuration, run:
+
+```bash
+make post-installation
+```
 
 ## 📜 License
 
