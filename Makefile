@@ -17,6 +17,12 @@ fonts:
 	@ mkdir -p $(HOME)/.config/fontconfig/conf.d
 	@ ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/fonts.conf
 
+.PHONY: espanso
+espanso:
+	@ mkdir -p $(HOME)/.config/espanso/config $(HOME)/.config/espanso/match
+	@ ln -sf $(DOTFILES)/espanso/config.yml $(HOME)/.config/espanso/config/default.yml
+	@ ln -sf $(DOTFILES)/espanso/match.yml $(HOME)/.config/espanso/match/base.yml
+
 .PHONY: vscode
 vscode:
 	@ mkdir -p "$(HOME)/.config/Code/User/"
