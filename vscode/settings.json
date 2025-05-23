@@ -2,52 +2,48 @@
   "workbench.colorTheme": "Catppuccin Frappé",
   "workbench.iconTheme": "catppuccin-frappe",
   "catppuccin.accentColor": "blue",
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "editor.formatOnSave": true,
+  "editor.fontFamily": "JetBrainsMono NF",
+  "editor.linkedEditing": true,
+  "editor.wordWrap": "on",
+  "extensions.ignoreRecommendations": true,
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.hideOnStartup": "whenEmpty",
+  "terminal.integrated.persistentSessionReviveProcess": "never",
+  "terminal.integrated.suggest.enabled": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "window.menuBarVisibility": "toggle",
-  "terminal.integrated.copyOnSelection": true,
-  "conventionalCommits.emojiFormat": "emoji",
-  "conventionalCommits.promptScopes": false,
-  "conventionalCommits.promptFooter": false,
-  "conventionalCommits.promptBody": false,
-  "dev.containers.defaultExtensions": [
-    "EditorConfig.EditorConfig",
-    "GitHub.copilot-chat",
-    "GitHub.copilot-labs",
-    "GitHub.copilot",
-    "GitHub.vscode-github-actions",
-    "GitHub.vscode-pull-request-github",
-    "tamasfe.even-better-toml",
-    "DavidAnson.vscode-markdownlint",
-    "timonwong.shellcheck",
-    "VisualStudioExptTeam.vscodeintellicode",
-    "vivaxy.vscode-conventional-commits"
-  ],
-  "foam.openDailyNote.directory": "Log",
-  "dev.containers.defaultFeatures": {
-    "ghcr.io/stuartleeks/dev-container-features/shell-history:latest": {}
-  },
-  "editor.fontFamily": "JetBrainsMono NF",
-  "editor.formatOnSave": true,
-  "files.autoSave": "onWindowChange",
-  "markdown.extension.italic.indicator": "_",
-  "markdown.extension.completion.enabled": true,
-  "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-  },
-  "workbench.startupEditor": "none",
-  "git.confirmSync": false,
-  "git.enableSmartCommit": true,
-  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "files.autoSave": "onFocusChange",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  "editor.inlineSuggest.enabled": true,
-  "markdownlint.config": {
-    "default": true,
-    "no-bare-urls": false
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.cacheLSPData": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.REPL.sendToNativeREPL": true,
+  "python.analysis.ignore": [
+    "eggs"
+  ],
+  "jupyter.interactiveWindow.textEditor.executeSelection": true,
+  "notebook.output.scrolling": true,
+  "notebook.output.minimalErrorRendering": true,
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.fixAll": "explicit",
+    "notebook.source.organizeImports": "explicit"
   },
-  "git.autofetch": true,
+  "ruff.nativeServer": "on",
+  "ruff.format.preview": true,
+  "ruff.lint.preview": true,
   "[python]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -56,17 +52,6 @@
     },
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
-  "python.analysis.typeCheckingMode": "basic",
-  "notebook.formatOnSave.enabled": true,
-  "notebook.codeActionsOnSave": {
-    "notebook.source.fixAll": "explicit",
-    "notebook.source.organizeImports": "explicit"
-  },
-  "remote.autoForwardPortsSource": "hybrid",
-  "redhat.telemetry.enabled": false,
-  "terminal.integrated.allowChords": false,
-  "terminal.integrated.sendKeybindingsToShell": true,
-  "security.promptForLocalFileProtocolHandling": false,
   "github.copilot.chat.editor.temporalContext.enabled": true,
   "githubPullRequests.experimental.chat": true,
   "github.copilot.nextEditSuggestions.enabled": true,
@@ -79,5 +64,13 @@
     {
       "text": "Use gitmoji commit message format. Examples:\n⚡️ Lazyload home screen images.\n🐛 Fix `onClick` event handler\n🔖 Bump version `1.2.0`\n♻️ Transform classes to hooks\n📈 Add analytics to the dashboard\n🌐 Support Japanese language\n Deploy new pipeline"
     }
-  ]
+  ],
+  "workbench.startupEditor": "none",
+  "window.titleBarStyle": "native",
+  "window.menuBarVisibility": "toggle",
+  "window.customTitleBarVisibility": "never",
+  "window.commandCenter": false,
+  "workbench.activityBar.location": "top",
+  "workbench.layoutControl.enabled": false,
+  "chat.commandCenter.enabled": false,
 }

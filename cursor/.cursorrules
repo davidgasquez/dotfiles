@@ -4,7 +4,6 @@
 
 - Be concise and direct
 - Minimize tokens while maintaining helpfulness
-- Think step-by-step and be proactive
 - Write clean, modular code with modern syntax and full type annotations
 - Follow existing code conventions in the codebase
 - No code comments unless specifically requested or for complex code
@@ -12,13 +11,12 @@
 
 ## Agent Mode Best Practices
 
-- Gather information using `man` and `--help` before acting.
-- When working with data, write small inline Python scripts to get a sample and the schema of the datasets.
-- When running non-trivial bash commands, explain what they do and why
+- Gather information using `man` and `--help` before acting
+- When working with data, write and run small inline Python scripts to get a sample and the schema of the datasets
 
 ## Task Workflow
 
-1. Implement the solution keeping in mind the codebase, requirements and principles
+1. Implement minimal and simple solutions keeping in mind the codebase, requirements and principles
 2. Verify linting and typechecking, and run tests if available
 3. ALWAYS run the code and verify it works as expected
 
@@ -28,4 +26,4 @@
 - Clear is better than clever
 - Use small functions and split large components
 - Prefer libraries/tools that are already installed in the codebase (`altair` instead of `matplotlib`, `polars` instead of `pandas`)
-- In Python, prefer `uv` over `pip`. I.e `uv pip install n` instead of `pip install n` and `uv run <script>` instead of `python <script>`
+- In Python, use `uv` over `pip`. I.e `uv pip install n` instead of `pip install n` and `uv run <script>` instead of `python <script>`

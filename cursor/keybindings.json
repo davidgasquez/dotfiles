@@ -18,10 +18,6 @@
     "command": "editor.action.moveLinesDownAction"
   },
   {
-    "key": "ctrl+shift+[Backslash]",
-    "command": "extension.conventionalCommits"
-  },
-  {
     "key": "ctrl+shift+-",
     "command": "workbench.action.terminal.new",
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"

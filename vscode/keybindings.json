@@ -18,16 +18,22 @@
     "command": "editor.action.moveLinesDownAction"
   },
   {
-    "key": "ctrl+shift+[Backslash]",
-    "command": "extension.conventionalCommits"
-  },
-  {
-    "key": "ctrl+shift+insert",
+    "key": "ctrl+shift+-",
     "command": "workbench.action.terminal.new",
     "when": "terminalProcessSupported || terminalWebExtensionContributedProfile"
   },
   {
     "key": "shift+alt+r",
     "command": "remote-containers.reopenInContainer"
+  },
+  {
+    "key": "ctrl+shift+[Minus]",
+    "command": "workbench.action.chat.openAgent",
+    "when": "!chatSetupHidden"
+  },
+  {
+    "key": "ctrl+[Minus]",
+    "command": "workbench.action.chat.openAsk",
+    "when": "!chatSetupHidden"
   }
 ]
