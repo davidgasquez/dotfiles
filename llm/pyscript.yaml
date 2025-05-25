@@ -1,4 +1,4 @@
-model: anthropic/claude-3-7-sonnet-latest
+model: github-copilot/claude-sonnet-4
 extract: true
 system: >
   You write Python tools / scripts / clis as single files.

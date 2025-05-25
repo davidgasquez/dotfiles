@@ -3,6 +3,7 @@
 ## Core Principles
 
 - Be concise and direct
+- Don't overthink
 - Minimize tokens while maintaining helpfulness
 - Write clean, modular code with modern syntax and full type annotations
 - Follow existing code conventions in the codebase
