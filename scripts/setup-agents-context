@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+# Setup AI agent context files as soft links to CONTRIBUTING.md
+# This creates the various context files that AI agents frameworks use
+
+# Exit on error
+set -e
+# Treat unset variables as an error
+set -u
+# Exit on pipe failures
+set -o pipefail
+
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+CONTRIBUTING_FILE="$DOTFILES_ROOT/CONTRIBUTING.md"
+GITIGNORE_FILE="$DOTFILES_ROOT/.gitignore"
+
+# Check if CONTRIBUTING.md exists
+if [[ ! -f "$CONTRIBUTING_FILE" ]]; then
+    echo "Error: CONTRIBUTING.md not found at $CONTRIBUTING_FILE"
+    echo "Please create CONTRIBUTING.md first before running this script."
+    exit 1
+fi
+
+echo "Setting up AI agent context files..."
+
+# List of context files that AI agents use
+CONTEXT_FILES=(
+    "AGENTS.md"
+    "CONTEXT.md"
+    "CLAUDE.md"
+)
+
+# Create soft links for each context file
+for file in "${CONTEXT_FILES[@]}"; do
+    target_path="$DOTFILES_ROOT/$file"
+
+    # Remove existing file/link if it exists
+    if [[ -e "$target_path" || -L "$target_path" ]]; then
+        echo "Removing existing $file"
+        rm "$target_path"
+    fi
+
+    # Create soft link
+    echo "Creating soft link: $file -> CONTRIBUTING.md"
+    ln -s "CONTRIBUTING.md" "$target_path"
+done
+
+# Update .gitignore to ignore context files
+echo "Updating .gitignore..."
+
+# Create .gitignore if it doesn't exist
+if [[ ! -f "$GITIGNORE_FILE" ]]; then
+    echo "Creating .gitignore file"
+    touch "$GITIGNORE_FILE"
+fi
+
+# Add context files to .gitignore if not already present
+for file in "${CONTEXT_FILES[@]}"; do
+    if ! grep -q "^$file$" "$GITIGNORE_FILE" 2>/dev/null; then
+        echo "Adding $file to .gitignore"
+        echo "$file" >> "$GITIGNORE_FILE"
+    else
+        echo "$file already in .gitignore"
+    fi
+done
+
+echo "✅ All AI agent context files have been set up as soft links to CONTRIBUTING.md"
+echo "✅ Context files added to .gitignore"

@@ -2,6 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(git:*)",
+      "Bash(chmod:*)",
       "url:*",
       "WebFetch"
     ],
