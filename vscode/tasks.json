@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Claude Code",
+            "type": "shell",
+            "command": "alacritty",
+            "args": [
+                "--working-directory",
+                "${workspaceFolder}",
+                "-e",
+                "zsh",
+                "-i",
+                "-c",
+                "claude"
+            ],
+            "options": {
+                "detached": true
+            },
+            "group": "build",
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        }
+    ]
+}

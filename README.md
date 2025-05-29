@@ -26,7 +26,7 @@ My primary OS is **Arch Linux**. These configurations are tuned to work on it. I
 
 ## 🚀 Installation
 
-1. Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to setup your system.
+1. Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to set up your system.
 2. Clone this repository:
 
    ```bash

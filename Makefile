@@ -28,7 +28,13 @@ vscode:
 	@ mkdir -p "$(HOME)/.config/Code/User/"
 	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code/User/settings.json"
 	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
+	@ ln -sf $(DOTFILES)/vscode/tasks.json "$(HOME)/.config/Code/User/tasks.json"
 	@ ln -sf $(DOTFILES)/vscode/code-flags.conf $(HOME)/.config/code-flags.conf
+
+.PHONY: claude
+claude:
+	@ mkdir -p "$(HOME)/.claude"
+	@ ln -sf $(DOTFILES)/claude/settings.json "$(HOME)/.claude/settings.json"
 
 .PHONY: cursor
 cursor:

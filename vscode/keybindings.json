@@ -28,12 +28,11 @@
   },
   {
     "key": "ctrl+shift+[Minus]",
-    "command": "workbench.action.chat.openAgent",
-    "when": "!chatSetupHidden"
+    "command": "workbench.action.tasks.runTask",
+    "args": "Claude Code"
   },
   {
     "key": "ctrl+[Minus]",
-    "command": "workbench.action.chat.openAsk",
-    "when": "!chatSetupHidden"
+    "command": "claude-code.runClaude"
   }
 ]
