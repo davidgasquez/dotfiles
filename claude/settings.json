@@ -1,9 +1,10 @@
 {
-    "permissions": {
-        "allow": [
-            "Bash(git:*)",
-            "url:*"
-        ],
-        "deny": []
-    }
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "url:*",
+      "WebFetch"
+    ],
+    "deny": []
+  }
 }

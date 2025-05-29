@@ -5,6 +5,7 @@
             "label": "Claude Code",
             "type": "shell",
             "command": "alacritty",
+            "isBackground": true,
             "args": [
                 "--working-directory",
                 "${workspaceFolder}",
@@ -14,19 +15,15 @@
                 "-c",
                 "claude"
             ],
-            "options": {
-                "detached": true
-            },
-            "group": "build",
             "presentation": {
                 "echo": false,
-                "reveal": "never",
+                "reveal": "silent",
                 "focus": false,
-                "panel": "shared",
-                "showReuseMessage": false
-            },
-            "runOptions": {
-                "runOn": "folderOpen"
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "close": true,
+                "revealProblems": "never",
+                "clear": true
             }
         }
     ]

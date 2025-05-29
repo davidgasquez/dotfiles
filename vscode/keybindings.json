@@ -28,11 +28,24 @@
   },
   {
     "key": "ctrl+shift+[Minus]",
-    "command": "workbench.action.tasks.runTask",
-    "args": "Claude Code"
+    "command": "claude-code.runClaude"
+  },
+  {
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\\\r\n"
+    },
+    "when": "terminalFocus"
   },
   {
     "key": "ctrl+[Minus]",
-    "command": "claude-code.runClaude"
+    "command": "workbench.panel.chat",
+    "when": "workbench.panel.chat.view.copilot.active"
+  },
+  {
+    "key": "ctrl+alt+i",
+    "command": "-workbench.panel.chat",
+    "when": "workbench.panel.chat.view.copilot.active"
   }
 ]
