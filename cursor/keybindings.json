@@ -46,13 +46,18 @@
   {
     "key": "ctrl+[Minus]",
     "command": "composerMode.chat"
-},
-{
+  },
+  {
     "key": "shift+enter",
     "command": "workbench.action.terminal.sendSequence",
     "args": {
-        "text": "\\\r\n"
+      "text": "\\\r\n"
     },
     "when": "terminalFocus"
-}
+  },
+  {
+    "key": "ctrl+enter",
+    "command": "aipopup.action.modal.generate",
+    "when": "!composerBarIsVisible"
+  }
 ]

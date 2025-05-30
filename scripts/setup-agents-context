@@ -10,11 +10,9 @@ set -u
 # Exit on pipe failures
 set -o pipefail
 
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-CONTRIBUTING_FILE="$DOTFILES_ROOT/CONTRIBUTING.md"
-GITIGNORE_FILE="$DOTFILES_ROOT/.gitignore"
+CURRENT_DIR="$(pwd)"
+CONTRIBUTING_FILE="$CURRENT_DIR/CONTRIBUTING.md"
+GITIGNORE_FILE="$CURRENT_DIR/.gitignore"
 
 # Check if CONTRIBUTING.md exists
 if [[ ! -f "$CONTRIBUTING_FILE" ]]; then
@@ -34,7 +32,7 @@ CONTEXT_FILES=(
 
 # Create soft links for each context file
 for file in "${CONTEXT_FILES[@]}"; do
-    target_path="$DOTFILES_ROOT/$file"
+    target_path="$CURRENT_DIR/$file"
 
     # Remove existing file/link if it exists
     if [[ -e "$target_path" || -L "$target_path" ]]; then
