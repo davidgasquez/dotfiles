@@ -50,10 +50,6 @@
     "command": "composerMode.agent"
   },
   {
-    "key": "ctrl+[Minus]",
-    "command": "composerMode.chat"
-  },
-  {
     "key": "shift+enter",
     "command": "workbench.action.terminal.sendSequence",
     "args": {
@@ -65,5 +61,13 @@
     "key": "ctrl+enter",
     "command": "aipopup.action.modal.generate",
     "when": "!composerBarIsVisible"
+  },
+  {
+    "key": "ctrl+[Minus]",
+    "command": "composer.startComposerPrompt"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-composer.startComposerPrompt"
   }
 ]

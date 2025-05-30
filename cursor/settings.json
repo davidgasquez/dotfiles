@@ -24,18 +24,8 @@
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "python.experiments.enabled": true,
-  "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.autoImportCompletions": true,
-  "python.analysis.autoSearchPaths": true,
-  "python.analysis.useLibraryCodeForTypes": true,
-  "python.analysis.autoFormatStrings": true,
-  "python.analysis.cacheLSPData": true,
-  "python.analysis.diagnosticMode": "workspace",
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.REPL.sendToNativeREPL": true,
-  "python.analysis.ignore": [
-    "eggs"
-  ],
   "interactiveWindow.executeWithShiftEnter": true,
   "jupyter.interactiveWindow.notebookRepl": true,
   "jupyter.executionAnalysis.enabled": true,
@@ -62,11 +52,23 @@
   "cursor.cpp.enablePartialAccepts": true,
   "cursor.general.enableShadowWorkspace": true,
   "cursor.general.gitGraphIndexing": "enabled",
-  "cursor.composer.shouldAllowCustomModes": true,
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "cursor.diffs.useCharacterLevelDiffs": true,
   "cursor.composer.shouldQueueWhenGenerating": true,
   "cursor.cpp.disabledLanguages": [
     "plaintext"
-  ]
+  ],
+  "cursorpyright.analysis.autoImportCompletions": true,
+  "cursorpyright.analysis.autoSearchPaths": true,
+  "cursorpyright.analysis.diagnosticMode": "workspace",
+  "cursorpyright.analysis.typeCheckingMode": "recommended",
+  "cursorpyright.analysis.useLibraryCodeForTypes": true,
+  "json.schemaDownload.enable": true,
+  "cursorpyright.analysis.diagnosticSeverityOverrides": {
+    "reportMissingTypeStubs": false,
+    "reportUnknownMemberType": false,
+    "reportUnknownArgumentType": false,
+    "reportAny": false,
+    "reportUnknownVariableType": false
+  }
 }
