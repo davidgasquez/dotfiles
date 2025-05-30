@@ -37,7 +37,13 @@
   },
   {
     "key": "alt+g alt+c",
-    "command": "cursor.generateGitCommitMessage"
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "workbench.scm.focus",
+        "cursor.generateGitCommitMessage"
+      ]
+    }
   },
   {
     "key": "ctrl+shift+[Minus]",
