@@ -69,5 +69,14 @@
   {
     "key": "ctrl+i",
     "command": "-composer.startComposerPrompt"
+  },
+  {
+    "key": "ctrl+escape",
+    "command": "-claude-code.runClaude.keyboard",
+    "when": "claude-code.hasClaudeInPath"
+  },
+  {
+    "key": "ctrl+shift+[Equal]",
+    "command": "claude-code.runClaude"
   }
 ]
