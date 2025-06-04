@@ -23,6 +23,7 @@
   "files.autoSave": "onFocusChange",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
+  "python.languageServer": "None",
   "python.experiments.enabled": true,
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.REPL.sendToNativeREPL": true,
@@ -41,6 +42,7 @@
   "ruff.nativeServer": "on",
   "ruff.format.preview": true,
   "ruff.lint.preview": true,
+  "ty.experimental.completions.enable": true,
   "[python]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
