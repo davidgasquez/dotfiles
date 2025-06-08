@@ -10,10 +10,7 @@ This is a dotfiles repository for Arch Linux with Hyprland window manager and Ca
 
 ### Setup and Configuration
 
-```bash
-# View all available make targets
-make -n
-```
+Check the `Makefile` for all available commands.
 
 ### Package Management
 
