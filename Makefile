@@ -35,6 +35,7 @@ vscode:
 claude:
 	@ mkdir -p "$(HOME)/.claude"
 	@ ln -sf $(DOTFILES)/claude/settings.json "$(HOME)/.claude/settings.json"
+	@ ln -sf $(DOTFILES)/claude/CLAUDE.md "$(HOME)/.claude/CLAUDE.md"
 
 .PHONY: cursor
 cursor:
