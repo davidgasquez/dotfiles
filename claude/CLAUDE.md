@@ -8,3 +8,8 @@
 - Keep feedback loops short
 - Break complex tasks into smaller components
 - Use todo lists for multi-step tasks
+- Make it work, make it right, make it fast
+- Aim for 80% solution (avoid perfectionism)
+- The best code is no code, don't be afraid to clean up code
+- Make trade-offs explicit
+- Start with documentation, then automate incrementally
