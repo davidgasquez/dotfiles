@@ -25,6 +25,7 @@ echo "Setting up AI agent context files..."
 
 # List of context files that AI agents use
 CONTEXT_FILES=(
+    "AGENT.md"
     "AGENTS.md"
     "CONTEXT.md"
     "CLAUDE.md"
