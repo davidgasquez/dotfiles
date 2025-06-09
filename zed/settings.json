@@ -7,7 +7,6 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "show_edit_predictions": true,
   "buffer_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_size": 14.0,
   "terminal": {
@@ -16,6 +15,10 @@
     "font_size": 14.0
   },
   "agent": {
+    "inline_assistant_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
+    },
     "default_profile": "write",
     "always_allow_tool_actions": true,
     "stream_edits": true,
@@ -24,16 +27,6 @@
       "model": "claude-sonnet-4-thinking"
     },
     "version": "2"
-  },
-  "features": {
-    "edit_prediction_provider": "zed"
-  },
-  "inlay_hints": {
-    "enabled": true
-  },
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false
   },
   "inline_code_actions": true,
   "tabs": {
@@ -70,6 +63,7 @@
           "pythonPath": ".venv/bin/python"
         },
         "basedpyright.analysis": {
+          "typeCheckingMode": "standard",
           "diagnosticMode": "workspace",
           "inlayHints": {
             "callArgumentNames": true,
