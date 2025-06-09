@@ -76,7 +76,7 @@
     "when": "claude-code.hasClaudeInPath"
   },
   {
-    "key": "ctrl+shift+[Equal]",
+    "key": "alt+c alt+c",
     "command": "claude-code.runClaude"
   }
 ]

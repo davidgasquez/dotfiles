@@ -63,7 +63,7 @@
   "cursorpyright.analysis.autoImportCompletions": true,
   "cursorpyright.analysis.autoSearchPaths": true,
   "cursorpyright.analysis.diagnosticMode": "workspace",
-  "cursorpyright.analysis.typeCheckingMode": "recommended",
+  "cursorpyright.analysis.typeCheckingMode": "standard",
   "cursorpyright.analysis.useLibraryCodeForTypes": true,
   "json.schemaDownload.enable": true,
   "cursorpyright.analysis.diagnosticSeverityOverrides": {
@@ -72,5 +72,8 @@
     "reportUnknownArgumentType": false,
     "reportAny": false,
     "reportUnknownVariableType": false
-  }
+  },
+  "cursorpyright.analysis.ignore": [
+    "var"
+  ]
 }
