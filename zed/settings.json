@@ -35,9 +35,11 @@
     "diagnostics": false,
     "metrics": false
   },
+  "inline_code_actions": true,
   "tabs": {
     "git_status": true,
-    "file_icons": true
+    "file_icons": true,
+    "show_diagnostics": "errors"
   },
   "collaboration_panel": {
     "button": false
@@ -85,7 +87,16 @@
       "horizontal": false
     }
   },
+  "diagnostics": {
+    "include_warnings": true,
+    "inline": {
+      "enabled": true,
+      "padding": 10,
+      "min_column": 60
+    }
+  },
   "autosave": "on_focus_change",
+  "ensure_final_newline_on_save": true,
   "format_on_save": "on",
   "auto_update": false,
   "theme": "Catppuccin Frappé",
