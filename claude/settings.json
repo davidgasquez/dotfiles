@@ -2,10 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(git:*)",
-      "Bash(chmod:*)",
-      "url:*",
-      "WebFetch"
+      "Bash(ls:*)",
+      "Bash(python:*)",
+      "Bash(uv run:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:*)"
     ],
     "deny": []
-  }
+  },
+  "model": "opus"
 }
