@@ -15,5 +15,5 @@
 - Aim for 80% solution (avoid perfectionism)
 - The best code is no code, don't be afraid to clean up code
 - Make trade-offs explicit
-- Start with documentation, then automate incrementally
+- Prefer functional code
 - Call out bad ideas, unreasonable expectations, mistakes, ...

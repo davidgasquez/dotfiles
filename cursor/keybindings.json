@@ -46,10 +46,6 @@
     }
   },
   {
-    "key": "ctrl+shift+[Minus]",
-    "command": "composerMode.agent"
-  },
-  {
     "key": "shift+enter",
     "command": "workbench.action.terminal.sendSequence",
     "args": {
@@ -63,14 +59,6 @@
     "when": "!composerBarIsVisible"
   },
   {
-    "key": "ctrl+[Minus]",
-    "command": "composer.startComposerPrompt"
-  },
-  {
-    "key": "ctrl+i",
-    "command": "-composer.startComposerPrompt"
-  },
-  {
     "key": "ctrl+escape",
     "command": "-claude-code.runClaude.keyboard",
     "when": "claude-code.hasClaudeInPath"
@@ -78,5 +66,13 @@
   {
     "key": "alt+c alt+c",
     "command": "claude-code.runClaude"
+  },
+  {
+    "key": "ctrl+[Minus]",
+    "command": "workbench.action.toggleAuxiliaryBar"
+  },
+  {
+    "key": "ctrl+alt+b",
+    "command": "-workbench.action.toggleAuxiliaryBar"
   }
 ]
