@@ -34,8 +34,6 @@ compinit
 eval "$(uv generate-shell-completion zsh)"
 
 # Load direnv
-eval "$(direnv hook zsh)"
-
 # Aliases
 alias cd='z'
 alias ls='eza --color=auto --icons=always'

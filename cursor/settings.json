@@ -58,7 +58,8 @@
   "cursor.diffs.useCharacterLevelDiffs": true,
   "cursor.composer.shouldQueueWhenGenerating": true,
   "cursor.cpp.disabledLanguages": [
-    "plaintext"
+    "plaintext",
+    "markdown"
   ],
   "cursorpyright.analysis.autoImportCompletions": true,
   "cursorpyright.analysis.autoSearchPaths": true,
