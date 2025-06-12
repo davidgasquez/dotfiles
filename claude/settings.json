@@ -8,9 +8,11 @@
       "Bash(ls:*)",
       "Bash(make:*)",
       "Bash(mkdir:*)",
+      "Edit(**)",
       "WebFetch(domain:*)"
     ],
     "deny": []
   },
-  "model": "opus"
+  "model": "opus",
+  "includeCoAuthoredBy": false
 }
