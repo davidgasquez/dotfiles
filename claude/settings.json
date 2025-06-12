@@ -6,6 +6,7 @@
       "Bash(python:*)",
       "Bash(uv run:*)",
       "Bash(ls:*)",
+      "Bash(make:*)",
       "WebFetch(domain:*)"
     ],
     "deny": []
