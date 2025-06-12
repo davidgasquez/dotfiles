@@ -16,6 +16,7 @@ gitconfig:
 fonts:
 	@ mkdir -p $(HOME)/.config/fontconfig/conf.d
 	@ ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/fonts.conf
+	@ fc-cache -fv
 
 .PHONY: espanso
 espanso:

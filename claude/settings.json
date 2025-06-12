@@ -7,6 +7,7 @@
       "Bash(uv run:*)",
       "Bash(ls:*)",
       "Bash(make:*)",
+      "Bash(mkdir:*)",
       "WebFetch(domain:*)"
     ],
     "deny": []
