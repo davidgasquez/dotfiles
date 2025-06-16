@@ -1,4 +1,5 @@
 {
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
       "Bash(git:*)",
@@ -12,7 +13,5 @@
       "WebFetch(domain:*)"
     ],
     "deny": []
-  },
-  "model": "opus",
-  "includeCoAuthoredBy": false
+  }
 }
