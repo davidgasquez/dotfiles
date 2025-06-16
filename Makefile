@@ -37,6 +37,7 @@ claude:
 	@ mkdir -p "$(HOME)/.claude"
 	@ ln -sf $(DOTFILES)/claude/settings.json "$(HOME)/.claude/settings.json"
 	@ ln -sf $(DOTFILES)/claude/CLAUDE.md "$(HOME)/.claude/CLAUDE.md"
+	@ ln -sfT $(DOTFILES)/claude/commands "$(HOME)/.claude/commands"
 
 .PHONY: cursor
 cursor:
@@ -80,7 +81,8 @@ brave:
 llm:
 	@ uv tool install --reinstall -U llm --with llm-gemini --with llm-anthropic \
 		--with llm-openai-plugin --with llm-github-copilot --with llm-cmd \
-		--with llm-fragments-github --with llm-fragments-reader
+		--with llm-fragments-github --with llm-fragments-reader \
+		--with llm-fragments-youtube
 	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
 	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
 
