@@ -73,11 +73,5 @@
       "text": "Use gitmoji commit message format. Examples:\n ⚡️ Lazyload home screen images.\n 🐛 Fix `onClick` event handler\n 🔖 Bump version `1.2.0`\n ♻️ Transform classes to hooks\n 📈 Add analytics to the dashboard\n 🌐 Support Japanese language\n Deploy new pipeline"
     }
   ],
-  "chat.commandCenter.enabled": false,
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": true,
-    "markdown": false,
-    "scminput": false
-  }
+  "chat.commandCenter.enabled": false
 }
