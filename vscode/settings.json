@@ -20,7 +20,6 @@
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.hideOnStartup": "whenEmpty",
   "terminal.integrated.persistentSessionReviveProcess": "never",
-  "terminal.integrated.suggest.enableExtensionCompletions": true,
   "terminal.integrated.suggest.enabled": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
@@ -38,7 +37,6 @@
   "python.analysis.diagnosticMode": "workspace",
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.REPL.sendToNativeREPL": true,
-  "python.analysis.ignore": ["eggs"],
   "interactiveWindow.executeWithShiftEnter": true,
   "jupyter.interactiveWindow.notebookRepl": true,
   "jupyter.executionAnalysis.enabled": true,
@@ -68,7 +66,6 @@
   "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.chat.edits.temporalContext.enabled": true,
   "github.copilot.chat.newWorkspaceCreation.enabled": true,
-  "github.copilot.chat.search.semanticTextResults": true,
   "github.copilot.chat.scopeSelection": true,
   "github.copilot.chat.agent.thinkingTool": true,
   "github.copilot.chat.commitMessageGeneration.instructions": [
@@ -76,13 +73,5 @@
       "text": "Use gitmoji commit message format. Examples:\n ⚡️ Lazyload home screen images.\n 🐛 Fix `onClick` event handler\n 🔖 Bump version `1.2.0`\n ♻️ Transform classes to hooks\n 📈 Add analytics to the dashboard\n 🌐 Support Japanese language\n Deploy new pipeline"
     }
   ],
-  "chat.commandCenter.enabled": false,
-  "amp.tab.autoImport.enabled": true,
-  "amp.tab.enabled": true,
-  "github.copilot.enable": {
-    "*": false,
-    "plaintext": false,
-    "markdown": false,
-    "scminput": false
-  }
+  "chat.commandCenter.enabled": false
 }
