@@ -13,7 +13,8 @@ extract_spanish_subs() {
   echo "Analyzing subtitle tracks in $input_file..."
 
   # Get subtitle track information
-  local sub_info=$(ffprobe -v error -select_streams s -show_entries stream=index:stream_tags=language -of csv=p=0 "$input_file")
+  local sub_info
+  sub_info=$(ffprobe -v error -select_streams s -show_entries stream=index:stream_tags=language -of csv=p=0 "$input_file")
 
   # Find Spanish subtitle track index
   local spa_track=""
