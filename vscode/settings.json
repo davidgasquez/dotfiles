@@ -9,6 +9,7 @@
   "window.titleBarStyle": "native",
   "window.menuBarVisibility": "toggle",
   "window.commandCenter": false,
+  "telemetry.telemetryLevel": "off",
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
   "git.autofetch": true,
