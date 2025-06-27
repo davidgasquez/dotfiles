@@ -107,6 +107,7 @@ post-installation:
 	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
 	@ echo "Setup DNS" (Via nm-applet)
+	@ echo "Setup preloader" (https://wiki.archlinux.org/title/Preload)
 	@ echo "Configure solaar" (https://wiki.archlinux.org/title/Logitech_Unifying_Receiver)
 	@ echo "Improve battery life" (https://github.com/AdnanHodzic/auto-cpufreq) and thermald
 	@ echo "Enable Scheduled fstrim" (https://wiki.archlinux.org/title/Solid_state_drive#Periodic_TRIM)
