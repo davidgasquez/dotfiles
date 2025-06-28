@@ -86,12 +86,6 @@ llm:
 	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
 	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
 
-.PHONY: goose
-goose:
-	@ mkdir -p "$(HOME)/.config/goose"
-	@ ln -sf $(DOTFILES)/goose/config.yaml $(HOME)/.config/goose/config.yaml
-	@ ln -sf $(DOTFILES)/goose/.goosehints $(HOME)/.config/goose/.goosehints
-
 .PHONY: maintenance
 maintenance:
 	@ docker system prune --volumes --all
@@ -103,16 +97,18 @@ maintenance:
 .PHONY: post-installation
 post-installation:
 	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)"
+	@ echo "Setup Firewall" (https://wiki.archlinux.org/title/Nftables)
 	@ echo "Setup ZRAM" (https://wiki.archlinux.org/title/Zram#Using_zram-generator)
 	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
-	@ echo "Setup DNS" (Via nm-applet)
+	@ echo "Improve OOM (using systemd-oomd.service)"
+	@ echo "Setup DNS / Cloudflare WARP"
 	@ echo "Setup preloader" (https://wiki.archlinux.org/title/Preload)
 	@ echo "Configure solaar" (https://wiki.archlinux.org/title/Logitech_Unifying_Receiver)
-	@ echo "Improve battery life" (https://github.com/AdnanHodzic/auto-cpufreq) and thermald
+	@ echo "Improve battery life" (auto-cpufreq, thermald, governor, etc.)
 	@ echo "Enable Scheduled fstrim" (https://wiki.archlinux.org/title/Solid_state_drive#Periodic_TRIM)
 	@ echo "Enable Scheduled Mirrorlist Updates" (https://wiki.archlinux.org/title/Reflector)
-	@ echo "Enable keyring" (https://wiki.archlinux.org/title/GNOME/Keyring)
+	@ echo "Enable keyring and PAM" (https://wiki.archlinux.org/title/GNOME/Keyring)
+	@ echo "Enable SSH Agent" (https://wiki.archlinux.org/title/GNOME/Keyring#SSH_keys)
 	@ echo "Add FilePicker and Desktop Portals" (https://wiki.archlinux.org/title/XDG_Desktop_Portal)
-	@ echo "Install uv tools: llm, markitdown, copychat, open-interpreter"
-	@ echo "Configure Cloudflare WARP"
+	@ echo "Install uv tools: llm, markitdown, ..."
