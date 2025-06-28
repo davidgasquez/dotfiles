@@ -13,7 +13,8 @@ eval "$(sheldon -q --non-interactive source)"
 eval "$(starship init zsh)"
 
 # Options
-setopt autocd extendedglob
+setopt autocd
+setopt extended_glob
 setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
 setopt inc_append_history
@@ -25,10 +26,18 @@ setopt auto_menu
 bindkey -e
 
 # Completions
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle :compinstall filename '/home/david/.zshrc'
 zstyle ':completion:*' menu select
 autoload -Uz compinit
-compinit
+
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+  compdump
+else
+  compinit -C
+fi
 
 # Load direnv
 # Aliases
