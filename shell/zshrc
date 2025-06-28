@@ -30,9 +30,6 @@ zstyle ':completion:*' menu select
 autoload -Uz compinit
 compinit
 
-# Uv Completion
-eval "$(uv generate-shell-completion zsh)"
-
 # Load direnv
 # Aliases
 alias cd='z'
@@ -72,20 +69,6 @@ eval "$(zoxide init zsh)"
 # Expand PATH with $HOME/.local/bin
 export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$HOME/projects/dotfiles/scripts:$PATH
 
-# SSH Agent
-if [ -z "$SSH_AUTH_SOCK" ]; then
-  # Check for a currently running instance of the agent
-  RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
-  if [ "$RUNNING_AGENT" = "0" ]; then
-    # Launch a new instance of the agent
-    ssh-agent -s &> $HOME/.ssh/ssh-agent
-  fi
-  eval `cat $HOME/.ssh/ssh-agent` > /dev/null
-
-  # Add all keys
-  ssh-add
-fi
-
 # Move cursor
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;3C" forward-word
@@ -102,6 +85,6 @@ bindkey '^[[B' history-substring-search-down
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=blue,fg=black,bold'
 
 # Hyprland
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-  exec Hyprland
+if uwsm check may-start; then
+	exec uwsm start default
 fi
