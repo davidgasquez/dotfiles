@@ -15,7 +15,9 @@ packages=(
     starship
     wget
     yt-dlp
+    ffmpeg
     zoxide
 )
 
+# Install packages
 paru -S --needed --noconfirm "${packages[@]}"
