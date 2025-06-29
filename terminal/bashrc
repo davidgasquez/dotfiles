@@ -7,12 +7,27 @@
 eval "$(starship init bash)"
 
 # History
-export HISTSIZE=10000
+export HISTSIZE=50000
+export HISTFILESIZE=50000
 export HISTCONTROL=ignoreboth:erasedups
+export HISTIGNORE="ls:ll:cd:pwd:exit:clear"
+PROMPT_COMMAND="history -a; history -c; history -r"
 
 # Shell options
 shopt -s checkwinsize
 shopt -s globstar
+
+# Modern navigation
+shopt -s autocd cdspell dirspell
+
+# Better completion
+shopt -s no_empty_cmd_completion direxpand
+
+# Enhanced history
+shopt -s histappend cmdhist lithist
+
+# Safety
+set -o noclobber
 
 # FZF
 eval "$(fzf --bash)"

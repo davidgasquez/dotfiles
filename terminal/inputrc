@@ -13,3 +13,8 @@
 # Additional useful bindings
 "\e[A": history-search-backward
 "\e[B": history-search-forward
+
+# Completion improvements
+set show-all-if-ambiguous on
+set completion-ignore-case on
+set colored-stats on
