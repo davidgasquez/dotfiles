@@ -6,8 +6,6 @@ docker-buildx
 espanso
 file-roller
 fwupd
-git
-github-cli
 gnome-keyring
 gvfs
 gvfs-mtp

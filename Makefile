@@ -7,8 +7,9 @@ shell:
 	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
 	@ ln -sf $(DOTFILES)/shell/sheldon/plugins.toml $(HOME)/.config/sheldon/plugins.toml
 
-.PHONY: gitconfig
-gitconfig:
+.PHONY: git
+git:
+	@ ${DOTFILES}/git/packages.sh
 	@ ln -sf $(DOTFILES)/git/gitconfig $(HOME)/.gitconfig
 	@ ln -sf $(DOTFILES)/git/.gitignore_global $(HOME)/.gitignore_global
 
