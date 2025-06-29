@@ -14,9 +14,10 @@ gitconfig:
 
 .PHONY: fonts
 fonts:
-	@ mkdir -p $(HOME)/.config/fontconfig/conf.d
-	@ ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/fonts.conf
-	@ fc-cache -fv
+	@ $(DOTFILES)/fonts/packages.sh
+	# @ mkdir -p $(HOME)/.config/fontconfig/conf.d
+	# @ ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/fonts.conf
+	# @ fc-cache -fv
 
 .PHONY: espanso
 espanso:
@@ -56,12 +57,16 @@ zed:
 
 .PHONY: terminal
 terminal:
+	@ $(DOTFILES)/terminal/packages.sh
 	@ mkdir -p "$(HOME)/.config/alacritty"
-	@ ln -sf $(DOTFILES)/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
+	@ ln -sf $(DOTFILES)/terminal/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
+	@ ln -sf $(DOTFILES)/terminal/bashrc $(HOME)/.bashrc
+	@ ln -sf $(DOTFILES)/terminal/starship.toml $(HOME)/.config/starship.toml
 
 .PHONY: hypr
 hypr:
 	@ mkdir -p "$(HOME)/.config/hypr" "$(HOME)/.config/waybar" "$(HOME)/.config/mako" "$(HOME)/.config/fuzzel"
+	@ ${DOTFILES}/hypr/setup.sh
 	@ ln -sf $(DOTFILES)/hypr/frappe.conf $(HOME)/.config/hypr/frappe.conf
 	@ ln -sf $(DOTFILES)/hypr/hyprland.conf $(HOME)/.config/hypr/hyprland.conf
 	@ ln -sf $(DOTFILES)/hypr/hyprpaper.conf $(HOME)/.config/hypr/hyprpaper.conf
@@ -96,7 +101,7 @@ maintenance:
 
 .PHONY: post-installation
 post-installation:
-	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX)"
+	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX using `mkinitcpio-firmware`)"
 	@ echo "Setup Firewall" (https://wiki.archlinux.org/title/Nftables)
 	@ echo "Setup ZRAM" (https://wiki.archlinux.org/title/Zram#Using_zram-generator)
 	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
