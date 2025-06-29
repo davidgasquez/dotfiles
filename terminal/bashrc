@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
 # Blesh
 # [[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
 
@@ -11,7 +14,6 @@ export HISTSIZE=50000
 export HISTFILESIZE=50000
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="ls:ll:cd:pwd:exit:clear"
-PROMPT_COMMAND="history -a; history -c; history -r"
 
 # Shell options
 shopt -s checkwinsize
@@ -26,14 +28,26 @@ shopt -s no_empty_cmd_completion direxpand
 # Enhanced history
 shopt -s histappend cmdhist lithist
 
-# Safety
-set -o noclobber
-
 # FZF
 eval "$(fzf --bash)"
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+# Zoxide
+eval "$(zoxide init bash)"
+
+# Aliases
+alias cd='z'
+alias ls='eza --color=auto --icons=always'
+alias ll='eza -l --icons'
+alias la='eza -la --icons'
+alias tree='eza --tree --icons'
+alias cat='bat -pp'
+alias up='paru -Syu --devel --skipreview'
+alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
+alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
+alias tls='tod list view -f "Today"'
+alias chat='llm chat'
+alias cmd='llm -t cmd'
+alias claude="/home/david/.claude/local/claude"
 
 # Attach Blesh
 # [[ ! ${BLE_VERSION-} ]] || ble-attach
