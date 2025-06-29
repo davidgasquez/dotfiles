@@ -17,6 +17,7 @@ packages=(
     yt-dlp
     ffmpeg
     zoxide
+    bash-completion
 )
 
 # Install packages
