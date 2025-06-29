@@ -4,6 +4,7 @@ packages=(
     alacritty
     aria2
     bat
+    blesh-git
     btop
     eza
     fzf

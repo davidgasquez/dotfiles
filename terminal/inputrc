@@ -1,0 +1,15 @@
+# Alt+Arrow keys for word movement
+"\e[1;3C": forward-word
+"\e[1;3D": backward-word
+
+# Alt+Backspace to delete word
+"\e\C-?": backward-kill-word
+"\e[3;3~": kill-word
+
+# Ctrl+Arrow alternatives
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+# Additional useful bindings
+"\e[A": history-search-backward
+"\e[B": history-search-forward

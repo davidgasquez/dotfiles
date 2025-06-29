@@ -62,6 +62,8 @@ terminal:
 	@ mkdir -p "$(HOME)/.config/alacritty"
 	@ ln -sf $(DOTFILES)/terminal/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
 	@ ln -sf $(DOTFILES)/terminal/bashrc $(HOME)/.bashrc
+	@ ln -sf $(DOTFILES)/terminal/blerc.sh $(HOME)/.blerc
+	@ ln -sf $(DOTFILES)/terminal/inputrc $(HOME)/.inputrc
 	@ ln -sf $(DOTFILES)/terminal/starship.toml $(HOME)/.config/starship.toml
 
 .PHONY: hypr

@@ -1,13 +1,24 @@
 #!/bin/bash
 
-[[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
+# Blesh
+# [[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
 
+# Starship
 eval "$(starship init bash)"
+
+# History
+export HISTSIZE=10000
+export HISTCONTROL=ignoreboth:erasedups
+
+# Shell options
+shopt -s checkwinsize
+shopt -s globstar
+
+# FZF
+eval "$(fzf --bash)"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-
-[[ ! ${BLE_VERSION-} ]] || ble-attach
+# Attach Blesh
+# [[ ! ${BLE_VERSION-} ]] || ble-attach
