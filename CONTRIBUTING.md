@@ -4,7 +4,7 @@ This repository tracks some of the dotfiles for an Arch Linux installation. Uses
 
 ## Architecture
 
-The repository follows a modular structure where each application has its own directory with configuration files. The Makefile automates the creation of symbolic links from the dotfiles to their expected locations in `$HOME/.config/` or other standard directories.
+The repository follows a modular structure (explained in the [README.md](README.md) file) where each application has its own directory with configuration files. The Makefile automates the creation of symbolic links from the dotfiles to their expected locations in `$HOME/.config/` or other standard directories.
 
 ### Patterns and Principles
 
