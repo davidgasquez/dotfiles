@@ -30,4 +30,6 @@ packages=(
 paru -S --needed --noconfirm "${packages[@]}"
 
 # Start Polkit agent for Hyprland (https://wiki.hypr.land/Hypr-Ecosystem/hyprpolkitagent/)
-systemctl --user enable --now hyprpolkitagent.service
+if ! systemctl --user is-active --quiet hyprpolkitagent.service; then
+    systemctl --user start hyprpolkitagent.service
+fi
