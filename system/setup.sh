@@ -6,6 +6,7 @@ packages=(
     util-linux
     preload
     mkinitcpio-firmware
+    power-profiles-daemon
 )
 
 # Install Hyprland and related packages
