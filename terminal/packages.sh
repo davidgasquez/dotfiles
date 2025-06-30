@@ -4,7 +4,6 @@ packages=(
     alacritty
     aria2
     bat
-    blesh-git
     btop
     eza
     fzf
@@ -18,6 +17,7 @@ packages=(
     yt-dlp
     ffmpeg
     zoxide
+    uv
     bash-completion
 )
 

@@ -1,5 +1,11 @@
 DOTFILES := $(shell pwd)
 
+paru:
+	@ sudo pacman -S --needed base-devel
+	@ git clone https://aur.archlinux.org/paru.git /tmp/paru
+	@ cd /tmp/paru
+	@ makepkg -si --noconfirm
+
 .PHONY: shell
 shell:
 	@ mkdir -p $(HOME)/.config/sheldon
@@ -9,9 +15,7 @@ shell:
 
 .PHONY: git
 git:
-	@ ${DOTFILES}/git/packages.sh
-	@ ln -sf $(DOTFILES)/git/gitconfig $(HOME)/.gitconfig
-	@ ln -sf $(DOTFILES)/git/.gitignore_global $(HOME)/.gitignore_global
+	@ ${DOTFILES}/git/setup.sh
 
 .PHONY: fonts
 fonts:
@@ -26,13 +30,14 @@ espanso:
 	@ ln -sf $(DOTFILES)/espanso/config.yml $(HOME)/.config/espanso/config/default.yml
 	@ ln -sf $(DOTFILES)/espanso/match.yml $(HOME)/.config/espanso/match/base.yml
 
-.PHONY: vscode
-vscode:
+.PHONY: code
+code:
+	@ $(DOTFILES)/code/packages.sh
 	@ mkdir -p "$(HOME)/.config/Code/User/"
-	@ ln -sf $(DOTFILES)/vscode/settings.json "$(HOME)/.config/Code/User/settings.json"
-	@ ln -sf $(DOTFILES)/vscode/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
-	@ ln -sf $(DOTFILES)/vscode/tasks.json "$(HOME)/.config/Code/User/tasks.json"
-	@ ln -sf $(DOTFILES)/vscode/code-flags.conf $(HOME)/.config/code-flags.conf
+	@ ln -snf $(DOTFILES)/code/settings.json "$(HOME)/.config/Code/User/settings.json"
+	@ ln -snf $(DOTFILES)/code/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
+	@ ln -snf $(DOTFILES)/code/tasks.json "$(HOME)/.config/Code/User/tasks.json"
+	@ ln -snf $(DOTFILES)/code/code-flags.conf $(HOME)/.config/code-flags.conf
 
 .PHONY: claude
 claude:
@@ -82,10 +87,10 @@ hypr:
 	@ ln -sf $(DOTFILES)/hypr/mako/config $(HOME)/.config/mako/config
 	@ ln -sf $(DOTFILES)/hypr/fuzzel/fuzzel.ini $(HOME)/.config/fuzzel/fuzzel.ini
 
-.PHONY: brave
-brave:
-	@ ln -sf $(DOTFILES)/brave-flags.conf $(HOME)/.config/brave-flags.conf
-	@ ln -sf $(DOTFILES)/electron-flags.conf $(HOME)/.config/electron-flags.conf
+.PHONY: desktop
+desktop:
+	@ ln -sf $(DOTFILES)/desktop/brave-flags.conf $(HOME)/.config/brave-flags.conf
+	@ ln -sf $(DOTFILES)/desktop/electron-flags.conf $(HOME)/.config/electron-flags.conf
 
 .PHONY: llm
 llm:
@@ -101,6 +106,7 @@ system:
 	@ sudo rm -f /etc/xdg/reflector/reflector.conf /etc/sysctl.d/99-swappiness.conf
 	@ sudo cp $(DOTFILES)/system/reflector.conf /etc/xdg/reflector/reflector.conf
 	@ sudo cp $(DOTFILES)/system/99-swappiness.conf /etc/sysctl.d/99-swappiness.conf
+	@ sudo cp $(DOTFILES)/system/zram-generator.conf /etc/systemd/zram-generator.conf
 	@ $(DOTFILES)/system/setup.sh
 
 .PHONY: maintenance
