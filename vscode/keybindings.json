@@ -27,10 +27,6 @@
     "command": "remote-containers.reopenInContainer"
   },
   {
-    "key": "ctrl+shift+[Minus]",
-    "command": "claude-code.runClaude"
-  },
-  {
     "key": "shift+enter",
     "command": "workbench.action.terminal.sendSequence",
     "args": {
