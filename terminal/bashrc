@@ -51,3 +51,8 @@ alias claude="/home/david/.claude/local/claude"
 
 # Attach Blesh
 # [[ ! ${BLE_VERSION-} ]] || ble-attach
+
+# Hyprland
+if uwsm check may-start; then
+	exec uwsm start default
+fi
