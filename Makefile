@@ -96,6 +96,12 @@ llm:
 	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
 	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
 
+.PHONY: reflector
+reflector:
+	@ sudo rm /etc/xdg/reflector/reflector.conf
+	@ sudo cp $(DOTFILES)/system/reflector.conf /etc/xdg/reflector/reflector.conf
+	@ $(DOTFILES)/system/setup.sh
+
 .PHONY: maintenance
 maintenance:
 	@ docker system prune --volumes --all
