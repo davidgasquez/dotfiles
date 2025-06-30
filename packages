@@ -1,5 +1,4 @@
 brave-bin
-cliphist
 cloudflare-warp-bin
 docker
 docker-buildx
@@ -9,11 +8,6 @@ fwupd
 gnome-keyring
 gvfs
 gvfs-mtp
-hyprland
-hyprlock
-hyprpaper
-inter-font
-mako
 mkinitcpio-firmware
 mpv
 network-manager-applet
@@ -22,14 +16,7 @@ nwg-look
 obsidian
 openssh
 openvpn
-otf-font-awesome
-papirus-icon-theme
-pavucontrol
-pipewire
-pipewire-alsa
-pipewire-jack
-pipewire-pulse
-polkit-kde-agent
+
 qbittorrent
 qt6-wayland
 qt6ct
@@ -44,8 +31,4 @@ tod-bin
 tumbler
 uv
 visual-studio-code-bin
-waybar
-wl-clip-persist
-xdg-utils
-yt-dlp
 zram-generator
