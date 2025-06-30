@@ -98,7 +98,7 @@ llm:
 
 .PHONY: system
 system:
-	@ sudo rm /etc/xdg/reflector/reflector.conf /etc/sysctl.d/99-swappiness.conf
+	@ sudo rm -f /etc/xdg/reflector/reflector.conf /etc/sysctl.d/99-swappiness.conf
 	@ sudo cp $(DOTFILES)/system/reflector.conf /etc/xdg/reflector/reflector.conf
 	@ sudo cp $(DOTFILES)/system/99-swappiness.conf /etc/sysctl.d/99-swappiness.conf
 	@ $(DOTFILES)/system/setup.sh
