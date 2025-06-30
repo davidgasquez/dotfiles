@@ -3,9 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# Blesh
-# [[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
-
 # Starship
 eval "$(starship init bash)"
 
@@ -42,15 +39,13 @@ alias la='eza -la --icons'
 alias tree='eza --tree --icons'
 alias cat='bat -pp'
 alias up='paru -Syu --devel --skipreview'
-alias tn='tod task create -p Personal -u Today -l "" --priority 1 -c'
-alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
-alias tls='tod list view -f "Today"'
-alias chat='llm chat'
-alias cmd='llm -t cmd'
+alias cmd='llm cmd'
 alias claude="/home/david/.claude/local/claude"
 
-# Attach Blesh
-# [[ ! ${BLE_VERSION-} ]] || ble-attach
+# Open
+open() {
+  xdg-open "$@" >/dev/null 2>&1
+}
 
 # Hyprland
 if uwsm check may-start; then

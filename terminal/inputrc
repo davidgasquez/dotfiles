@@ -1,3 +1,12 @@
+set meta-flag on
+set input-meta on
+set output-meta on
+set convert-meta off
+set completion-ignore-case on
+set completion-prefix-display-length 2
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
 # Alt+Arrow keys for word movement
 "\e[1;3C": forward-word
 "\e[1;3D": backward-word
@@ -14,7 +23,13 @@
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 
-# Completion improvements
-set show-all-if-ambiguous on
-set completion-ignore-case on
-set colored-stats on
+set mark-symlinked-directories on
+set match-hidden-files off
+set page-completions off
+set completion-query-items 200
+set visible-stats on
+
+$if Bash
+  set skip-completed-text on
+  set colored-stats on
+$endif
