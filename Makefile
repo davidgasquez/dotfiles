@@ -70,9 +70,11 @@ terminal:
 hypr:
 	@ mkdir -p "$(HOME)/.config/hypr" "$(HOME)/.config/waybar" "$(HOME)/.config/mako" "$(HOME)/.config/fuzzel"
 	@ ${DOTFILES}/hypr/setup.sh
+	@ ln -sf $(DOTFILES)/hypr/wallpaper.png $(HOME)/Pictures/wallpaper.png
 	@ ln -sf $(DOTFILES)/hypr/frappe.conf $(HOME)/.config/hypr/frappe.conf
 	@ ln -sf $(DOTFILES)/hypr/hyprland.conf $(HOME)/.config/hypr/hyprland.conf
 	@ ln -sf $(DOTFILES)/hypr/hyprpaper.conf $(HOME)/.config/hypr/hyprpaper.conf
+	@ ln -sf $(DOTFILES)/hypr/hypridle.conf $(HOME)/.config/hypr/hypridle.conf
 	@ ln -sf $(DOTFILES)/hypr/hyprlock.conf $(HOME)/.config/hypr/hyprlock.conf
 	@ ln -sf $(DOTFILES)/hypr/waybar/config.jsonc $(HOME)/.config/waybar/config
 	@ ln -sf $(DOTFILES)/hypr/waybar/style.css $(HOME)/.config/waybar/style.css
