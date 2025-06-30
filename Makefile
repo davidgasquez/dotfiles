@@ -96,10 +96,11 @@ llm:
 	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
 	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
 
-.PHONY: reflector
-reflector:
-	@ sudo rm /etc/xdg/reflector/reflector.conf
+.PHONY: system
+system:
+	@ sudo rm /etc/xdg/reflector/reflector.conf /etc/sysctl.d/99-swappiness.conf
 	@ sudo cp $(DOTFILES)/system/reflector.conf /etc/xdg/reflector/reflector.conf
+	@ sudo cp $(DOTFILES)/system/99-swappiness.conf /etc/sysctl.d/99-swappiness.conf
 	@ $(DOTFILES)/system/setup.sh
 
 .PHONY: maintenance
@@ -112,19 +113,11 @@ maintenance:
 
 .PHONY: post-installation
 post-installation:
-	@ echo "Install missing firmware (https://wiki.archlinux.org/title/Mkinitcpio#Possibly_missing_firmware_for_module_XXXX using `mkinitcpio-firmware`)"
-	@ echo "Setup Firewall" (https://wiki.archlinux.org/title/Nftables)
 	@ echo "Setup ZRAM" (https://wiki.archlinux.org/title/Zram#Using_zram-generator)
-	@ echo "Reduce swappiness (https://wiki.archlinux.org/title/Swap#Swappiness)"
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
-	@ echo "Improve OOM (using systemd-oomd.service)"
 	@ echo "Setup DNS / Cloudflare WARP"
-	@ echo "Setup preloader" (https://wiki.archlinux.org/title/Preload)
 	@ echo "Configure solaar" (https://wiki.archlinux.org/title/Logitech_Unifying_Receiver)
 	@ echo "Improve battery life" (auto-cpufreq, thermald, governor, etc.)
-	@ echo "Enable Scheduled fstrim" (https://wiki.archlinux.org/title/Solid_state_drive#Periodic_TRIM)
-	@ echo "Enable Scheduled Mirrorlist Updates" (https://wiki.archlinux.org/title/Reflector)
 	@ echo "Enable keyring and PAM" (https://wiki.archlinux.org/title/GNOME/Keyring)
 	@ echo "Enable SSH Agent" (https://wiki.archlinux.org/title/GNOME/Keyring#SSH_keys)
-	@ echo "Add FilePicker and Desktop Portals" (https://wiki.archlinux.org/title/XDG_Desktop_Portal)
 	@ echo "Install uv tools: llm, markitdown, ..."

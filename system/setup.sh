@@ -5,6 +5,7 @@ packages=(
     reflector
     util-linux
     preload
+    mkinitcpio-firmware
 )
 
 # Install Hyprland and related packages
