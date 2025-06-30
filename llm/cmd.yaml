@@ -1,4 +1,4 @@
-model: github-copilot/claude-sonnet-4
+model: github_copilot/claude-sonnet-4
 system: >
   Return only the command to be executed as a raw string, no string delimiters
   wrapping it (like ```), no yapping, no markdown, no fenced code, what you return
