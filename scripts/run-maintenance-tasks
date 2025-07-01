@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+log() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" >&2
+}
+
+error() {
+    log "ERROR: $*"
+    exit 1
+}
+
+cleanup_docker() {
+    if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+        log "Cleaning up Docker system..."
+        docker system prune --volumes --all --force
+    else
+        log "Docker not available, skipping Docker cleanup"
+    fi
+}
+
+cleanup_uv() {
+    if command -v uv >/dev/null 2>&1; then
+        log "Cleaning uv cache..."
+        uv cache clean
+
+        log "Upgrading uv tools..."
+        uv tool upgrade --all
+    else
+        log "uv not available, skipping uv maintenance"
+    fi
+}
+
+cleanup_pacman() {
+    if command -v pacman >/dev/null 2>&1; then
+        log "Cleaning pacman cache..."
+        sudo pacman -Sc --noconfirm
+
+        log "Removing orphaned packages..."
+        if pacman -Qtdq >/dev/null 2>&1; then
+            sudo pacman -Rns "$(pacman -Qtdq)" --noconfirm
+        else
+            log "No orphaned packages found"
+        fi
+    else
+        log "pacman not available, skipping pacman cleanup"
+    fi
+}
+
+cleanup_paru() {
+    if command -v paru >/dev/null 2>&1; then
+        log "Cleaning paru cache..."
+        paru -Sc --noconfirm
+    else
+        log "paru not available, skipping paru cleanup"
+    fi
+}
+
+main() {
+    log "Starting maintenance tasks..."
+
+    # Core maintenance tasks from Makefile
+    cleanup_docker
+    cleanup_uv
+    cleanup_pacman
+    cleanup_paru
+
+    log "Maintenance tasks completed successfully!"
+    log "Consider running 'make post-installation' to review system optimizations"
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --help|-h)
+            echo "Usage: $0 [--with-update] [--help]"
+            echo ""
+            echo "Options:"
+            echo "  --with-update    Also run system update (paru/pacman)"
+            echo "  --help, -h       Show this help message"
+            exit 0
+            ;;
+        *)
+            error "Unknown option: $1"
+            ;;
+    esac
+done
+
+main "$@"

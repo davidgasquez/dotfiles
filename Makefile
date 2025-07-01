@@ -64,12 +64,6 @@ zed:
 .PHONY: terminal
 terminal:
 	@ $(DOTFILES)/terminal/packages.sh
-	@ mkdir -p "$(HOME)/.config/alacritty"
-	@ ln -sf $(DOTFILES)/terminal/alacritty.toml $(HOME)/.config/alacritty/alacritty.toml
-	@ ln -sf $(DOTFILES)/terminal/bashrc $(HOME)/.bashrc
-	@ ln -sf $(DOTFILES)/terminal/blerc.sh $(HOME)/.blerc
-	@ ln -sf $(DOTFILES)/terminal/inputrc $(HOME)/.inputrc
-	@ ln -sf $(DOTFILES)/terminal/starship.toml $(HOME)/.config/starship.toml
 
 .PHONY: hypr
 hypr:
@@ -92,15 +86,6 @@ desktop:
 	@ ln -sf $(DOTFILES)/desktop/brave-flags.conf $(HOME)/.config/brave-flags.conf
 	@ ln -sf $(DOTFILES)/desktop/electron-flags.conf $(HOME)/.config/electron-flags.conf
 
-.PHONY: llm
-llm:
-	@ uv tool install --reinstall -U llm --with llm-gemini --with llm-anthropic \
-		--with llm-openai-plugin --with llm-github-copilot --with llm-cmd \
-		--with llm-fragments-github --with llm-fragments-reader \
-		--with llm-fragments-youtube
-	@ mkdir -p "$(HOME)/.config/io.datasette.llm"
-	@ ln -sfT $(DOTFILES)/llm "$(HOME)/.config/io.datasette.llm/templates"
-
 .PHONY: system
 system:
 	@ sudo rm -f /etc/xdg/reflector/reflector.conf /etc/sysctl.d/99-swappiness.conf
@@ -111,11 +96,7 @@ system:
 
 .PHONY: maintenance
 maintenance:
-	@ docker system prune --volumes --all
-	@ uv cache clean
-	@ sheldon lock --update
-	@ sudo pacman -Sc
-	@ uv tool upgrade --all
+	@ ${DOTFILES}/scripts/run-maintenance-tasks
 
 .PHONY: post-installation
 post-installation:

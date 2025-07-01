@@ -31,8 +31,8 @@ eval "$(fzf --bash)"
 # Zoxide
 eval "$(zoxide init bash)"
 
-# Add scripts to PATH
-export PATH="$HOME/projects/dotfiles/scripts:$PATH"
+# PATH
+export PATH="$HOME/projects/dotfiles/scripts:$HOME/.local/bin:$PATH"
 
 # Aliases
 alias cd='z'
@@ -43,7 +43,7 @@ alias tree='eza --tree --icons'
 alias cat='bat -pp'
 alias up='paru -Syu --devel --skipreview'
 alias cmd='llm cmd'
-alias claude="/home/david/.claude/local/claude"
+alias claude='$HOME/.claude/local/claude'
 alias pull='pull-all-dirs'
 
 # Open
