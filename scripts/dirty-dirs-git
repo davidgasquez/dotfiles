@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Check for dirty git repositories in all subdirectories
+for directory in */; do
+    if [[ -d "$directory" ]]; then
+        directory_name="${directory%/}"
+        if (cd "$directory_name" && git status --porcelain | grep -q .); then
+            echo "$directory_name"
+        fi
+    fi
+done
