@@ -6,13 +6,6 @@ paru:
 	@ cd /tmp/paru
 	@ makepkg -si --noconfirm
 
-.PHONY: shell
-shell:
-	@ mkdir -p $(HOME)/.config/sheldon
-	@ ln -sf $(DOTFILES)/shell/zshrc $(HOME)/.zshrc
-	@ ln -sf $(DOTFILES)/shell/starship.toml $(HOME)/.config/starship.toml
-	@ ln -sf $(DOTFILES)/shell/sheldon/plugins.toml $(HOME)/.config/sheldon/plugins.toml
-
 .PHONY: git
 git:
 	@ ${DOTFILES}/git/setup.sh
