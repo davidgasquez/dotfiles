@@ -9,7 +9,12 @@
       "Bash(ls:*)",
       "Bash(make:*)",
       "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "Bash(cp:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
       "Edit(**)",
+      "WebFetch(domain:github.com)",
       "WebFetch(domain:*)"
     ],
     "deny": []
