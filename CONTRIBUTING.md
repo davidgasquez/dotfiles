@@ -25,3 +25,4 @@ The repository follows a modular structure (explained in the [README.md](README.
 - Be concise and direct
 - Follow existing code conventions in the codebase
 - Verify changes work by running relevant commands
+- Always use `pkexec` instead of `sudo` for commands requiring elevated privileges
