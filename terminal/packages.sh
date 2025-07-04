@@ -44,11 +44,13 @@ done
 uv tool install --reinstall -U llm "${llm_with_args[@]}"
 
 # Create directories
-mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/io.datasette.llm"
+mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/io.datasette.llm" "${HOME}/.config/sheldon" "${HOME}/.config/starship"
 
 # Create symlinks
 ln -sf "${DOTFILES}/terminal/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
 ln -sf "${DOTFILES}/terminal/bashrc" "${HOME}/.bashrc"
+ln -sf "${DOTFILES}/terminal/zshrc" "${HOME}/.zshrc"
+ln -sf "${DOTFILES}/terminal/sheldon/plugins.toml" "${HOME}/.config/sheldon/plugins.toml"
 ln -sf "${DOTFILES}/terminal/blerc.sh" "${HOME}/.blerc"
 ln -sf "${DOTFILES}/terminal/inputrc" "${HOME}/.inputrc"
 ln -sf "${DOTFILES}/terminal/starship.toml" "${HOME}/.config/starship.toml"

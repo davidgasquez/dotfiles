@@ -1,25 +1,33 @@
 # ZSH
 
+# PATH
+export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$HOME/projects/dotfiles/scripts:$PATH
+
 # History
 HISTFILE=~/.histfile
-HISTSIZE=5000
-SAVEHIST=5000
+HISTSIZE=50000
+SAVEHIST=50000
 
 # Avoid % in prompt
 set +o prompt_cr +o prompt_sp
 
-# Shell
+# Shelldon
 eval "$(sheldon -q --non-interactive source)"
+
+# Starship
 eval "$(starship init zsh)"
 
 # Options
 setopt autocd
 setopt extended_glob
 setopt hist_ignore_all_dups
+setopt hist_expire_dups_first
+setopt hist_verify
+setopt extended_history
 setopt hist_reduce_blanks
 setopt inc_append_history
 setopt share_history
-setopt correct
+# setopt correct
 setopt auto_menu
 
 # Bindkeys
@@ -32,14 +40,14 @@ zstyle :compinstall filename '/home/david/.zshrc'
 zstyle ':completion:*' menu select
 autoload -Uz compinit
 
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+# Initialize Completions
+if [[ ! -f ${ZDOTDIR:-$HOME}/.zcompdump || ${ZDOTDIR:-$HOME}/.zcompdump -ot /usr/share/zsh ]]; then
   compinit
-  compdump
+  { compdump } &!
 else
   compinit -C
 fi
 
-# Load direnv
 # Aliases
 alias cd='z'
 alias ls='eza --color=auto --icons=always'
@@ -53,8 +61,6 @@ alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod list view -f "Today"'
 alias chat='llm chat'
 alias cmd='llm -t cmd'
-alias dirty='for dir in */; do (cd "$dir"; if git status --porcelain | grep . > /dev/null; then echo "$dir"; fi) done'
-alias pull='for dir in */; do (cd "$dir"; if git remote update && git status -uno | grep -q "Your branch is behind"; then echo "$dir needs pulling"; git pull; fi) done'
 alias claude="/home/david/.claude/local/claude"
 
 # Functions
@@ -75,8 +81,8 @@ source <(fzf --zsh)
 # Zoxide
 eval "$(zoxide init zsh)"
 
-# Expand PATH with $HOME/.local/bin
-export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$HOME/projects/dotfiles/scripts:$PATH
+# uv
+export UV_ENV_FILE=".env"
 
 # Move cursor
 bindkey "^[[1;5C" forward-word
