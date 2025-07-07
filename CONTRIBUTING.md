@@ -1,10 +1,10 @@
 # Contributing
 
-This repository tracks some of the dotfiles for an Arch Linux installation. Uses Hyprland as the window manager with the Catppuccin Frappe theme across all the different applications. The configuration uses symbolic links to manage dotfiles across various applications.
+This repository (@README.md) tracks some of the dotfiles for an Arch Linux installation. The configuration uses symbolic links to manage dotfiles across various applications.
 
 ## Architecture
 
-The repository follows a modular structure (explained in the [README.md](README.md) file) where each application has its own directory with configuration files. The Makefile automates the creation of symbolic links from the dotfiles to their expected locations in `$HOME/.config/` or other standard directories.
+The architecture follows a modular structure where each application has its own directory with configuration files. The Makefile automates the creation of symbolic links from the dotfiles to their expected locations in `$HOME/.config/` or other standard directories.
 
 ### Patterns and Principles
 
