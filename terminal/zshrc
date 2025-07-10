@@ -81,8 +81,16 @@ source <(fzf --zsh)
 # Zoxide
 eval "$(zoxide init zsh)"
 
-# uv
-export UV_ENV_FILE=".env"
+# Load .env files
+load_dotenv() {
+  [[ -f .env ]] || return
+  [[ -O .env ]] || { echo "Warning: .env not owned by you"; return 1; }
+  setopt local_options allexport
+  source .env
+}
+autoload -U add-zsh-hook
+add-zsh-hook chpwd load_dotenv
+load_dotenv
 
 # Move cursor
 bindkey "^[[1;5C" forward-word
