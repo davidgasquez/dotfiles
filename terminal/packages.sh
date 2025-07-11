@@ -15,11 +15,13 @@ packages=(
     jq
     nvtop
     ripgrep
+    sheldon
     starship
     uv
     wget
     yt-dlp
     zoxide
+    zsh
 )
 
 llm_plugins=(
