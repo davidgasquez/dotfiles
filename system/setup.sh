@@ -4,35 +4,31 @@ packages=(
     cloudflare-warp-bin
     fwupd
     mkinitcpio-firmware
+    networkmanager
     network-manager-applet
     power-profiles-daemon
     preload
-    reflector
     ufw
     util-linux
-    zram-generator
+    rocm-smi-lib
     docker
     docker-buildx
     gnome-keyring
-
-    # Theming
-    catppuccin-gtk-theme-frappe
-    papirus-icon-theme
-    nwg-look
+    xdg-user-dirs
 )
 
 # Install Hyprland and related packages
 paru -S --needed --noconfirm "${packages[@]}"
 
+# Network Manager
+if ! systemctl is-enabled --quiet NetworkManager.service; then
+    systemctl enable --now NetworkManager.service
+fi
+
 # Firewall
 if ! systemctl is-enabled --quiet ufw; then
     systemctl enable --now ufw
     sudo ufw enable
-fi
-
-# Reflector
-if ! systemctl is-enabled --quiet reflector; then
-    systemctl enable --now reflector.service
 fi
 
 # SSD Trim
@@ -43,11 +39,6 @@ fi
 # Preload
 if ! systemctl is-enabled --quiet preload; then
     systemctl enable --now preload
-fi
-
-# ZRAM
-if ! systemctl is-enabled --quiet systemd-zram-setup@zram0.service; then
-    systemctl enable --now systemd-zram-setup@zram0.service
 fi
 
 # Gnome Keyring
@@ -72,7 +63,7 @@ fi
 
 # Register WARP if not already registered
 if ! warp-cli registration show &>/dev/null; then
-    warp-cli registration new
+    warp-cli registration new # Needs manual intervention, check help and see if it can be forced
 fi
 
 # Connect WARP if not already connected
