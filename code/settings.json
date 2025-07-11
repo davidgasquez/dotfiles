@@ -63,6 +63,7 @@
   },
   "github.copilot.chat.editor.temporalContext.enabled": true,
   "githubPullRequests.experimental.chat": true,
+  "githubPullRequests.codingAgent.uiIntegration": true,
   "github.copilot.nextEditSuggestions.enabled": true,
   "github.copilot.chat.edits.temporalContext.enabled": true,
   "github.copilot.chat.newWorkspaceCreation.enabled": true,
@@ -74,5 +75,6 @@
     }
   ],
   "chat.commandCenter.enabled": false,
-  "security.workspace.trust.untrustedFiles": "open"
+  "security.workspace.trust.untrustedFiles": "open",
+  "python.terminal.activateEnvironment": false
 }
