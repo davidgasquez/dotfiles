@@ -61,7 +61,6 @@ alias tnw='tod task create -p Work -u Today -l "" --priority 1 -c'
 alias tls='tod list view -f "Today"'
 alias chat='llm chat'
 alias cmd='llm -t cmd'
-alias claude="/home/david/.claude/local/claude"
 
 # Functions
 aigcm() {
