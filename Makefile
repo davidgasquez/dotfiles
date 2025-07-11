@@ -3,8 +3,7 @@ DOTFILES := $(shell pwd)
 paru:
 	@ sudo pacman -S --needed base-devel
 	@ git clone https://aur.archlinux.org/paru.git /tmp/paru
-	@ cd /tmp/paru
-	@ makepkg -si --noconfirm
+	@ cd /tmp/paru && makepkg -si --noconfirm
 
 .PHONY: git
 git:
@@ -13,15 +12,6 @@ git:
 .PHONY: fonts
 fonts:
 	@ $(DOTFILES)/fonts/packages.sh
-	# @ mkdir -p $(HOME)/.config/fontconfig/conf.d
-	# @ ln -sf $(DOTFILES)/fonts/local.conf $(HOME)/.config/fontconfig/fonts.conf
-	# @ fc-cache -fv
-
-.PHONY: espanso
-espanso:
-	@ mkdir -p $(HOME)/.config/espanso/config $(HOME)/.config/espanso/match
-	@ ln -sf $(DOTFILES)/espanso/config.yml $(HOME)/.config/espanso/config/default.yml
-	@ ln -sf $(DOTFILES)/espanso/match.yml $(HOME)/.config/espanso/match/base.yml
 
 .PHONY: code
 code:
@@ -34,6 +24,7 @@ code:
 
 .PHONY: claude
 claude:
+	@ curl -fsSL http://claude.ai/install.sh | bash
 	@ mkdir -p "$(HOME)/.claude"
 	@ ln -sf $(DOTFILES)/claude/settings.json "$(HOME)/.claude/settings.json"
 	@ ln -sf $(DOTFILES)/claude/CLAUDE.md "$(HOME)/.claude/CLAUDE.md"
@@ -76,15 +67,14 @@ hypr:
 
 .PHONY: desktop
 desktop:
+	@ ${DOTFILES}/desktop/packages.sh
 	@ ln -sf $(DOTFILES)/desktop/brave-flags.conf $(HOME)/.config/brave-flags.conf
 	@ ln -sf $(DOTFILES)/desktop/electron-flags.conf $(HOME)/.config/electron-flags.conf
 
 .PHONY: system
 system:
-	@ sudo rm -f /etc/xdg/reflector/reflector.conf /etc/sysctl.d/99-swappiness.conf
-	@ sudo cp $(DOTFILES)/system/reflector.conf /etc/xdg/reflector/reflector.conf
+	@ sudo rm -f /etc/sysctl.d/99-swappiness.conf
 	@ sudo cp $(DOTFILES)/system/99-swappiness.conf /etc/sysctl.d/99-swappiness.conf
-	@ sudo cp $(DOTFILES)/system/zram-generator.conf /etc/systemd/zram-generator.conf
 	@ $(DOTFILES)/system/setup.sh
 
 .PHONY: maintenance
@@ -93,16 +83,14 @@ maintenance:
 
 .PHONY: laptop
 laptop:
+	@ echo "Setup brightnessctl (brightnessctl --device=asus::kbd_backlight set 3)"
 	@ echo "Improve battery life" (auto-cpufreq, thermald, governor, etc.)
 	@ echo "Setup plymouth" (https://wiki.archlinux.org/title/Plymouth)
 	@ echo "Theme plymouth" (https://github.com/adi1090x/plymouth-themes)
 
 .PHONY: post-installation
 post-installation:
-	@ echo "Setup ZRAM" (https://wiki.archlinux.org/title/Zram#Using_zram-generator)
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
-	@ echo "Setup DNS / Cloudflare WARP"
 	@ echo "Configure solaar" (https://wiki.archlinux.org/title/Logitech_Unifying_Receiver)
-	@ echo "Enable keyring and PAM" (https://wiki.archlinux.org/title/GNOME/Keyring)
+	@ echo "Enable PAM" (https://wiki.archlinux.org/title/GNOME/Keyring)
 	@ echo "Enable SSH Agent" (https://wiki.archlinux.org/title/GNOME/Keyring#SSH_keys)
-	@ echo "Install uv tools: llm, markitdown, ..."
