@@ -13,6 +13,7 @@ packages=(
     zram-generator
     docker
     docker-buildx
+    gnome-keyring
 
     # Theming
     catppuccin-gtk-theme-frappe
@@ -47,6 +48,11 @@ fi
 # ZRAM
 if ! systemctl is-enabled --quiet systemd-zram-setup@zram0.service; then
     systemctl enable --now systemd-zram-setup@zram0.service
+fi
+
+# Gnome Keyring
+if ! systemctl --user is-enabled --quiet gnome-keyring-daemon.socket; then
+    systemctl --user enable --now gnome-keyring-daemon.socket
 fi
 
 # Docker
