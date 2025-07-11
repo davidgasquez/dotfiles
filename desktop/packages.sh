@@ -2,7 +2,6 @@
 
 packages=(
     brave-bin
-    espanso
     file-roller
     gvfs
     gvfs-mtp
@@ -11,6 +10,9 @@ packages=(
     thunar
     tumbler
     thunar-archive-plugin
+    catppuccin-gtk-theme-frappe
+    papirus-icon-theme
+    nwg-look
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
