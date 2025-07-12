@@ -83,9 +83,7 @@ maintenance:
 
 .PHONY: laptop
 laptop:
-	@ echo "Setup brightnessctl (brightnessctl --device=asus::kbd_backlight set 3)"
-	@ echo "Improve battery life" (auto-cpufreq, thermald, governor, etc.)
-	@ echo "Setup plymouth" (https://wiki.archlinux.org/title/Plymouth)
+	@ ${DOTFILES}/laptop/setup.sh
 	@ echo "Theme plymouth" (https://github.com/adi1090x/plymouth-themes)
 
 .PHONY: post-installation
