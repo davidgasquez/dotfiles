@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 
 packages=(
+    blueman
+    bluez
     cloudflare-warp-bin
-    fwupd
-    mkinitcpio-firmware
-    networkmanager
-    network-manager-applet
-    power-profiles-daemon
-    preload
-    ufw
-    util-linux
-    rocm-smi-lib
     docker
     docker-buildx
+    fwupd
     gnome-keyring
+    mkinitcpio-firmware
+    network-manager-applet
+    networkmanager
+    power-profiles-daemon
+    preload
+    rocm-smi-lib
+    ufw
+    util-linux
     xdg-user-dirs
 )
 
