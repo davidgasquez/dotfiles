@@ -84,7 +84,6 @@ maintenance:
 .PHONY: laptop
 laptop:
 	@ ${DOTFILES}/laptop/setup.sh
-	@ echo "Theme plymouth" (https://github.com/adi1090x/plymouth-themes)
 
 .PHONY: post-installation
 post-installation:
