@@ -1,0 +1,49 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "markitdown[audio-transcription,pdf,youtube-transcription]",]
+# ///
+
+import argparse
+import sys
+from pathlib import Path
+from markitdown import MarkItDown
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Convert URL to markdown")
+    parser.add_argument("url", help="URL to convert to markdown")
+    parser.add_argument("-p", "--print", action="store_true", help="Output to stdout instead of file")
+    parser.add_argument("-o", "--output", help="Output file path (default: derived from URL)")
+    
+    args = parser.parse_args()
+    
+    try:
+        md = MarkItDown(enable_builtins=True)
+        result = md.convert(args.url)
+        
+        title = result.title or "Untitled"
+        content = result.markdown or ""
+        
+        full_content = f"# {title}\n\n**Source:** {args.url}\n\n{content}"
+        
+        if args.print:
+            print(full_content)
+        else:
+            if args.output:
+                output_path = Path(args.output)
+            else:
+                filename = title.replace(" ", "_").replace("/", "_").lower() + ".md"
+                output_path = Path(filename)
+            
+            output_path.write_text(full_content, encoding="utf-8")
+            print(f"Saved to {output_path}")
+            
+    except Exception as e:
+        print(f"Error converting URL: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
