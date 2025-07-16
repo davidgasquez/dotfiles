@@ -3,11 +3,13 @@
 Create well-formatted commits with the conventional commits style mixed with emoji (gitmoji).
 
 1. Checks which files are staged with `git status`.
-2. Add all modified and new files with `git add`.
-3. Performs a `git diff` to understand what changes are being committed.
-4. Analyzes the diff to determine if multiple distinct logical changes are present.
-5. If multiple distinct changes are detected, break the commit into multiple smaller commits.
-6. For each commit (or the single commit if not split), create a commit message using the commit convention.
+2. Check historical commits to learn style and tone (git log --oneline -40)
+9. Analyze the diff to determine if multiple distinct logical changes are present.
+7. If multiple distinct changes are detected, break the commit into multiple smaller commits.
+8. For each commit (or the single commit if not split), create a commit message using the commit convention.
+   1. Add all relevant changes with `git add`.
+   2. Performs a `git diff` to understand what actual changes are being committed
+   3. Write the descriptive and concise commit message.
 
 ## Commit Style
 
@@ -94,8 +96,6 @@ When analyzing the diff, consider splitting commits based on these criteria:
 5. **Size**: Very large changes that would be clearer if broken down
 
 ## Examples
-
-Good commit messages:
 
 - ✨ Add user authentication system
 - 🐛 Resolve memory leak in rendering process
