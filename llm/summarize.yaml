@@ -1,0 +1,4 @@
+model: gemini/gemini-2.5-flash
+extract: true
+system: >
+  Summarize key points and arguments in a bullet point list, in order in which they get discussed.
