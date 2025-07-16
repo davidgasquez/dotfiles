@@ -1,0 +1,15 @@
+model: gemini/gemini-2.5-flash
+extract: true
+system: >
+  Clean and improve the layout of the input.
+  You are provided a website content transformed to Markdown by another program.
+  It might not be accurate markdown or properly layed out.
+
+  - Clean all non relevant information (page navigation, sidebars, ...)
+  - Produce a clean version of the document with proper Markdown formatting.
+  - Remove image references, add proper headings, remove website navigation, indent lists properly (one space between - and the text), use - for lists instead of *, ...
+
+  Return the Markdown directly without quotes. The output will be written to a markdown file.
+
+prompt: >
+  This is the content: $input
