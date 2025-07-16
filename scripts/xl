@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+import re
+import sys
+
+
+def extract_urls(content):
+    urls = set()
+    # Markdown links: [text](url) - only if it's a URL
+    for _, url in re.findall(r"\[([^\]]+)\]\(([^)]+)\)", content):
+        url = url.strip()
+        if url.startswith(("http://", "https://")):
+            urls.add(url)
+    # Bare URLs
+    urls.update(
+        url.rstrip(".,;:!?)") for url in re.findall(r"https?://[^\s)]+", content)
+    )
+    return urls
+
+
+if len(sys.argv) != 2:
+    print("Usage: xl <file>", file=sys.stderr)
+    sys.exit(1)
+
+try:
+    with open(sys.argv[1]) as f:
+        for url in sorted(extract_urls(f.read())):
+            print(url)
+except FileNotFoundError:
+    print(f"File not found: {sys.argv[1]}", file=sys.stderr)
+    sys.exit(1)
