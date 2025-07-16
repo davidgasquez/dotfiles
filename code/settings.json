@@ -28,7 +28,7 @@
   "files.autoSave": "onFocusChange",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.typeCheckingMode": "standard",
   "python.analysis.addHoverSummaries": true,
   "python.analysis.autoImportCompletions": true,
   "python.analysis.autoSearchPaths": true,
