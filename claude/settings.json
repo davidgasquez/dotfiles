@@ -3,7 +3,6 @@
   "permissions": {
     "allow": [
       "Bash(git:*)",
-      "Bash(ls:*)",
       "Bash(python:*)",
       "Bash(uv run:*)",
       "Bash(ls:*)",
@@ -11,10 +10,12 @@
       "Bash(mkdir:*)",
       "Bash(cat:*)",
       "Bash(cp:*)",
+      "Bash(find:*)",
       "Bash(rg:*)",
       "Bash(grep:*)",
       "Edit(**)",
       "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:*)"
     ],
     "deny": []
