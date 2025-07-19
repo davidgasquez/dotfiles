@@ -43,7 +43,6 @@ alias tree='eza --tree --icons'
 alias cat='bat -pp'
 alias up='paru -Syu --devel --skipreview'
 alias cmd='llm cmd'
-alias claude='$HOME/.claude/local/claude'
 alias pull='pull-all-dirs'
 
 # Open
