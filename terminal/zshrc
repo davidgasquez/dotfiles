@@ -27,7 +27,7 @@ setopt extended_history
 setopt hist_reduce_blanks
 setopt inc_append_history
 setopt share_history
-# setopt correct
+setopt correct
 setopt auto_menu
 
 # Bindkeys
@@ -38,14 +38,14 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle :compinstall filename '/home/david/.zshrc'
 zstyle ':completion:*' menu select
-autoload -Uz compinit
 
 # Initialize Completions
-if [[ ! -f ${ZDOTDIR:-$HOME}/.zcompdump || ${ZDOTDIR:-$HOME}/.zcompdump -ot /usr/share/zsh ]]; then
-  compinit
-  { compdump } &!
+# Smarter completion initialization
+autoload -Uz compinit
+if [[ -f ~/.zcompdump && ~/.zcompdump -nt /usr/share/zsh ]] && [[ ! ~/.zcompdump -ot /usr/local/share/zsh ]]; then
+  compinit -C -u
 else
-  compinit -C
+  compinit -u
 fi
 
 # Aliases
