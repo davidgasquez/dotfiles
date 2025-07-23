@@ -1,5 +1,9 @@
 DOTFILES := $(shell pwd)
 
+.PHONY: help
+help:
+	@ grep "^[a-zA-Z].*:" Makefile | cut -d: -f1 | grep -v "DOTFILES"
+
 paru:
 	@ sudo pacman -S --needed base-devel
 	@ git clone https://aur.archlinux.org/paru.git /tmp/paru

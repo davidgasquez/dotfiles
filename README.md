@@ -38,7 +38,7 @@ The fastest way to set up the system is by running the different `make` targets 
 
 ```bash
 # See all available targets
-make -n
+make help
 ```
 
 For example, to set up your shell configuration:
@@ -49,12 +49,7 @@ make shell
 
 ### 🧰 Utility Scripts
 
-The repository includes several useful scripts in the `scripts/` directory:
-
-- `extract-subs` - Extract subtitles from video files
-- `q` - Quick search utility
-- `vupgrade` - Version upgrade helper
-- `yt2srt` - Convert YouTube subtitles to SRT format
+The repository includes several useful scripts in the `scripts/` directory.
 
 ### 🔧 Post-Installation Steps
 
