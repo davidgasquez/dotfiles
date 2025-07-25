@@ -13,6 +13,7 @@
       "Bash(find:*)",
       "Bash(rg:*)",
       "Bash(grep:*)",
+      "Bash(time:*)",
       "Edit(**)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",

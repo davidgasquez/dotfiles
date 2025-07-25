@@ -1,6 +1,6 @@
 # Question
 
-Answer user questions directly and accurately. Focus on providing information, don't make any changes (code or system).
+Answer user questions directly and accurately. Focus on providing information. Use all the tools you need but don't make any changes (code or system).
 
 ## Process
 

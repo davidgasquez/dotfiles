@@ -1,6 +1,6 @@
 # Simplify
 
-Refactor code (#$ARGUMENTS) to be simpler while maintaining identical functionality.
+Refactor code (#$ARGUMENTS) to be simpler while maintaining identical functionality. Simple code is easier to understand, change, debug and more flexible, not just shorter.
 
 ## Steps
 
@@ -21,5 +21,3 @@ Refactor code (#$ARGUMENTS) to be simpler while maintaining identical functional
 
 - MUST produce identical outputs for all inputs
 - MUST maintain same public API/interface
-
-Simpler = easier to understand, change, debug; more flexible (not just shorter)
