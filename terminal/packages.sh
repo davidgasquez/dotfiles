@@ -18,8 +18,8 @@ packages=(
     sheldon
     starship
     uv
+    npm
     wget
-    yt-dlp
     zoxide
     zsh
 )
@@ -44,6 +44,9 @@ for plugin in "${llm_plugins[@]}"; do
     llm_with_args+=("--with" "$plugin")
 done
 uv tool install --reinstall -U llm "${llm_with_args[@]}"
+
+# Install yt-dlp
+uv tool install --reinstall yt-dlp --with secretstorage
 
 # Create directories
 mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/io.datasette.llm" "${HOME}/.config/sheldon" "${HOME}/.config/starship"
