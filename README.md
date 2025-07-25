@@ -12,34 +12,15 @@
 - **Launcher**: [Fuzzel](https://codeberg.org/dnkl/fuzzel)
 - **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
 - **Theme**: [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappe flavor)
-- **Shell**: zsh with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
-- **Editor**: VS Code
-
-## 🚀 Installation
-
-1. Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to set up your system.
-2. Clone this repository:
-
-   ```bash
-   git clone https://github.com/davidgasquez/dotfiles.git ~/dotfiles
-   cd ~/dotfiles
-   ```
-
-3. Install the required packages:
-
-   ```bash
-   # Review the packages file first
-   cat packages | sudo pacman -S --needed -
-   ```
+- **Shell**: `zsh` with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
+- **Coding**: VS Code and Claude Code
+- **Notetaking**: VS Code with Foam Extension
 
 ## 📦 Configuration
 
-The fastest way to set up the system is by running the different `make` targets defined in the `Makefile`. Each target handles the configuration for different components of the system.
+Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to set up your system.
 
-```bash
-# See all available targets
-make help
-```
+Once Arch is installed and this repository cloned locally, the fastest way to set up the system is by running the different `make` targets defined in the `Makefile`. Each target handles the configuration for different components of the system.
 
 For example, to set up your shell configuration:
 
@@ -58,6 +39,8 @@ After setting up the basic configuration, run:
 ```bash
 make post-installation
 ```
+
+These steps need to be done manually until I automate them!
 
 ## 📜 License
 

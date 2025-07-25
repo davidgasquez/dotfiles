@@ -4,25 +4,24 @@ This repository (@README.md) tracks some of the dotfiles for an Arch Linux insta
 
 ## Architecture
 
-The architecture follows a modular structure where each application has its own directory with configuration files. The Makefile automates the creation of symbolic links from the dotfiles to their expected locations in `$HOME/.config/` or other standard directories.
+The architecture follows a modular structure where each directory containes related configuration files. The Makefile automates the creation of symbolic links from the dotfiles to their expected locations in `$HOME/.config/` or other standard directories.
 
 ### Patterns and Principles
 
-- **Simple options**: Use the simplest approach/tool to keep the system clean and tidy
-- **Symbolic linking**: All configurations are symlinked rather than copied
-- **Modular organization**: Each tool/application has its own directory
-- **Make-based automation**: Each component can be set up independently
-- **Theme consistency**: Catppuccin Frappe theme used across all applications
+- **Symbolic linking**: Use symlinks rather than copying dotfiles
+- **Modular organization**: Each application or unique setup has its own directory
+- **Make-based automation**: The Makefile is the entrypoint that triggers all the subscripts
+- **Theme consistency**: Catppuccin Frappe theme used across all applications that supports it
 
 ## Development Workflow
 
 1. Edit configuration files directly in this repository
-2. Use appropriate `make` target to create/update symbolic links
-3. Changes take effect immediately since files are symlinked
+3. Make changes to the `.sh` scripts when needed
+4. Update or add the appropriate `make` target
 
 ## Code Conventions
 
 - Be concise and direct
-- Follow existing code conventions in the codebase
+- Follow existing patterns and conventions in the codebase
 - Verify changes work by running relevant commands
 - Always use `pkexec` instead of `sudo` for commands requiring elevated privileges
