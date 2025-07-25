@@ -33,6 +33,7 @@ claude:
 	@ ln -sf $(DOTFILES)/claude/settings.json "$(HOME)/.claude/settings.json"
 	@ ln -sf $(DOTFILES)/claude/CLAUDE.md "$(HOME)/.claude/CLAUDE.md"
 	@ ln -sfT $(DOTFILES)/claude/commands "$(HOME)/.claude/commands"
+	@ ln -sfT $(DOTFILES)/claude/agents "$(HOME)/.claude/agents"
 
 .PHONY: cursor
 cursor:
