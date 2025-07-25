@@ -107,6 +107,8 @@ bindkey '^[[B' history-substring-search-down
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=blue,fg=black,bold'
 
 # Hyprland
-if uwsm check may-start; then
-	exec uwsm start default
+if [[ -z "$WAYLAND_DISPLAY" ]] && [[ "$(tty)" == /dev/tty* ]]; then
+	if uwsm check may-start; then
+		exec uwsm start default
+	fi
 fi
