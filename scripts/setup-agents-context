@@ -27,7 +27,6 @@ echo "Setting up AI agent context files..."
 CONTEXT_FILES=(
     "AGENT.md"
     "AGENTS.md"
-    "CONTEXT.md"
     "CLAUDE.md"
 )
 
