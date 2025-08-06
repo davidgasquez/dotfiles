@@ -35,21 +35,12 @@
     "when": "terminalFocus"
   },
   {
-    "key": "ctrl+[Minus]",
-    "command": "workbench.panel.chat",
-    "when": "workbench.panel.chat.view.copilot.active"
-  },
-  {
-    "key": "ctrl+alt+i",
-    "command": "-workbench.panel.chat",
-    "when": "workbench.panel.chat.view.copilot.active"
-  },
-  {
     "key": "alt+c alt+c",
     "command": "claude-code.runClaude"
   },
   {
-    "key": "alt+g alt+c",
-    "command": "github.copilot.git.generateCommitMessage"
+    "key": "ctrl+enter",
+    "command": "inlineChat.start",
+    "when": "inlineChatHasEditsAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput || inlineChatHasProvider && inlineChatPossible && !editorReadonly && !editorSimpleInput"
   }
 ]

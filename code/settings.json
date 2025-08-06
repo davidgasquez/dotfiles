@@ -69,5 +69,6 @@
   "amp.tab.enabled": true,
   "amp.dangerouslyAllowAll": true,
   "amp.experimental.reviewTool": true,
-  "amp.tab.disabledLanguages": []
+  "amp.tab.disabledLanguages": [],
+  "githubPullRequests.pullBranch": "never"
 }
