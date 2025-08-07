@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 packages=(
+    bind
     blueman
     bluez
     cloudflare-warp-bin
@@ -8,6 +9,7 @@ packages=(
     docker-buildx
     fwupd
     gnome-keyring
+    less
     mkinitcpio-firmware
     network-manager-applet
     networkmanager

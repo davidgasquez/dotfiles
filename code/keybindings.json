@@ -41,6 +41,6 @@
   {
     "key": "ctrl+enter",
     "command": "inlineChat.start",
-    "when": "inlineChatHasEditsAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput || inlineChatHasProvider && inlineChatPossible && !editorReadonly && !editorSimpleInput"
+    "when": "editorTextFocus && !editorReadonly"
   }
 ]
