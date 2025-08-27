@@ -38,8 +38,8 @@ cleanup_pacman() {
         sudo pacman -Sc --noconfirm
 
         log "Removing orphaned packages..."
-        if pacman -Qtdq >/dev/null 2>&1; then
-            sudo pacman -Rns "$(pacman -Qtdq)" --noconfirm
+        if mapfile -t orphans < <(pacman -Qtdq 2>/dev/null) && [[ ${#orphans[@]} -gt 0 ]]; then
+            sudo pacman -Rns "${orphans[@]}" --noconfirm
         else
             log "No orphaned packages found"
         fi
