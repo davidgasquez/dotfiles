@@ -21,5 +21,6 @@
       "WebFetch(domain:*)"
     ],
     "deny": []
-  }
+  },
+  "model": "opus"
 }
