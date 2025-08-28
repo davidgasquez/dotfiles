@@ -35,6 +35,11 @@ claude:
 	@ ln -sfT $(DOTFILES)/claude/commands "$(HOME)/.claude/commands"
 	@ ln -sfT $(DOTFILES)/claude/agents "$(HOME)/.claude/agents"
 
+.PHONY: codex
+codex:
+	@ mkdir -p "$(HOME)/.codex/"
+	@ ln -sf $(DOTFILES)/codex/config.toml "$(HOME)/.codex/config.toml"
+
 .PHONY: cursor
 cursor:
 	@ mkdir -p "$(HOME)/.config/Cursor/User/"
