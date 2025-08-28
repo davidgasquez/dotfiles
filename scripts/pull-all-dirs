@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # pull-all-dirs - Pull git repositories in all subdirectories that are behind upstream
 # Usage: pull-all-dirs [directory]

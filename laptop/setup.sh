@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Add ASUS Linux repository
 echo "Setting up ASUS Linux repository..."

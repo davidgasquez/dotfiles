@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
 
@@ -56,7 +57,10 @@ ln -sf "${DOTFILES}/terminal/alacritty.toml" "${HOME}/.config/alacritty/alacritt
 ln -sf "${DOTFILES}/terminal/bashrc" "${HOME}/.bashrc"
 ln -sf "${DOTFILES}/terminal/zshrc" "${HOME}/.zshrc"
 ln -sf "${DOTFILES}/terminal/sheldon/plugins.toml" "${HOME}/.config/sheldon/plugins.toml"
-ln -sf "${DOTFILES}/terminal/blerc.sh" "${HOME}/.blerc"
+# Optional: ble.sh configuration (link if present)
+if [[ -f "${DOTFILES}/terminal/blerc.sh" ]]; then
+  ln -sf "${DOTFILES}/terminal/blerc.sh" "${HOME}/.blerc"
+fi
 ln -sf "${DOTFILES}/terminal/inputrc" "${HOME}/.inputrc"
 ln -sf "${DOTFILES}/terminal/starship.toml" "${HOME}/.config/starship.toml"
 ln -sfT "${DOTFILES}/llm" "${HOME}/.config/io.datasette.llm/templates"
