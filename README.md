@@ -7,14 +7,14 @@
 
 ## 🔍 Overview
 
-- **OS:** Arch Linux.
+- **OS:** Arch Linux
 - **WM**: [Hyprland](https://hyprland.org/)
 - **Launcher**: [Fuzzel](https://codeberg.org/dnkl/fuzzel)
 - **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
 - **Theme**: [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappe flavor)
 - **Shell**: `zsh` with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
 - **Coding**: VS Code and Claude Code
-- **Notetaking**: VS Code with Foam Extension
+- **Note-taking**: VS Code with Foam Extension
 
 ## 📦 Configuration
 
@@ -25,7 +25,7 @@ Once Arch is installed and this repository cloned locally, the fastest way to se
 For example, to set up your shell configuration:
 
 ```bash
-make shell
+make terminal
 ```
 
 ### 🧰 Utility Scripts

@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
+set -e -o pipefail
 
-# Exit on error
-set -e
-
-# Check if URL argument is provided
-if [ -z "$1" ]; then
+# Check if URL argument is provided before enabling set -u
+if [[ $# -eq 0 ]]; then
   echo "Usage: yt2srt <youtube-url>"
   exit 1
 fi
 
+set -u
 url="$1"
 
 # Fetch subtitles and process them

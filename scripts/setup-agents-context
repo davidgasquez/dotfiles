@@ -2,7 +2,7 @@
 
 # Setup AI agent context files as soft links to AGENTS.md
 
-set -e
+set -euo pipefail
 
 CURRENT_DIR="$(pwd)"
 AGENTS_FILE="$CURRENT_DIR/AGENTS.md"
@@ -12,15 +12,7 @@ if [[ ! -f "$AGENTS_FILE" ]]; then
     touch "$AGENTS_FILE"
 fi
 
-# Create soft links
+# Create or update soft links atomically
 for file in "AGENT.md" "CLAUDE.md"; do
-    target_path="$CURRENT_DIR/$file"
-
-    # Remove existing file/link if it exists
-    if [[ -e "$target_path" || -L "$target_path" ]]; then
-        rm "$target_path"
-    fi
-
-    # Create soft link
-    ln -s "AGENTS.md" "$target_path"
+    ln -sfn "AGENTS.md" "$CURRENT_DIR/$file"
 done

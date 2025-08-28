@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 extract_spanish_subs() {
   local input_file="$1"
