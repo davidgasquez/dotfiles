@@ -25,8 +25,7 @@
     "default_model": {
       "provider": "zed.dev",
       "model": "claude-sonnet-4-thinking"
-    },
-    "version": "2"
+    }
   },
   "inline_code_actions": true,
   "tabs": {
