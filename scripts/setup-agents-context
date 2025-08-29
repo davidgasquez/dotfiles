@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Setup AI agent context files as soft links to AGENTS.md
+# Setup AI agent context. Single source of truth is AGENTS.md.
 
 set -euo pipefail
 
@@ -12,7 +12,4 @@ if [[ ! -f "$AGENTS_FILE" ]]; then
     touch "$AGENTS_FILE"
 fi
 
-# Create or update soft links atomically
-for file in "AGENT.md" "CLAUDE.md"; do
-    ln -sfn "AGENTS.md" "$CURRENT_DIR/$file"
-done
+ln -sfn "AGENTS.md" "$CURRENT_DIR/CLAUDE.md"
