@@ -1,6 +1,6 @@
-# Contributing
+# Repository Guidelines
 
-This repository (@README.md) tracks some of the dotfiles for an Arch Linux installation. The configuration uses symbolic links to manage dotfiles across various applications.
+This repository tracks some of the dotfiles for an Arch Linux installation. The configuration uses symbolic links to manage dotfiles across various applications.
 
 ## Architecture
 
@@ -19,9 +19,18 @@ The architecture follows a modular structure where each directory contains relat
 2. Make changes to the `.sh` scripts when needed
 3. Update or add the appropriate `make` target
 
-## Code Conventions
+## Coding Style & Naming Conventions
 
+- Shell: `#!/usr/bin/env bash` with `set -euo pipefail`; hyphenated script names; keep functions small.
+- Make: tabs for recipes; small, composable targets; reuse variables like `DOTFILES`.
+- Configs: keep JSON/TOML valid and minimal; prefer Catppuccin Frappe theme for consistency.
+- Symlinks: use `ln -sf`/`ln -sfT` as in the Makefile; never copy configs to `$HOME`.
 - Be concise and direct
 - Follow existing patterns and conventions in the codebase
 - Verify changes work by running relevant commands
 - Use `sudo` for commands requiring elevated privileges (this matches the Makefile and setup scripts)
+
+## Commit & Pull Request Guidelines
+
+- Commits: short, imperative, emoji‑prefixed (e.g., `✨ Add plan command`, `🔧 Update settings`).
+- PRs: summary, affected targets/dirs, manual steps (`make` commands), linked issues, screenshots for UI.
