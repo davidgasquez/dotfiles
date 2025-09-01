@@ -5,5 +5,4 @@ notify = ["notify-send", "-a", "Codex", "Task Completed"]
 trust_level = "trusted"
 
 [tools]
-# Enable web search tool (expects a boolean, not a table)
 web_search = true
