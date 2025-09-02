@@ -39,6 +39,8 @@ claude:
 codex:
 	@ mkdir -p "$(HOME)/.codex/"
 	@ ln -sf $(DOTFILES)/codex/config.toml "$(HOME)/.codex/config.toml"
+	@ ln -sf $(DOTFILES)/codex/AGENTS.md "$(HOME)/.codex/AGENTS.md"
+	@ ln -sfT $(DOTFILES)/codex/prompts "$(HOME)/.codex/prompts"
 
 .PHONY: cursor
 cursor:
