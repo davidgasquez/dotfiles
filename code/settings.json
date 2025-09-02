@@ -63,12 +63,17 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "security.workspace.trust.untrustedFiles": "open",
-  "github.copilot.enable": {
-    "*": false
-  },
   "amp.tab.enabled": true,
   "amp.dangerouslyAllowAll": true,
   "amp.experimental.reviewTool": true,
   "amp.tab.disabledLanguages": [],
-  "githubPullRequests.pullBranch": "never"
+  "githubPullRequests.pullBranch": "never",
+  "github.copilot.selectedCompletionModel": "",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+  "github.copilot.nextEditSuggestions.enabled": true
 }
