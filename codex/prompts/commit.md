@@ -19,7 +19,7 @@ Create well-formatted commits with the conventional commits style mixed with emo
 - **Split large changes**: If changes touch multiple concerns, split them into separate commits. Always reviews the commit diff to ensure the message matches the changes
 - **Concise first line**: Keep the first line under 72 characters. Do not end the subject line with a period.
 - **Present tense, imperative mood**: Use the imperative mood in the subject line.
-- **Conventional commit format**: Use the format `<emoji> <description>`.
+- **Conventional commit format**: Use the format `<emoji> <description>`. Description shouldn't contain explicit scope (e.g. `network:`).
 
 ### Emoji Inspiration
 
