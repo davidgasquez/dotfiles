@@ -1,5 +1,5 @@
 model_reasoning_effort = "high"
-notify = ["notify-send", "-a", "Codex", "Task Completed"]
+notify = ["notify-send", "-a", "Codex", "Task Completed", "Done"]
 
 [projects."/home/david/projects/dotfiles"]
 trust_level = "trusted"
