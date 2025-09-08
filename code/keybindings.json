@@ -34,13 +34,17 @@
     },
     "when": "terminalFocus"
   },
-  {
-    "key": "alt+c alt+c",
-    "command": "claude-code.runClaude"
-  },
+  // {
+  //   "key": "alt+c alt+c",
+  //   "command": "claude-code.runClaude"
+  // },
   {
     "key": "ctrl+enter",
     "command": "inlineChat.start",
     "when": "editorTextFocus && !editorReadonly"
   }
+  // {
+  //   "key": "alt+c alt+c",
+  //   "command": "chatgpt.openSidebar"
+  // }
 ]
