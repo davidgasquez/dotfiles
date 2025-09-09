@@ -12,6 +12,8 @@ Create well-formatted commits with the conventional commits style mixed with emo
   1. Add all relevant changes with `git add`.
   2. Performs a `git diff` to understand what actual changes are being committed
   3. Write the descriptive and concise commit message.
+6. Ask the user for confirmation with a clean layout surfacing the planned commits messages and their changes.
+7. Proceed with the commits!
 
 ## Commit Style
 
