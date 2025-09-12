@@ -25,12 +25,12 @@ The architecture follows a modular structure where each directory contains relat
 - Make: tabs for recipes; small, composable targets; reuse variables like `DOTFILES`.
 - Configs: keep JSON/TOML valid and minimal; prefer Catppuccin Frappe theme for consistency.
 - Symlinks: use `ln -sf`/`ln -sfT` as in the Makefile; never copy configs to `$HOME`.
-- Be concise and direct
-- Follow existing patterns and conventions in the codebase
-- Verify changes work by running relevant commands
-- Use `sudo` for commands requiring elevated privileges (this matches the Makefile and setup scripts)
+- Be concise and direct.
+- Follow existing patterns and conventions in the codebase.
+- Verify changes work by running relevant commands.
+- Use `sudo` for commands requiring elevated privileges (this matches the Makefile and setup scripts).
 
 ## Commit & Pull Request Guidelines
 
-- Commits: short, imperative, emoji‑prefixed (e.g., `✨ Add plan command`, `🔧 Update settings`).
-- PRs: summary, affected targets/dirs, manual steps (`make` commands), linked issues, screenshots for UI.
+- Commits: concise, short, imperative, emoji‑prefixed (e.g., `✨ Add plan command`, `🔧 Update settings`).
+- PRs: concise summary, relevant context, related issues.

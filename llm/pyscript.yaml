@@ -1,4 +1,4 @@
-model: github-copilot/claude-sonnet-4
+model: github_copilot/gpt-5
 extract: true
 system: >
   You write Python tools / scripts / clis as single files.
