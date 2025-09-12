@@ -1,4 +1,4 @@
-model: github_copilot/claude-sonnet-4
+model: github_copilot/gpt-5
 prompt: >
   Write a descriptive commit following the following specification describing the changes in the following diff.
 
