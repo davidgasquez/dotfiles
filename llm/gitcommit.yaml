@@ -2,10 +2,10 @@ model: github_copilot/gpt-5
 prompt: >
   Write a descriptive commit following the following specification describing the changes in the following diff.
 
-  Keep the commit message brief, but informative. Avoid stating the obvious. Focus on important changes a reviewer would care about. Start with the related emoji and then add a description (first letter uppercase, no string delimiters wrapping it, no yapping, no markdown, no fenced code). Don't add fluff.
+  Keep the commit message brief, but informative. Avoid stating the obvious. Focus on important changes a reviewer would care about. Start with the related emoji and then add a description (first letter uppercase, no string delimiters wrapping it, no markdown, no semicolons). Don't add fluff.
 
   <template>
-  <related_emoji> <Description>
+  <related_emoji> <description>
 
   [optional body]
   </template>
