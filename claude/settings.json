@@ -22,5 +22,5 @@
     ],
     "deny": []
   },
-  "model": "opus"
+  "alwaysThinkingEnabled": true
 }
