@@ -69,12 +69,7 @@
   "amp.tab.disabledLanguages": [],
   "githubPullRequests.pullBranch": "never",
   "github.copilot.selectedCompletionModel": "",
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": false,
-    "markdown": true,
-    "scminput": false
-  },
+  "github.copilot.enable": false,
   "github.copilot.nextEditSuggestions.enabled": true,
   "[mdx]": {
     "editor.defaultFormatter": "unifiedjs.vscode-mdx"
