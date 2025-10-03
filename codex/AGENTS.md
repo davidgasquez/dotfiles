@@ -13,6 +13,6 @@
 - Call out bad ideas, unreasonable expectations, mistakes, ...
 - Remove code that is not needed
 - Clean up after yourself
-- Work iteratively.
-  - Create temporary scripts to learn more about APIs, schemas and datasets shape/values.
+- Work iteratively
+  - Create temporary scripts to learn more about APIs, schemas and datasets shape/values
 - Explore and use the build system (usually `Makefile`) commands for running, testing, linting, ...
