@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+projects_dir="${HOME}/projects"
+
+if [[ ! -d "${projects_dir}" ]]; then
+    notify-send "Open Agent" "${projects_dir} not found"
+    exit 1
+fi
+
+mapfile -t projects < <(find "${projects_dir}" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
+
+if [[ ${#projects[@]} -eq 0 ]]; then
+    notify-send "Open Agent" "No projects available"
+    exit 0
+fi
+
+project_selection=$(printf '%s\n' "${projects[@]}" | fuzzel -x 20 -d -I --prompt="📁 > " || true)
+
+if [[ -z "${project_selection}" ]]; then
+    exit 0
+fi
+
+project_path="${projects_dir}/${project_selection}"
+
+if [[ ! -d "${project_path}" ]]; then
+    notify-send "Open Agent" "${project_selection} is not a directory"
+    exit 1
+fi
+
+options=(
+    "codex --full-auto --search"
+    "claude --dangerously-skip-permissions"
+    "amp --dangerously-allow-all"
+)
+
+tool_selection=$(printf '%s\n' "${options[@]}" | fuzzel -x 20 -d -I --prompt="🤖 > " || true)
+
+if [[ -z "${tool_selection}" ]]; then
+    exit 0
+fi
+
+uwsm app -- alacritty --working-directory "${project_path}" --command zsh -ic "${tool_selection}"
