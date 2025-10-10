@@ -19,6 +19,7 @@ packages=(
     pipewire-pulse
     playerctl
     waybar
+    waystt-bin
     wireplumber
     wl-clip-persist
     wl-clipboard
