@@ -17,6 +17,7 @@ packages=(
     nvtop
     ripgrep
     sheldon
+    shellcheck-bin
     starship
     uv
     npm

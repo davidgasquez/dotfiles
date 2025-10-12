@@ -2,63 +2,85 @@
 
 set -euo pipefail
 
-log() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $*" >&2
+info() {
+    printf "→ %s\n" "$*"
+}
+
+success() {
+    printf "✓ %s\n" "$*"
+}
+
+skip() {
+    printf -- "- %s\n" "$*"
+}
+
+warn() {
+    printf "✗ %s\n" "$*" >&2
 }
 
 error() {
-    log "ERROR: $*"
+    warn "$*"
     exit 1
+}
+
+run_task() {
+    local description=$1
+    shift
+
+    info "$description"
+    if "$@" &>/dev/null; then
+        success "$description"
+        return 0
+    fi
+
+    warn "$description failed (continuing)"
+    return 1
 }
 
 cleanup_docker() {
     if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-        log "Cleaning up Docker system..."
-        docker system prune --volumes --all --force
+        run_task "Docker cleanup" docker system prune --volumes --all --force
     else
-        log "Docker not available, skipping Docker cleanup"
+        skip "Docker cleanup (docker unavailable)"
     fi
 }
 
 cleanup_uv() {
     if command -v uv >/dev/null 2>&1; then
-        log "Cleaning uv cache..."
-        uv cache clean
-
-        log "Upgrading uv tools..."
-        uv tool upgrade --all
+        run_task "uv cache cleanup" uv cache clean
+        run_task "uv tool upgrade" uv tool upgrade --all
     else
-        log "uv not available, skipping uv maintenance"
+        skip "uv maintenance (uv not installed)"
     fi
 }
 
 cleanup_pacman() {
-    if command -v pacman >/dev/null 2>&1; then
-        log "Cleaning pacman cache..."
-        sudo pacman -Sc --noconfirm
+    if ! command -v pacman >/dev/null 2>&1; then
+        skip "pacman cleanup (pacman not installed)"
+        return
+    fi
 
-        log "Removing orphaned packages..."
-        if pacman -Qtdq >/dev/null 2>&1; then
-            sudo pacman -Rns "$(pacman -Qtdq)" --noconfirm
-        else
-            log "No orphaned packages found"
-        fi
+    run_task "pacman cache cleanup" sudo pacman --noconfirm -Sc
+
+    local -a orphans=()
+    if mapfile -t orphans < <(pacman -Qtdq 2>/dev/null) && ((${#orphans[@]} > 0)); then
+        run_task "pacman orphan removal" sudo pacman --noconfirm -Rns "${orphans[@]}"
     else
-        log "pacman not available, skipping pacman cleanup"
+        skip "pacman orphan removal (none found)"
     fi
 }
 
 cleanup_paru() {
-    if command -v paru >/dev/null 2>&1; then
-        log "Cleaning paru cache..."
-        paru -Sc --noconfirm
-    else
-        log "paru not available, skipping paru cleanup"
+    if ! command -v paru >/dev/null 2>&1; then
+        skip "paru cleanup (paru not installed)"
+        return
     fi
+
+    run_task "paru cache cleanup" paru --sudo sudo -Sc --noconfirm
 }
 
 main() {
-    log "Starting maintenance tasks..."
+    info "Starting maintenance tasks"
 
     # Core maintenance tasks from Makefile
     cleanup_docker
@@ -66,8 +88,7 @@ main() {
     cleanup_pacman
     cleanup_paru
 
-    log "Maintenance tasks completed successfully!"
-    log "Consider running 'make post-installation' to review system optimizations"
+    success "Maintenance tasks completed"
 }
 
 # Parse command line arguments
