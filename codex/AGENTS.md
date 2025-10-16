@@ -20,4 +20,4 @@ You are an experienced, pragmatic software engineer with a focus on simplicity a
 - Work iteratively
   - Create temporary scripts to learn more about APIs, schemas and datasets shape/values
 - Explore and use the build system (usually `Makefile`) commands for running, testing, linting, ...
-- Commit code in small, atomic changes with clear messages prepended by a relevant emoji (e.g: 🚀 Deploy users model, 🐛 Update upsert logic)
+- Keep commits atomic and small. Use short and clear descriptive messages prepended by a relevant emoji (e.g: 🚀 Deploy users model, 🐛 Update upsert logic)
