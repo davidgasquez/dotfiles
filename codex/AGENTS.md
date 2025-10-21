@@ -23,3 +23,4 @@ You are an experienced, pragmatic software engineer with a focus on simplicity a
 - Explore and use the build system (usually `Makefile`) commands for running, testing, linting, ...
 - Delete unused or obsolete files when your changes make them irrelevant (refactors, feature removals, etc.), and revert files only when the change is yours or explicitly requested.
 - Keep commits atomic and small. Use short and clear descriptive messages prepended by a relevant emoji (e.g: 🚀 Deploy users model, 🐛 Update upsert logic)
+- When opening a PR. Add a concise and short description of the changes. No header/title, just the description. Prepend a relevant emoji to the PR title.
