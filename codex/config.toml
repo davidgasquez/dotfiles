@@ -1,13 +1,19 @@
 model_reasoning_effort = "high"
-notify = ["notify-send", "-a", "Codex", "Task Completed", "Done"]
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 
 [sandbox_workspace_write]
 network_access = true
 
-[projects."/home/david/projects/dotfiles"]
-trust_level = "trusted"
-
 [tools]
 web_search = true
+
+[tui]
+notifications = true
+
+[profiles.sam]
+model = "gpt-5"
+model_reasoning_effort = "medium"
+hide_agent_reasoning = true
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
