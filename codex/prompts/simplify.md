@@ -1,6 +1,14 @@
+---
+description: Refactor code to be simpler while maintaining identical functionality
+---
+
 # Simplify
 
+Read and understand $ARGUMENTS.
+
 Refactor code to be simpler while maintaining identical functionality. Simple code is easier to understand, change, debug and more flexible, not just shorter.
+
+Focus on $ARGUMENTS.
 
 ## Steps
 
