@@ -10,10 +10,3 @@ web_search = true
 
 [tui]
 notifications = true
-
-[profiles.sam]
-model = "gpt-5"
-model_reasoning_effort = "medium"
-hide_agent_reasoning = true
-approval_policy = "on-request"
-sandbox_mode = "workspace-write"
