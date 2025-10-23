@@ -72,6 +72,13 @@ aigcm() {
     git commit --verbose --edit --file=$(git rev-parse --git-dir)/COMMIT_EDITMSG
 }
 
+qgs() {
+  git pull &&
+  git add -A . &&
+  git cm "⚡" &&
+  git push
+}
+
 subdl() {
   uvx subliminal download -l es -s "$1"
 }
