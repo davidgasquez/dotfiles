@@ -79,6 +79,37 @@ cleanup_paru() {
     run_task "paru cache cleanup" paru --sudo sudo -Sc --noconfirm
 }
 
+cleanup_journal() {
+    if command -v journalctl >/dev/null 2>&1; then
+        run_task "systemd journal vacuum (<=200M)" sudo journalctl --vacuum-size=200M
+    else
+        skip "journal vacuum (journalctl not installed)"
+    fi
+}
+
+cleanup_paru_clone_cache() {
+    local clone_dir="$HOME/.cache/paru/clone"
+    if [[ -d $clone_dir ]]; then
+        run_task "paru clone cache cleanup" rm -rf -- "$clone_dir"
+    else
+        skip "paru clone cache cleanup (directory missing)"
+    fi
+}
+
+cleanup_cliphist() {
+    if ! command -v cliphist >/dev/null 2>&1; then
+        skip "cliphist cleanup (cliphist not installed)"
+        return
+    fi
+
+    local cliphist_cache="$HOME/.cache/cliphist"
+    if [[ -d $cliphist_cache ]]; then
+        run_task "cliphist history cleanup" rm -rf -- "$cliphist_cache"
+    else
+        skip "cliphist history cleanup (cache missing)"
+    fi
+}
+
 main() {
     info "Starting maintenance tasks"
 
@@ -87,6 +118,9 @@ main() {
     cleanup_uv
     cleanup_pacman
     cleanup_paru
+    cleanup_paru_clone_cache
+    cleanup_journal
+    cleanup_cliphist
 
     success "Maintenance tasks completed"
 }

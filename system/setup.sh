@@ -14,6 +14,7 @@ packages=(
     mkinitcpio-firmware
     network-manager-applet
     networkmanager
+    pacman-contrib
     power-profiles-daemon
     preload
     rocm-smi-lib
