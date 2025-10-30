@@ -23,9 +23,13 @@ You are an experienced, pragmatic software engineer with a focus on simplicity a
 
 ## Git
 
-- Atomic commits.
-- Short and clear descriptive messages.
+- Commits
+  - Atomic commits.
+  - Short and clear descriptive messages.
   - Prepend a relevant emoji (🐛 Fix upsert logic)
 - Pull Requests
   - Concise and short description of the changes (no header/title)
   - Prepend a relevant emoji to the PR title (🚀 Publish new version)
+- Branches
+  - Clean and relevant name
+  - Use basic names (`fix-async-stream`, `add-users-model`)
