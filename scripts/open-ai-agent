@@ -29,7 +29,7 @@ if [[ ! -d "${project_path}" ]]; then
 fi
 
 options=(
-    "codex --full-auto --search"
+    "codex --full-auto"
     "claude --dangerously-skip-permissions"
     "amp --dangerously-allow-all"
 )
