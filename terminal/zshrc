@@ -79,6 +79,20 @@ qgs() {
   git push
 }
 
+# Quick Query YouTube
+qq-yt() {
+  if [[ $# -lt 2 ]]; then
+    echo "Usage: qq-yt <youtube-url> <prompt>" >&2
+    return 1
+  fi
+
+  local url="$1"
+  shift
+  local prompt="$*"
+
+  llm -m gemini-3-pro-preview -a "$url" "$prompt"
+}
+
 subdl() {
   uvx subliminal download -l es -s "$1"
 }
