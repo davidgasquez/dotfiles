@@ -1,9 +1,15 @@
-model_reasoning_effort = "high"
+model = "gpt-5.1-codex-max"
+model_reasoning_effort = "xhigh"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
+tool_output_token_limit = 25000
 
 [sandbox_workspace_write]
 network_access = true
 
 [tui]
 notifications = true
+
+[features]
+streamable_shell = true
+web_search_request = true

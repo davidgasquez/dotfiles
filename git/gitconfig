@@ -56,3 +56,6 @@
 
 [credential]
 	helper = store
+
+[help]
+  autocorrect = prompt
