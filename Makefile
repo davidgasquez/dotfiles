@@ -15,16 +15,11 @@ git:
 
 .PHONY: fonts
 fonts:
-	@ $(DOTFILES)/fonts/packages.sh
+	@ $(DOTFILES)/fonts/setup.sh
 
 .PHONY: code
 code:
-	@ $(DOTFILES)/code/packages.sh
-	@ mkdir -p "$(HOME)/.config/Code/User/"
-	@ ln -snf $(DOTFILES)/code/settings.json "$(HOME)/.config/Code/User/settings.json"
-	@ ln -snf $(DOTFILES)/code/keybindings.json "$(HOME)/.config/Code/User/keybindings.json"
-	@ ln -snf $(DOTFILES)/code/tasks.json "$(HOME)/.config/Code/User/tasks.json"
-	@ ln -snf $(DOTFILES)/code/code-flags.conf $(HOME)/.config/code-flags.conf
+	@ $(DOTFILES)/code/setup.sh
 
 .PHONY: claude
 claude:
@@ -37,10 +32,7 @@ claude:
 
 .PHONY: codex
 codex:
-	@ mkdir -p "$(HOME)/.codex/"
-	@ ln -sf $(DOTFILES)/codex/config.toml "$(HOME)/.codex/config.toml"
-	@ ln -sf $(DOTFILES)/codex/AGENTS.md "$(HOME)/.codex/AGENTS.md"
-	@ ln -sfT $(DOTFILES)/codex/prompts "$(HOME)/.codex/prompts"
+	@ $(DOTFILES)/codex/setup.sh
 
 .PHONY: cursor
 cursor:
@@ -59,35 +51,18 @@ zed:
 
 .PHONY: terminal
 terminal:
-	@ $(DOTFILES)/terminal/packages.sh
+	@ $(DOTFILES)/terminal/setup.sh
 
 .PHONY: hypr
 hypr:
-	@ mkdir -p "$(HOME)/.config/hypr" "$(HOME)/.config/waybar" "$(HOME)/.config/mako" "$(HOME)/.config/fuzzel"
 	@ ${DOTFILES}/hypr/setup.sh
-	@ ln -sf $(DOTFILES)/hypr/wallpaper.png $(HOME)/Pictures/wallpaper.png
-	@ ln -sf $(DOTFILES)/hypr/frappe.conf $(HOME)/.config/hypr/frappe.conf
-	@ ln -sf $(DOTFILES)/hypr/hyprland.conf $(HOME)/.config/hypr/hyprland.conf
-	@ ln -sf $(DOTFILES)/hypr/hyprpaper.conf $(HOME)/.config/hypr/hyprpaper.conf
-	@ ln -sf $(DOTFILES)/hypr/hypridle.conf $(HOME)/.config/hypr/hypridle.conf
-	@ ln -sf $(DOTFILES)/hypr/hyprlock.conf $(HOME)/.config/hypr/hyprlock.conf
-	@ ln -sf $(DOTFILES)/hypr/xdph.conf $(HOME)/.config/hypr/xdph.conf
-	@ ln -sf $(DOTFILES)/hypr/waybar/config.jsonc $(HOME)/.config/waybar/config
-	@ ln -sf $(DOTFILES)/hypr/waybar/style.css $(HOME)/.config/waybar/style.css
-	@ ln -sf $(DOTFILES)/hypr/waybar/frappe.css $(HOME)/.config/waybar/frappe.css
-	@ ln -sf $(DOTFILES)/hypr/mako/config $(HOME)/.config/mako/config
-	@ ln -sf $(DOTFILES)/hypr/fuzzel/fuzzel.ini $(HOME)/.config/fuzzel/fuzzel.ini
 
 .PHONY: desktop
 desktop:
-	@ ${DOTFILES}/desktop/packages.sh
-	@ ln -sf $(DOTFILES)/desktop/brave-flags.conf $(HOME)/.config/brave-flags.conf
-	@ ln -sf $(DOTFILES)/desktop/electron-flags.conf $(HOME)/.config/electron-flags.conf
+	@ ${DOTFILES}/desktop/setup.sh
 
 .PHONY: system
 system:
-	@ sudo rm -f /etc/sysctl.d/99-swappiness.conf
-	@ sudo cp $(DOTFILES)/system/99-swappiness.conf /etc/sysctl.d/99-swappiness.conf
 	@ $(DOTFILES)/system/setup.sh
 
 .PHONY: maintenance

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
+
 packages=(
     bind
     blueman
@@ -23,8 +25,11 @@ packages=(
     xdg-user-dirs
 )
 
-# Install Hyprland and related packages
+# Install system packages
 paru -S --needed --noconfirm "${packages[@]}"
+
+sudo rm -f /etc/sysctl.d/99-swappiness.conf
+sudo cp "${DOTFILES}/system/99-swappiness.conf" /etc/sysctl.d/99-swappiness.conf
 
 # Network Manager
 if ! systemctl is-enabled --quiet NetworkManager.service; then
