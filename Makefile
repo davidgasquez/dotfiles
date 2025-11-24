@@ -100,6 +100,9 @@ laptop:
 
 .PHONY: post-installation
 post-installation:
+	@ echo "GPU Setup"
+	@ echo "Pacman/paru config"
+	@ echo "tmpfs for /tmp"
 	@ echo "Disable CPU mitigations (https://wiki.archlinux.org/title/Improving_performance#Turn_off_CPU_exploit_mitigations)"
 	@ echo "Configure solaar" (https://wiki.archlinux.org/title/Logitech_Unifying_Receiver)
 	@ echo "Enable PAM" (https://wiki.archlinux.org/title/GNOME/Keyring)
