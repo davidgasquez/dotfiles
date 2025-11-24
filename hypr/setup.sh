@@ -7,7 +7,7 @@ packages=(
     fuzzel
     hypridle
     hyprland
-    hyprland-qtutils
+    hyprland-guiutils
     hyprlock
     hyprpaper
     hyprpolkitagent
