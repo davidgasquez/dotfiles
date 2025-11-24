@@ -42,6 +42,11 @@ if ! systemctl is-enabled --quiet fstrim.timer; then
     systemctl enable --now fstrim.timer
 fi
 
+# Out-of-memory daemon
+if ! systemctl is-enabled --quiet systemd-oomd.service; then
+    sudo systemctl enable --now systemd-oomd.service
+fi
+
 # Preload
 if ! systemctl is-enabled --quiet preload; then
     systemctl enable --now preload
