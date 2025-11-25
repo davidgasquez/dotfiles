@@ -110,6 +110,25 @@ cleanup_cliphist() {
     fi
 }
 
+is_btrfs_root() {
+    [[ $(findmnt -no FSTYPE /) == "btrfs" ]]
+}
+
+btrfs_maintenance() {
+    if ! command -v btrfs >/dev/null 2>&1; then
+        skip "btrfs maintenance (btrfs-progs not installed)"
+        return
+    fi
+
+    if ! is_btrfs_root; then
+        skip "btrfs maintenance (root fs not btrfs)"
+        return
+    fi
+
+    run_task "btrfs scrub (root)" sudo btrfs scrub start -Bd /
+    run_task "btrfs balance (dusage=75,musage=75)" sudo btrfs balance start -dusage=75 -musage=75 /
+}
+
 main() {
     info "Starting maintenance tasks"
 
@@ -121,6 +140,7 @@ main() {
     cleanup_paru_clone_cache
     cleanup_journal
     cleanup_cliphist
+    btrfs_maintenance
 
     success "Maintenance tasks completed"
 }

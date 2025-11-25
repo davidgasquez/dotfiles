@@ -24,6 +24,7 @@ packages=(
     pipewire
     pipewire-alsa
     pipewire-pulse
+    pipewire-libcamera
     playerctl
     waybar
     waystt-bin
