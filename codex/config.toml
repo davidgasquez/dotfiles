@@ -9,7 +9,3 @@ network_access = true
 
 [tui]
 notifications = true
-
-[features]
-streamable_shell = true
-web_search_request = true

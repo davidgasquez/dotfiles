@@ -19,6 +19,7 @@ packages=(
     sheldon
     shellcheck-bin
     starship
+    tmux
     uv
     npm
     wget
