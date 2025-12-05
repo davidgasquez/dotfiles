@@ -20,7 +20,8 @@ You are an experienced, pragmatic software engineer with a focus on simplicity a
   - Create temporary scripts to learn more about APIs, schemas and datasets shape/values
   - Never run destructive git operations (e.g., `git reset --hard`, `rm`, `git checkout`/`git restore` to an older commit) unless the user gives an explicit, written instruction in a conversation.
 - Rely on the build system (usually `Makefile`) commands for running, testing, linting, ...
-- Use tmux for background or async tasks (run development servers, long running processes you need to audit, ...).
+- Use tmux for background jobs, async tasks, or anything you'll come back to it. E.g:
+  - Run development servers, long running processes you need to audit, run tests in the background, tailing logs
 
 ## Git
 
