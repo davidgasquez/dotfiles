@@ -5,63 +5,68 @@
 
 set -euo pipefail
 
-# Default to current directory if no argument provided
 target_dir="${1:-.}"
+concurrency="${PULL_CONCURRENCY:-4}"
+concurrency=${concurrency:-4}
+(( concurrency < 1 )) && concurrency=1
 
-# Check if target directory exists
 if [[ ! -d "$target_dir" ]]; then
     echo "Error: Directory '$target_dir' does not exist" >&2
     exit 1
 fi
 
-# Change to target directory
 cd "$target_dir"
 
-# Track repositories that were updated
-updated_repos=()
+updated_file="$(mktemp)"
+trap 'rm -f "$updated_file"' EXIT
 
-# Loop through all subdirectories
-for dir in */; do
-    # Skip if not a directory
-    [[ -d "$dir" ]] || continue
-    
-    # Enter directory
-    if ! cd "$dir"; then
-        echo "Warning: Could not enter directory '$dir'" >&2
-        continue
-    fi
-    
-    # Check if it's a git repository
-    if [[ ! -d .git ]]; then
-        cd ..
-        continue
-    fi
-    
-    # Update remote references
-    if ! git remote update >/dev/null 2>&1; then
+process_repo() {
+    local dir=$1
+
+    [[ -d "$dir/.git" ]] || return 0
+
+    if ! git -C "$dir" remote update >/dev/null 2>&1; then
         echo "Warning: Could not update remotes for '$dir'" >&2
-        cd ..
-        continue
+        return 0
     fi
-    
-    # Check if branch is behind upstream
-    if git status -uno | grep -q "Your branch is behind"; then
+
+    if git -C "$dir" status -uno | grep -q "Your branch is behind"; then
         echo "Pulling updates for: $dir"
-        if git pull; then
-            updated_repos+=("$dir")
+        if git -C "$dir" pull --ff-only; then
+            printf '%s\n' "$dir" >>"$updated_file"
         else
             echo "Error: Failed to pull updates for '$dir'" >&2
         fi
     fi
-    
-    # Return to parent directory
-    cd ..
+}
+
+running_jobs=0
+
+wait_for_slot() {
+    while (( running_jobs >= concurrency )); do
+        wait -n || true
+        ((running_jobs--))
+    done
+}
+
+for dir in */; do
+    [[ -d "$dir" ]] || continue
+
+    wait_for_slot
+    process_repo "$dir" &
+    ((++running_jobs))
 done
 
-# Summary
-if [[ ${#updated_repos[@]} -eq 0 ]]; then
+while (( running_jobs > 0 )); do
+    wait -n || true
+    ((running_jobs--))
+done
+
+if [[ ! -s "$updated_file" ]]; then
     echo "All repositories are up to date."
-else
-    echo "Updated ${#updated_repos[@]} repository/repositories:"
-    printf "  - %s\n" "${updated_repos[@]}"
+    exit 0
 fi
+
+mapfile -t updated_repos <"$updated_file"
+echo "Updated ${#updated_repos[@]} repository/repositories:"
+printf "  - %s\n" "${updated_repos[@]}"
