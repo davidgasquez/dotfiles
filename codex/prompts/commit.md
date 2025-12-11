@@ -1,3 +1,7 @@
+---
+description: Create atomic git commits using conventional commits prepended with emojis.
+---
+
 # Commit
 
 Create atomic git commits using conventional commits prepended with emojis.
@@ -5,7 +9,6 @@ Create atomic git commits using conventional commits prepended with emojis.
 ## Process
 
 - Inspect current changes with `git status` and `git diff HEAD`.
-- Read recent history with `git log --oneline -30` to match style and tone.
 - Decide whether the changes should be one commit or several logical commits.
 - If multiple logical changes exist, plan and split them into separate commits.
 - For each commit:
