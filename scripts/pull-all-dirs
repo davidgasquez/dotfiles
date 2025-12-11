@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
-
 # pull-all-dirs - Pull git repositories in all subdirectories that are behind upstream
 # Usage: pull-all-dirs [directory]
 
 set -euo pipefail
 
 target_dir="${1:-.}"
-concurrency="${PULL_CONCURRENCY:-4}"
-concurrency=${concurrency:-4}
-(( concurrency < 1 )) && concurrency=1
 
 if [[ ! -d "$target_dir" ]]; then
-    echo "Error: Directory '$target_dir' does not exist" >&2
+    printf 'Error: Directory "%s" does not exist\n' "$target_dir" >&2
     exit 1
 fi
 
@@ -26,47 +22,43 @@ process_repo() {
     [[ -d "$dir/.git" ]] || return 0
 
     if ! git -C "$dir" remote update >/dev/null 2>&1; then
-        echo "Warning: Could not update remotes for '$dir'" >&2
-        return 0
+        printf 'Warning: could not update remotes for "%s"\n' "$dir" >&2
+        return 1
     fi
 
     if git -C "$dir" status -uno | grep -q "Your branch is behind"; then
-        echo "Pulling updates for: $dir"
+        printf 'Pulling updates for: %s\n' "$dir"
         if git -C "$dir" pull --ff-only; then
             printf '%s\n' "$dir" >>"$updated_file"
         else
-            echo "Error: Failed to pull updates for '$dir'" >&2
+            printf 'Error: failed to pull updates for "%s"\n' "$dir" >&2
+            return 1
         fi
     fi
 }
 
-running_jobs=0
-
-wait_for_slot() {
-    while (( running_jobs >= concurrency )); do
-        wait -n || true
-        ((running_jobs--))
-    done
-}
+pids=()
 
 for dir in */; do
     [[ -d "$dir" ]] || continue
-
-    wait_for_slot
+    dir=${dir%/}
     process_repo "$dir" &
-    ((++running_jobs))
+    pids+=("$!")
 done
 
-while (( running_jobs > 0 )); do
-    wait -n || true
-    ((running_jobs--))
+exit_status=0
+
+for pid in "${pids[@]}"; do
+    if ! wait "$pid"; then
+        exit_status=1
+    fi
 done
 
 if [[ ! -s "$updated_file" ]]; then
     echo "All repositories are up to date."
-    exit 0
+else
+    echo "Updated repositories:"
+    sort -u "$updated_file" | sed 's/^/  - /'
 fi
 
-mapfile -t updated_repos <"$updated_file"
-echo "Updated ${#updated_repos[@]} repository/repositories:"
-printf "  - %s\n" "${updated_repos[@]}"
+exit "$exit_status"
