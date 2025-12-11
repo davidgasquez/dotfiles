@@ -9,3 +9,6 @@ network_access = true
 
 [tui]
 notifications = true
+
+[features]
+skills = true
