@@ -22,6 +22,7 @@ You are an experienced, pragmatic software engineer with a focus on simplicity a
 - Rely on the build system (usually `Makefile`) commands for running, testing, linting, ...
 - Use tmux for background jobs, async tasks, or anything you'll come back to it. E.g:
   - Run development servers, long running processes you need to audit, run tests in the background, tailing logs
+- Design workflows so they are observable without constant (blocking) babysitting (use tmux panes, logs, log-tail scripts, ...)
 
 ## Git
 
