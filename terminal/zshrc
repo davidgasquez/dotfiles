@@ -66,8 +66,7 @@ alias pasta='wl-paste'
 
 # Functions
 aigcm() {
-  local session="aigcm-$(date +%s)"
-  tmux new-session -d -s "$session" "cat $HOME/projects/dotfiles/codex/prompts/commit.md | codex exec -"
+  ai-gcm "$@"
 }
 
 qgs() {
