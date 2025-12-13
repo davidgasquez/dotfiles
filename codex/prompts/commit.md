@@ -6,15 +6,23 @@ description: Create atomic git commits using conventional commits prepended with
 
 Create atomic git commits using conventional commits prepended with emojis.
 
+## Constraints (Non-Interactive)
+
+This prompt runs unattended (e.g. from a detached tmux session).
+
+- Use only non-interactive commands.
+- Never open an editor or pager.
+- Do not run `git push`.
+
 ## Process
 
-- Inspect current changes with `git status` and `git diff HEAD`.
+- Inspect current changes with `git status` and `git --no-pager diff HEAD`.
 - Decide whether the changes should be one commit or several logical commits.
 - If multiple logical changes exist, plan and split them into separate commits.
 - For each commit:
   - Stage only the relevant changes with `git add ...`.
-  - Review the staged diff (e.g. `git diff --cached`) to confirm what’s included.
-  - Write a concise commit message following the style below.
+  - Review the staged diff (e.g. `git --no-pager diff --cached`) to confirm what’s included.
+  - Commit with a message (`git commit -m "…"`) following the style below.
 - Return the commits to the user.
 
 ## Style
