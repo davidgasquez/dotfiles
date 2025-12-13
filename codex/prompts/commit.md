@@ -34,7 +34,7 @@ This prompt runs unattended (e.g. from a detached tmux session).
   - Imperative, present tense (e.g. "Add…", "Fix…").
   - Under 72 characters.
   - No trailing period.
-  - Do not add explicit scopes like `network:`.
+  - Do not add explicit scopes like `feat:`, `network:`, `chore:`.
 - Always ensure the commit message accurately reflects the diff.
 
 ## Splitting Commits
