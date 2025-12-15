@@ -11,4 +11,4 @@ network_access = true
 notifications = true
 
 [features]
-skills = true
+skills = false
