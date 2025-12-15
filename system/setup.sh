@@ -20,6 +20,7 @@ packages=(
     power-profiles-daemon
     preload
     rocm-smi-lib
+    sox
     ufw
     util-linux
     xdg-user-dirs

@@ -27,7 +27,6 @@ packages=(
     pipewire-libcamera
     playerctl
     waybar
-    waystt-bin
     wireplumber
     wl-clip-persist
     wl-clipboard

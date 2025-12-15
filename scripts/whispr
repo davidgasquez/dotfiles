@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Whispr - Groq Whisper Transcription Script
+# Based on https://github.com/EmbeddedMhawar/groq-whisper-linux/blob/master/groq_whisper.sh
+
+API_KEY="${GROQ_API_KEY:-}"
+if [[ -z "$API_KEY" ]]; then
+    notify-send -u critical "Groq Error" "Missing GROQ_API_KEY"
+    exit 1
+fi
+
+STATE_DIR="${XDG_RUNTIME_DIR:-/tmp}/whisp"
+mkdir -p "$STATE_DIR"
+
+FILENAME="${STATE_DIR}/rec.flac"
+PIDFILE="${STATE_DIR}/rec.pid"
+REC_LOG="${STATE_DIR}/rec_error.log"
+CURL_LOG="${STATE_DIR}/curl_error.log"
+ERROR_LOG="${STATE_DIR}/error.log"
+
+if [ -f "$PIDFILE" ]; then
+    PID="$(<"$PIDFILE")"
+    if kill -0 "$PID" 2>/dev/null; then
+        notify-send -u low -t 1000 "Groq" "Finishing..."
+        sleep 1
+        kill -INT "$PID" 2>/dev/null || true
+        for _ in {1..50}; do
+            kill -0 "$PID" 2>/dev/null || break
+            sleep 0.1
+        done
+    fi
+    rm "$PIDFILE"
+
+    notify-send -u low -t 2000 "Groq" "Transcribing..."
+
+    if [[ ! -s "$FILENAME" ]]; then
+        {
+            echo "Error: recording file missing or empty: $FILENAME"
+            [[ -s "$REC_LOG" ]] && { echo; echo "--- rec stderr ---"; cat "$REC_LOG"; }
+        } >"$ERROR_LOG"
+        notify-send -u critical "Groq Error" "No audio captured. Check $ERROR_LOG"
+        exit 1
+    fi
+
+    MAX_RETRIES=3
+    RETRY_DELAY=1
+    HTTP_CODE=""
+    TEXT=""
+
+    : >"$CURL_LOG"
+
+    attempt=0
+    while (( attempt < MAX_RETRIES )); do
+        attempt=$((attempt + 1))
+        CURL_BODY="$(mktemp -p "$STATE_DIR" whisp_curl_body.XXXXXX)"
+        set +e
+        HTTP_CODE="$(curl -sS -o "$CURL_BODY" -w "%{http_code}" "https://api.groq.com/openai/v1/audio/transcriptions" \
+            -H "Authorization: Bearer $API_KEY" \
+            -F "file=@$FILENAME" \
+            -F "model=whisper-large-v3" \
+            -F "response_format=text" \
+            --connect-timeout 15 \
+            --max-time 300 \
+            2>>"$CURL_LOG")"
+        CURL_EXIT=$?
+        set -e
+        TEXT="$(<"$CURL_BODY")"
+        rm -f "$CURL_BODY"
+
+        if [[ $CURL_EXIT -ne 0 ]]; then
+            HTTP_CODE="000"
+        fi
+
+        if [[ "$HTTP_CODE" == "200" ]]; then
+            break
+        fi
+
+        # Retry on transient errors
+        if [[ "$HTTP_CODE" =~ ^(400|429|500|502|503|504)$ ]] && [[ $attempt -lt $MAX_RETRIES ]]; then
+            notify-send -u low -t 1500 "Groq" "Retrying... (attempt $((attempt+1))/$MAX_RETRIES)"
+            sleep $RETRY_DELAY
+            RETRY_DELAY=$((RETRY_DELAY * 2))
+        else
+            break
+        fi
+    done
+
+    if [[ "$HTTP_CODE" != "200" ]]; then
+        {
+            echo "Error (HTTP $HTTP_CODE) after $attempt attempts:"
+            [[ -n "${TEXT:-}" ]] && echo "$TEXT"
+            [[ -s "$CURL_LOG" ]] && { echo; echo "--- curl stderr (tail) ---"; tail -n 50 "$CURL_LOG"; }
+        } >"$ERROR_LOG"
+        notify-send -u critical "Groq Error" "Failed (Code $HTTP_CODE). Check $ERROR_LOG"
+        exit 1
+    else
+        printf %s "$TEXT" | wl-copy
+        notify-send -u low -t 2000 "Groq" "Transcription Done!"
+    fi
+
+else
+    : >"$REC_LOG"
+    rec -q -r 16000 -c 1 -b 16 "$FILENAME" 2>"$REC_LOG" &
+    PID=$!
+    echo "$PID" > "$PIDFILE"
+
+    sleep 0.1
+    if ! kill -0 "$PID" 2>/dev/null; then
+        rm -f "$PIDFILE"
+        notify-send -u critical "Groq Error" "Recording failed. Check $REC_LOG"
+        exit 1
+    fi
+
+    notify-send -u low -t 1000 "Groq" "Listening... (press again to finish)"
+fi
