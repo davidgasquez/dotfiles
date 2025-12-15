@@ -2,13 +2,9 @@ model = "gpt-5.2"
 model_reasoning_effort = "xhigh"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
-tool_output_token_limit = 25000
 
 [sandbox_workspace_write]
 network_access = true
-
-[tui]
-notifications = true
 
 [features]
 skills = false
