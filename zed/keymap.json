@@ -7,17 +7,14 @@
 // from the command palette.
 [
   {
-    "context": "Workspace",
-    "bindings": {
-      "ctrl-_": "workspace::NewTerminal",
-      "alt-g alt-g": ["task::Spawn", { "task_name": "goose" }],
-      "alt-c alt-c": ["task::Spawn", { "task_name": "claude" }]
-    }
-  },
-  {
     "context": "Editor",
     "bindings": {
-      "ctrl-ç": ["editor::ToggleComments", { "advance_downwards": false }],
+      "ctrl-ç": [
+        "editor::ToggleComments",
+        {
+          "advance_downwards": false
+        }
+      ],
       "ctrl-shift-up": "editor::MoveLineUp",
       "ctrl-shift-down": "editor::MoveLineDown",
       "ctrl-shift-d": "editor::DuplicateSelection"

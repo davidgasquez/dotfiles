@@ -39,7 +39,11 @@
   "always_treat_brackets_as_autoclosed": true,
   "languages": {
     "Python": {
-      "language_servers": ["ruff", "basedpyright", "!pyright"],
+      "language_servers": [
+        "ruff",
+        "basedpyright",
+        "!pyright"
+      ],
       "formatter": [
         {
           "code_actions": {
