@@ -53,6 +53,10 @@ zed:
 terminal:
 	@ $(DOTFILES)/terminal/setup.sh
 
+.PHONY: llm
+llm:
+	@ $(DOTFILES)/llm/setup.sh
+
 .PHONY: hypr
 hypr:
 	@ ${DOTFILES}/hypr/setup.sh
