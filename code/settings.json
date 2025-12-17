@@ -28,6 +28,7 @@
   "files.autoSave": "onFocusChange",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
+  "python.languageServer": "None",
   "python.analysis.typeCheckingMode": "standard",
   "python.analysis.addHoverSummaries": true,
   "python.analysis.autoImportCompletions": true,
@@ -63,10 +64,6 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "security.workspace.trust.untrustedFiles": "open",
-  "amp.tab.enabled": true,
-  "amp.dangerouslyAllowAll": true,
-  "amp.experimental.reviewTool": true,
-  "amp.tab.disabledLanguages": [],
   "githubPullRequests.pullBranch": "never",
   "github.copilot.nextEditSuggestions.enabled": true,
   "[mdx]": {
