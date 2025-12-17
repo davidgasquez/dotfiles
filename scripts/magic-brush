@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+APP_NAME="magic-brush"
+NOTIFY_TITLE="🪄 Magic Brush"
+NOTIFY_ICON="draw-brush"
+
+require() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+notify() {
+    local urgency="$1"
+    local timeout_ms="$2"
+    local message="$3"
+
+    if require notify-send; then
+        notify-send -a "$APP_NAME" -i "$NOTIFY_ICON" -u "$urgency" -t "$timeout_ms" "$NOTIFY_TITLE" "$message"
+    fi
+}
+
+die() {
+    local message="$1"
+    notify critical 0 "$message"
+    echo "$APP_NAME: $message" >&2
+    exit 1
+}
+
+if [[ $# -ne 0 ]]; then
+    die "This script takes no arguments"
+fi
+
+for cmd in alacritty llm wl-copy wl-paste; do
+    if ! require "$cmd"; then
+        die "Missing required command: $cmd"
+    fi
+done
+
+INPUT="$(wl-paste --type text --no-newline)" || die "Failed to read clipboard text"
+if [[ -z "${INPUT}" ]]; then
+    die "Clipboard is empty"
+fi
+
+notify low 5000 "Polishing..."
+
+OUTPUT="$(
+    printf %s "$INPUT" | llm prompt -t polish --no-log --no-stream
+)" || die "LLM failed"
+
+if [[ -z "${OUTPUT}" ]]; then
+    die "LLM returned empty output"
+fi
+
+printf %s "$OUTPUT" | wl-copy
+notify low 1500 "Copied to clipboard"
+
+TMP_DIR="${XDG_RUNTIME_DIR:-/tmp}"
+TMP_FILE="$(mktemp -p "$TMP_DIR" magic-brush.XXXXXX)"
+trap 'rm -f "$TMP_FILE"' EXIT
+printf %s "$OUTPUT" >"$TMP_FILE"
+
+alacritty --title "$APP_NAME" --hold --command cat -- "$TMP_FILE"
