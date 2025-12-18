@@ -53,7 +53,6 @@
     "notebook.source.organizeImports": "explicit"
   },
   "ruff.nativeServer": "on",
-  "ruff.format.preview": true,
   "ruff.lint.preview": true,
   "[python]": {
     "editor.formatOnSave": true,
