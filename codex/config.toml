@@ -1,4 +1,4 @@
-model = "gpt-5.2"
+model = "gpt-5.2-codex"
 model_reasoning_effort = "xhigh"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
