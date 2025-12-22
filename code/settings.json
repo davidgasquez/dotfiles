@@ -67,5 +67,11 @@
   "github.copilot.nextEditSuggestions.enabled": true,
   "[mdx]": {
     "editor.defaultFormatter": "unifiedjs.vscode-mdx"
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
   }
 }
