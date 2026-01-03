@@ -1,5 +1,5 @@
 model = "gpt-5.2-codex"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 
@@ -8,3 +8,5 @@ network_access = true
 
 [features]
 unified_exec = true
+apply_patch_freeform = true
+web_search_request = true
