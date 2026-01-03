@@ -1,5 +1,5 @@
 ---
-name: self-contained -python-scripts
+name: self-contained-python-script
 description: Use uv and PEP 723 to write self-installing autocontained Python scripts
 ---
 
