@@ -13,7 +13,7 @@
 - **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
 - **Theme**: [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappe flavor)
 - **Shell**: `zsh` with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
-- **Coding**: VS Code and Claude Code
+- **Coding**: VS Code, Codex, and Pi
 - **Note-taking**: VS Code with Foam Extension
 
 ## 📦 Configuration

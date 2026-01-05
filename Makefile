@@ -21,18 +21,9 @@ fonts:
 code:
 	@ $(DOTFILES)/code/setup.sh
 
-.PHONY: claude
-claude:
-	@ command -v claude >/dev/null 2>&1 || curl -fsSL http://claude.ai/install.sh | bash
-	@ mkdir -p "$(HOME)/.claude"
-	@ ln -sf $(DOTFILES)/claude/settings.json "$(HOME)/.claude/settings.json"
-	@ ln -sf $(DOTFILES)/claude/CLAUDE.md "$(HOME)/.claude/CLAUDE.md"
-	@ ln -sfT $(DOTFILES)/claude/commands "$(HOME)/.claude/commands"
-	@ ln -sfT $(DOTFILES)/claude/agents "$(HOME)/.claude/agents"
-
-.PHONY: codex
-codex:
-	@ $(DOTFILES)/codex/setup.sh
+.PHONY: agents
+agents:
+	@ $(DOTFILES)/agents/setup.sh
 
 .PHONY: cursor
 cursor:
