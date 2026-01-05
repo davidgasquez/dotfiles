@@ -28,6 +28,11 @@ For example, to set up your shell configuration:
 make terminal
 ```
 
+### Environment variables
+
+- User session variables and secrets live in `~/.config/environment.d/*.conf`.
+- Per project values go in a `.env` file in the project root. `terminal/zshrc` auto loads `.env` on directory change if the file is owned by you.
+
 ### 🧰 Utility Scripts
 
 The repository includes several useful scripts in the `scripts/` directory.
