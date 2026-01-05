@@ -6,7 +6,9 @@ AGENTS_DIR="${DOTFILES}/agents"
 CODEX_DIR="${HOME}/.codex"
 
 setup_codex() {
-  paru -S --needed --noconfirm openai-codex-autoup-bin
+  if ! pacman -Q openai-codex-autoup-bin >/dev/null 2>&1; then
+    paru -S --needed --noconfirm openai-codex-autoup-bin
+  fi
 
   mkdir -p "${CODEX_DIR}"
   ln -sf "${AGENTS_DIR}/codex/config.toml" "${CODEX_DIR}/config.toml"
@@ -17,6 +19,9 @@ setup_codex() {
 
 setup_pi() {
   npm install -g @mariozechner/pi-coding-agent
+
+  mkdir -p "${HOME}/.pi/agent"
+  ln -sf "${AGENTS_DIR}/AGENTS.md" "${HOME}/.pi/agent/AGENTS.md"
 }
 
 usage() {
