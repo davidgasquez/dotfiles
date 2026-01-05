@@ -59,15 +59,6 @@
     "when": "!composerBarIsVisible"
   },
   {
-    "key": "ctrl+escape",
-    "command": "-claude-code.runClaude.keyboard",
-    "when": "claude-code.hasClaudeInPath"
-  },
-  {
-    "key": "alt+c alt+c",
-    "command": "claude-code.runClaude"
-  },
-  {
     "key": "ctrl+[Minus]",
     "command": "workbench.action.toggleAuxiliaryBar"
   },

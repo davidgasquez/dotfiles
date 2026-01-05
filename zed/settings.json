@@ -14,19 +14,6 @@
     "font_family": "JetBrainsMono Nerd Font",
     "font_size": 14.0
   },
-  "agent": {
-    "inline_assistant_model": {
-      "provider": "zed.dev",
-      "model": "claude-sonnet-4"
-    },
-    "default_profile": "write",
-    "always_allow_tool_actions": true,
-    "stream_edits": true,
-    "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-sonnet-4-thinking"
-    }
-  },
   "inline_code_actions": true,
   "tabs": {
     "git_status": true,

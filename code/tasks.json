@@ -1,30 +1,4 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Claude Code",
-            "type": "shell",
-            "command": "alacritty",
-            "isBackground": true,
-            "args": [
-                "--working-directory",
-                "${workspaceFolder}",
-                "-e",
-                "zsh",
-                "-i",
-                "-c",
-                "claude"
-            ],
-            "presentation": {
-                "echo": false,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "close": true,
-                "revealProblems": "never",
-                "clear": true
-            }
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": []
 }
