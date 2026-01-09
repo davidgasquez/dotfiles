@@ -29,6 +29,7 @@ The architecture follows a modular structure where each directory contains relat
 - Follow existing patterns and conventions in the codebase.
 - Verify changes work by running relevant commands.
 - Use `sudo` for commands requiring elevated privileges (this matches the Makefile and setup scripts).
+- Run `lint-sh` on modified shell scripts before committing.
 
 ## Commit & Pull Request Guidelines
 
