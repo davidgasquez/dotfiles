@@ -4,6 +4,10 @@ DOTFILES := $(shell pwd)
 help:
 	@ grep "^[a-zA-Z].*:" Makefile | cut -d: -f1 | grep -v "DOTFILES"
 
+.PHONY: lint-sh
+lint-sh:
+	@ rg --files -g '*.sh' -g 'scripts/*' -g '*/setup.sh' | xargs -r shellcheck -x
+
 paru:
 	@ sudo pacman -S --needed base-devel
 	@ git clone https://aur.archlinux.org/paru.git /tmp/paru

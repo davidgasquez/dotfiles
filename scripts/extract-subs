@@ -29,7 +29,7 @@ extract_spanish_subs() {
   # Extract subtitle if Spanish track found
   if [[ -n "$spa_track" ]]; then
     echo "Found Spanish subtitle track at index $spa_track. Extracting to $output_file..."
-    ffmpeg -v error -i "$input_file" -map 0:$spa_track -c:s srt "$output_file"
+    ffmpeg -v error -i "$input_file" -map "0:${spa_track}" -c:s srt "$output_file"
     echo "✅ Spanish subtitles extracted to $output_file"
     return 0
   else
