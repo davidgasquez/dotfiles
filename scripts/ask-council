@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: ask-council \"prompt\"" >&2
+  exit 1
+fi
+
+require_bin() {
+  local bin="$1"
+  if ! command -v "$bin" >/dev/null 2>&1; then
+    echo "Missing dependency: ${bin}" >&2
+    exit 1
+  fi
+}
+
+require_bin tmux
+require_bin amp
+require_bin pi
+
+prompt="$*"
+work_dir="$(mktemp -d -t council.XXXXXX)"
+prompt_file="${work_dir}/prompt.txt"
+
+printf '%s' "$prompt" > "$prompt_file"
+
+session="council-$(date +%Y%m%d-%H%M%S)"
+
+cleanup() {
+  if tmux has-session -t "$session" >/dev/null 2>&1; then
+    tmux kill-session -t "$session"
+  fi
+  rm -rf "$work_dir"
+}
+trap cleanup EXIT
+
+write_amp_runner() {
+  local script="$1"
+  local out="$2"
+  local status="$3"
+
+  cat > "$script" <<RUNNER
+#!/usr/bin/env bash
+set -euo pipefail
+
+prompt=\$(cat "$prompt_file")
+
+set +e
+amp -x "\$prompt" > "$out" 2>&1
+code=\$?
+set -e
+
+printf '%s' "\$code" > "$status"
+exit "\$code"
+RUNNER
+
+  chmod +x "$script"
+}
+
+write_pi_runner() {
+  local script="$1"
+  local out="$2"
+  local status="$3"
+  local model="$4"
+
+  cat > "$script" <<RUNNER
+#!/usr/bin/env bash
+set -euo pipefail
+
+prompt=\$(cat "$prompt_file")
+
+set +e
+pi -m --model "$model" -p "\$prompt" > "$out" 2>&1
+code=\$?
+set -e
+
+printf '%s' "\$code" > "$status"
+exit "\$code"
+RUNNER
+
+  chmod +x "$script"
+}
+
+amp_out="${work_dir}/a.out"
+amp_status="${work_dir}/a.status"
+amp_script="${work_dir}/a.sh"
+
+pi1_out="${work_dir}/b.out"
+pi1_status="${work_dir}/b.status"
+pi1_script="${work_dir}/b.sh"
+
+pi2_out="${work_dir}/c.out"
+pi2_status="${work_dir}/c.status"
+pi2_script="${work_dir}/c.sh"
+
+pi3_out="${work_dir}/d.out"
+pi3_status="${work_dir}/d.status"
+pi3_script="${work_dir}/d.sh"
+
+write_amp_runner "$amp_script" "$amp_out" "$amp_status"
+write_pi_runner "$pi1_script" "$pi1_out" "$pi1_status" "claude-opus-4-5-thinking"
+write_pi_runner "$pi2_script" "$pi2_out" "$pi2_status" "gemini-3-pro-preview"
+write_pi_runner "$pi3_script" "$pi3_out" "$pi3_status" "openai/gpt-5.2"
+
+tmux new-session -d -s "$session" "bash \"$amp_script\""
+tmux split-window -h -t "$session" "bash \"$pi1_script\""
+tmux select-pane -t "$session:.0"
+tmux split-window -v -t "$session" "bash \"$pi2_script\""
+tmux select-pane -t "$session:.1"
+tmux split-window -v -t "$session" "bash \"$pi3_script\""
+tmux select-layout -t "$session" tiled
+
+wait_for_status() {
+  local status="$1"
+  while [[ ! -f "$status" ]]; do
+    sleep 1
+  done
+}
+
+wait_for_status "$amp_status"
+wait_for_status "$pi1_status"
+wait_for_status "$pi2_status"
+wait_for_status "$pi3_status"
+
+print_response() {
+  local label="$1"
+  local out="$2"
+
+  printf 'Response %s\n' "$label"
+  cat "$out"
+  printf '\n'
+}
+
+print_response 1 "$amp_out"
+print_response 2 "$pi1_out"
+print_response 3 "$pi2_out"
+print_response 4 "$pi3_out"

@@ -42,3 +42,4 @@ You are an experienced, pragmatic software engineer with a focus on simplicity a
 - Branches
   - Clean and relevant name
   - Use basic names (`fix-async-stream`, `add-users-model`)
+- Use `gh` CLI for PRs, reviews, issues, ...
