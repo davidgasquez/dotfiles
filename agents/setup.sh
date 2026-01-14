@@ -22,31 +22,16 @@ setup_pi() {
 
   mkdir -p "${HOME}/.pi/agent"
   ln -sf "${AGENTS_DIR}/AGENTS.md" "${HOME}/.pi/agent/AGENTS.md"
+  ln -sf "${AGENTS_DIR}/pi/settings.json" "${HOME}/.pi/agent/settings.json"
 }
 
-usage() {
-  echo "Usage: $(basename "$0") [codex|pi|all]" >&2
-  exit 1
+setup_amp() {
+  mkdir -p "${HOME}/.config/amp"
+  ln -sf "${AGENTS_DIR}/AGENTS.md" "${HOME}/.config/amp/AGENTS.md"
+  ln -sf "${AGENTS_DIR}/amp/settings.json" "${HOME}/.config/amp/settings.json"
+  ln -sfT "${AGENTS_DIR}/skills" "${HOME}/.config/amp/skills"
 }
 
-if [[ $# -gt 1 ]]; then
-  usage
-fi
-
-if [[ $# -eq 0 ]] || [[ $1 == "all" ]]; then
-  setup_codex
-  setup_pi
-  exit 0
-fi
-
-if [[ $1 == "codex" ]]; then
-  setup_codex
-  exit 0
-fi
-
-if [[ $1 == "pi" ]]; then
-  setup_pi
-  exit 0
-fi
-
-usage
+setup_codex
+setup_pi
+setup_amp

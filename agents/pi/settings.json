@@ -1,0 +1,14 @@
+{
+  "defaultProvider": "github-copilot",
+  "defaultModel": "claude-opus-4.5",
+  "defaultThinkingLevel": "high",
+  "collapseChangelog": true,
+  "hideThinkingBlock": false,
+  "enabledModels": [
+    "openai-codex/gpt-5.2",
+    "openai-codex/gpt-5.2-codex",
+    "github-copilot/claude-opus-4.5",
+    "github-copilot/gemini-3-pro-preview"
+  ],
+  "lastChangelogVersion": "0.45.7"
+}
