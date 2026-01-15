@@ -1,6 +1,6 @@
 {
-  "defaultProvider": "github-copilot",
-  "defaultModel": "claude-opus-4.5",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.2-codex",
   "defaultThinkingLevel": "high",
   "collapseChangelog": true,
   "hideThinkingBlock": false,

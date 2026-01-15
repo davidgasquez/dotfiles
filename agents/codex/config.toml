@@ -10,3 +10,4 @@ network_access = true
 unified_exec = true
 apply_patch_freeform = true
 web_search_request = true
+steer = true
