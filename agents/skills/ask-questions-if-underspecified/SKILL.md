@@ -50,7 +50,7 @@ If the user explicitly asks you to proceed without answers:
 
 Once you have answers, restate the requirements in 1-3 sentences (including key constraints and what success looks like), then start work.
 
-## Question templates
+## Question Templates
 
 - "Before I start, I need: (1) ..., (2) ..., (3) .... If you don't care about (2), I will assume ...."
 - "Which of these should it be? A) ... B) ... C) ... (pick one)"
@@ -71,7 +71,7 @@ c) Not sure - use default
 Reply with: defaults (or 1a 2a)
 ```
 
-## Anti-patterns
+## Anti-Patterns
 
 - Don't ask questions you can answer with a quick, low-risk discovery read (e.g., configs, existing patterns, docs).
 - Don't ask open-ended questions if a tight multiple-choice or yes/no would eliminate ambiguity faster.
