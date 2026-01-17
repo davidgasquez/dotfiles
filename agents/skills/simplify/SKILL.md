@@ -1,4 +1,5 @@
 ---
+name: simplify
 description: Refactor code to be simpler while maintaining identical functionality
 ---
 
@@ -8,7 +9,7 @@ Refactor the given code to make it **simpler, clearer, and more maintainable** w
 
 ## Objective
 
-Simplify `$ARGUMENTS`. Implementation should be **straightforward and pragmatic**. The goal is to get the most minimal code possible.
+Simplify and clean the code. Implementation should be **straightforward and pragmatic**. The goal is to get the most minimal code possible.
 
 ## Principles
 

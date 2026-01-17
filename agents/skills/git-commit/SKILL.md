@@ -1,18 +1,11 @@
 ---
-description: Create atomic git commits using conventional commits prepended with emojis.
+name: git-commit
+description: Create atomic commits prepended with emojis
 ---
 
 # Commit
 
-Create atomic git commits using conventional commits prepended with emojis.
-
-## Constraints (Non-Interactive)
-
-This prompt runs unattended (e.g. from a detached tmux session).
-
-- Use only non-interactive commands.
-- Never open an editor or pager.
-- Do not run `git push`.
+Create atomic commits prepended with emojis using only non-interactive commands.
 
 ## Process
 

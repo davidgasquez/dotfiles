@@ -13,7 +13,6 @@ setup_codex() {
   mkdir -p "${CODEX_DIR}"
   ln -sf "${AGENTS_DIR}/codex/config.toml" "${CODEX_DIR}/config.toml"
   ln -sf "${AGENTS_DIR}/AGENTS.md" "${CODEX_DIR}/AGENTS.md"
-  ln -sfT "${AGENTS_DIR}/prompts" "${CODEX_DIR}/prompts"
   ln -sfT "${AGENTS_DIR}/skills" "${CODEX_DIR}/skills"
 }
 
