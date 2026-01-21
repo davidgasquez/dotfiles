@@ -1,9 +1,9 @@
 ---
 name: modern-python
-description: How to work with Python (`uv` instead of `python`, modern type syntax, linting, formatting, etc.)
+description: Work with Python (`uv` instead of `python`, modern type syntax, linting, formatting, etc.) properly!
 ---
 
-- Use `uv` instead of `python`
+- Never use `python`. Use `uv` instead of `python`
   - `uv add package-name`
   - `uv run script.py`
 - Don't use `from __future__ import annotations`
