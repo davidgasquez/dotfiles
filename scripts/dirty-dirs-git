@@ -6,8 +6,10 @@ set -euo pipefail
 for directory in */; do
     if [[ -d "$directory" ]]; then
         directory_name="${directory%/}"
-        if (cd "$directory_name" && git status --porcelain | grep -q .); then
-            echo "$directory_name"
+        if git -C "$directory_name" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+            if git -C "$directory_name" status --porcelain | grep -q .; then
+                echo "$directory_name"
+            fi
         fi
     fi
 done
