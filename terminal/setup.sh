@@ -15,6 +15,7 @@ packages=(
     htop
     jq
     nvtop
+    prek-bin
     ripgrep
     sheldon
     shellcheck-bin
