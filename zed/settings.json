@@ -4,45 +4,23 @@
   "terminal": {
     "copy_on_select": true,
     "font_family": "JetBrainsMono Nerd Font",
-    "font_size": 14.0
+    "font_size": 14.0,
   },
   "inline_code_actions": true,
   "tabs": {
     "git_status": true,
     "file_icons": true,
-    "show_diagnostics": "errors"
+    "show_diagnostics": "errors",
   },
   "collaboration_panel": {
-    "button": false
+    "button": false,
   },
   "always_treat_brackets_as_autoclosed": true,
-  "languages": {
-    "Python": {
-      "language_servers": [
-        "ruff",
-        "basedpyright",
-        "!pyright"
-      ],
-      "formatter": [
-        {
-          "code_actions": {
-            "source.organizeImports.ruff": true,
-            "source.fixAll.ruff": true
-          }
-        },
-        {
-          "language_server": {
-            "name": "ruff"
-          }
-        }
-      ]
-    }
-  },
   "lsp": {
     "basedpyright": {
       "settings": {
         "python": {
-          "pythonPath": ".venv/bin/python"
+          "pythonPath": ".venv/bin/python",
         },
         "basedpyright.analysis": {
           "typeCheckingMode": "standard",
@@ -51,30 +29,30 @@
             "callArgumentNames": true,
             "functionReturnTypes": true,
             "genericTypes": true,
-            "variableTypes": true
-          }
-        }
-      }
-    }
+            "variableTypes": true,
+          },
+        },
+      },
+    },
   },
   "soft_wrap": "editor_width",
   "scrollbar": {
     "axes": {
-      "horizontal": false
-    }
+      "horizontal": false,
+    },
   },
   "diagnostics": {
     "include_warnings": true,
     "inline": {
       "enabled": true,
       "padding": 10,
-      "min_column": 60
-    }
+      "min_column": 60,
+    },
   },
   "autosave": "on_focus_change",
   "ensure_final_newline_on_save": true,
   "format_on_save": "on",
   "auto_update": false,
   "theme": "Catppuccin Frappé",
-  "icon_theme": "Catppuccin Frappé"
+  "icon_theme": "Catppuccin Frappé",
 }
