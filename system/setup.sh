@@ -18,7 +18,6 @@ packages=(
     networkmanager
     pacman-contrib
     power-profiles-daemon
-    preload
     rocm-smi-lib
     sox
     ufw
@@ -56,11 +55,6 @@ fi
 # Out-of-memory daemon
 if ! systemctl is-enabled --quiet systemd-oomd.service; then
     sudo systemctl enable --now systemd-oomd.service
-fi
-
-# Preload
-if ! systemctl is-enabled --quiet preload; then
-    systemctl enable --now preload
 fi
 
 # Gnome Keyring

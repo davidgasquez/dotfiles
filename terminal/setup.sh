@@ -18,7 +18,7 @@ packages=(
     prek-bin
     ripgrep
     sheldon
-    shellcheck-bin
+    shellcheck
     starship
     tmux
     uv
@@ -26,13 +26,11 @@ packages=(
     wget
     zoxide
     zsh
+    yt-dlp
 )
 
 # Install packages
 paru -S --needed --noconfirm "${packages[@]}"
-
-# Install yt-dlp
-uv tool install --reinstall yt-dlp --with secretstorage
 
 # Create directories
 mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/sheldon" "${HOME}/.config/starship"
