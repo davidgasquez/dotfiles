@@ -64,11 +64,6 @@ alias cmd='llm -t cmd'
 alias copy='wl-copy'
 alias pasta='wl-paste'
 
-# Functions
-aigcm() {
-  tmux new-session -d -s "aigcm-$(date +%s)" "pi -p 'commit changes'"
-}
-
 qgs() {
   git pull &&
   git add -A . &&
