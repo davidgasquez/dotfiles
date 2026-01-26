@@ -38,18 +38,18 @@ fi
 
 # Network Manager
 if ! systemctl is-enabled --quiet NetworkManager.service; then
-    systemctl enable --now NetworkManager.service
+    sudo systemctl enable --now NetworkManager.service
 fi
 
 # Firewall
 if ! systemctl is-enabled --quiet ufw; then
-    systemctl enable --now ufw
+    sudo systemctl enable --now ufw
     sudo ufw enable
 fi
 
 # SSD Trim
 if ! systemctl is-enabled --quiet fstrim.timer; then
-    systemctl enable --now fstrim.timer
+    sudo systemctl enable --now fstrim.timer
 fi
 
 # Out-of-memory daemon
@@ -64,7 +64,7 @@ fi
 
 # Docker
 if ! systemctl is-enabled --quiet docker.service; then
-    systemctl enable --now docker
+    sudo systemctl enable --now docker
 
     # Add user to docker group
     if ! groups "$USER" | grep -q "\bdocker\b"; then
