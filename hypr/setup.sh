@@ -6,6 +6,7 @@ HYPR_CONFIG_DIR="${HOME}/.config/hypr"
 WAYBAR_CONFIG_DIR="${HOME}/.config/waybar"
 MAKO_CONFIG_DIR="${HOME}/.config/mako"
 FUZZEL_CONFIG_DIR="${HOME}/.config/fuzzel"
+VOXTYPE_CONFIG_DIR="${HOME}/.config/voxtype"
 PICTURES_DIR="${HOME}/Pictures"
 
 packages=(
@@ -30,6 +31,7 @@ packages=(
     wireplumber
     wl-clip-persist
     wl-clipboard
+    voxtype-bin
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
     xdg-utils
@@ -44,7 +46,7 @@ if ! systemctl --user is-active --quiet hyprpolkitagent.service; then
     systemctl --user enable --now hyprpolkitagent.service
 fi
 
-mkdir -p "${HYPR_CONFIG_DIR}" "${WAYBAR_CONFIG_DIR}" "${MAKO_CONFIG_DIR}" "${FUZZEL_CONFIG_DIR}" "${PICTURES_DIR}"
+mkdir -p "${HYPR_CONFIG_DIR}" "${WAYBAR_CONFIG_DIR}" "${MAKO_CONFIG_DIR}" "${FUZZEL_CONFIG_DIR}" "${VOXTYPE_CONFIG_DIR}" "${PICTURES_DIR}"
 
 ln -sf "${DOTFILES}/hypr/wallpaper.png" "${PICTURES_DIR}/wallpaper.png"
 ln -sf "${DOTFILES}/hypr/frappe.conf" "${HYPR_CONFIG_DIR}/frappe.conf"
@@ -58,3 +60,4 @@ ln -sf "${DOTFILES}/hypr/waybar/style.css" "${WAYBAR_CONFIG_DIR}/style.css"
 ln -sf "${DOTFILES}/hypr/waybar/frappe.css" "${WAYBAR_CONFIG_DIR}/frappe.css"
 ln -sf "${DOTFILES}/hypr/mako/config" "${MAKO_CONFIG_DIR}/config"
 ln -sf "${DOTFILES}/hypr/fuzzel/fuzzel.ini" "${FUZZEL_CONFIG_DIR}/fuzzel.ini"
+ln -sf "${DOTFILES}/hypr/voxtype/config.toml" "${VOXTYPE_CONFIG_DIR}/config.toml"
