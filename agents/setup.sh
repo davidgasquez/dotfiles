@@ -22,6 +22,7 @@ setup_pi() {
   mkdir -p "${HOME}/.pi/agent"
   ln -sf "${AGENTS_DIR}/AGENTS.md" "${HOME}/.pi/agent/AGENTS.md"
   ln -sf "${AGENTS_DIR}/pi/settings.json" "${HOME}/.pi/agent/settings.json"
+  ln -sfT "${AGENTS_DIR}/pi/extensions" "${HOME}/.pi/agent/extensions"
 }
 
 setup_amp() {

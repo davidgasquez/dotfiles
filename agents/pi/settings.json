@@ -10,6 +10,6 @@
     "github-copilot/claude-opus-4.5",
     "github-copilot/gemini-3-pro-preview"
   ],
-  "lastChangelogVersion": "0.50.1",
-  "quietStartup": true
+  "quietStartup": true,
+  "lastChangelogVersion": "0.50.3"
 }
