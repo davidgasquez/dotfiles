@@ -2,13 +2,14 @@ model = "gpt-5.2-codex"
 model_reasoning_effort = "high"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
+web_search = "live"
+
+[projects]
+"/home/david" = { trust_level = "trusted" }
 
 [sandbox_workspace_write]
 network_access = true
 
 [features]
 unified_exec = true
-apply_patch_freeform = true
-web_search_request = true
 steer = true
-collab = true
