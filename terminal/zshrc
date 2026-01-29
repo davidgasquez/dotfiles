@@ -64,6 +64,10 @@ alias cmd='llm -t cmd'
 alias copy='wl-copy'
 alias pasta='wl-paste'
 
+open() {
+  xdg-open "$@" >/dev/null 2>&1
+}
+
 qgs() {
   git pull &&
   git add -A . &&
