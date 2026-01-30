@@ -3,6 +3,7 @@ model_reasoning_effort = "high"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 web_search = "live"
+suppress_unstable_features_warning = true
 
 [projects]
 "/home/david" = { trust_level = "trusted" }
