@@ -3,7 +3,7 @@
   "defaultModel": "gpt-5.2-codex",
   "defaultThinkingLevel": "high",
   "collapseChangelog": true,
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "enabledModels": [
     "openai-codex/gpt-5.2",
     "openai-codex/gpt-5.2-codex",
@@ -11,5 +11,5 @@
     "github-copilot/gemini-3-pro-preview"
   ],
   "quietStartup": true,
-  "lastChangelogVersion": "0.50.3"
+  "lastChangelogVersion": "0.50.7"
 }

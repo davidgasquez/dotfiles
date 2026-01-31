@@ -7,7 +7,7 @@ CODEX_DIR="${HOME}/.codex"
 
 setup_codex() {
   if ! pacman -Q openai-codex-autoup-bin >/dev/null 2>&1; then
-    paru -S --needed --noconfirm openai-codex-autoup-bin
+    paru -S --needed --noconfirm openai-codex-bin
   fi
 
   mkdir -p "${CODEX_DIR}"
