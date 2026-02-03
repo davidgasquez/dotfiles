@@ -8,6 +8,7 @@ help:
 lint-sh:
 	@ rg --files -g '*.sh' -g 'scripts/*' -g '*/setup.sh' | xargs -r shellcheck -x
 
+.PHONY: paru
 paru:
 	@ sudo pacman -S --needed base-devel
 	@ git clone https://aur.archlinux.org/paru.git /tmp/paru
@@ -34,7 +35,6 @@ zed:
 	@ mkdir -p "$(HOME)/.config/zed/"
 	@ ln -sf $(DOTFILES)/zed/settings.json "$(HOME)/.config/zed/settings.json"
 	@ ln -sf $(DOTFILES)/zed/keymap.json "$(HOME)/.config/zed/keymap.json"
-	@ ln -sf $(DOTFILES)/zed/tasks.json "$(HOME)/.config/zed/tasks.json"
 
 .PHONY: terminal
 terminal:

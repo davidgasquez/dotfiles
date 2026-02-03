@@ -6,7 +6,7 @@ AGENTS_DIR="${DOTFILES}/agents"
 CODEX_DIR="${HOME}/.codex"
 
 setup_codex() {
-  if ! pacman -Q openai-codex-autoup-bin >/dev/null 2>&1; then
+  if ! pacman -Q openai-codex-bin >/dev/null 2>&1; then
     paru -S --needed --noconfirm openai-codex-bin
   fi
 
