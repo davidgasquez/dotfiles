@@ -4,6 +4,7 @@ approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 web_search = "live"
 suppress_unstable_features_warning = true
+personality = "pragmatic"
 
 [projects]
 "/home/david" = { trust_level = "trusted" }

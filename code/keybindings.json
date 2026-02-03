@@ -38,5 +38,12 @@
     "key": "ctrl+enter",
     "command": "inlineChat.start",
     "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+alt+shift+p",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "pi -p \"commit and push\"\u000D"
+    }
   }
 ]
