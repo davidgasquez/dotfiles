@@ -5,12 +5,12 @@
       "ctrl-ç": [
         "editor::ToggleComments",
         {
-          "advance_downwards": false,
-        },
+          "advance_downwards": false
+        }
       ],
       "ctrl-shift-up": "editor::MoveLineUp",
       "ctrl-shift-down": "editor::MoveLineDown",
-      "ctrl-shift-d": "editor::DuplicateSelection",
-    },
-  },
+      "ctrl-shift-d": "editor::DuplicateSelection"
+    }
+  }
 ]
