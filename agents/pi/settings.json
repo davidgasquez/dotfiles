@@ -8,7 +8,8 @@
     "openai-codex/gpt-5.2",
     "openai-codex/gpt-5.2-codex",
     "github-copilot/claude-opus-4.5",
-    "github-copilot/gemini-3-pro-preview"
+    "github-copilot/gemini-3-pro-preview",
+    "openai-codex/gpt-5.3-codex"
   ],
   "quietStartup": true,
   "lastChangelogVersion": "0.52.6"
