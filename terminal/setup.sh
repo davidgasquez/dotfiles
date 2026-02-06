@@ -32,6 +32,9 @@ packages=(
 # Install packages
 paru -S --needed --noconfirm "${packages[@]}"
 
+# Install uv tools
+uv tool install --reinstall -U 'markitdown[pdf, youtube-transcription]'
+
 # Create directories
 mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/sheldon" "${HOME}/.config/starship"
 
