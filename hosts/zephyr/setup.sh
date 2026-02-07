@@ -34,7 +34,7 @@ packages=(
 )
 
 # Install packages
-echo "Installing ASUS laptop packages..."
+echo "Installing ASUS packages..."
 paru -S --needed --noconfirm "${packages[@]}"
 
 # Keyboard
@@ -67,8 +67,8 @@ fi
 
 # PowerTOP
 echo "Setting up PowerTOP service..."
-DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
-sudo cp "${DOTFILES}"/laptop/powertop.service /etc/systemd/system/powertop.service
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+sudo cp "${SCRIPT_DIR}/powertop.service" /etc/systemd/system/powertop.service
 if ! systemctl is-enabled --quiet powertop.service; then
     echo "Enabling PowerTOP service..."
     sudo systemctl enable --now powertop.service

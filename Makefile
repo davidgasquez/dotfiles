@@ -52,6 +52,11 @@ hypr:
 desktop:
 	@ ${DOTFILES}/desktop/setup.sh
 
+.PHONY: ssh
+ssh:
+	@ mkdir -p "$(HOME)/.ssh"
+	@ ln -sf $(DOTFILES)/ssh/config "$(HOME)/.ssh/config"
+
 .PHONY: system
 system:
 	@ $(DOTFILES)/system/setup.sh
@@ -60,13 +65,13 @@ system:
 maintenance:
 	@ ${DOTFILES}/scripts/run-maintenance-tasks
 
-.PHONY: laptop
-laptop:
-	@ ${DOTFILES}/laptop/setup.sh
+.PHONY: zephyr
+zephyr:
+	@ ${DOTFILES}/hosts/zephyr/setup.sh
 
-.PHONY: workstation
-workstation:
-	@ ${DOTFILES}/workstation/setup.sh
+.PHONY: helix
+helix:
+	@ ${DOTFILES}/hosts/helix/setup.sh
 
 .PHONY: post-installation
 post-installation:
