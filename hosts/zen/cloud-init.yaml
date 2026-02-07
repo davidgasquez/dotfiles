@@ -1,0 +1,76 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+ssh_pwauth: false
+
+users:
+  - default
+  - name: david
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    lock_passwd: true
+
+packages:
+  - ca-certificates
+  - curl
+  - sudo
+  - unattended-upgrades
+
+write_files:
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    permissions: "0644"
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+  - path: /etc/ssh/sshd_config.d/10-performance.conf
+    permissions: "0644"
+    content: |
+      UseDNS no
+      GSSAPIAuthentication no
+
+  - path: /usr/local/sbin/firstboot.sh
+    permissions: "0755"
+    content: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      USER="david"
+
+      # Copy Hetzner-injected SSH keys from root to $USER
+      if [[ -s /root/.ssh/authorized_keys ]]; then
+        install -d -m 0700 -o "$USER" -g "$USER" "/home/$USER/.ssh"
+        install -m 0600 -o "$USER" -g "$USER" /root/.ssh/authorized_keys "/home/$USER/.ssh/authorized_keys"
+      fi
+
+      # Harden SSH only if the user has keys (avoid lockout)
+      if [[ -s "/home/$USER/.ssh/authorized_keys" ]]; then
+        install -d -m 0755 /etc/ssh/sshd_config.d
+        printf '%s\n' \
+          'PermitRootLogin no' \
+          'PasswordAuthentication no' \
+          'KbdInteractiveAuthentication no' \
+          'AuthenticationMethods publickey' \
+          'X11Forwarding no' \
+          'AllowAgentForwarding no' \
+          "AllowUsers ${USER}" \
+          > /etc/ssh/sshd_config.d/99-hardening.conf
+        systemctl restart ssh || systemctl restart sshd || true
+      fi
+
+      systemctl enable --now unattended-upgrades 2>/dev/null || true
+
+      # Install Tailscale
+      . /etc/os-release
+      mkdir -p --mode=0755 /usr/share/keyrings
+      curl -fsSL "https://pkgs.tailscale.com/stable/${ID}/${VERSION_CODENAME}.noarmor.gpg" \
+        | tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+      echo "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/${ID} ${VERSION_CODENAME} main" \
+        > /etc/apt/sources.list.d/tailscale.list
+      apt-get update
+      apt-get install -y tailscale
+      systemctl enable --now tailscaled
+
+runcmd:
+  - [bash, -lc, "/usr/local/sbin/firstboot.sh"]
