@@ -11,7 +11,3 @@ personality = "pragmatic"
 
 [sandbox_workspace_write]
 network_access = true
-
-[features]
-unified_exec = true
-steer = true
