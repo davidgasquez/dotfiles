@@ -8,6 +8,7 @@ packages=(
     blueman
     bluez
     cloudflare-warp-bin
+    tailscale
     docker
     docker-buildx
     fwupd
@@ -70,6 +71,14 @@ if ! systemctl is-enabled --quiet docker.service; then
     if ! groups "$USER" | grep -q "\bdocker\b"; then
         sudo usermod -aG docker "$USER"
     fi
+fi
+
+# Tailscale
+if ! systemctl is-enabled --quiet tailscaled; then
+    sudo systemctl enable --now tailscaled
+fi
+if ! tailscale status &>/dev/null; then
+    tailscale up
 fi
 
 # Enable WARP
