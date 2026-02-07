@@ -1,0 +1,8 @@
+Host zen
+  HostName 100.119.11.39
+  User david
+  IdentityFile ~/.ssh/id_ed25519
+  Compression yes
+  IPQoS lowdelay throughput
+  ServerAliveInterval 30
+  ServerAliveCountMax 3
