@@ -23,6 +23,7 @@ setup_pi() {
   ln -sf "${AGENTS_DIR}/AGENTS.md" "${HOME}/.pi/agent/AGENTS.md"
   ln -sf "${AGENTS_DIR}/pi/settings.json" "${HOME}/.pi/agent/settings.json"
   ln -sfT "${AGENTS_DIR}/pi/extensions" "${HOME}/.pi/agent/extensions"
+  ln -sfT "${AGENTS_DIR}/skills" "${HOME}/.pi/agent/skills"
 }
 
 setup_amp() {
