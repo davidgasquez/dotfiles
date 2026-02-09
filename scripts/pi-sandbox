@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+session_dir="$(mktemp -d -t pi-session.XXXXXX)"
+
+exec uwsm app -- alacritty --working-directory "${session_dir}" --command zsh -ic "pi --session-dir \"${session_dir}\""
