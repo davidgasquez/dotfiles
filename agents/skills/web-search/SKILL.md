@@ -12,6 +12,7 @@ Use Jina AI’s public endpoints to (1) search the web and (2) fetch readable pa
 - You need quick web search results without an API key or browser
 - You need readable page content from a URL for summarization or analysis
 - You’re in a headless environment and only have HTTP tools (curl/wget)
+- You need to access X/Twitter content
 
 When NOT to use:
 - You need advanced ranking, filters, or custom search parameters (use a full search API)
