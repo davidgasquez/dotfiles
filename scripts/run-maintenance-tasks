@@ -149,10 +149,9 @@ main() {
 while [[ $# -gt 0 ]]; do
     case $1 in
         --help|-h)
-            echo "Usage: $0 [--with-update] [--help]"
+            echo "Usage: $0 [--help]"
             echo ""
             echo "Options:"
-            echo "  --with-update    Also run system update (paru/pacman)"
             echo "  --help, -h       Show this help message"
             exit 0
             ;;
