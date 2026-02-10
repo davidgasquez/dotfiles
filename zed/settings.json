@@ -1,58 +1,13 @@
 {
-  "buffer_font_family": "JetBrainsMono Nerd Font",
-  "buffer_font_size": 14.0,
-  "terminal": {
-    "copy_on_select": true,
-    "font_family": "JetBrainsMono Nerd Font",
-    "font_size": 14.0
-  },
-  "inline_code_actions": true,
-  "tabs": {
-    "git_status": true,
-    "file_icons": true,
-    "show_diagnostics": "errors"
-  },
   "collaboration_panel": {
     "button": false
   },
-  "always_treat_brackets_as_autoclosed": true,
-  "lsp": {
-    "basedpyright": {
-      "settings": {
-        "python": {
-          "pythonPath": ".venv/bin/python"
-        },
-        "basedpyright.analysis": {
-          "typeCheckingMode": "standard",
-          "diagnosticMode": "workspace",
-          "inlayHints": {
-            "callArgumentNames": true,
-            "functionReturnTypes": true,
-            "genericTypes": true,
-            "variableTypes": true
-          }
-        }
-      }
-    }
-  },
-  "soft_wrap": "editor_width",
-  "scrollbar": {
-    "axes": {
-      "horizontal": false
-    }
-  },
-  "diagnostics": {
-    "include_warnings": true,
-    "inline": {
-      "enabled": true,
-      "padding": 10,
-      "min_column": 60
-    }
-  },
   "autosave": "on_focus_change",
-  "ensure_final_newline_on_save": true,
-  "format_on_save": "on",
-  "auto_update": false,
+  "session": {
+    "trust_all_worktrees": true
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
   "theme": "Catppuccin Frappé",
   "icon_theme": "Catppuccin Frappé"
 }
