@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+error() {
+    printf "✗ %s\n" "$*" >&2
+    exit 1
+}
+
+usage() {
+    cat <<'EOF'
+Usage:
+  record-audio [options] [output-file]
+
+Records system audio (default sink monitor) and microphone (default source) using ffmpeg (MP3).
+Stops on Ctrl+C.
+
+Options:
+  --system-only        Record only system audio (what you hear)
+  --mic-only           Record only microphone
+  -o, --out FILE       Output file
+  -h, --help           Show help
+
+Default output:
+  recording-YYYYmmdd-HHMMSS.mp3
+EOF
+}
+
+require_cmd() {
+    command -v "$1" >/dev/null 2>&1 || error "Missing dependency: $1"
+}
+
+timestamp() {
+    date +%Y%m%d-%H%M%S
+}
+
+main() {
+    local mode="mix"
+    local out=""
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --system-only)
+                mode="system"
+                shift
+                ;;
+            --mic-only)
+                mode="mic"
+                shift
+                ;;
+            -o|--out)
+                out="${2:-}"
+                [[ -n $out ]] || error "--out requires a file path"
+                shift 2
+                ;;
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            *)
+                if [[ -z $out ]]; then
+                    out="$1"
+                    shift
+                else
+                    error "Unknown argument: $1"
+                fi
+                ;;
+        esac
+    done
+
+    require_cmd pactl
+    require_cmd ffmpeg
+
+    if [[ -z $out ]]; then
+        out="recording-$(timestamp).mp3"
+    fi
+
+    if [[ -e $out ]]; then
+        error "Refusing to overwrite existing file: $out"
+    fi
+
+    local sink
+    local source
+    sink="$(pactl get-default-sink)"
+    source="$(pactl get-default-source)"
+
+    [[ -n $sink ]] || error "No default sink found"
+    [[ -n $source ]] || error "No default source found"
+
+    local monitor="${sink}.monitor"
+
+    printf "Recording mode: %s\n" "$mode"
+    printf "Default sink: %s\n" "$sink"
+    printf "Default source: %s\n" "$source"
+    printf "Output: %s\n" "$out"
+    printf "Stop: Ctrl+C\n"
+
+    case $mode in
+        system)
+            exec ffmpeg -f pulse -i "$monitor" -c:a libmp3lame -q:a 4 "$out"
+            ;;
+        mic)
+            exec ffmpeg -f pulse -i "$source" -c:a libmp3lame -q:a 4 "$out"
+            ;;
+        mix)
+            exec ffmpeg \
+                -f pulse -i "$monitor" \
+                -f pulse -i "$source" \
+                -filter_complex '[0:a]aformat=sample_rates=48000:channel_layouts=stereo[a0];[1:a]aformat=sample_rates=48000:channel_layouts=stereo[a1];[a0][a1]amix=inputs=2:duration=longest:dropout_transition=0' \
+                -c:a libmp3lame -q:a 4 \
+                "$out"
+            ;;
+        *)
+            error "Unknown mode: $mode"
+            ;;
+    esac
+}
+
+main "$@"
