@@ -1,6 +1,6 @@
 ---
 name: modern-python
-description: Work with Python (`uv` instead of `python`, modern type syntax, linting, formatting, etc.) properly!
+description: Use when writing, reviewing, or refactoring Python to ensure adherence to modern best practices (type syntax, `uv` instead of `python`, linting, formatting, etc.)
 ---
 
 - Never use `python`. Use `uv` instead of `python`
@@ -11,3 +11,5 @@ description: Work with Python (`uv` instead of `python`, modern type syntax, lin
 - Format with `uvx ruff format .`
 - Lint with `uvx ruff check .` and `uvx ty check`
 - Look before you leap (check conditions before acting)
+- Default to no backwards compatibility preservation
+- Declare variables close to use
