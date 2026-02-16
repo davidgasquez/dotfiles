@@ -1,13 +1,13 @@
 {
   "collaboration_panel": {
-    "button": false
+    "button": false,
   },
   "autosave": "on_focus_change",
   "session": {
-    "trust_all_worktrees": true
+    "trust_all_worktrees": true,
   },
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "theme": "Catppuccin Frappé",
-  "icon_theme": "Catppuccin Frappé"
+  "icon_theme": "Catppuccin Frappé",
 }

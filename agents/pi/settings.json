@@ -6,11 +6,11 @@
   "hideThinkingBlock": true,
   "enabledModels": [
     "openai-codex/gpt-5.2",
-    "openai-codex/gpt-5.2-codex",
     "github-copilot/claude-opus-4.5",
     "github-copilot/gemini-3-pro-preview",
-    "openai-codex/gpt-5.3-codex"
+    "openai-codex/gpt-5.3-codex",
+    "openai-codex/gpt-5.3-codex-spark"
   ],
   "quietStartup": true,
-  "lastChangelogVersion": "0.52.9"
+  "lastChangelogVersion": "0.52.12"
 }
