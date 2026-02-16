@@ -17,6 +17,7 @@
     "context": "Workspace",
     "bindings": {
       "ctrl-_": "workspace::NewTerminal",
+      "ctrl-shift-a": ["task::Spawn", { "task_name": "pi" }],
     },
   },
 ]

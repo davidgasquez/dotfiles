@@ -12,5 +12,6 @@
     "openai-codex/gpt-5.3-codex-spark"
   ],
   "quietStartup": true,
+  "transport": "auto",
   "lastChangelogVersion": "0.52.12"
 }
