@@ -7,13 +7,17 @@ CODEX_DIR="${HOME}/.codex"
 
 setup_codex() {
   if ! pacman -Q openai-codex-bin >/dev/null 2>&1; then
-    paru -S --needed --noconfirm openai-codex-bin
+    paru -S --noconfirm openai-codex-bin
   fi
 
   mkdir -p "${CODEX_DIR}"
   ln -sf "${AGENTS_DIR}/codex/config.toml" "${CODEX_DIR}/config.toml"
   ln -sf "${AGENTS_DIR}/AGENTS.md" "${CODEX_DIR}/AGENTS.md"
   ln -sfT "${AGENTS_DIR}/skills" "${CODEX_DIR}/skills"
+}
+
+setup_agent_browser() {
+  npm install -g agent-browser
 }
 
 setup_pi() {
@@ -34,5 +38,6 @@ setup_amp() {
 }
 
 setup_codex
+setup_agent_browser
 setup_pi
 setup_amp
