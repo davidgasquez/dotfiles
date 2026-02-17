@@ -134,6 +134,9 @@ on_recording_stop = false
 # Show notification with transcribed text after transcription completes
 on_transcription = true
 
+[meeting]
+enabled = true
+
 # [text]
 # Text processing options (word replacements, spoken punctuation)
 #
