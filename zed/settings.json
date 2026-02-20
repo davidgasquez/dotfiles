@@ -1,4 +1,11 @@
 {
+  "show_edit_predictions": false,
+  "gutter": {
+    "min_line_number_digits": 2,
+    "folds": false,
+    "breakpoints": false,
+    "runnables": false,
+  },
   "collaboration_panel": {
     "button": false,
   },
