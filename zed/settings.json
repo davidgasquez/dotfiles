@@ -26,4 +26,18 @@
     },
   },
   "icon_theme": "Catppuccin Frappé",
+  "auto_install_extensions": {
+    "astro": true,
+    "basher": true,
+    "catppuccin-icons": true,
+    "csv": true,
+    "dockerfile": true,
+    "git-firefly": true,
+    "html": true,
+    "ini": true,
+    "make": true,
+    "markdown-oxide": true,
+    "sql": true,
+    "toml": true,
+  },
 }
