@@ -15,6 +15,15 @@
   },
   "ui_font_size": 16,
   "buffer_font_size": 15,
-  "theme": "Catppuccin Frappé",
+  "theme": "Catppuccin Frappé (blue)",
+  "theme_overrides": {
+    "Catppuccin Frappé (blue)": {
+      "syntax": {
+        "title": {
+          "color": "#d2b67c",
+        },
+      },
+    },
+  },
   "icon_theme": "Catppuccin Frappé",
 }
