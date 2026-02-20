@@ -26,7 +26,7 @@ Use this skill when the user wants to interact with their Todoist tasks.
 - `td stats` - Productivity stats
 - `td settings view` - User settings
 - `td completion install` - Install shell completions
-- `td view <url>` - View any Todoist entity by URL
+- `td view <url>` - View supported Todoist entities/pages by URL
 
 ## Output Formats
 
@@ -158,6 +158,11 @@ td project archive "Project Name"
 td project unarchive "Project Name"
 td project delete "Project Name" --yes
 td project browse "Project Name"              # Open in browser
+td project move "Project Name" --to-workspace "Acme"
+td project move "Project Name" --to-workspace "Acme" --folder "Engineering"
+td project move "Project Name" --to-workspace "Acme" --visibility team
+td project move "Project Name" --to-personal
+# move requires --yes to confirm (without it, shows a dry-run preview)
 ```
 
 ### Labels
@@ -279,6 +284,7 @@ td view https://app.todoist.com/app/filter/work-tasks-jkl012
 td view https://app.todoist.com/app/today
 td view https://app.todoist.com/app/upcoming
 td view <url> --json                           # JSON output for entity views
+td view <url> --limit 25 --ndjson              # Passthrough list options where supported
 ```
 
 ## Examples
