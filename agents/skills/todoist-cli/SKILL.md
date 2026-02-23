@@ -27,6 +27,7 @@ Use this skill when the user wants to interact with their Todoist tasks.
 - `td settings view` - User settings
 - `td completion install` - Install shell completions
 - `td view <url>` - View supported Todoist entities/pages by URL
+- `td update` - Self-update the CLI to the latest version
 
 ## Output Formats
 
@@ -49,6 +50,7 @@ Most list commands also support:
 - `--no-spinner` - Disable loading animations
 - `--progress-jsonl` - Machine-readable progress events (JSONL to stderr)
 - `-v, --verbose` - Verbose output to stderr (repeat: -v info, -vv detail, -vvv debug, -vvvv trace)
+- `--accessible` - Add text labels to color-coded output (due:/deadline:/~ prefixes, ★ for favorites). Also: `TD_ACCESSIBLE=1`
 
 ## References
 
@@ -285,6 +287,12 @@ td view https://app.todoist.com/app/today
 td view https://app.todoist.com/app/upcoming
 td view <url> --json                           # JSON output for entity views
 td view <url> --limit 25 --ndjson              # Passthrough list options where supported
+```
+
+### Update
+```bash
+td update                                    # Update CLI to latest version
+td update --check                            # Check for updates without installing
 ```
 
 ## Examples
