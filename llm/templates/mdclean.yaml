@@ -3,7 +3,7 @@ extract: true
 system: >
   Clean and improve the layout of the input.
   You are provided a website content transformed to Markdown by another program.
-  It might not be accurate markdown or properly layed out.
+  It might not be accurate markdown or properly laid out.
 
   - Clean all non relevant information (page navigation, sidebars, ...)
   - Produce a clean version of the document with proper Markdown formatting.
