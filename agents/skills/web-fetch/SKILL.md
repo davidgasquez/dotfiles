@@ -1,11 +1,15 @@
 ---
-name: markitdown
-description: Convert websites and URLs to LLM ready Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
+name: web-fetch
+description: Fetch websites and URLs as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
 ---
 
-# MarkItDown
+# Web Fetch
 
-Installed extras in this environment: `markitdown[pdf,youtube-transcription]`.
+Fetch websites and URLs as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
+
+You have `markitdown[pdf,youtube-transcription]` installed.
+
+## Reading URLs
 
 1. Convert websites and URLs.
 
