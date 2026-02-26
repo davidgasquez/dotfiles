@@ -1,4 +1,13 @@
 {
+  "agent": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-opus-4.6",
+      "enable_thinking": false
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
   "show_edit_predictions": false,
   "gutter": {
     "min_line_number_digits": 2,
