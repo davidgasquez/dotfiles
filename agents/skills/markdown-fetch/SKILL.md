@@ -1,9 +1,9 @@
 ---
-name: web-fetch
-description: Fetch websites and URLs as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
+name: markdown-fetch
+description: Get URLs, PDFs and YouTube Videos as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
 ---
 
-# Web Fetch
+# Markdown Fetch
 
 Fetch websites and URLs as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
 
