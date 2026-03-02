@@ -7,6 +7,9 @@
 # Required for `voxtype record toggle` and `voxtype status` commands.
 state_file = "auto"
 
+# Transcription engine: whisper, parakeet, moonshine, sensevoice, paraformer, dolphin, omnilingual
+engine = "whisper"
+
 [hotkey]
 # Key to hold for push-to-talk
 # Common choices: SCROLLLOCK, PAUSE, RIGHTALT, F13-F24
@@ -25,7 +28,7 @@ modifiers = []
 # Enable built-in hotkey detection (default: true)
 # Set to false when using compositor keybindings (Hyprland, Sway) instead
 # When disabled, use `voxtype record start/stop/toggle` to control recording
-# enabled = true
+enabled = false
 
 [audio]
 # Audio input device ("default" uses system default)
