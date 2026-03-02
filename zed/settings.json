@@ -3,24 +3,29 @@
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-opus-4.6",
-      "enable_thinking": false
+      "enable_thinking": true
     },
     "favorite_models": [],
     "model_parameters": []
+  },
+  "languages": {
+    "Python": {
+      "language_servers": ["ty", "!basedpyright", "..."]
+    }
   },
   "show_edit_predictions": false,
   "gutter": {
     "min_line_number_digits": 2,
     "folds": false,
     "breakpoints": false,
-    "runnables": false,
+    "runnables": false
   },
   "collaboration_panel": {
-    "button": false,
+    "button": false
   },
   "autosave": "on_focus_change",
   "session": {
-    "trust_all_worktrees": true,
+    "trust_all_worktrees": true
   },
   "ui_font_size": 16,
   "buffer_font_size": 15,
@@ -29,10 +34,10 @@
     "Catppuccin Frappé (blue)": {
       "syntax": {
         "title": {
-          "color": "#d2b67c",
-        },
-      },
-    },
+          "color": "#d2b67c"
+        }
+      }
+    }
   },
   "icon_theme": "Catppuccin Frappé",
   "auto_install_extensions": {
@@ -47,6 +52,6 @@
     "make": true,
     "markdown-oxide": true,
     "sql": true,
-    "toml": true,
-  },
+    "toml": true
+  }
 }
