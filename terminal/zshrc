@@ -59,8 +59,6 @@ alias up='paru -Syu --devel --skipreview && (uv tool upgrade --all & npm update 
 alias tn='td task add --project "Personal" --due "today" --priority p1'
 alias tnw='td task add --project "Work" --due "today" --priority p1'
 alias tls='td today'
-alias chat='llm chat'
-alias cmd='llm -t cmd'
 alias copy='wl-copy'
 alias pasta='wl-paste'
 
@@ -73,20 +71,6 @@ qgs() {
   git add -A . &&
   git cm "⚡" &&
   git push
-}
-
-# Quick Query YouTube
-qq-yt() {
-  if [[ $# -lt 2 ]]; then
-    echo "Usage: qq-yt <youtube-url> <prompt>" >&2
-    return 1
-  fi
-
-  local url="$1"
-  shift
-  local prompt="$*"
-
-  llm -m gemini-3-pro-preview -a "$url" "$prompt"
 }
 
 subdl() {

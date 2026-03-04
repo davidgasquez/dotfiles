@@ -44,7 +44,6 @@ alias la='eza -la --icons'
 alias tree='eza --tree --icons'
 alias cat='bat -pp'
 alias up='paru -Syu --devel --skipreview && (uv tool upgrade --all & npm update -g & pull-all-dirs ~/projects & wait)'
-alias cmd='llm cmd'
 alias pull='pull-all-dirs'
 
 # Open

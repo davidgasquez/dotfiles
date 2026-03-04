@@ -38,10 +38,6 @@ zed:
 terminal:
 	@ $(DOTFILES)/terminal/setup.sh
 
-.PHONY: llm
-llm:
-	@ $(DOTFILES)/llm/setup.sh
-
 .PHONY: hypr
 hypr:
 	@ ${DOTFILES}/hypr/setup.sh
@@ -49,11 +45,6 @@ hypr:
 .PHONY: desktop
 desktop:
 	@ ${DOTFILES}/desktop/setup.sh
-
-.PHONY: ssh
-ssh:
-	@ mkdir -p "$(HOME)/.ssh"
-	@ ln -sf $(DOTFILES)/ssh/config "$(HOME)/.ssh/config"
 
 .PHONY: system
 system:
