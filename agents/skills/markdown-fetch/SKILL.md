@@ -1,11 +1,11 @@
 ---
 name: markdown-fetch
-description: Get URLs, PDFs and YouTube Videos as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
+description: Get URLs, PDFs and YouTube Videos as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL` or `defuddle.md/URL`.
 ---
 
 # Markdown Fetch
 
-Fetch websites and URLs as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL`.
+Fetch websites and URLs as Markdown. Use to save tokens when reading websites (headings, lists, tables, links), YouTube URLs (transcripts) and PDFs (including stdin with -x or -m hints). If `markitdown` fails, fall back to `curl r.jina.ai/URL` or `defuddle.md/URL`.
 
 You have `markitdown[pdf,youtube-transcription]` installed.
 
@@ -19,10 +19,14 @@ Web page to Markdown:
 markitdown 'https://example.com' -o page.md
 ```
 
-If MarkItDown fails on a URL, fall back to r.jina.ai:
+If MarkItDown fails on a URL, fall back to r.jina.ai or defuddle.md:
 
 ```bash
 curl -fsSL 'https://r.jina.ai/https://example.com' > page.md
+```
+
+```bash
+curl -fsSL 'https://defuddle.md/example.com' > page.md
 ```
 
 YouTube URL to transcript Markdown:
