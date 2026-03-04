@@ -96,6 +96,23 @@ agent-browser state load auth.json
 agent-browser open https://app.example.com/dashboard
 ```
 
+### Reusing existing Brave auth/session
+
+If the user asks to reuse existing browser auth (for example their current Brave session), first restart Brave with CDP enabled.
+
+1. Kill Brave completely.
+2. Start Brave with remote debugging:
+
+```bash
+/opt/brave-bin/brave --remote-debugging-port=9222 --remote-debugging-address=127.0.0.1
+```
+
+Then connect agent-browser to that session:
+
+```bash
+agent-browser connect 9222
+```
+
 ### Data Extraction
 
 ```bash
