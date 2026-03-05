@@ -24,6 +24,8 @@ packages=(
     ufw
     util-linux
     xdg-user-dirs
+    google-cloud-cli
+    google-cloud-cli-bq
 )
 
 # Install system packages
