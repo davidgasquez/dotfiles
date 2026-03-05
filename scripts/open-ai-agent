@@ -30,7 +30,7 @@ fi
 
 options=(
     "codex --dangerously-bypass-approvals-and-sandbox"
-    "pi --no-skills"
+    "pi"
     "amp --dangerously-allow-all"
 )
 
