@@ -40,6 +40,9 @@
     }
   },
   "icon_theme": "Catppuccin Frappé",
+  "terminal": {
+    "copy_on_select": true
+  },
   "auto_install_extensions": {
     "astro": true,
     "basher": true,
