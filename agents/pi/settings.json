@@ -1,17 +1,11 @@
 {
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
+  "defaultModel": "gpt-5.4",
   "defaultThinkingLevel": "high",
   "collapseChangelog": true,
   "hideThinkingBlock": true,
-  "enabledModels": [
-    "openai-codex/gpt-5.2",
-    "openai-codex/gpt-5.3-codex",
-    "openai-codex/gpt-5.3-codex-spark",
-    "github-copilot/claude-opus-4.6",
-    "github-copilot/gemini-3.1-pro-preview"
-  ],
+  "enabledModels": ["openai-codex/gpt-5.4", "github-copilot/claude-opus-4.6"],
   "quietStartup": true,
   "transport": "auto",
-  "lastChangelogVersion": "0.56.1"
+  "lastChangelogVersion": "0.56.2"
 }
