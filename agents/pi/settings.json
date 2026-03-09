@@ -7,5 +7,5 @@
   "enabledModels": ["openai-codex/gpt-5.4", "github-copilot/claude-opus-4.6"],
   "quietStartup": true,
   "transport": "auto",
-  "lastChangelogVersion": "0.56.2"
+  "lastChangelogVersion": "0.57.1"
 }

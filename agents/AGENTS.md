@@ -10,8 +10,7 @@
 - Do the simplest thing that could work (KISS, don't over-engineer)
 - Write functional code with small, composable and modular functions/modules/components with explicit interfaces
 - Functions over clever abstractions, clarity over magic
-- When unsure, read more code and gather more context (search, ask, list explicit trade-offs, ...)
-- In the face of ambiguity, refuse the temptation to guess
+- When unsure, don't guess, read more code and gather more context (search, ask, list explicit trade-offs, ...)
 - Call out bad ideas, unreasonable expectations, mistakes, ...
 - After applying changes, verify they work (run code, lint, tests, ...)
 - Make debugging easy yourself with concise/clear logs and assertions that help debugging without noise

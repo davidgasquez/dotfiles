@@ -12,3 +12,6 @@ service_tier = "fast"
 
 [sandbox_workspace_write]
 network_access = true
+
+[features]
+multi_agent = true
