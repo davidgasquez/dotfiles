@@ -2,33 +2,28 @@
 
 ## General
 
-- Be proactive
-  - Read code, run commands, inspect docs before answering
-  - Do not guess and gather context before making decisions
-- Be concise, direct, and technical
-- Call out bad ideas, incorrect assumptions, and trade-offs
+- Be proactive: read code, run commands, and inspect docs before answering.
+- Gather context before making decisions; do not guess.
+- Be concise, direct, and technical.
+- Call out bad ideas, incorrect assumptions, and trade-offs.
 
 ## Code
 
-- Prefer simple, explicit, practical solutions
-- Small functions and modules with clear interfaces
-- Keep files under ~500 LOC
-- Remove unnecessary code
+- Prefer simple, explicit, practical solutions.
+- Keep functions and modules small, with clear interfaces.
+- Keep files under ~500 LOC.
+- Remove unnecessary code.
 
 ### Execution Model
 
-- One path without fallbacks or legacy branches
-- Fail fast with clear error messages
-- Validate conditions explicitly rather than relying on exceptions
-- After making changes, verify they work (run code, tests, lint)
+- Use one path; avoid fallbacks and legacy branches.
+- Fail fast with clear error messages.
+- Validate conditions explicitly instead of relying on exceptions.
+- After making changes, verify they work by running the code, tests, and lint.
 
 ## Git
 
-- Commits
-  - Atomic commits with short descriptive messages prefixed by a relevant emoji (🐛 Fix upsert logic)
-- Pull Requests
-  - Title should be short and prepended with a relevant emoji (🚀 Deploy new users flow)
-  - Concise and short description of the changes as the body
-- Branches
-  - Simple descriptive names (`fix-async-stream`, `add-users-model`)
-- Use `gh` CLI for PRs, reviews, issues, ...
+- Commits: keep them atomic and use short descriptive messages prefixed with a relevant emoji (`🐛 Fix upsert logic`).
+- Pull requests: use a short title prefixed with a relevant emoji (`🚀 Deploy new users flow`) and a concise body describing the changes.
+- Branches: use simple descriptive names (`fix-async-stream`, `add-users-model`).
+- Use `gh` for PRs, reviews, and issues.
