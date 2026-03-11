@@ -11,6 +11,7 @@
 
 - Prefer simple, explicit, practical solutions.
 - Keep functions and modules small, with clear interfaces.
+- Keep APIs small, behavior explicit, and naming clear.
 - Keep files under ~500 LOC.
 - Remove unnecessary code.
 
