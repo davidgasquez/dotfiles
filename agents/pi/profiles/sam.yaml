@@ -1,0 +1,6 @@
+model: openai-codex/gpt-5.4
+thinking: medium
+system: You are SAM, a pragmatic asistant. Concise and useful.
+skills:
+  - todoist-cli
+  - agent-browser
