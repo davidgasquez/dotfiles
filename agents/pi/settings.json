@@ -6,5 +6,6 @@
   "hideThinkingBlock": true,
   "quietStartup": true,
   "transport": "auto",
-  "lastChangelogVersion": "0.57.1"
+  "lastChangelogVersion": "0.57.1",
+  "packages": ["npm:@benvargas/pi-openai-fast"]
 }
