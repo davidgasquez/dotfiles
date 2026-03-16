@@ -1,5 +1,5 @@
 ---
-name: todoist
+name: todoist-cli
 description: Manage Todoist tasks, projects, labels, comments, and more via the td CLI
 ---
 
