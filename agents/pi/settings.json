@@ -6,6 +6,9 @@
   "hideThinkingBlock": true,
   "quietStartup": true,
   "transport": "auto",
+  "theme": "frappe",
   "lastChangelogVersion": "0.58.1",
-  "packages": ["npm:@benvargas/pi-openai-fast"]
+  "pi-codex-fast": {
+    "enabled": true
+  }
 }
