@@ -1,13 +1,15 @@
 ---
 name: self-contained-python-script
-description: Write self-installing autocontained Python scripts using uv and PEP 723
+description: Write self-installing self-contained Python scripts using uv and PEP 723
 ---
 
-Use this to write Python tools / scripts / clis as single files.
+Use this to write Python tools / scripts / CLIs as single files.
 
-Using PEP 723 inline metadata, you can create self-contained Python scripts that declare their own dependencies. This allows you to run your scripts in isolated environments without needing to manually set up virtual environments or install dependencies.
+- Add dependencies with `uv add --script foo.py httpx`.
+- Run with `uv run foo.py`.
+- If inline metadata is present, `uv run` ignores project dependencies automatically.
 
-To do that, embed the invocation of the uv command right in the shebang line.
+Use PEP 723 inline metadata and an executable shebang:
 
 ```python
 #!/usr/bin/env -S uv run --script
@@ -18,7 +20,6 @@ To do that, embed the invocation of the uv command right in the shebang line.
 # ]
 # ///
 import httpx
-.
-.
-.
 ```
+
+- `dependencies` must be present, even if empty: `dependencies = []`.
