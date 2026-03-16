@@ -13,6 +13,7 @@ packages=(
     docker-buildx
     fwupd
     gnome-keyring
+    inetutils
     less
     mkinitcpio-firmware
     network-manager-applet
