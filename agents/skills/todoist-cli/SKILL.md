@@ -48,11 +48,16 @@ The following mutating commands also support `--json` to return the created or u
 - `filter create`
 - `reminder add`
 
+All mutating commands support `--dry-run` to preview what would happen without executing:
+- Shows a preview of the action and parameters
+- The mutating action is skipped; read-only API calls may still be made to resolve references
+- On destructive commands (delete, project move) that use `--yes`, `--dry-run` takes precedence: even with `--yes`, the action will not execute
+
 ## Shared List Options
 
 Most list commands also support:
 - `--limit <n>` - Limit number of results
-- `--all` - Fetch all results (no limit)
+- `--all` - Fetch all results (no limit, not available on `activity`)
 - `--cursor <cursor>` - Continue from pagination cursor
 - `--show-urls` - Show web app URLs for each item
 
@@ -181,6 +186,10 @@ td task move "task name" --parent "Parent task"
 td task move "task name" --no-parent          # Move to project root
 td task move "task name" --no-section         # Remove from section
 
+# Dry run (preview any mutating command without executing)
+td task add "New task" --due "tomorrow" --dry-run  # Preview task creation
+td task delete "task name" --dry-run               # Preview deletion
+
 # Delete and browse
 td task delete "task name" --yes
 td task browse "task name"                    # Open in browser
@@ -205,6 +214,8 @@ td project move "Project Name" --to-workspace "Acme" --folder "Engineering"
 td project move "Project Name" --to-workspace "Acme" --visibility team
 td project move "Project Name" --to-personal
 # move requires --yes to confirm (without it, shows a dry-run preview)
+td project create --name "New Project" --dry-run  # Preview project creation
+td project delete "Project Name" --dry-run        # Preview deletion
 ```
 
 ### Labels
@@ -217,6 +228,7 @@ td label create --name "urgent" --json          # Return created label as JSON
 td label update "urgent" --color "orange"
 td label update "urgent" --color "orange" --json  # Return updated label as JSON
 td label delete "urgent" --yes
+td label create --name "urgent" --dry-run        # Preview label creation
 td label browse "urgent"                      # Open in browser
 ```
 
@@ -235,6 +247,7 @@ td comment view id:123                        # View full comment
 td comment update id:123 --content "Updated text"
 td comment update id:123 --content "Updated text" --json  # Return updated comment as JSON
 td comment delete id:123 --yes
+td comment add "task name" --content "Note" --dry-run  # Preview comment creation
 td comment browse id:123                      # Open in browser
 ```
 
@@ -247,6 +260,7 @@ td section create --project "Work" --name "In Progress" --json  # Return created
 td section update id:123 --name "Done"
 td section update id:123 --name "Done" --json  # Return updated section as JSON
 td section delete id:123 --yes
+td section create --project "Work" --name "In Progress" --dry-run  # Preview section creation
 td section browse id:123                      # Open in browser
 ```
 
@@ -258,6 +272,7 @@ td filter create --name "Urgent work" --query "p1 & #Work" --json  # Return crea
 td filter view "Urgent work"                  # Show tasks matching filter (alias: show)
 td filter update "Urgent work" --query "p1 & #Work & today"
 td filter delete "Urgent work" --yes
+td filter create --name "Urgent work" --query "p1 & #Work" --dry-run  # Preview filter creation
 td filter browse "Urgent work"                # Open in browser
 ```
 
@@ -297,6 +312,7 @@ td reminder add "task name" --before 30m      # or --task "task name" --before 3
 td reminder add "task name" --before 30m --json  # Return created reminder as JSON
 td reminder add "task name" --at "2024-01-15 10:00"
 td reminder update id:123 --before 1h
+td reminder add "task name" --before 30m --dry-run  # Preview reminder creation
 td reminder delete id:123 --yes
 ```
 
