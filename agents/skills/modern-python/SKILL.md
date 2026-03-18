@@ -11,5 +11,5 @@ description: Use when writing, reviewing, or refactoring Python to ensure adhere
 - Format with `uvx ruff format .`
 - Lint with `uvx ruff check .` and `uvx ty check`
 - Look before you leap (check conditions before acting)
-- Default to no backwards compatibility preservation
+- Don't keep backwards compatibility
 - Declare variables close to use
