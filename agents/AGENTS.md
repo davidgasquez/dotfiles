@@ -2,9 +2,10 @@
 
 ## General
 
+- Be concise, direct, and technical.
+- Do not reply with many sections; concise takeaways and conclusion.
 - Be proactive: read code, run commands, and inspect docs before answering.
 - Gather context before making decisions; do not guess.
-- Be concise, direct, and technical.
 - Call out bad ideas, incorrect assumptions, and trade-offs.
 
 ## Code
