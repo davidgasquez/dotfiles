@@ -16,7 +16,7 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-_": "terminal_panel::Toggle",
+      "ctrl-_": ["task::Spawn", { "task_name": "Open External Terminal" }],
       "ctrl-shift-a": ["task::Spawn", { "task_name": "pi" }],
       "ctrl-shift-g": ["task::Spawn", { "task_name": "Generate Commit and Push" }]
     }

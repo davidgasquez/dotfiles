@@ -1,5 +1,12 @@
 [
   {
+    "label": "Open External Terminal",
+    "command": "setsid -f alacritty --working-directory \"$ZED_WORKTREE_ROOT\" >/dev/null 2>&1",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "never",
+    "hide": "always"
+  },
+  {
     "label": "pi",
     "command": "setsid -f alacritty -e pi >/dev/null 2>&1",
     "cwd": "$ZED_WORKTREE_ROOT",
