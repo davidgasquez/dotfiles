@@ -1,5 +1,4 @@
 {
-  "amp.notifications.enabled": true,
   "amp.notifications.system.enabled": true,
   "amp.dangerouslyAllowAll": true,
   "amp.updates.mode": "auto",

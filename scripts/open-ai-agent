@@ -31,7 +31,7 @@ fi
 options=(
     "codex --dangerously-bypass-approvals-and-sandbox"
     "pi"
-    "amp --dangerously-allow-all"
+    "amp --no-ide --dangerously-allow-all"
 )
 
 tool_selection=$(printf '%s\n' "${options[@]}" | fuzzel -x 20 -d -I --prompt="🤖 > " || true)
