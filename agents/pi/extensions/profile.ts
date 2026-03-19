@@ -403,32 +403,34 @@ function buildFooterLeft(ctx: ExtensionContext): string {
 	return `$${cost.toFixed(3)} (sub) ${usageText} (auto)`
 }
 
-function buildFooterRight(ctx: ExtensionContext, theme: ExtensionContext["ui"]["theme"], profileName: string, thinking: ThinkingLevel): string {
+function buildFooterRight(
+	ctx: ExtensionContext,
+	theme: ExtensionContext["ui"]["theme"],
+	thinking: string,
+	statuses: readonly string[],
+): string {
 	const provider = ctx.model?.provider ?? "no-provider"
 	const modelId = ctx.model?.id ?? "no-model"
-	const base = theme.fg("dim", `(${provider}) ${modelId} • ${thinking}  •  `)
-	const profile = theme.fg("warning", theme.bold(profileName))
-	return base + profile
+	let text = theme.fg("dim", `(${provider}) ${modelId} • ${thinking}`)
+	if (statuses.length > 0) {
+		text += theme.fg("dim", " · ") + statuses.join(theme.fg("dim", " · "))
+	}
+	return text
 }
 
-function applyProfileFooter(ctx: ExtensionContext, profileName?: string, thinking: ThinkingLevel = "off"): void {
+function applyFooter(ctx: ExtensionContext, pi: ExtensionAPI): void {
 	if (!ctx.hasUI) return
-	if (!profileName) {
-		ctx.ui.setFooter(undefined)
-		ctx.ui.setStatus("profile", undefined)
-		return
-	}
-
-	ctx.ui.setStatus("profile", undefined)
 	ctx.ui.setFooter((tui, theme, footerData) => {
 		const unsubscribe = footerData.onBranchChange(() => tui.requestRender())
-
 		return {
 			dispose: unsubscribe,
 			invalidate() {},
 			render(width: number): string[] {
 				const left = theme.fg("dim", buildFooterLeft(ctx))
-				const right = buildFooterRight(ctx, theme, profileName, thinking)
+				const statuses = Array.from(footerData.getExtensionStatuses().entries())
+					.filter(([, value]) => value.length > 0)
+					.map(([, value]) => value)
+				const right = buildFooterRight(ctx, theme, pi.getThinkingLevel(), statuses)
 				const gap = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)))
 				return [truncateToWidth(left + gap + right, width)]
 			},
@@ -446,7 +448,7 @@ function setProfileStatus(ctx: ExtensionContext, text?: string, kind: "active" |
 	const themed =
 		kind === "error"
 			? ctx.ui.theme.fg("error", ctx.ui.theme.bold(text))
-			: ctx.ui.theme.fg("accent", ctx.ui.theme.bold(text))
+			: ctx.ui.theme.fg("warning", ctx.ui.theme.bold(text))
 	ctx.ui.setStatus("profile", themed)
 }
 
@@ -550,42 +552,37 @@ export default function profileExtension(pi: ExtensionAPI) {
 	pi.on("session_start", async (_event, ctx) => {
 		const profile = ensureProfileLoaded(ctx.cwd)
 		if (!profile) {
-			applyProfileFooter(ctx, undefined)
 			if (loadError) {
 				notifyOrLog(ctx, loadError, "error")
 				setProfileStatus(ctx, "profile:error", "error")
 			} else {
 				setProfileStatus(ctx, undefined)
 			}
+			applyFooter(ctx, pi)
 			return
 		}
 
 		const model = ctx.modelRegistry.find(profile.provider, profile.modelId)
 		if (!model) {
 			loadError = `Profile "${profile.name}": model not found: ${profile.provider}/${profile.modelId}`
-			applyProfileFooter(ctx, undefined)
 			notifyOrLog(ctx, loadError, "error")
 			setProfileStatus(ctx, "profile:error", "error")
+			applyFooter(ctx, pi)
 			return
 		}
 
 		const setModelOk = await pi.setModel(model)
 		if (!setModelOk) {
 			loadError = `Profile "${profile.name}": no API key for ${profile.provider}/${profile.modelId}`
-			applyProfileFooter(ctx, undefined)
 			notifyOrLog(ctx, loadError, "error")
 			setProfileStatus(ctx, "profile:error", "error")
+			applyFooter(ctx, pi)
 			return
 		}
 
 		pi.setThinkingLevel(profile.thinking)
-		applyProfileFooter(ctx, profile.name, pi.getThinkingLevel())
-	})
-
-	pi.on("model_select", async (_event, ctx) => {
-		const profile = ensureProfileLoaded(ctx.cwd)
-		if (!profile) return
-		applyProfileFooter(ctx, profile.name, pi.getThinkingLevel())
+		setProfileStatus(ctx, profile.name)
+		applyFooter(ctx, pi)
 	})
 
 	pi.on("input", async (event, ctx) => {

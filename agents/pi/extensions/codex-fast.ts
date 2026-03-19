@@ -7,9 +7,6 @@ import {
 import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
 
 const SETTINGS_KEY = "pi-codex-fast";
-const PROFILE_FLAG = "profile";
-
-type ThinkingLevel = "off" | "minimal" | "low" | "medium" | "high" | "xhigh";
 
 type InternalSettingsManager = SettingsManager & {
   globalSettings: Record<string, unknown>;
@@ -109,13 +106,6 @@ function reportSettingsErrors(
   }
 }
 
-function normalizeProfileName(value: unknown): string | undefined {
-  if (typeof value !== "string") return undefined;
-  const trimmed = value.trim().toLowerCase();
-  if (trimmed.length === 0) return undefined;
-  return trimmed.replace(/\.(yaml|yml)$/i, "");
-}
-
 function formatThousands(value: number): string {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}m`;
   if (value >= 1_000) return `${(value / 1_000).toFixed(0)}k`;
@@ -143,75 +133,49 @@ function buildFooterLeft(ctx: ExtensionContext): string {
 function buildFooterRight(
   ctx: ExtensionContext,
   theme: ExtensionContext["ui"]["theme"],
-  thinking: ThinkingLevel,
-  fastModeEnabled: boolean,
-  profileName?: string,
-  statuses: readonly string[] = [],
+  thinking: string,
+  statuses: readonly string[],
 ): string {
   const provider = ctx.model?.provider ?? "no-provider";
   const modelId = ctx.model?.id ?? "no-model";
-
   let text = theme.fg("dim", `(${provider}) ${modelId} • ${thinking}`);
-  if (fastModeEnabled) {
-    text += theme.fg("accent", " · ⚡");
-  }
   if (statuses.length > 0) {
     text += theme.fg("dim", " · ") + statuses.join(theme.fg("dim", " · "));
   }
-  if (profileName) {
-    text += theme.fg("dim", "  •  ") + theme.fg("warning", theme.bold(profileName));
-  }
-
   return text;
+}
+
+function applyFooter(ctx: ExtensionContext, pi: ExtensionAPI): void {
+  if (!ctx.hasUI) return;
+  ctx.ui.setFooter((tui, theme, footerData) => {
+    const unsubscribe = footerData.onBranchChange(() => tui.requestRender());
+    return {
+      dispose: unsubscribe,
+      invalidate() {},
+      render(width: number): string[] {
+        const left = theme.fg("dim", buildFooterLeft(ctx));
+        const statuses = Array.from(footerData.getExtensionStatuses().entries())
+          .filter(([, value]) => value.length > 0)
+          .map(([, value]) => value);
+        const right = buildFooterRight(ctx, theme, pi.getThinkingLevel(), statuses);
+        const gap = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)));
+        return [truncateToWidth(left + gap + right, width)];
+      },
+    };
+  });
 }
 
 export default function codexFastExtension(pi: ExtensionAPI): void {
   let fastModeEnabled = false;
   let settingsWriteQueue: Promise<void> = Promise.resolve();
-  let footerRefreshTimer: ReturnType<typeof setTimeout> | undefined;
 
-  function getSelectedProfileName(): string | undefined {
-    return normalizeProfileName(pi.getFlag(PROFILE_FLAG));
-  }
-
-  function applyFooter(ctx: ExtensionContext): void {
+  function updateStatus(ctx: ExtensionContext): void {
     if (!ctx.hasUI) return;
-
-    ctx.ui.setFooter((tui, theme, footerData) => {
-      const unsubscribe = footerData.onBranchChange(() => tui.requestRender());
-
-      return {
-        dispose: unsubscribe,
-        invalidate() {},
-        render(width: number): string[] {
-          const left = theme.fg("dim", buildFooterLeft(ctx));
-          const statuses = Array.from(footerData.getExtensionStatuses().entries())
-            .filter(([key, value]) => key !== "profile" && value.length > 0)
-            .map(([, value]) => value);
-          const right = buildFooterRight(
-            ctx,
-            theme,
-            pi.getThinkingLevel(),
-            fastModeEnabled,
-            getSelectedProfileName(),
-            statuses,
-          );
-          const gap = " ".repeat(
-            Math.max(1, width - visibleWidth(left) - visibleWidth(right)),
-          );
-          return [truncateToWidth(left + gap + right, width)];
-        },
-      };
-    });
-  }
-
-  function refreshFooter(ctx: ExtensionContext): void {
-    if (!ctx.hasUI) return;
-    if (footerRefreshTimer) clearTimeout(footerRefreshTimer);
-    footerRefreshTimer = setTimeout(() => {
-      footerRefreshTimer = undefined;
-      applyFooter(ctx);
-    }, 0);
+    ctx.ui.setStatus(
+      "codex-fast",
+      fastModeEnabled ? ctx.ui.theme.fg("accent", "⚡") : undefined,
+    );
+    applyFooter(ctx, pi);
   }
 
   function persistState(enabled: boolean, ctx: ExtensionContext): void {
@@ -268,7 +232,7 @@ export default function codexFastExtension(pi: ExtensionAPI): void {
   ): void {
     fastModeEnabled = enabled;
     if (options?.persist !== false) persistState(enabled, ctx);
-    refreshFooter(ctx);
+    updateStatus(ctx);
     if (options?.notify !== false) notifyState(ctx);
   }
 
@@ -300,7 +264,7 @@ export default function codexFastExtension(pi: ExtensionAPI): void {
       fastModeEnabled = true;
     }
 
-    refreshFooter(ctx);
+    updateStatus(ctx);
   }
 
   pi.registerFlag("fast", {
@@ -326,11 +290,7 @@ export default function codexFastExtension(pi: ExtensionAPI): void {
   });
 
   pi.on("model_select", async (_event, ctx) => {
-    refreshFooter(ctx);
-  });
-
-  pi.on("session_shutdown", async () => {
-    if (footerRefreshTimer) clearTimeout(footerRefreshTimer);
+    updateStatus(ctx);
   });
 
   pi.on("before_provider_request", (event, ctx) => {
