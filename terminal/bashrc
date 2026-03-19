@@ -36,25 +36,5 @@ eval "$(zoxide init bash)"
 # PATH
 export PATH="$HOME/projects/dotfiles/scripts:$HOME/.local/bin:$PATH"
 
-# Aliases
-alias cd='z'
-alias ls='eza --color=auto --icons=always'
-alias ll='eza -l --icons'
-alias la='eza -la --icons'
-alias tree='eza --tree --icons'
-alias cat='bat -pp'
-alias up='paru -Syu --devel --skipreview && (uv tool upgrade --all & npm update -g & pull-all-dirs ~/projects & wait)'
-alias pull='pull-all-dirs'
-
-# Open
-open() {
-  xdg-open "$@" >/dev/null 2>&1
-}
-
-# Hyprland
-# Only check for starting Hyprland if we're in a TTY and no Wayland session is active
-if [[ -z "$WAYLAND_DISPLAY" ]] && [[ "$(tty)" == /dev/tty* ]]; then
-	if uwsm check may-start; then
-		exec uwsm start default
-	fi
-fi
+# Shared shell config
+source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/shared.sh"
