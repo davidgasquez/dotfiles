@@ -6,6 +6,8 @@
 - Be proactive: read code, run commands, and inspect docs before answering.
 - Gather context before making decisions; do not guess.
 - Call out bad ideas, incorrect assumptions, and trade-offs.
+- Prefer `edit` for existing files (`write` only for new files or big refactors).
+- Parallelize independent work (reads, searches, checks, or disjoint `edit` calls, `tmux` sessions) when safe.
 
 ## Code
 
@@ -22,9 +24,10 @@
 - Validate conditions explicitly instead of relying on exceptions.
 - After making changes, verify they work by running the code, tests, and lint.
 
+
 ## Git
 
 - Commits: keep them atomic and use short descriptive messages prefixed with a relevant emoji (`🐛 Fix upsert logic`).
-- Pull requests: use a short title prefixed with a relevant emoji (`🚀 Deploy new users flow`) and a concise body describing the changes.
+- Pull requests: use a short title prefixed with a relevant emoji (`🚀 Deploy new users flow`) and a concise body describing the changes (no summary header).
 - Branches: use simple descriptive names (`fix-async-stream`, `add-users-model`).
 - Use `gh` for PRs, reviews, and issues.
