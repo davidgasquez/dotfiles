@@ -7,7 +7,7 @@
   "quietStartup": true,
   "transport": "auto",
   "theme": "frappe",
-  "lastChangelogVersion": "0.61.0",
+  "lastChangelogVersion": "0.61.1",
   "pi-codex-fast": {
     "enabled": true
   }
