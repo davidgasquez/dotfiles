@@ -50,6 +50,7 @@ packages=(
   agent-browser
   googleworkspace-cli-bin
   openai-codex-bin
+  qmd
 )
 
 paru -S --needed --noconfirm "${packages[@]}"

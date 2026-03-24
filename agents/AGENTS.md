@@ -7,7 +7,7 @@
 - Gather context before making decisions; do not guess.
 - Call out bad ideas, incorrect assumptions, and trade-offs.
 - Prefer `edit` for existing files (`write` only for new files or big refactors).
-- Parallelize independent work (reads, searches, checks, or disjoint `edit` calls, `tmux` sessions) when safe.
+- Parallelize async independent work (reads, searches, checks, or disjoint `edit` calls) into `tmux` sessions.
 
 ## Code
 
@@ -19,11 +19,10 @@
 
 ### Execution Model
 
-- Use one path; avoid fallbacks and legacy branches.
+- Avoid fallbacks and legacy branches.
 - Fail fast with clear error messages.
 - Validate conditions explicitly instead of relying on exceptions.
-- After making changes, verify they work by running the code, tests, and lint.
-
+- Verify changes work by running the code, tests, and linters.
 
 ## Git
 
