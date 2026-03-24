@@ -1,10 +1,8 @@
-import type { AssistantMessage } from "@mariozechner/pi-ai";
 import {
   SettingsManager,
   type ExtensionAPI,
   type ExtensionContext,
 } from "@mariozechner/pi-coding-agent";
-import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
 
 const SETTINGS_KEY = "pi-codex-fast";
 
@@ -106,77 +104,11 @@ function reportSettingsErrors(
   }
 }
 
-function formatThousands(value: number): string {
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}m`;
-  if (value >= 1_000) return `${(value / 1_000).toFixed(0)}k`;
-  return `${Math.round(value)}`;
-}
-
-function buildFooterLeft(ctx: ExtensionContext): string {
-  let cost = 0;
-  for (const entry of ctx.sessionManager.getBranch()) {
-    if (entry.type !== "message" || entry.message.role !== "assistant") continue;
-    const message = entry.message as AssistantMessage;
-    cost += message.usage.cost.total;
-  }
-
-  const usage = ctx.getContextUsage();
-  const contextWindow = ctx.model?.contextWindow;
-  const usageText =
-    contextWindow && contextWindow > 0
-      ? `${((((usage?.tokens ?? 0) as number) / contextWindow) * 100).toFixed(1)}%/${formatThousands(contextWindow)}`
-      : "0.0%/0";
-
-  return `$${cost.toFixed(3)} (sub) ${usageText} (auto)`;
-}
-
-function buildFooterRight(
-  ctx: ExtensionContext,
-  theme: ExtensionContext["ui"]["theme"],
-  thinking: string,
-  statuses: readonly string[],
-): string {
-  const provider = ctx.model?.provider ?? "no-provider";
-  const modelId = ctx.model?.id ?? "no-model";
-  let text = theme.fg("dim", `(${provider}) ${modelId} • ${thinking}`);
-  if (statuses.length > 0) {
-    text += theme.fg("dim", " · ") + statuses.join(theme.fg("dim", " · "));
-  }
-  return text;
-}
-
-function applyFooter(ctx: ExtensionContext, pi: ExtensionAPI): void {
-  if (!ctx.hasUI) return;
-  ctx.ui.setFooter((tui, theme, footerData) => {
-    const unsubscribe = footerData.onBranchChange(() => tui.requestRender());
-    return {
-      dispose: unsubscribe,
-      invalidate() {},
-      render(width: number): string[] {
-        const left = theme.fg("dim", buildFooterLeft(ctx));
-        const statuses = Array.from(footerData.getExtensionStatuses().entries())
-          .filter(([, value]) => value.length > 0)
-          .map(([, value]) => value);
-        const right = buildFooterRight(ctx, theme, pi.getThinkingLevel(), statuses);
-        const gap = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)));
-        return [truncateToWidth(left + gap + right, width)];
-      },
-    };
-  });
-}
-
 export default function codexFastExtension(pi: ExtensionAPI): void {
   let fastModeEnabled = false;
   let settingsWriteQueue: Promise<void> = Promise.resolve();
 
-  function updateStatus(ctx: ExtensionContext): void {
-    if (!ctx.hasUI) return;
-    ctx.ui.setStatus(
-      "codex-fast",
-      fastModeEnabled ? ctx.ui.theme.fg("accent", "⚡") : undefined,
-    );
-    applyFooter(ctx, pi);
-  }
+  function updateStatus(_ctx: ExtensionContext): void {}
 
   function persistState(enabled: boolean, ctx: ExtensionContext): void {
     const cwd = ctx.cwd;
