@@ -46,14 +46,14 @@ link_pi_profiles() {
 }
 
 packages=(
-  pi-coding-agent
   agent-browser
   googleworkspace-cli-bin
   openai-codex-bin
-  qmd
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
+npm install -g @tobilu/qmd
+npm install -g @mariozechner/pi-coding-agent
 
 mkdir -p "${GLOBAL_AGENTS_DIR}"
 ln -sfT "${AGENTS_DIR}/skills" "${GLOBAL_SKILLS_DIR}"
