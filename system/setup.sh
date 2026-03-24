@@ -23,6 +23,7 @@ packages=(
     rocm-smi-lib
     sox
     ufw
+    unzip
     util-linux
     xdg-user-dirs
     google-cloud-cli
