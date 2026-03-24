@@ -1,9 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import { homedir } from "node:os"
 import { dirname, extname, join, resolve } from "node:path"
-import type { AssistantMessage } from "@mariozechner/pi-ai"
 import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent"
-import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui"
 
 type ThinkingLevel = "off" | "minimal" | "low" | "medium" | "high" | "xhigh"
 
@@ -379,65 +377,6 @@ function buildProfilePrompt(profile: ResolvedProfile, cwd: string): string {
 	return parts.join("\n\n")
 }
 
-function formatThousands(value: number): string {
-	if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}m`
-	if (value >= 1_000) return `${(value / 1_000).toFixed(0)}k`
-	return `${Math.round(value)}`
-}
-
-function buildFooterLeft(ctx: ExtensionContext): string {
-	let cost = 0
-	for (const entry of ctx.sessionManager.getBranch()) {
-		if (entry.type !== "message" || entry.message.role !== "assistant") continue
-		const message = entry.message as AssistantMessage
-		cost += message.usage.cost.total
-	}
-
-	const usage = ctx.getContextUsage()
-	const contextWindow = ctx.model?.contextWindow
-	const usageText =
-		contextWindow && contextWindow > 0
-			? `${((((usage?.tokens ?? 0) as number) / contextWindow) * 100).toFixed(1)}%/${formatThousands(contextWindow)}`
-			: "0.0%/0"
-
-	return `$${cost.toFixed(3)} (sub) ${usageText} (auto)`
-}
-
-function buildFooterRight(
-	ctx: ExtensionContext,
-	theme: ExtensionContext["ui"]["theme"],
-	thinking: string,
-	statuses: readonly string[],
-): string {
-	const provider = ctx.model?.provider ?? "no-provider"
-	const modelId = ctx.model?.id ?? "no-model"
-	let text = theme.fg("dim", `(${provider}) ${modelId} • ${thinking}`)
-	if (statuses.length > 0) {
-		text += theme.fg("dim", " · ") + statuses.join(theme.fg("dim", " · "))
-	}
-	return text
-}
-
-function applyFooter(ctx: ExtensionContext, pi: ExtensionAPI): void {
-	if (!ctx.hasUI) return
-	ctx.ui.setFooter((tui, theme, footerData) => {
-		const unsubscribe = footerData.onBranchChange(() => tui.requestRender())
-		return {
-			dispose: unsubscribe,
-			invalidate() {},
-			render(width: number): string[] {
-				const left = theme.fg("dim", buildFooterLeft(ctx))
-				const statuses = Array.from(footerData.getExtensionStatuses().entries())
-					.filter(([, value]) => value.length > 0)
-					.map(([, value]) => value)
-				const right = buildFooterRight(ctx, theme, pi.getThinkingLevel(), statuses)
-				const gap = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)))
-				return [truncateToWidth(left + gap + right, width)]
-			},
-		}
-	})
-}
-
 function setProfileStatus(ctx: ExtensionContext, text?: string, kind: "active" | "error" = "active"): void {
 	if (!ctx.hasUI) return
 	if (!text) {
@@ -445,11 +384,11 @@ function setProfileStatus(ctx: ExtensionContext, text?: string, kind: "active" |
 		return
 	}
 
-	const themed =
+	const value =
 		kind === "error"
 			? ctx.ui.theme.fg("error", ctx.ui.theme.bold(text))
-			: ctx.ui.theme.fg("warning", ctx.ui.theme.bold(text))
-	ctx.ui.setStatus("profile", themed)
+			: ctx.ui.theme.fg("accent", text)
+	ctx.ui.setStatus("profile", value)
 }
 
 function notifyOrLog(ctx: ExtensionContext, message: string, level: "info" | "warning" | "error" = "info"): void {
@@ -550,15 +489,18 @@ export default function profileExtension(pi: ExtensionAPI) {
 	})
 
 	pi.on("session_start", async (_event, ctx) => {
+		const profileName = getSelectedProfileName()
+		if (!profileName) {
+			clearState()
+			setProfileStatus(ctx, undefined)
+			return
+		}
+
 		const profile = ensureProfileLoaded(ctx.cwd)
 		if (!profile) {
-			if (loadError) {
-				notifyOrLog(ctx, loadError, "error")
-				setProfileStatus(ctx, "profile:error", "error")
-			} else {
-				setProfileStatus(ctx, undefined)
-			}
-			applyFooter(ctx, pi)
+			const message = loadError ?? `Failed to load profile "${profileName}"`
+			notifyOrLog(ctx, message, "error")
+			setProfileStatus(ctx, "profile:error", "error")
 			return
 		}
 
@@ -567,7 +509,6 @@ export default function profileExtension(pi: ExtensionAPI) {
 			loadError = `Profile "${profile.name}": model not found: ${profile.provider}/${profile.modelId}`
 			notifyOrLog(ctx, loadError, "error")
 			setProfileStatus(ctx, "profile:error", "error")
-			applyFooter(ctx, pi)
 			return
 		}
 
@@ -576,13 +517,11 @@ export default function profileExtension(pi: ExtensionAPI) {
 			loadError = `Profile "${profile.name}": no API key for ${profile.provider}/${profile.modelId}`
 			notifyOrLog(ctx, loadError, "error")
 			setProfileStatus(ctx, "profile:error", "error")
-			applyFooter(ctx, pi)
 			return
 		}
 
 		pi.setThinkingLevel(profile.thinking)
 		setProfileStatus(ctx, profile.name)
-		applyFooter(ctx, pi)
 	})
 
 	pi.on("input", async (event, ctx) => {
