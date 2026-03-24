@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -eq 0 ]; then
+  echo "Usage: web-search <query>" >&2
+  exit 1
+fi
+
+query="$*"
+tmp="$(mktemp)"
+err="$(mktemp)"
+trap 'rm -f "$tmp" "$err"' EXIT
+
+if codex -m gpt-5.3-codex-spark exec --skip-git-repo-check --ephemeral \
+  --output-last-message "$tmp" \
+  "Search the web using this query: <query>${query}</query>. Return 8-10 high-quality results. For each: title, URL, and a one-line note. Then add a brief summary. Keep it concise and include citations inline with the relevant claims." \
+  >/dev/null 2>"$err"
+then
+  cat "$tmp"
+else
+  cat "$err" >&2
+  exit 1
+fi
