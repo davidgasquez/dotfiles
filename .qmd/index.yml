@@ -1,0 +1,12 @@
+collections:
+  dotfiles:
+    path: /home/david/projects/dotfiles
+    pattern: "{**/*.{md,mdx,txt,sh,conf,json,toml,yml,yaml},**/Makefile,**/bashrc,**/zshrc,**/gitconfig,**/inputrc}"
+    context:
+      "": Arch Linux dotfiles and local development environment configuration, including shell, terminal, git, editor, window manager, agent, and automation setup.
+  hyprland-wiki:
+    path: /home/david/projects/dotfiles/.qmd/external/hyprland-wiki/content
+    pattern: "**/*.md"
+    update: git -C .. pull --ff-only
+    context:
+      "": Official Hyprland wiki content covering configuration, keywords, binds, dispatchers, layouts, plugins, utilities, and troubleshooting.

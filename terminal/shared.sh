@@ -19,6 +19,19 @@ open() {
   xdg-open "$@" >/dev/null 2>&1
 }
 
+qmd() {
+  local qmd_config_dir="$PWD/.qmd"
+  local index_path="$qmd_config_dir/index.sqlite"
+
+  if [[ -d "$qmd_config_dir" ]]; then
+    printf '\033[2mUsing local qmd index: %s\033[0m\n' "$qmd_config_dir" >&2
+    QMD_CONFIG_DIR="$qmd_config_dir" INDEX_PATH="$index_path" command qmd "$@"
+    return
+  fi
+
+  command qmd "$@"
+}
+
 # Hyprland
 # Only check for starting Hyprland if we're in a TTY and no Wayland session is active
 if [[ -z "$WAYLAND_DISPLAY" ]] && [[ "$(tty)" == /dev/tty* ]]; then
