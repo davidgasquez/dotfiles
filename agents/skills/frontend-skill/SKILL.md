@@ -11,13 +11,27 @@ Goal: ship interfaces that feel deliberate, premium, and current. Default toward
 
 ## Working Model
 
-Before building, write three things:
+Before building, define:
 
 - visual thesis: one sentence describing mood, material, and energy
+- differentiator: what should feel memorable about this UI
+- typography: display + body font, scale, weight, and casing
+- color system: dominant, accent, and neutral tokens as CSS variables
+- layout strategy: grid, spacing rhythm, and hierarchy plan
+- interaction thesis: 1-2 motion ideas that change the feel of the page
 - content plan: hero, support, detail, final CTA
-- interaction thesis: 2-3 motion ideas that change the feel of the page
 
 Each section gets one job, one dominant visual idea, and one primary takeaway or action.
+
+## Implementation Principles
+
+- Ship real, working code.
+- Use semantic structure and accessible controls.
+- Ensure visible focus states and keyboard navigation.
+- Make layouts responsive by default.
+- Tokenize styling with CSS variables.
+- Prefer Grid/Flex over brittle positioning.
+- Honor `prefers-reduced-motion`.
 
 ## Beautiful Defaults
 
@@ -27,6 +41,8 @@ Each section gets one job, one dominant visual idea, and one primary takeaway or
 - Keep copy short enough to scan in seconds.
 - Use whitespace, alignment, scale, cropping, and contrast before adding chrome.
 - Limit the system: two typefaces max, one accent color by default.
+- Typography should define the voice: prefer a distinct display font paired with a restrained body font, and establish hierarchy through scale, weight, spacing, and casing.
+- Commit to a clear palette with a point of view; define dominant, accent, and neutral roles up front and expose them as CSS variables.
 - Default to cardless layouts. Use sections, columns, dividers, lists, and media blocks instead.
 - Treat the first viewport as a poster, not a document.
 
@@ -148,7 +164,9 @@ Motion rules:
 - smooth on mobile
 - fast and restrained
 - consistent across the page
+- one standout interaction is better than many ornamental ones
 - removed if ornamental only
+- respect `prefers-reduced-motion`
 
 ## Hard Rules
 
@@ -162,6 +180,9 @@ Motion rules:
 - No split-screen hero unless text sits on a calm, unified side.
 - No more than two typefaces without a clear reason.
 - No more than one accent color unless the product already has a strong system.
+- No default hero + three cards layout.
+- No unmotivated decorative elements.
+- No anonymous component-library look unless explicitly requested.
 
 ## Reject These Failures
 
@@ -172,6 +193,13 @@ Motion rules:
 - Sections that repeat the same mood statement
 - Carousel with no narrative purpose
 - App UI made of stacked cards instead of layout
+
+## Deliverables
+
+- Provide complete runnable code.
+- Show file names or component boundaries clearly.
+- Make customization easy through variables or config.
+- If assets are needed, prefer inline SVG or CSS-generated treatments.
 
 ## Litmus Checks
 

@@ -8,11 +8,12 @@
 - Call out bad ideas, incorrect assumptions, and trade-offs.
 - Prefer `edit` for existing files (`write` only for new files or big refactors).
 - Parallelize async independent work (reads, searches, checks, or disjoint `edit` calls) into `tmux` sessions.
+- Every piece of knowledge or logic should exist in exactly one place.
 
 ## Code
 
-- Prefer simple, explicit, practical solutions.
-- Keep functions and modules small, with clear interfaces.
+- Prefer simple, explicit, practical solutions optimized for readability and clear intent.
+- Keep functions and modules small and with clear composable interfaces.
 - Keep APIs small, behavior explicit, and naming clear.
 - Keep files under ~500 LOC.
 - Remove unnecessary code.
