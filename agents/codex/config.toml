@@ -3,3 +3,6 @@ model_reasoning_effort = "medium"
 personality = "pragmatic"
 service_tier = "fast"
 check_for_update_on_startup = false
+
+[plugins."github@openai-curated"]
+enabled = true
