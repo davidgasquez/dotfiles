@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export PATH="${PATH//$(dirname "$(readlink -f -- "$0")"):/}"
+
+if [[ -d "$PWD/.qmd" ]]; then
+  printf '\033[2mUsing local qmd index: %s\033[0m\n' "$PWD/.qmd" >&2
+  export QMD_CONFIG_DIR="$PWD/.qmd" INDEX_PATH="$PWD/.qmd/index.sqlite"
+fi
+
+exec qmd "$@"

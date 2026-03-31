@@ -34,7 +34,7 @@ eval "$(fzf --bash)"
 eval "$(zoxide init bash)"
 
 # PATH
-export PATH="$HOME/projects/dotfiles/scripts:$HOME/.local/bin:$PATH"
+export PATH="$HOME/projects/dotfiles/scripts:$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 
 # Shared shell config
-source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/shared.sh"
+source "$(cd -- "$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")" && pwd)/shared.sh"

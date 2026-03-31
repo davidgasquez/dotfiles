@@ -1,7 +1,7 @@
 # ZSH
 
 # PATH
-export PATH=$HOME/.cargo/bin:$HOME/.local/bin:$HOME/projects/dotfiles/scripts:$PATH
+export PATH=$HOME/projects/dotfiles/scripts:$HOME/.cargo/bin:$HOME/.local/bin:$PATH
 
 # History
 HISTFILE=~/.histfile
