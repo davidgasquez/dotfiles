@@ -2,5 +2,6 @@
   "amp.notifications.system.enabled": true,
   "amp.dangerouslyAllowAll": true,
   "amp.updates.mode": "auto",
-  "amp.git.commit.coauthor.enabled": false
+  "amp.git.commit.coauthor.enabled": false,
+  "amp.agent.deepReasoningEffort": "xhigh"
 }
