@@ -7,6 +7,8 @@ description: Search markdown knowledge bases, notes, code, and documentation usi
 
 Local search engine for text files (markdown, code, ...).
 
+**Always complement it with manual search** (`ls`, `find`, `rg`) to get a better picture of the file layout and relevant files.
+
 ## CLI
 
 ```bash
