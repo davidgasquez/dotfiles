@@ -14,7 +14,7 @@
   "git.confirmSync": false,
   "git.autofetch": true,
   "editor.formatOnSave": true,
-  "editor.fontFamily": "JetBrainsMono NF",
+  "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.linkedEditing": true,
   "editor.wordWrap": "on",
   "extensions.ignoreRecommendations": true,
