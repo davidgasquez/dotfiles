@@ -6,3 +6,6 @@ check_for_update_on_startup = false
 
 [plugins."github@openai-curated"]
 enabled = true
+
+[plugins."cloudflare@openai-curated"]
+enabled = true
