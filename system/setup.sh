@@ -67,14 +67,15 @@ if ! systemctl --user is-enabled --quiet gnome-keyring-daemon.socket; then
     systemctl --user enable --now gnome-keyring-daemon.socket
 fi
 
-# Docker
-if ! systemctl is-enabled --quiet docker.service; then
-    sudo systemctl enable --now docker
-
-    # Add user to docker group
-    if ! groups "$USER" | grep -q "\bdocker\b"; then
-        sudo usermod -aG docker "$USER"
-    fi
+# Start Dockler on demand
+if ! systemctl is-enabled --quiet docker.socket; then
+    sudo systemctl enable --now docker.socket
+fi
+if systemctl is-enabled --quiet docker.service; then
+    sudo systemctl disable docker.service
+fi
+if ! groups "$USER" | grep -q "\bdocker\b"; then
+    sudo usermod -aG docker "$USER"
 fi
 
 # Tailscale
