@@ -10,7 +10,7 @@
   },
   "languages": {
     "Python": {
-      "language_servers": ["ty", "!basedpyright", "..."]
+      "language_servers": ["ty", "!basedpyright", "!pyright", "..."]
     }
   },
   "show_edit_predictions": false,
@@ -24,6 +24,7 @@
     "button": false
   },
   "autosave": "on_focus_change",
+  "remove_trailing_whitespace_on_save": true,
   "session": {
     "trust_all_worktrees": true
   },
