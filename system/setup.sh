@@ -13,6 +13,8 @@ packages=(
     docker-buildx
     fwupd
     gnome-keyring
+    google-cloud-cli
+    google-cloud-cli-bq
     inetutils
     less
     mkinitcpio-firmware
@@ -20,14 +22,13 @@ packages=(
     networkmanager
     pacman-contrib
     power-profiles-daemon
+    rclone
     rocm-smi-lib
     sox
     ufw
     unzip
     util-linux
     xdg-user-dirs
-    google-cloud-cli
-    google-cloud-cli-bq
 )
 
 # Install system packages
