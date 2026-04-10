@@ -17,6 +17,7 @@ packages=(
     google-cloud-cli-bq
     inetutils
     less
+    libnotify
     mkinitcpio-firmware
     network-manager-applet
     networkmanager
