@@ -10,7 +10,7 @@ Search the web in a headless and fast way.
 ## Default workflow
 
 1. Run `web-search "<query>"` (with a large timeout like 60s)
-2. Open or fetch (`markdown-fetch` skill) the most relevant pages as needed
+2. Read the most relevant pages with the `read-web-page` skill as needed
 3. Merge, deduplicate, and use the findings accordingly
 4. Repeat if needed
 

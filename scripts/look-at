@@ -1,0 +1,191 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: look-at --path /absolute/path --objective "..." --context "..." [--reference-file /absolute/path]...
+
+Analyze a local file with gpt-5.4 to extract relevant information without dumping the raw contents.
+
+Required:
+  --path            Absolute path to the primary file
+  --objective       What to extract, summarize, or describe
+  --context         Broader goal and relevant background
+
+Optional:
+  --reference-file  Absolute path to a reference file for comparison (repeatable)
+  -h, --help        Show this help
+EOF
+}
+
+fail() {
+  echo "$*" >&2
+  exit 1
+}
+
+cleanup() {
+  if [[ ${#temp_dirs[@]} -gt 0 ]]; then
+    rm -rf "${temp_dirs[@]}"
+  fi
+}
+
+resolve_file() {
+  local input="$1"
+
+  [[ "$input" = /* ]] || fail "Path must be absolute: $input"
+  [[ -e "$input" ]] || fail "File does not exist: $input"
+  [[ ! -d "$input" ]] || fail "Path must be a file, not a directory: $input"
+
+  realpath "$input"
+}
+
+detect_mime_type() {
+  file --brief --mime-type --dereference "$1"
+}
+
+render_pdf_to_images() {
+  local pdf_path="$1"
+  local output_dir="$2"
+
+  uv run --with pymupdf python - "$pdf_path" "$output_dir" <<'PY'
+import sys
+from pathlib import Path
+
+import fitz
+
+pdf_path = Path(sys.argv[1])
+out_dir = Path(sys.argv[2])
+out_dir.mkdir(parents=True, exist_ok=True)
+
+doc = fitz.open(pdf_path)
+for index, page in enumerate(doc, start=1):
+    pix = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
+    pix.save(out_dir / f"page-{index:03d}.png")
+PY
+}
+
+register_file_for_analysis() {
+  local role="$1"
+  local absolute_path="$2"
+  local mime_type
+
+  mime_type="$(detect_mime_type "$absolute_path")"
+
+  case "$mime_type" in
+    image/png|image/jpeg|image/gif|image/webp)
+      attachments+=("@$absolute_path")
+      file_handling_summary+="- ${role}: ${absolute_path} attached as ${mime_type}"$'\n'
+      ;;
+    application/pdf)
+      local render_dir
+      local rendered_pages=0
+      render_dir="$(mktemp -d)"
+      temp_dirs+=("$render_dir")
+      render_pdf_to_images "$absolute_path" "$render_dir"
+
+      while IFS= read -r rendered_page; do
+        attachments+=("@$rendered_page")
+        rendered_pages=$((rendered_pages + 1))
+      done < <(find "$render_dir" -maxdepth 1 -type f -name 'page-*.png' | sort)
+
+      [[ $rendered_pages -gt 0 ]] || fail "Failed to render PDF pages for: ${absolute_path}"
+      file_handling_summary+="- ${role}: ${absolute_path} rendered from PDF to ${rendered_pages} PNG page image(s)"$'\n'
+      ;;
+    text/*|application/json|application/xml|application/yaml|application/x-yaml)
+      fail "Unsupported file type for look-at: ${absolute_path} (${mime_type}). Use read for plain text or structured text files."
+      ;;
+    *)
+      fail "Unsupported file type for look-at via pi CLI: ${absolute_path} (${mime_type}). Currently supported: png/jpeg/gif/webp images and PDFs rendered to images."
+      ;;
+  esac
+}
+
+path=""
+objective=""
+context=""
+declare -a reference_files=()
+declare -a attachments=()
+declare -a temp_dirs=()
+file_handling_summary=""
+system_prompt="Extract the minimum useful insight from local files. Focus on the objective, avoid transcription-by-default, and state uncertainty clearly."
+
+trap cleanup EXIT
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --path)
+      [[ $# -ge 2 ]] || fail "Missing value for --path"
+      path="$2"
+      shift 2
+      ;;
+    --objective)
+      [[ $# -ge 2 ]] || fail "Missing value for --objective"
+      objective="$2"
+      shift 2
+      ;;
+    --context)
+      [[ $# -ge 2 ]] || fail "Missing value for --context"
+      context="$2"
+      shift 2
+      ;;
+    --reference-file)
+      [[ $# -ge 2 ]] || fail "Missing value for --reference-file"
+      reference_files+=("$2")
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      usage >&2
+      fail "Unknown argument: $1"
+      ;;
+  esac
+done
+
+[[ -n "$path" ]] || fail "--path is required"
+[[ -n "$objective" ]] || fail "--objective is required"
+[[ -n "$context" ]] || fail "--context is required"
+
+path="$(resolve_file "$path")"
+
+declare -a normalized_reference_files=()
+for reference_file in "${reference_files[@]}"; do
+  normalized_reference_files+=("$(resolve_file "$reference_file")")
+done
+
+register_file_for_analysis "primary" "$path"
+
+reference_section="No reference files were provided."
+
+if [[ ${#normalized_reference_files[@]} -gt 0 ]]; then
+  reference_section=$'Reference files provided for comparison when relevant:\n'
+
+  for reference_file in "${normalized_reference_files[@]}"; do
+    register_file_for_analysis "reference" "$reference_file"
+    reference_section+="- ${reference_file}"$'\n'
+  done
+fi
+
+prompt=$(
+  cat <<EOF
+Analyze the attached local file according to the objective below.
+
+Primary file: ${path}
+Objective: ${objective}
+Context: ${context}
+
+${reference_section}
+File handling:
+${file_handling_summary}Requirements:
+- Extract or summarize only the information relevant to the objective.
+- Do not reproduce the entire file contents unless the objective explicitly asks for that.
+- If the file is visual, describe the relevant visual details.
+- If the file is unclear, unreadable, or ambiguous, say so explicitly.
+- If reference files are attached, use them only when they help answer the objective.
+- Keep the response concise and well structured.
+EOF
+)
+
+pi --model openai-codex/gpt-5.4 --thinking low --no-session --no-tools --system-prompt "$system_prompt" -p "${attachments[@]}" "$prompt"
