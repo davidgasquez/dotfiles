@@ -1,67 +1,74 @@
 ---
 name: look-at
-description: Analyze local PDFs, images, screenshots, and scans with multi-modal model to extract specific information or summaries without returning raw file contents. Use when read cannot interpret the file well or when you need analyzed findings instead of literal contents.
+description: Analyze local PDFs, images, screenshots, scans, and diagrams. Use when visual interpretation matters, when comparing files, or when extracting targeted information from PDFs by combining visual review with exact text extraction.
 ---
 
 # Look At
 
-Use this skill when you need a model to inspect a local file and extract findings, not dump the file verbatim.
+Use this skill for local files that need interpretation, not raw file dumps.
 
-Implementation note: with the current `pi` CLI, the helper script attaches supported images directly and renders PDFs into page images before asking GPT-5.4. It does not yet support arbitrary binary media inputs.
+## Use this skill for
 
-## When to use
+- PDFs where layout, scans, tables, or figures matter
+- Images, screenshots, scans, and diagrams
+- Targeted extraction and concise summaries
 
-- PDFs, images, screenshots, scans, or diagrams that `read` cannot interpret well
-- Extracting specific facts or concise summaries from a document
-- Describing visual content in images or diagrams
-- Comparing a primary file with one or more reference files
+## Do not use this skill for
 
-## When not to use
-
-- Source code or plain text files where exact contents matter — use `read` instead
-- Tasks where you need to edit the file afterward based on exact contents
+- Source code or plain text where exact contents matter — use `read`
+- Tasks where you need to edit the file from exact source contents
 - Simple file reads that do not need interpretation
 
-## Required inputs
+You have `markitdown[pdf,youtube-transcription]` installed.
 
-- `path`: absolute path to the file to analyze
-- `objective`: clear statement of what to learn, extract, summarize, or describe
-- `context`: broader goal and relevant background
+## PDF workflow
 
-## Optional inputs
+For PDFs, use a hybrid workflow:
 
-- `referenceFiles`: absolute paths to reference files for comparison
+1. Use `look-at` for layout, scans, tables, figures, and ambiguous formatting.
+2. Use `markitdown` to verify exact text, quotes, and fields.
+3. Use a small `uv` script with `pdfplumber`, `pypdf`, or `pymupdf` when you need targeted extraction or validation.
 
-## Workflow
+Run each workflow on their own `tmux` in parallel and unify at the end.
 
-1. Make sure the primary file path is absolute and exists.
+### Markitdown
+
+```bash
+markitdown path/to/file.pdf
+markitdown path/to/file.pdf -o output.md
+```
+
+## Look-at inputs
+
+Required:
+- `path`: path to the file to analyze, relative or absolute
+
+Optional:
+- `objective`: what to learn, extract, summarize, or describe; pass via `--objective`
+- `context`: why it matters; pass via `--context`
+
+If `objective` or `context` are omitted, the helper uses concise defaults.
+
+## Visual workflow
+
+1. Make sure the primary file path exists.
 2. Write a specific objective. Avoid vague prompts like “look at this”.
 3. Include context so the model knows what matters.
 4. Run:
 
 ```bash
 look-at \
-  --path /absolute/path/to/file.pdf \
+  path/to/file.pdf \
   --objective "Extract the total due, due date, and vendor name" \
   --context "I am reconciling monthly expenses and only need billing details"
 ```
 
-5. For comparisons, add one or more reference files:
-
-```bash
-look-at \
-  --path /absolute/path/to/after.png \
-  --objective "Describe visual regressions compared to the baseline" \
-  --context "I am reviewing a UI change before merging" \
-  --reference-file /absolute/path/to/before.png
-```
 
 ## Rules
 
-- Always provide both `objective` and `context`.
+- Provide `objective` and `context` when you want targeted output.
+- For PDFs, prefer the hybrid visual + exact extraction workflow when accuracy matters.
 - Prefer targeted extraction over full transcription.
-- Call out uncertainty explicitly when content is blurry, occluded, or ambiguous.
-- Use reference files only when they help answer the objective.
-- PDFs are rendered into page images first, then analyzed visually.
-- The script uses a small focused system prompt so the model distills findings instead of echoing source material.
+- Call out uncertainty when content is blurry, occluded, or ambiguous.
+- PDFs are rendered into page images before visual analysis.
 - If the input is plain text or source code, use `read` instead.

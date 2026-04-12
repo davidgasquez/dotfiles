@@ -3,18 +3,22 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: look-at --path /absolute/path --objective "..." --context "..." [--reference-file /absolute/path]...
+Usage: look-at path [--objective text] [--context text]
 
-Analyze a local file with gpt-5.4 to extract relevant information without dumping the raw contents.
+Analyze a local PDF or image with gpt-5.4.
 
-Required:
-  --path            Absolute path to the primary file
-  --objective       What to extract, summarize, or describe
-  --context         Broader goal and relevant background
+Arguments:
+  path              Primary file path, relative or absolute
 
-Optional:
-  --reference-file  Absolute path to a reference file for comparison (repeatable)
+Options:
+  --objective       Optional targeted extraction goal
+  --context         Optional broader background
   -h, --help        Show this help
+
+Examples:
+  look-at path/to/file.pdf
+  look-at path/to/file.pdf --objective "Extract the total due and due date"
+  look-at path/to/image.png --objective "Describe the key visual details" --context "I need a quick summary"
 EOF
 }
 
@@ -24,22 +28,19 @@ fail() {
 }
 
 cleanup() {
-  if [[ ${#temp_dirs[@]} -gt 0 ]]; then
-    rm -rf "${temp_dirs[@]}"
-  fi
+  [[ ${#temp_dirs[@]} -eq 0 ]] || rm -rf "${temp_dirs[@]}"
 }
 
 resolve_file() {
   local input="$1"
 
-  [[ "$input" = /* ]] || fail "Path must be absolute: $input"
   [[ -e "$input" ]] || fail "File does not exist: $input"
   [[ ! -d "$input" ]] || fail "Path must be a file, not a directory: $input"
 
   realpath "$input"
 }
 
-detect_mime_type() {
+mime_type() {
   file --brief --mime-type --dereference "$1"
 }
 
@@ -67,18 +68,16 @@ PY
 register_file_for_analysis() {
   local role="$1"
   local absolute_path="$2"
-  local mime_type
 
-  mime_type="$(detect_mime_type "$absolute_path")"
-
-  case "$mime_type" in
+  case "$(mime_type "$absolute_path")" in
     image/png|image/jpeg|image/gif|image/webp)
       attachments+=("@$absolute_path")
-      file_handling_summary+="- ${role}: ${absolute_path} attached as ${mime_type}"$'\n'
+      file_handling_summary+="- ${role}: ${absolute_path} attached as image"$'\n'
       ;;
     application/pdf)
       local render_dir
       local rendered_pages=0
+
       render_dir="$(mktemp -d)"
       temp_dirs+=("$render_dir")
       render_pdf_to_images "$absolute_path" "$render_dir"
@@ -92,100 +91,104 @@ register_file_for_analysis() {
       file_handling_summary+="- ${role}: ${absolute_path} rendered from PDF to ${rendered_pages} PNG page image(s)"$'\n'
       ;;
     text/*|application/json|application/xml|application/yaml|application/x-yaml)
-      fail "Unsupported file type for look-at: ${absolute_path} (${mime_type}). Use read for plain text or structured text files."
+      fail "Unsupported file type for look-at: ${absolute_path}. Use read for plain text or structured text files."
       ;;
     *)
-      fail "Unsupported file type for look-at via pi CLI: ${absolute_path} (${mime_type}). Currently supported: png/jpeg/gif/webp images and PDFs rendered to images."
+      fail "Unsupported file type for look-at: ${absolute_path}. Supported: png/jpeg/gif/webp images and PDFs rendered to images."
       ;;
   esac
 }
 
-path=""
-objective=""
-context=""
-declare -a reference_files=()
 declare -a attachments=()
 declare -a temp_dirs=()
 file_handling_summary=""
 system_prompt="Extract the minimum useful insight from local files. Focus on the objective, avoid transcription-by-default, and state uncertainty clearly."
+default_objective="Summarize the file and extract the most relevant details."
+default_context="No additional context was provided. Focus on the most useful details and keep the response concise."
 
-trap cleanup EXIT
+main() {
+  local path objective context prompt
 
-while [[ $# -gt 0 ]]; do
+  trap cleanup EXIT
+
+  [[ $# -gt 0 ]] || {
+    usage >&2
+    exit 1
+  }
+
   case "$1" in
-    --path)
-      [[ $# -ge 2 ]] || fail "Missing value for --path"
-      path="$2"
-      shift 2
-      ;;
-    --objective)
-      [[ $# -ge 2 ]] || fail "Missing value for --objective"
-      objective="$2"
-      shift 2
-      ;;
-    --context)
-      [[ $# -ge 2 ]] || fail "Missing value for --context"
-      context="$2"
-      shift 2
-      ;;
-    --reference-file)
-      [[ $# -ge 2 ]] || fail "Missing value for --reference-file"
-      reference_files+=("$2")
-      shift 2
-      ;;
     -h|--help)
       usage
       exit 0
       ;;
-    *)
+    -*)
       usage >&2
-      fail "Unknown argument: $1"
+      fail "Unknown option: $1"
       ;;
   esac
-done
 
-[[ -n "$path" ]] || fail "--path is required"
-[[ -n "$objective" ]] || fail "--objective is required"
-[[ -n "$context" ]] || fail "--context is required"
+  path="$1"
+  objective=""
+  context=""
+  shift
 
-path="$(resolve_file "$path")"
-
-declare -a normalized_reference_files=()
-for reference_file in "${reference_files[@]}"; do
-  normalized_reference_files+=("$(resolve_file "$reference_file")")
-done
-
-register_file_for_analysis "primary" "$path"
-
-reference_section="No reference files were provided."
-
-if [[ ${#normalized_reference_files[@]} -gt 0 ]]; then
-  reference_section=$'Reference files provided for comparison when relevant:\n'
-
-  for reference_file in "${normalized_reference_files[@]}"; do
-    register_file_for_analysis "reference" "$reference_file"
-    reference_section+="- ${reference_file}"$'\n'
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --objective)
+        [[ $# -ge 2 ]] || fail "Missing value for --objective"
+        [[ -z "$objective" ]] || fail "Objective provided more than once"
+        objective="$2"
+        shift 2
+        ;;
+      --context)
+        [[ $# -ge 2 ]] || fail "Missing value for --context"
+        [[ -z "$context" ]] || fail "Context provided more than once"
+        context="$2"
+        shift 2
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      -*)
+        usage >&2
+        fail "Unknown option: $1"
+        ;;
+      *)
+        fail "Unexpected argument: $1"
+        ;;
+    esac
   done
-fi
 
-prompt=$(
-  cat <<EOF
+  path="$(resolve_file "$path")"
+  objective="${objective:-$default_objective}"
+  context="${context:-$default_context}"
+
+  attachments=()
+  temp_dirs=()
+  file_handling_summary=""
+
+  register_file_for_analysis "primary" "$path"
+
+  prompt=$(
+    cat <<EOF
 Analyze the attached local file according to the objective below.
 
 Primary file: ${path}
 Objective: ${objective}
 Context: ${context}
 
-${reference_section}
 File handling:
 ${file_handling_summary}Requirements:
 - Extract or summarize only the information relevant to the objective.
 - Do not reproduce the entire file contents unless the objective explicitly asks for that.
 - If the file is visual, describe the relevant visual details.
 - If the file is unclear, unreadable, or ambiguous, say so explicitly.
-- If reference files are attached, use them only when they help answer the objective.
 - Keep the response concise and well structured.
 EOF
-)
+  )
 
-pi --model openai-codex/gpt-5.4 --thinking low --no-session --no-tools --system-prompt "$system_prompt" -p "${attachments[@]}" "$prompt"
+  pi --model openai-codex/gpt-5.4 --thinking low --no-session --no-tools --system-prompt "$system_prompt" -p "${attachments[@]}" "$prompt"
+}
+
+main "$@"
