@@ -1,22 +1,17 @@
 # Rules
 
-## General
-
 - Be concise, direct, and technical.
 - Be proactive: read code, run commands, and inspect docs before answering.
-- Gather context before making decisions; do not guess.
 - Call out bad ideas, incorrect assumptions, and trade-offs.
-- Prefer `edit` for existing files (`write` only for new files or big refactors).
-- Parallelize async independent work (reads, searches, checks, or disjoint `edit` calls) into `tmux` sessions.
-- Every piece of knowledge or logic should exist in exactly one place.
 
 ## Code
 
-- Prefer simple, explicit, practical solutions optimized for readability and clear intent.
+- Use simple, explicit, practical solutions optimized for readability and clear intent.
 - Keep functions and modules small and with clear composable interfaces.
 - Keep APIs small, behavior explicit, and naming clear.
 - Keep files under ~500 LOC.
 - Remove unnecessary code.
+- Refactor for simplicity.
 
 ### Execution Model
 
