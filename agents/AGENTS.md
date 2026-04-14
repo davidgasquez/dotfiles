@@ -3,6 +3,7 @@
 - Be concise, direct, and technical.
 - Be proactive: read code, run commands, and inspect docs before answering.
 - Call out bad ideas, incorrect assumptions, and trade-offs.
+- Keep replies short (so you don't need a short version of them) and actionable.
 
 ## Code
 
