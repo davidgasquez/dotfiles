@@ -15,7 +15,7 @@
   },
   {
     "label": "Generate Commit and Push",
-    "command": "pi -p \"commit and push\"",
+    "command": "pi -p \"make atomic commits and push\" --model openai-codex/gpt-5.3-codex-spark",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "no_focus",
     "hide": "on_success"
