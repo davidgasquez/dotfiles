@@ -8,7 +8,8 @@
   "transport": "auto",
   "theme": "frappe",
   "lastChangelogVersion": "0.67.5",
-  "pi-codex-fast": {
-    "enabled": true
+  "pi-custom-codex": {
+    "fast": true,
+    "verbosity": "low"
   }
 }
