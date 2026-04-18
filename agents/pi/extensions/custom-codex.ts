@@ -65,8 +65,7 @@ function parseConfig(settingsManager: SettingsManager): Config {
   const raw = isObject(settings[SETTINGS_KEY]) ? settings[SETTINGS_KEY] : {};
 
   return {
-    fast:
-      typeof raw.fast === "boolean" ? raw.fast : DEFAULT_CONFIG.fast,
+    fast: typeof raw.fast === "boolean" ? raw.fast : DEFAULT_CONFIG.fast,
     verbosity: normalizeVerbosity(raw.verbosity) ?? DEFAULT_CONFIG.verbosity,
   };
 }
@@ -82,8 +81,13 @@ async function loadConfig(
   };
 }
 
-async function saveConfig(cwd: string, config: Config): Promise<SettingsManager> {
-  const settingsManager = SettingsManager.create(cwd) as InternalSettingsManager;
+async function saveConfig(
+  cwd: string,
+  config: Config,
+): Promise<SettingsManager> {
+  const settingsManager = SettingsManager.create(
+    cwd,
+  ) as InternalSettingsManager;
   await settingsManager.reload();
   settingsManager.globalSettings[SETTINGS_KEY] = {
     fast: config.fast,
@@ -162,11 +166,18 @@ export default function customCodexExtension(pi: ExtensionAPI): void {
     } catch (error) {
       activeConfig = { ...DEFAULT_CONFIG };
       const message = error instanceof Error ? error.message : String(error);
-      notify(ctx, `custom-codex: failed to load settings: ${message}`, "warning");
+      notify(
+        ctx,
+        `custom-codex: failed to load settings: ${message}`,
+        "warning",
+      );
     }
   }
 
-  async function persistConfig(config: Config, ctx: ExtensionContext): Promise<void> {
+  async function persistConfig(
+    config: Config,
+    ctx: ExtensionContext,
+  ): Promise<void> {
     activeConfig = config;
 
     settingsWriteQueue = settingsWriteQueue
@@ -180,7 +191,11 @@ export default function customCodexExtension(pi: ExtensionAPI): void {
       await settingsWriteQueue;
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      notify(ctx, `custom-codex: failed to write settings: ${message}`, "warning");
+      notify(
+        ctx,
+        `custom-codex: failed to write settings: ${message}`,
+        "warning",
+      );
     }
   }
 
@@ -200,8 +215,7 @@ export default function customCodexExtension(pi: ExtensionAPI): void {
         return;
       }
 
-      const fast =
-        action === "toggle" ? !activeConfig.fast : action === "on";
+      const fast = action === "toggle" ? !activeConfig.fast : action === "on";
       await persistConfig({ ...activeConfig, fast }, ctx);
       notify(ctx, formatConfig({ ...activeConfig, fast }));
     },
@@ -212,7 +226,11 @@ export default function customCodexExtension(pi: ExtensionAPI): void {
     handler: async (args, ctx) => {
       const verbosity = normalizeVerbosity(args.trim().toLowerCase());
       if (!verbosity) {
-        notify(ctx, "Usage: /custom-codex-verbosity <low|medium|high>", "warning");
+        notify(
+          ctx,
+          "Usage: /custom-codex-verbosity <low|medium|high>",
+          "warning",
+        );
         return;
       }
 
