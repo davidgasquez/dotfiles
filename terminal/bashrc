@@ -5,6 +5,11 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Bash completion
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+  source /usr/share/bash-completion/bash_completion
+fi
+
 # Starship
 eval "$(starship init bash)"
 
@@ -17,6 +22,7 @@ export HISTIGNORE="ls:ll:cd:pwd:exit:clear"
 # Shell options
 shopt -s checkwinsize
 shopt -s globstar
+shopt -s extglob
 
 # Modern navigation
 shopt -s autocd cdspell dirspell

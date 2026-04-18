@@ -10,7 +10,7 @@
 - **OS:** Arch Linux
 - **WM**: [Hyprland](https://hyprland.org/)
 - **Launcher**: [Fuzzel](https://codeberg.org/dnkl/fuzzel)
-- **Terminal**: [Alacritty](https://github.com/alacritty/alacritty)
+- **Terminal**: [Ghostty](https://ghostty.org/) by default, with [Alacritty](https://alacritty.org/) installed too
 - **Theme**: [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappe flavor)
 - **Shell**: `zsh` with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
 - **Coding**: VS Code, Codex, and Pi

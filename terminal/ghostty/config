@@ -1,0 +1,19 @@
+theme = Catppuccin Frappe
+
+font-family = JetBrainsMono Nerd Font
+font-size = 12
+
+gtk-single-instance = true
+quit-after-last-window-closed = false
+confirm-close-surface = false
+
+copy-on-select = clipboard
+app-notifications = no-clipboard-copy
+
+window-decoration = none
+window-padding-x = 15
+window-padding-y = 10
+resize-overlay = never
+
+shell-integration = detect
+shell-integration-features = cursor,title,ssh-env,ssh-terminfo,path

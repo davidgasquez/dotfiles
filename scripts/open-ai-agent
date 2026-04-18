@@ -40,4 +40,4 @@ if [[ -z "${tool_selection}" ]]; then
     exit 0
 fi
 
-uwsm app -- alacritty --working-directory "${project_path}" --command zsh -ic "${tool_selection}"
+ghostty +new-window --working-directory="${project_path}" -e zsh -ic "${tool_selection}"
