@@ -4,9 +4,6 @@ shell = "zsh"
 
 [plugins]
 
-[plugins.completions]
-github = "zsh-users/zsh-completions"
-
 [plugins.autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
 
