@@ -12,6 +12,9 @@ PICTURES_DIR="${HOME}/Pictures"
 packages=(
     bemoji
     cliphist
+    fcitx5
+    fcitx5-configtool
+    fcitx5-gtk
     fuzzel
     hypridle
     hyprland
