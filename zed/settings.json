@@ -1,5 +1,16 @@
 {
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "diff_view_style": "split",
   "agent": {
+    "dock": "right",
     "default_model": {
       "provider": "copilot_chat",
       "model": "claude-opus-4.6",
@@ -21,6 +32,7 @@
     "runnables": false
   },
   "collaboration_panel": {
+    "dock": "left",
     "button": false
   },
   "autosave": "on_focus_change",
