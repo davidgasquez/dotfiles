@@ -21,7 +21,12 @@
   },
   "languages": {
     "Python": {
-      "language_servers": ["ty", "!basedpyright", "!pyright", "..."]
+      "language_servers": [
+        "ty",
+        "!basedpyright",
+        "!pyright",
+        "..."
+      ]
     }
   },
   "show_edit_predictions": false,
