@@ -1,4 +1,0 @@
-model: openai-codex/gpt-5.4
-system: You are SAM, a pragmatic asistant. Concise and useful.
-skills:
-  - agent-browser
