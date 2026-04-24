@@ -7,7 +7,7 @@ const TERMINAL_FLAG = "branch-terminal";
 const SNAPSHOT_META_TYPE = "branch-term";
 const WINDOW_TITLE = "branch";
 
-type NotifyLevel = "info" | "warning" | "error" | "success";
+type NotifyLevel = "info" | "warning" | "error";
 type LaunchMode = "terminal" | "tmux" | "ghostty";
 type SnapshotEntry = ReturnType<SessionManager["getBranch"]>[number];
 type SnapshotSource = Pick<
@@ -192,8 +192,7 @@ function copyBranchEntries(
         break;
       }
       case "session_info": {
-        if (!entry.name) break;
-        const newId = target.appendSessionInfo(entry.name);
+        const newId = target.appendSessionInfo(entry.name ?? "");
         idMap.set(entry.id, newId);
         break;
       }
@@ -248,9 +247,25 @@ function selectBranchSnapshot(
     if (entry.type !== "message" || entry.message.role !== "user") continue;
 
     const snapshotLeafId = entry.parentId;
+    const hasCommittedAssistantContext = branch
+      .slice(0, index)
+      .some(
+        (priorEntry) =>
+          priorEntry.type === "message" &&
+          priorEntry.message.role === "assistant",
+      );
+
+    if (!snapshotLeafId || !hasCommittedAssistantContext) {
+      return {
+        leafId: entry.id,
+        entries: branch.slice(0, index + 1),
+        excludedInflightTurn: false,
+      };
+    }
+
     return {
       leafId: snapshotLeafId,
-      entries: snapshotLeafId ? sessionManager.getBranch(snapshotLeafId) : [],
+      entries: sessionManager.getBranch(snapshotLeafId),
       excludedInflightTurn: true,
     };
   }
@@ -262,29 +277,64 @@ function selectBranchSnapshot(
   };
 }
 
+function appendSnapshotMeta(
+  target: SessionManager,
+  source: SnapshotSource,
+  selection: SnapshotSelection,
+): void {
+  target.appendCustomEntry(SNAPSHOT_META_TYPE, {
+    kind: "snapshot-fork",
+    sourceSessionFile: source.getSessionFile(),
+    sourceSessionId: source.getSessionId(),
+    sourceLeafId: selection.leafId,
+    sourceEntryCount: selection.entries.length,
+    excludedInflightTurn: selection.excludedInflightTurn,
+    createdAt: new Date().toISOString(),
+  });
+}
+
+function tryCreateBranchedSnapshot(
+  sessionManager: SnapshotSource,
+  sessionDir: string | undefined,
+  selection: SnapshotSelection,
+): string | undefined {
+  const parentSession = sessionManager.getSessionFile();
+  if (!parentSession || !selection.leafId) return undefined;
+
+  try {
+    const source = SessionManager.open(parentSession, sessionDir);
+    const snapshotFile = source.createBranchedSession(selection.leafId);
+    if (!snapshotFile) return undefined;
+
+    appendSnapshotMeta(source, sessionManager, selection);
+    return persistSession(source);
+  } catch {
+    return undefined;
+  }
+}
+
 function createSnapshotSession(
   sessionManager: SnapshotSource,
   cwd: string,
   excludeInflightTurn: boolean,
 ): { sessionFile: string; selection: SnapshotSelection } {
   const sessionDir = sessionManager.getSessionDir() || undefined;
-  const parentSession = sessionManager.getSessionFile();
   const selection = selectBranchSnapshot(sessionManager, excludeInflightTurn);
+  const branchedSessionFile = tryCreateBranchedSnapshot(
+    sessionManager,
+    sessionDir,
+    selection,
+  );
+  if (branchedSessionFile) {
+    return { sessionFile: branchedSessionFile, selection };
+  }
 
   const target = SessionManager.create(cwd, sessionDir);
-  target.newSession({ parentSession });
+  target.newSession({ parentSession: sessionManager.getSessionFile() });
   if (selection.entries.length > 0)
     copyBranchEntries(target, selection.entries);
 
-  target.appendCustomEntry(SNAPSHOT_META_TYPE, {
-    kind: "snapshot-fork",
-    sourceSessionFile: parentSession,
-    sourceSessionId: sessionManager.getSessionId(),
-    sourceLeafId: selection.leafId,
-    sourceEntryCount: selection.entries.length,
-    excludedInflightTurn: selection.excludedInflightTurn,
-    createdAt: new Date().toISOString(),
-  });
+  appendSnapshotMeta(target, sessionManager, selection);
 
   return {
     sessionFile: persistSession(target),
@@ -306,7 +356,7 @@ async function openSnapshotTerminal(
       title: WINDOW_TITLE,
     });
     spawnDetached("bash", ["-lc", command], (error) =>
-      notify(ctx, `Terminal command failed: ${error.message}`, "error"),
+      notifyLaunchError(ctx, "Terminal command", error, snapshotFile),
     );
     notifyOpened(ctx, selection, "terminal");
     return;
@@ -324,9 +374,13 @@ async function openSnapshotTerminal(
       snapshotFile,
     ]);
     if (result.code !== 0) {
-      throw new Error(
-        result.stderr || result.stdout || "tmux new-window failed",
+      notifyLaunchError(
+        ctx,
+        "tmux",
+        new Error(result.stderr || result.stdout || "tmux new-window failed"),
+        snapshotFile,
       );
+      return;
     }
     notifyOpened(ctx, selection, "tmux");
     return;
@@ -366,9 +420,7 @@ export default function (pi: ExtensionAPI) {
         ctx.cwd,
         excludeInflightTurn,
       );
-      const terminalCommand = normalizeTerminalFlag(
-        pi.getFlag(`--${TERMINAL_FLAG}`),
-      );
+      const terminalCommand = normalizeTerminalFlag(pi.getFlag(TERMINAL_FLAG));
       await openSnapshotTerminal(
         pi,
         ctx,

@@ -3,11 +3,11 @@
   "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "high",
   "collapseChangelog": true,
-  "hideThinkingBlock": true,
+  "enableSkillCommands": false,
   "quietStartup": true,
   "transport": "auto",
   "theme": "frappe",
-  "lastChangelogVersion": "0.70.0",
+  "lastChangelogVersion": "0.70.2",
   "pi-custom-codex": {
     "fast": true,
     "verbosity": "low"
