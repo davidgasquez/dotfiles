@@ -1,12 +1,9 @@
-#!/usr/bin/env -S uv run --script
-# /// script
-# requires-python = ">=3.13"
-# dependencies = []
-# ///
+#!/usr/bin/env python
 """Run an isolated Pi profile from a Markdown file."""
 
 import os
 import shlex
+import subprocess
 import sys
 from pathlib import Path
 
@@ -35,9 +32,10 @@ class UsageError(Exception):
 
 
 def usage() -> str:
-    return """Usage: pi-subagent [--dry-run] <profile.md|name> [pi args/messages...]
+    return """Usage: pi-subagent [--dry-run] [--terminal] <profile.md|name> [pi args/messages...]
+       pi-subagent --list-agents
 
-Run Pi with a Markdown profile settings. Pi is isolated from context files, skills,
+Run Pi with Markdown profile settings. Pi is isolated from context files, skills,
 prompt templates, extensions, and tools.
 
 Profile frontmatter example:
@@ -51,19 +49,31 @@ Profile frontmatter example:
   You are SAM, a pragmatic assistant. Concise and useful.
 
 Options:
-  --dry-run       Print the pi command instead of executing it
+  --dry-run       Print the command instead of executing it
+  --terminal      Launch Pi in a detached Ghostty terminal window
+  --list-agents   List discovered agent Markdown files
   -h, --help      Show this help
 """
 
 
-def parse_cli(argv: list[str]) -> tuple[str, list[str], bool]:
+def parse_cli(argv: list[str]) -> tuple[str | None, list[str], bool, bool, bool]:
     dry_run = False
+    terminal = False
+    list_agents = False
     index = 0
 
     while index < len(argv):
         arg = argv[index]
         if arg == "--dry-run":
             dry_run = True
+            index += 1
+            continue
+        if arg == "--terminal":
+            terminal = True
+            index += 1
+            continue
+        if arg == "--list-agents":
+            list_agents = True
             index += 1
             continue
         if arg in {"-h", "--help"}:
@@ -73,10 +83,15 @@ def parse_cli(argv: list[str]) -> tuple[str, list[str], bool]:
             raise UsageError(f"unknown pi-subagent option before profile: {arg}")
         break
 
+    if list_agents:
+        if index < len(argv):
+            raise UsageError("--list-agents does not accept a profile or pi args")
+        return None, [], dry_run, terminal, list_agents
+
     if index >= len(argv):
         raise UsageError("missing profile")
 
-    return argv[index], argv[index + 1 :], dry_run
+    return argv[index], argv[index + 1 :], dry_run, terminal, list_agents
 
 
 def is_profile_path(value: str) -> bool:
@@ -86,6 +101,39 @@ def is_profile_path(value: str) -> bool:
         or "/" in value
         or value.lower().endswith(".md")
     )
+
+
+def agent_dirs(cwd: Path) -> list[Path]:
+    return [
+        *(parent / ".pi" / "agents" for parent in (cwd, *cwd.parents)),
+        Path.home() / ".pi" / "agent" / "agents",
+        Path.home() / ".pi" / "agent" / "extensions" / "subagent" / "agents",
+    ]
+
+
+def list_agent_files(cwd: Path) -> list[Path]:
+    seen: set[Path] = set()
+    files: list[Path] = []
+
+    for directory in agent_dirs(cwd):
+        if not directory.is_dir():
+            continue
+        for path in sorted(directory.glob("*.md"), key=lambda item: item.name.lower()):
+            resolved = path.resolve()
+            if resolved in seen:
+                continue
+            seen.add(resolved)
+            files.append(path)
+
+    return files
+
+
+def display_path(path: Path, cwd: Path) -> str:
+    if path.is_relative_to(cwd):
+        return str(path.relative_to(cwd))
+    if path.is_relative_to(Path.home()):
+        return f"~/{path.relative_to(Path.home())}"
+    return str(path)
 
 
 def resolve_profile(value: str, cwd: Path) -> Path:
@@ -102,14 +150,10 @@ def resolve_profile(value: str, cwd: Path) -> Path:
     if not name:
         raise UsageError("profile name cannot be empty")
 
-    for parent in (cwd, *cwd.parents):
-        path = parent / ".pi" / "agents" / f"{name}.md"
+    for directory in agent_dirs(cwd):
+        path = directory / f"{name}.md"
         if path.is_file():
             return path.resolve()
-
-    user_path = Path.home() / ".pi" / "agent" / "agents" / f"{name}.md"
-    if user_path.is_file():
-        return user_path.resolve()
 
     raise UsageError(f"profile not found: {value}")
 
@@ -221,14 +265,58 @@ def build_pi_args(data: dict[str, str], body: str, passthrough: list[str]) -> li
     return args
 
 
+def build_terminal_args(pi_args: list[str], cwd: Path) -> list[str]:
+    return [
+        "ghostty",
+        "+new-window",
+        f"--working-directory={cwd}",
+        "-e",
+        "zsh",
+        "-ic",
+        f"exec {shlex.join(pi_args)}",
+    ]
+
+
+def launch_terminal(args: list[str]) -> None:
+    try:
+        subprocess.Popen(
+            args,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+    except FileNotFoundError as error:
+        raise UsageError("ghostty not found in PATH") from error
+    except OSError as error:
+        raise UsageError(f"failed to launch terminal: {error}") from error
+
+
 def main(argv: list[str]) -> int:
     try:
-        profile, passthrough, dry_run = parse_cli(argv)
-        profile_path = resolve_profile(profile, Path.cwd())
+        profile, passthrough, dry_run, terminal, list_agents = parse_cli(argv)
+        cwd = Path.cwd()
+
+        if list_agents:
+            for path in list_agent_files(cwd):
+                print(display_path(path, cwd))
+            return 0
+
+        if profile is None:
+            raise UsageError("missing profile")
+
+        profile_path = resolve_profile(profile, cwd)
         data, body = split_frontmatter(
             profile_path.read_text(encoding="utf-8"), profile_path
         )
         pi_args = build_pi_args(data, body, passthrough)
+
+        if terminal:
+            terminal_args = build_terminal_args(pi_args, cwd)
+            if dry_run:
+                print(shlex.join(terminal_args))
+                return 0
+            launch_terminal(terminal_args)
+            return 0
 
         if dry_run:
             print(shlex.join(pi_args))
