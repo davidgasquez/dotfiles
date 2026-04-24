@@ -1,11 +1,11 @@
 ---
-name: local-search
-description: Search markdown knowledge bases, notes, code, and documentation using `qmd`. Use when users ask to search notes, find documents, locate some code, look up information, understand a data structure, ...
+name: qmd
+description: Search local files semantically. Works for markdown and code using `qmd` cli. Use when users ask to search locally using qmd.
 ---
 
-# Local Search
+# `qmd`
 
-Local search engine for text files (markdown, code, ...).
+Semantic search engine for text files (markdown, code, ...).
 
 **Always complement it with manual search** (`ls`, `find`, `rg`) to get a better picture of the file layout and relevant files.
 
