@@ -6,7 +6,11 @@ help:
 
 .PHONY: lint-sh
 lint-sh:
-	@ rg --files -g '*.sh' -g 'scripts/*' -g '*/setup.sh' | xargs -r shellcheck -x
+	@ rg --files -g '*.sh' -g 'scripts/*' -g '*/setup.sh' | while IFS= read -r file; do \
+		first_line=$$(head -n 1 "$$file"); \
+		case "$$first_line" in *python*|*"uv run --script"*) continue ;; esac; \
+		shellcheck -x --shell=bash "$$file"; \
+	done
 
 .PHONY: paru
 paru:
