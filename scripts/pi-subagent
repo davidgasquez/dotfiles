@@ -1,0 +1,247 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.13"
+# dependencies = []
+# ///
+"""Run an isolated Pi profile from a Markdown file."""
+
+import os
+import shlex
+import sys
+from pathlib import Path
+
+MANAGED_KEYS = {"model", "tools", "thinking", "append-system-prompt"}
+IGNORED_KEYS = {"name", "description"}
+ALLOWED_KEYS = MANAGED_KEYS | IGNORED_KEYS
+
+OVERRIDE_FLAGS = {
+    "model": ["--model"],
+    "tools": ["--tools", "-t"],
+    "thinking": ["--thinking"],
+    "prompt": ["--system-prompt", "--append-system-prompt"],
+}
+ISOLATION_FLAGS = [
+    "--no-context-files",
+    "--no-skills",
+    "--no-prompt-templates",
+    "--no-extensions",
+    "--no-tools",
+    "--no-builtin-tools",
+]
+
+
+class UsageError(Exception):
+    """Expected user-facing CLI/profile error."""
+
+
+def usage() -> str:
+    return """Usage: pi-subagent [--dry-run] <profile.md|name> [pi args/messages...]
+
+Run Pi with a Markdown profile settings. Pi is isolated from context files, skills,
+prompt templates, extensions, and tools.
+
+Profile frontmatter example:
+  ---
+  model: openai-codex/gpt-5.5
+  tools: read,grep,find,ls
+  thinking: low
+  append-system-prompt: false
+  ---
+
+  You are SAM, a pragmatic assistant. Concise and useful.
+
+Options:
+  --dry-run       Print the pi command instead of executing it
+  -h, --help      Show this help
+"""
+
+
+def parse_cli(argv: list[str]) -> tuple[str, list[str], bool]:
+    dry_run = False
+    index = 0
+
+    while index < len(argv):
+        arg = argv[index]
+        if arg == "--dry-run":
+            dry_run = True
+            index += 1
+            continue
+        if arg in {"-h", "--help"}:
+            print(usage(), end="")
+            raise SystemExit(0)
+        if arg.startswith("-"):
+            raise UsageError(f"unknown pi-subagent option before profile: {arg}")
+        break
+
+    if index >= len(argv):
+        raise UsageError("missing profile")
+
+    return argv[index], argv[index + 1 :], dry_run
+
+
+def is_profile_path(value: str) -> bool:
+    return (
+        value == "~"
+        or value.startswith(("~/", "./", "../", "/"))
+        or "/" in value
+        or value.lower().endswith(".md")
+    )
+
+
+def resolve_profile(value: str, cwd: Path) -> Path:
+    if is_profile_path(value):
+        path = Path(value).expanduser()
+        if not path.is_absolute():
+            path = cwd / path
+        if path.is_file():
+            return path.resolve()
+        if "/" in value or value.startswith(("~", ".")):
+            raise UsageError(f"profile file not found: {path}")
+
+    name = value.removesuffix(".md").lower()
+    if not name:
+        raise UsageError("profile name cannot be empty")
+
+    for parent in (cwd, *cwd.parents):
+        path = parent / ".pi" / "agents" / f"{name}.md"
+        if path.is_file():
+            return path.resolve()
+
+    user_path = Path.home() / ".pi" / "agent" / "agents" / f"{name}.md"
+    if user_path.is_file():
+        return user_path.resolve()
+
+    raise UsageError(f"profile not found: {value}")
+
+
+def split_frontmatter(text: str, path: Path) -> tuple[dict[str, str], str]:
+    text = text.removeprefix("\ufeff")
+    lines = text.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return {}, text
+
+    for index, line in enumerate(lines[1:], start=1):
+        if line.strip() == "---":
+            frontmatter = "\n".join(lines[1:index])
+            body = "\n".join(lines[index + 1 :])
+            return parse_frontmatter(frontmatter, path), body
+
+    raise UsageError(f"{path}: missing closing frontmatter delimiter")
+
+
+def parse_frontmatter(text: str, path: Path) -> dict[str, str]:
+    data: dict[str, str] = {}
+    for line_number, raw_line in enumerate(text.splitlines(), start=2):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if ":" not in line:
+            raise UsageError(f"{path}:{line_number}: expected 'key: value'")
+
+        key, value = line.split(":", 1)
+        key = key.strip()
+        value = strip_quotes(value.strip())
+        if not key:
+            raise UsageError(f"{path}:{line_number}: empty key")
+        if key not in ALLOWED_KEYS:
+            raise UsageError(f"{path}:{line_number}: unsupported key: {key}")
+        if key in data:
+            raise UsageError(f"{path}:{line_number}: duplicate key: {key}")
+        if key in MANAGED_KEYS and not value:
+            raise UsageError(f"{path}:{line_number}: empty value for {key}")
+
+        data[key] = value
+
+    return data
+
+
+def strip_quotes(value: str) -> str:
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        return value[1:-1]
+    return value
+
+
+def bool_value(data: dict[str, str], key: str, default: bool) -> bool:
+    value = data.get(key)
+    if value is None:
+        return default
+    if value.lower() in {"true", "yes"}:
+        return True
+    if value.lower() in {"false", "no"}:
+        return False
+    raise UsageError(f"{key}: expected boolean true/false")
+
+
+def comma_list(data: dict[str, str], key: str) -> str | None:
+    value = data.get(key)
+    if value is None:
+        return None
+
+    items = [item.strip() for item in value.split(",") if item.strip()]
+    if not items:
+        raise UsageError(f"{key}: expected at least one comma-separated value")
+    return ",".join(items)
+
+
+def has_flag(args: list[str], flags: list[str]) -> bool:
+    long_flags = [flag for flag in flags if flag.startswith("--")]
+    for arg in args:
+        if arg in flags:
+            return True
+        if any(arg.startswith(f"{flag}=") for flag in long_flags):
+            return True
+    return False
+
+
+def build_pi_args(data: dict[str, str], body: str, passthrough: list[str]) -> list[str]:
+    args = ["pi", *ISOLATION_FLAGS]
+
+    model = data.get("model")
+    if model and not has_flag(passthrough, OVERRIDE_FLAGS["model"]):
+        args.extend(["--model", model])
+
+    thinking = data.get("thinking")
+    if thinking and not has_flag(passthrough, OVERRIDE_FLAGS["thinking"]):
+        args.extend(["--thinking", thinking])
+
+    tools = comma_list(data, "tools")
+    if tools and not has_flag(passthrough, OVERRIDE_FLAGS["tools"]):
+        args.extend(["--tools", tools])
+
+    prompt = body.strip()
+    if prompt and not has_flag(passthrough, OVERRIDE_FLAGS["prompt"]):
+        flag = (
+            "--append-system-prompt"
+            if bool_value(data, "append-system-prompt", False)
+            else "--system-prompt"
+        )
+        args.extend([flag, prompt])
+
+    args.extend(passthrough)
+    return args
+
+
+def main(argv: list[str]) -> int:
+    try:
+        profile, passthrough, dry_run = parse_cli(argv)
+        profile_path = resolve_profile(profile, Path.cwd())
+        data, body = split_frontmatter(
+            profile_path.read_text(encoding="utf-8"), profile_path
+        )
+        pi_args = build_pi_args(data, body, passthrough)
+
+        if dry_run:
+            print(shlex.join(pi_args))
+            return 0
+
+        os.execvp(pi_args[0], pi_args)
+    except UsageError as error:
+        print(f"pi-subagent: {error}", file=sys.stderr)
+        print("Try 'pi-subagent --help'.", file=sys.stderr)
+        return 2
+
+    return 127
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))
