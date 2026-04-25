@@ -5,20 +5,33 @@ usage() {
   cat <<'EOF'
 Usage: look-at path [--objective text] [--context text]
 
-Analyze a local PDF or image.
+Analyze local PDFs and images when visual interpretation matters.
+
+Use for:
+  - PDFs where layout, scans, tables, or figures matter
+  - Images, screenshots, scans, and diagrams
+  - Targeted extraction and concise summaries
+
+PDF accuracy tip:
+  - look-at renders PDFs to page images for visual analysis
+  - verify exact quotes/fields separately with markitdown, pdfplumber, pypdf, or pymupdf
 
 Arguments:
   path              Primary file path, relative or absolute
 
 Options:
-  --objective       Optional targeted extraction goal
-  --context         Optional broader background
+  --objective       Specific goal; avoid vague prompts like "look at this"
+  --context         Why it matters / what to prioritize
   -h, --help        Show this help
 
+Advice:
+  - Prefer targeted extraction over broad summaries
+  - Provide --objective and --context for accuracy
+  - Treat blurry, occluded, or ambiguous content as uncertain
+
 Examples:
-  look-at path/to/file.pdf
-  look-at path/to/file.pdf --objective "Extract the total due and due date"
-  look-at path/to/image.png --objective "Describe the key visual details" --context "I need a quick summary"
+  look-at path/to/file.pdf --objective "Extract total due, due date, and vendor"
+  look-at path/to/image.png --objective "Describe key visual details" --context "Need a quick summary"
 EOF
 }
 

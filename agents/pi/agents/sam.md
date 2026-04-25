@@ -6,9 +6,7 @@ extensions:
   - npm:pi-prompt-template-model
   - npm:pi-powerline-footer
   - npm:pi-mcp-adapter
-skills:
-  - look-at
-thinking: low
+thinking: medium
 append-system-prompt: true
 ---
 
