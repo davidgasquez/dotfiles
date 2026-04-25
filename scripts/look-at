@@ -5,7 +5,7 @@ usage() {
   cat <<'EOF'
 Usage: look-at path [--objective text] [--context text]
 
-Analyze a local PDF or image with gpt-5.4.
+Analyze a local PDF or image.
 
 Arguments:
   path              Primary file path, relative or absolute
@@ -188,7 +188,7 @@ ${file_handling_summary}Requirements:
 EOF
   )
 
-  pi --model openai-codex/gpt-5.4 --thinking low --no-session --no-tools --system-prompt "$system_prompt" -p "${attachments[@]}" "$prompt"
+  pi --thinking low --no-session --no-tools --system-prompt "$system_prompt" -p "${attachments[@]}" "$prompt"
 }
 
 main "$@"

@@ -1,0 +1,373 @@
+#!/usr/bin/env python3
+import os
+import shlex
+import subprocess
+import sys
+from dataclasses import dataclass, field
+from pathlib import Path
+
+ALLOWED_KEYS = {
+    "model",
+    "tools",
+    "skills",
+    "extensions",
+    "thinking",
+    "append-system-prompt",
+    "name",
+    "description",
+}
+REQUIRED_KEYS = {"model", "tools", "skills", "extensions", "thinking"}
+ISOLATION_FLAGS = [
+    "--no-context-files",
+    "--no-prompt-templates",
+]
+HELP = """Usage: pi-agent-profile [--dry-run] [--terminal] <profile.md|name> [pi args/messages...]
+       pi-agent-profile --list-agents
+
+Run Pi with an isolated Markdown profile.
+Frontmatter keys: model, tools, skills, extensions, thinking, append-system-prompt, name, description.
+tools omitted keeps Pi's default built-in tools; tools may be comma-separated
+or a YAML list and are passed to --tools as an explicit allowlist.
+skills omitted loads no skills; use 'skills: inherit' to keep Pi's skill
+discovery, or comma-separated/YAML list entries to load explicitly. Skill names
+resolve under ~/.agents/skills/.
+extensions omitted loads no extensions; use 'extensions: inherit' to keep Pi's
+extension discovery, or comma-separated/YAML list entries to load explicitly.
+The Markdown body becomes --system-prompt, or --append-system-prompt when
+append-system-prompt: true is set.
+"""
+
+
+@dataclass(frozen=True)
+class CliArgs:
+    profile: str | None = None
+    passthrough: list[str] = field(default_factory=list)
+    dry_run: bool = False
+    terminal: bool = False
+    list_agents: bool = False
+
+
+class UsageError(Exception):
+    pass
+
+
+def parse_cli(argv: list[str]) -> CliArgs:
+    flags = {
+        "--dry-run": "dry_run",
+        "--terminal": "terminal",
+        "--list-agents": "list_agents",
+    }
+    opts: dict[str, bool] = {}
+    i = 0
+
+    while i < len(argv):
+        arg = argv[i]
+        if arg in {"-h", "--help"}:
+            print(HELP, end="")
+            raise SystemExit(0)
+        if arg in flags:
+            opts[flags[arg]] = True
+            i += 1
+        elif arg.startswith("-"):
+            raise UsageError(f"unknown pi-agent-profile option before profile: {arg}")
+        else:
+            break
+
+    if opts.get("list_agents"):
+        if i < len(argv):
+            raise UsageError("--list-agents does not accept a profile or pi args")
+        return CliArgs(**opts)
+
+    if i >= len(argv):
+        raise UsageError("missing profile")
+
+    return CliArgs(profile=argv[i], passthrough=argv[i + 1 :], **opts)
+
+
+def agent_dirs(cwd: Path) -> list[Path]:
+    return [p / ".pi" / "agents" for p in (cwd, *cwd.parents)] + [
+        Path.home() / ".pi" / "agent" / "agents"
+    ]
+
+
+def agent_files(cwd: Path) -> list[Path]:
+    return [
+        path
+        for directory in agent_dirs(cwd)
+        if directory.is_dir()
+        for path in sorted(directory.glob("*.md"), key=lambda p: p.name.lower())
+    ]
+
+
+def resolve_profile(value: str, cwd: Path) -> Path:
+    if "/" in value or value.startswith("~"):
+        path = Path(value).expanduser()
+        if not path.is_absolute():
+            path = cwd / path
+        if path.is_file():
+            return path.resolve()
+        raise UsageError(f"profile file not found: {path}")
+
+    name = value.removesuffix(".md").lower()
+    for directory in agent_dirs(cwd):
+        path = directory / f"{name}.md"
+        if path.is_file():
+            return path.resolve()
+
+    raise UsageError(f"profile not found: {value}")
+
+
+def load_profile(path: Path) -> tuple[dict[str, str | list[str] | bool], str]:
+    text = path.read_text(encoding="utf-8").removeprefix("\ufeff")
+
+    if not text.startswith("---\n"):
+        return {}, text.strip()
+
+    try:
+        end = text.index("\n---", 4)
+    except ValueError:
+        raise UsageError(f"{path}: missing closing frontmatter delimiter")
+
+    frontmatter = text[4:end]
+    body = text[end + 4 :].lstrip("\n")
+    return parse_frontmatter(path, frontmatter), body.strip()
+
+
+def parse_frontmatter(
+    path: Path, frontmatter: str
+) -> dict[str, str | list[str] | bool]:
+    data: dict[str, str | list[str] | bool] = {}
+    lines = frontmatter.splitlines()
+    i = 0
+
+    while i < len(lines):
+        number = i + 2
+        raw = lines[i]
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            i += 1
+            continue
+
+        if ":" not in line:
+            raise UsageError(f"{path}:{number}: expected 'key: value'")
+
+        key, _, raw_value = line.partition(":")
+        key, value = key.strip(), unquote(raw_value.strip())
+
+        if key not in ALLOWED_KEYS:
+            raise UsageError(f"{path}:{number}: unsupported key: {key}")
+        if key in data:
+            raise UsageError(f"{path}:{number}: duplicate key: {key}")
+        if key == "append-system-prompt":
+            if not value:
+                raise UsageError(f"{path}:{number}: empty value for {key}")
+            value = parse_bool(path, number, key, value)
+            i += 1
+        elif key in {"tools", "skills", "extensions"} and not value:
+            value, i = parse_yaml_list(path, lines, i + 1, key)
+        elif key in REQUIRED_KEYS and not value:
+            raise UsageError(f"{path}:{number}: empty value for {key}")
+        else:
+            i += 1
+
+        data[key] = value
+
+    return data
+
+
+def parse_yaml_list(
+    path: Path, lines: list[str], start: int, key: str
+) -> tuple[list[str], int]:
+    items: list[str] = []
+    i = start
+
+    while i < len(lines):
+        number = i + 2
+        raw = lines[i]
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            i += 1
+            continue
+        if not raw.startswith((" ", "\t")):
+            break
+        if not line.startswith("-"):
+            raise UsageError(f"{path}:{number}: expected '- value' for {key}")
+
+        item = unquote(line[1:].strip())
+        if not item:
+            raise UsageError(f"{path}:{number}: empty list item for {key}")
+        items.append(item)
+        i += 1
+
+    if not items:
+        raise UsageError(
+            f"{path}:{start + 2}: expected at least one list item for {key}"
+        )
+
+    return items, i
+
+
+def unquote(value: str) -> str:
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "'\"":
+        return value[1:-1]
+    return value
+
+
+def parse_bool(path: Path, number: int, key: str, value: str) -> bool:
+    normalized = value.lower()
+    if normalized == "true":
+        return True
+    if normalized == "false":
+        return False
+    raise UsageError(f"{path}:{number}: expected true or false for {key}")
+
+
+def pi_command(profile: Path, passthrough: list[str], cwd: Path) -> list[str]:
+    data, prompt = load_profile(profile)
+    command = ["pi", *ISOLATION_FLAGS]
+    command += skills_flags(data.get("skills"), cwd)
+    command += extension_flags(data.get("extensions"))
+
+    for key, flag in (("model", "--model"), ("thinking", "--thinking")):
+        if value := data.get(key):
+            command += [flag, value]
+
+    if "tools" in data:
+        command += ["--tools", ",".join(parse_list_field("tools", data["tools"]))]
+
+    if prompt:
+        prompt_flag = (
+            "--append-system-prompt"
+            if data.get("append-system-prompt") is True
+            else "--system-prompt"
+        )
+        command += [prompt_flag, prompt]
+
+    return command + passthrough
+
+
+def skills_flags(value: str | list[str] | None, cwd: Path) -> list[str]:
+    return resource_flags(
+        "skills",
+        "--no-skills",
+        "--skill",
+        value,
+        resolve_item=lambda item: resolve_skill(item, cwd),
+    )
+
+
+def extension_flags(value: str | list[str] | None) -> list[str]:
+    return resource_flags("extensions", "--no-extensions", "--extension", value)
+
+
+def resource_flags(
+    key: str,
+    no_flag: str,
+    item_flag: str,
+    value: str | list[str] | None,
+    resolve_item=None,
+) -> list[str]:
+    if value is None:
+        return [no_flag]
+    if isinstance(value, str) and value.strip() == "inherit":
+        return []
+
+    flags = [no_flag]
+    for item in parse_list_field(key, value):
+        if item == "inherit":
+            raise UsageError(f"{key}: inherit cannot be combined with explicit values")
+        resolved = resolve_item(item) if resolve_item else normalize_resource_path(item)
+        flags += [item_flag, resolved]
+    return flags
+
+
+def parse_list_field(key: str, value: str | list[str]) -> list[str]:
+    if isinstance(value, str):
+        items = [item.strip() for item in value.split(",") if item.strip()]
+    else:
+        items = [item.strip() for item in value if item.strip()]
+    if not items:
+        raise UsageError(f"{key}: expected at least one comma-separated value")
+    return items
+
+
+def normalize_resource_path(value: str) -> str:
+    if value.startswith("~"):
+        return str(Path(value).expanduser())
+    return value
+
+
+def resolve_skill(value: str, cwd: Path) -> str:
+    if looks_like_path(value):
+        path = Path(value).expanduser()
+        resolved = path if path.is_absolute() else cwd / path
+    else:
+        resolved = Path.home() / ".agents" / "skills" / value
+
+    if not resolved.exists():
+        raise UsageError(f"skills: skill not found: {value}")
+    return str(resolved)
+
+
+def looks_like_path(value: str) -> bool:
+    return value.startswith(("~", ".", "/")) or "/" in value or value.endswith(".md")
+
+
+def print_agent_files(cwd: Path) -> None:
+    home = str(Path.home())
+    for path in agent_files(cwd):
+        print(str(path).replace(home, "~", 1))
+
+
+def run_command(command: list[str], terminal: bool, dry_run: bool) -> None:
+    if dry_run:
+        print(shlex.join(command))
+        return
+
+    if terminal:
+        subprocess.Popen(
+            command,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+        return
+
+    os.execvp(command[0], command)
+
+
+def main(argv: list[str]) -> int:
+    try:
+        args = parse_cli(argv)
+        cwd = Path.cwd()
+
+        if args.list_agents:
+            print_agent_files(cwd)
+            return 0
+
+        assert args.profile is not None
+        command = pi_command(resolve_profile(args.profile, cwd), args.passthrough, cwd)
+        if args.terminal:
+            command = [
+                "ghostty",
+                "+new-window",
+                f"--working-directory={cwd}",
+                "-e",
+                *command,
+            ]
+
+        run_command(command, args.terminal, args.dry_run)
+        return 0
+    except UsageError as error:
+        print(
+            f"pi-agent-profile: {error}\nTry 'pi-agent-profile --help'.",
+            file=sys.stderr,
+        )
+        return 2
+    except FileNotFoundError as error:
+        print(f"pi-agent-profile: command not found: {error.filename}", file=sys.stderr)
+        return 127
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))
