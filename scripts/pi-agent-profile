@@ -25,16 +25,6 @@ HELP = """Usage: pi-agent-profile [--dry-run] [--terminal] <profile.md|name> [pi
        pi-agent-profile --list-agents
 
 Run Pi with an isolated Markdown profile.
-Frontmatter keys: model, tools, skills, extensions, thinking, append-system-prompt, name, description.
-tools omitted keeps Pi's default built-in tools; tools may be comma-separated
-or a YAML list and are passed to --tools as an explicit allowlist.
-skills omitted loads no skills; use 'skills: inherit' to keep Pi's skill
-discovery, or comma-separated/YAML list entries to load explicitly. Skill names
-resolve under ~/.agents/skills/.
-extensions omitted loads no extensions; use 'extensions: inherit' to keep Pi's
-extension discovery, or comma-separated/YAML list entries to load explicitly.
-The Markdown body becomes --system-prompt, or --append-system-prompt when
-append-system-prompt: true is set.
 """
 
 
