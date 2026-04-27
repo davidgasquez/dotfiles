@@ -1,0 +1,5 @@
+[Behavior]
+ShowTrayIcon=False
+
+[Behavior/DisabledAddons]
+0=notificationitem
