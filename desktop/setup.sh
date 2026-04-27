@@ -14,6 +14,8 @@ packages=(
     gvfs-mtp
     mpv
     ntfs-3g
+    slack-desktop
+    spotify
     thunar
     tumbler
     thunar-archive-plugin
