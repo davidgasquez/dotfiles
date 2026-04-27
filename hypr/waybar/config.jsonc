@@ -3,13 +3,12 @@
   "position": "top",
   "height": 32,
   "spacing": 0,
-  "fixed-center": false,
+  "fixed-center": true,
   "reload_style_on_change": true,
 
   "modules-left": ["hyprland/workspaces", "hyprland/submap"],
-  "modules-center": [],
+  "modules-center": ["mpris"],
   "modules-right": [
-    "mpris",
     "wireplumber",
     "backlight",
     "battery",
