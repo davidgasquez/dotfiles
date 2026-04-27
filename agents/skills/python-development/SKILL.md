@@ -1,6 +1,6 @@
 ---
 name: python-development
-description: Use when writing, reviewing, refactoring, running, linting, formatting, or packaging Python code and self-contained Python scripts using modern Python, uv, Ruff, ty, and PEP 723 inline script metadata.
+description: Use when writing, reviewing, refactoring, running, linting, formatting, or packaging Python code and self-contained Python scripts using modern Python, uv, Ruff, ty, and PEP 723 inline script metadata. Always use `uv` instead of pip/python/venv.
 ---
 
 # Python Development
