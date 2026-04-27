@@ -64,6 +64,11 @@ if ! systemctl is-enabled --quiet systemd-oomd.service; then
     sudo systemctl enable --now systemd-oomd.service
 fi
 
+# Power Profiles
+if ! systemctl is-enabled --quiet power-profiles-daemon.service; then
+    sudo systemctl enable --now power-profiles-daemon.service
+fi
+
 # Gnome Keyring
 if ! systemctl --user is-enabled --quiet gnome-keyring-daemon.socket; then
     systemctl --user enable --now gnome-keyring-daemon.socket
