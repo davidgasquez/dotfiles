@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+HOST_DIR=$(dirname "$(realpath "$0")")
+HYPR_CONFIG_DIR="${HOME}/.config/hypr"
+
 # Add ASUS Linux repository
 echo "Setting up ASUS Linux repository..."
 sudo pacman-key --recv-keys 8F654886F17D497FEFE3DB448B15A6B0E9A3FA35
@@ -75,5 +78,8 @@ if ! systemctl is-enabled --quiet powertop.service; then
 else
     echo "PowerTOP service already enabled"
 fi
+
+mkdir -p "${HYPR_CONFIG_DIR}"
+ln -sf "${HOST_DIR}/hypr/monitor.conf" "${HYPR_CONFIG_DIR}/monitor.conf"
 
 # Optionally, theme Plymouth (https://github.com/adi1090x/plymouth-themes)

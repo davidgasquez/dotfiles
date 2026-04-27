@@ -7,6 +7,7 @@ WAYBAR_CONFIG_DIR="${HOME}/.config/waybar"
 MAKO_CONFIG_DIR="${HOME}/.config/mako"
 FUZZEL_CONFIG_DIR="${HOME}/.config/fuzzel"
 VOXTYPE_CONFIG_DIR="${HOME}/.config/voxtype"
+UWSM_CONFIG_DIR="${HOME}/.config/uwsm"
 PICTURES_DIR="${HOME}/Pictures"
 
 packages=(
@@ -43,12 +44,16 @@ packages=(
 # Install Hyprland and related packages
 paru -S --needed --noconfirm "${packages[@]}"
 
-# Start Polkit agent for Hyprland (https://wiki.hypr.land/Hypr-Ecosystem/hyprpolkitagent/)
-if ! systemctl --user is-active --quiet hyprpolkitagent.service; then
-    systemctl --user enable --now hyprpolkitagent.service
-fi
+# Start Hyprland session services.
+services=(
+    hypridle.service
+    hyprpaper.service
+    hyprpolkitagent.service
+    mako.service
+    waybar.service
+)
 
-mkdir -p "${HYPR_CONFIG_DIR}" "${WAYBAR_CONFIG_DIR}" "${MAKO_CONFIG_DIR}" "${FUZZEL_CONFIG_DIR}" "${VOXTYPE_CONFIG_DIR}" "${PICTURES_DIR}"
+mkdir -p "${HYPR_CONFIG_DIR}" "${WAYBAR_CONFIG_DIR}" "${MAKO_CONFIG_DIR}" "${FUZZEL_CONFIG_DIR}" "${VOXTYPE_CONFIG_DIR}" "${UWSM_CONFIG_DIR}" "${PICTURES_DIR}"
 
 ln -sf "${DOTFILES}/hypr/wallpaper.png" "${PICTURES_DIR}/wallpaper.png"
 ln -sf "${DOTFILES}/hypr/frappe.conf" "${HYPR_CONFIG_DIR}/frappe.conf"
@@ -60,6 +65,10 @@ ln -sf "${DOTFILES}/hypr/xdph.conf" "${HYPR_CONFIG_DIR}/xdph.conf"
 ln -sf "${DOTFILES}/hypr/waybar/config.jsonc" "${WAYBAR_CONFIG_DIR}/config"
 ln -sf "${DOTFILES}/hypr/waybar/style.css" "${WAYBAR_CONFIG_DIR}/style.css"
 ln -sf "${DOTFILES}/hypr/waybar/frappe.css" "${WAYBAR_CONFIG_DIR}/frappe.css"
+ln -sf "${DOTFILES}/hypr/waybar/battery-status" "${WAYBAR_CONFIG_DIR}/battery-status"
 ln -sf "${DOTFILES}/hypr/mako/config" "${MAKO_CONFIG_DIR}/config"
 ln -sf "${DOTFILES}/hypr/fuzzel/fuzzel.ini" "${FUZZEL_CONFIG_DIR}/fuzzel.ini"
 ln -sf "${DOTFILES}/hypr/voxtype/config.toml" "${VOXTYPE_CONFIG_DIR}/config.toml"
+ln -sf "${DOTFILES}/hypr/uwsm/env" "${UWSM_CONFIG_DIR}/env"
+
+systemctl --user enable "${services[@]}"
