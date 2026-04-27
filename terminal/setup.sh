@@ -10,7 +10,9 @@ packages=(
     bash-completion
     bat
     btop
+    bun
     chafa
+    duckdb
     eza
     ffmpeg
     fzf
@@ -23,6 +25,7 @@ packages=(
     shellcheck
     starship
     tmux
+    todoist-cli-bin
     uv
     npm
     wget
