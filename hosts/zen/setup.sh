@@ -9,6 +9,12 @@ IMAGE="ubuntu-24.04"
 SSH_KEY="helix"
 FIREWALL="ts-only"
 
+packages=(
+  hcloud
+)
+
+paru -S --needed --noconfirm "${packages[@]}"
+
 echo "Creating server ${NAME}..."
 hcloud server create \
   --name "$NAME" \
