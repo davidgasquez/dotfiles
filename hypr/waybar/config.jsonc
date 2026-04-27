@@ -1,87 +1,143 @@
 {
   "layer": "top",
+  "position": "top",
   "height": 32,
-  "spacing": 4,
-  "modules-left": [
-    "hyprland/workspaces",
-    "hyprland/submap"
-  ],
-  "modules-center": [
-    "hyprland/window"
-  ],
+  "spacing": 0,
+  "fixed-center": false,
+  "reload_style_on_change": true,
+
+  "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+  "modules-center": [],
   "modules-right": [
+    "mpris",
+    "wireplumber",
     "backlight",
     "battery",
-    "pulseaudio",
-    "temperature",
-    "tray",
-    "clock"
+    "power-profiles-daemon",
+    "idle_inhibitor",
+    "group/tray-expander",
+    "clock",
   ],
-  // Modules configuration
+
   "hyprland/workspaces": {
     "disable-scroll": true,
-    "all-outputs": true,
-    "warp-on-scroll": false,
-    "format": "{name}"
+    "all-outputs": false,
+    "show-special": true,
+    "special-visible-only": true,
+    "format": "{name}",
+    "sort-by": "number",
   },
-  "tray": {
-    "spacing": 10
+
+  "hyprland/submap": {
+    "format": "󰘳 {}",
+    "max-length": 16,
+    "tooltip": false,
   },
-  "clock": {
-    "format": "{:%Y-%m-%d %H:%M}",
-    "on-click": "brave 'https://calendar.google.com/calendar/r'"
+
+  "mpris": {
+    "format": "{status_icon} {dynamic}",
+    "format-paused": "{status_icon} {dynamic}",
+    "format-stopped": "",
+    "dynamic-order": ["title", "artist"],
+    "dynamic-len": 36,
+    "title-len": 28,
+    "artist-len": 18,
+    "status-icons": {
+      "playing": "",
+      "paused": "",
+      "stopped": "",
+    },
+    "ignored-players": ["firefox"],
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next",
+    "on-click-middle": "playerctl previous",
   },
-  "temperature": {
-    "critical-threshold": 80,
-    "format": "🌡️ {temperatureC}°C"
+
+  "wireplumber": {
+    "format": "{icon}",
+    "format-muted": "",
+    "format-icons": ["", "", ""],
+    "tooltip-format": "Volume {volume}%",
+    "scroll-step": 2,
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click-right": "pavucontrol",
   },
+
   "backlight": {
-    "format": "{percent}% {icon}",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
+    "format": "{icon}",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "tooltip-format": "Brightness {percent}%",
+    "on-scroll-up": "brightnessctl -e4 -n2 set 1%+",
+    "on-scroll-down": "brightnessctl -e4 -n2 set 1%-",
   },
+
   "battery": {
     "states": {
-      "warning": 30,
-      "critical": 15
+      "warning": 20,
+      "critical": 10,
     },
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% ⚡",
-    "format-plugged": "{capacity}% ",
-    "format-alt": "{time} {icon}",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
-  },
-  "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-bluetooth": "{volume}% {icon} ",
-    "format-bluetooth-muted": "🔇 {icon} ",
-    "format-muted": "🔇",
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
+    "format": "{icon}",
+    "format-discharging": "{icon}",
+    "format-charging": "{icon}",
+    "format-plugged": "",
+    "format-full": "󰂅",
+    "format-not-charging": "",
     "format-icons": {
-      "headphone": "🎧",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": "🔊"
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     },
-    "on-click": "pavucontrol"
-  }
+    "tooltip-format": "{capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "tooltip-format-discharging": "{time} left  {power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-plugged": "plugged in {capacity}%",
+    "tooltip-format-full": "full {capacity}%",
+    "tooltip-format-not-charging": "plugged in {capacity}%",
+    "on-click": "bash -lc '$HOME/.config/waybar/battery-status'",
+  },
+
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "format-icons": {
+      "performance": "",
+      "balanced": "",
+      "power-saver": "",
+      "default": "",
+    },
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰅶",
+      "deactivated": "",
+    },
+    "tooltip-format-activated": "Idle inhibitor on",
+    "tooltip-format-deactivated": "Idle inhibitor off",
+  },
+
+  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "tray-group-item",
+    },
+    "modules": ["custom/expand-icon", "tray"],
+  },
+
+  "custom/expand-icon": {
+    "format": "",
+    "tooltip": false,
+  },
+
+  "tray": {
+    "spacing": 12,
+    "icon-size": 14,
+  },
+
+  "clock": {
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "{:%A, %d %B %Y\n%H:%M}",
+    "on-click": "uwsm app -- brave --app=https://calendar.google.com/calendar/r",
+  },
 }

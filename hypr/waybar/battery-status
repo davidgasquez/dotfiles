@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+battery=$(upower -e | grep -m1 -E 'battery|BAT' || true)
+if [[ -z "${battery}" ]]; then
+    notify-send -u low "Battery" "No battery detected"
+    exit 0
+fi
+
+status=$(
+    upower -i "${battery}" | awk -F': *' '
+        /state|percentage|energy-rate|time to empty|time to full|capacity/ {
+            gsub(/^ +/, "", $1)
+            print $1 ": " $2
+        }
+    '
+)
+
+notify-send -u low "Battery" "${status}"
