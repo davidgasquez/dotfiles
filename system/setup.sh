@@ -11,6 +11,7 @@ packages=(
     tailscale
     docker
     docker-buildx
+    docker-compose
     fwupd
     gnome-keyring
     google-cloud-cli
@@ -30,6 +31,7 @@ packages=(
     unzip
     util-linux
     xdg-user-dirs
+    zram-generator
 )
 
 # Install system packages
@@ -37,6 +39,7 @@ paru -S --needed --noconfirm "${packages[@]}"
 
 sudo rm -f /etc/sysctl.d/99-swappiness.conf
 sudo cp "${DOTFILES}/system/99-swappiness.conf" /etc/sysctl.d/99-swappiness.conf
+sudo install -Dm644 "${DOTFILES}/system/zram-generator.conf" /etc/systemd/zram-generator.conf
 
 tmpfs_entry='tmpfs   /tmp    tmpfs   defaults,noatime,mode=1777,size=2G   0  0'
 if ! grep -Eq '^\s*tmpfs\s+/tmp\s+tmpfs\b' /etc/fstab; then
