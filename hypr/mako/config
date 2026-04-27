@@ -1,21 +1,45 @@
 sort=-priority
 
+anchor=top-center
+outer-margin=44,0,0,0
+margin=0,0,8,0
+
+width=360
+height=140
+padding=14,16
+
+font=Inter 11
+markup=1
+format=<b>%s</b>\n<span foreground="#a5adce">%b</span>
+text-alignment=left
+
+background-color=#303446
+text-color=#c6d0f5
+
+border-size=3
+border-radius=0
+border-color=#8caaee
+progress-color=over #a6d189
+
+icons=1
+icon-path=/usr/share/icons/Papirus-Dark:/usr/share/icons/Papirus:/usr/share/icons/hicolor:/usr/share/pixmaps
+max-icon-size=36
+icon-border-radius=0
+
+max-visible=3
+group-by=app-name,summary
+history=1
+max-history=10
+default-timeout=7500
+
 on-button-left=invoke-default-action
 on-button-right=dismiss-all
 on-button-middle=dismiss
 
-default-timeout=6000
+[urgency=critical]
+border-color=#e78284
+default-timeout=0
 
-background-color=#303446
-font=Inter
-text-color=#C6D0F5
-
-icons=1
-max-icon-size=48
-icon-border-radius=4
-
-border-radius=4
-border-size=4
-border-color=#8CAAEE
-
-margin=66,16,0
+[urgency=low]
+border-color=#8caaee
+default-timeout=4000
