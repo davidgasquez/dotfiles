@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'EOF'
+Usage: read-web-page [--all] <url>
+
+Convert a public web URL to Markdown.
+Default order: r.jina.ai, markitdown, defuddle.md.
+Use --all to print output from all three converters.
+EOF
+}
+
+strip_scheme() {
+  local url="$1"
+  url="${url#https://}"
+  url="${url#http://}"
+  printf '%s' "$url"
+}
+
+markitdown_url() {
+  markitdown "$1"
+}
+
+jina_url() {
+  curl -fsSL "https://r.jina.ai/$1"
+}
+
+defuddle_url() {
+  curl -fsSL "https://defuddle.md/$(strip_scheme "$1")"
+}
+
+run_converter() {
+  local name="$1"
+  local url="$2"
+
+  case "$name" in
+    markitdown) markitdown_url "$url" ;;
+    jina) jina_url "$url" ;;
+    defuddle) defuddle_url "$url" ;;
+    *) echo "Unknown converter: $name" >&2; return 2 ;;
+  esac
+}
+
+run_first_success() {
+  local url="$1"
+  local tmp err name
+  tmp="$(mktemp)"
+  err="$(mktemp)"
+  trap 'rm -f "$tmp" "$err"' RETURN
+
+  for name in jina markitdown defuddle; do
+    if run_converter "$name" "$url" >"$tmp" 2>"$err"; then
+      cat "$tmp"
+      return 0
+    fi
+    printf '%s failed:\n' "$name" >&2
+    cat "$err" >&2
+  done
+
+  echo "All converters failed" >&2
+  return 1
+}
+
+run_all() {
+  local url="$1"
+  local tmp err name label failures=0 successes=0
+  tmp="$(mktemp)"
+  err="$(mktemp)"
+  trap 'rm -f "$tmp" "$err"' RETURN
+
+  for name in jina markitdown defuddle; do
+    case "$name" in
+      markitdown) label="markitdown" ;;
+      jina) label="r.jina.ai" ;;
+      defuddle) label="defuddle.md" ;;
+    esac
+
+    printf '## %s\n\n' "$label"
+    if run_converter "$name" "$url" >"$tmp" 2>"$err"; then
+      cat "$tmp"
+      printf '\n\n'
+      successes=$((successes + 1))
+    else
+      failures=$((failures + 1))
+      printf '_Failed._\n\n'
+      printf '%s failed:\n' "$label" >&2
+      cat "$err" >&2
+    fi
+  done
+
+  if [ "$successes" -eq 0 ]; then
+    echo "All converters failed" >&2
+    return 1
+  fi
+
+  if [ "$failures" -gt 0 ]; then
+    return 0
+  fi
+
+  return 0
+}
+
+all=false
+if [ "$#" -eq 0 ]; then
+  usage
+  exit 1
+fi
+
+case "${1:-}" in
+  --all)
+    all=true
+    shift
+    ;;
+  -h|--help)
+    usage
+    exit 0
+    ;;
+esac
+
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+url="$1"
+case "$url" in
+  http://*|https://*) ;;
+  *) echo "URL must start with http:// or https://" >&2; exit 1 ;;
+esac
+
+if [ "$all" = true ]; then
+  run_all "$url"
+else
+  run_first_success "$url"
+fi
