@@ -10,6 +10,7 @@
   },
   "diff_view_style": "split",
   "agent": {
+    "sidebar_side": "right",
     "dock": "right",
     "default_model": {
       "provider": "copilot_chat",
