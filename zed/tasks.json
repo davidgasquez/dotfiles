@@ -42,7 +42,7 @@
       "-f",
       "bash",
       "-lc",
-      "mkdir -p \"$HOME/.cache\" && cd \"$1\" && pi -p 'make atomic commits and push' --model openai-codex/gpt-5.3-codex-spark >>\"$HOME/.cache/zed-pi-commit.log\" 2>&1",
+      "mkdir -p \"$HOME/.cache\"; notify-send 'Pi commit' \"Started in $(basename \"$1\")\" || true; cd \"$1\" && pi -p 'make atomic commits and push' --model openai-codex/gpt-5.3-codex-spark >>\"$HOME/.cache/zed-pi-commit.log\" 2>&1; status=$?; if [ $status -eq 0 ]; then notify-send 'Pi commit' 'Commit and push finished' || true; else notify-send -u critical 'Pi commit failed' 'See ~/.cache/zed-pi-commit.log' || true; fi; exit $status",
       "bash",
       "$ZED_WORKTREE_ROOT"
     ],
