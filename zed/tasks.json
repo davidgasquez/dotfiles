@@ -45,7 +45,8 @@
       "--working-directory=$ZED_WORKTREE_ROOT",
       "-e",
       "pi",
-      "-p",
+      "--mode",
+      "json",
       "make atomic commits and push"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
