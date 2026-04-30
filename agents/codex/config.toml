@@ -1,11 +1,8 @@
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
 service_tier = "fast"
 check_for_update_on_startup = false
 
 [plugins."github@openai-curated"]
-enabled = true
-
-[plugins."cloudflare@openai-curated"]
 enabled = true
