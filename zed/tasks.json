@@ -40,11 +40,13 @@
     "command": "setsid",
     "args": [
       "-f",
-      "bash",
-      "-lc",
-      "mkdir -p \"$HOME/.cache\" && cd \"$1\" && pi -p 'make atomic commits and push' --model openai-codex/gpt-5.3-codex-spark >>\"$HOME/.cache/zed-pi-commit.log\" 2>&1",
-      "bash",
-      "$ZED_WORKTREE_ROOT"
+      "ghostty",
+      "+new-window",
+      "--working-directory=$ZED_WORKTREE_ROOT",
+      "-e",
+      "pi",
+      "-p",
+      "make atomic commits and push"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "never",
