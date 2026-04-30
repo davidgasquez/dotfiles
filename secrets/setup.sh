@@ -13,7 +13,8 @@ packages=(
 paru -S --needed --noconfirm "${packages[@]}"
 
 if [[ -d "${STORE_DIR}/.git" ]]; then
-    echo "Syncing gopass store at ${STORE_DIR}..."
+    echo "Configuring gopass root store at ${STORE_DIR}..."
+    gopass config mounts.path "${STORE_DIR}"
     gopass sync
     exit 0
 fi
@@ -27,7 +28,8 @@ First machine bootstrap:
   gopass sync
 
 New machine bootstrap:
-  gopass clone ${REMOTE} ${STORE_DIR}
+  gopass clone --path ${STORE_DIR} ${REMOTE}
+  gopass config mounts.path ${STORE_DIR}
   gopass sync
 
 If the new machine cannot decrypt secrets, add its age recipient from an existing trusted machine, then sync again.
