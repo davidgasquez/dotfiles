@@ -13,6 +13,7 @@ PICTURES_DIR="${HOME}/Pictures"
 
 packages=(
     bemoji
+    brightnessctl
     cliphist
     fcitx5
     fcitx5-gtk
@@ -24,24 +25,25 @@ packages=(
     hyprpaper
     hyprpolkitagent
     hyprshot
+    libnewt
     mako
     pavucontrol
     pipewire
     pipewire-alsa
-    pipewire-pulse
     pipewire-libcamera
+    pipewire-pulse
     playerctl
     qt5-wayland
     qt6-wayland
+    uwsm
+    voxtype-bin
     waybar
     wireplumber
     wl-clip-persist
     wl-clipboard
-    voxtype-bin
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
     xdg-utils
-    uwsm
 )
 
 # Install Hyprland and related packages
