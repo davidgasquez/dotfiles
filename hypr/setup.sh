@@ -31,6 +31,8 @@ packages=(
     pipewire-pulse
     pipewire-libcamera
     playerctl
+    qt5-wayland
+    qt6-wayland
     waybar
     wireplumber
     wl-clip-persist
