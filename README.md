@@ -30,7 +30,8 @@ make terminal
 
 ### Environment Variables
 
-- User session variables and secrets live in `~/.config/environment.d/*.conf`.
+- Secrets live in `gopass` with the store synced at `~/.secrets`; run `make secrets` and see `secrets/README.md`.
+- User session variables live in `~/.config/environment.d/*.conf`.
 - Per project values go in a `.env` file in the project root. `terminal/zshrc` auto loads `.env` on directory change if the file is owned by you.
 
 ### 🧰 Utility Scripts

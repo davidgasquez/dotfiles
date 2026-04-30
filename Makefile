@@ -42,6 +42,10 @@ zed:
 terminal:
 	@ $(DOTFILES)/terminal/setup.sh
 
+.PHONY: secrets
+secrets:
+	@ $(DOTFILES)/secrets/setup.sh
+
 .PHONY: hypr
 hypr:
 	@ ${DOTFILES}/hypr/setup.sh
