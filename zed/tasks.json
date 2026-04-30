@@ -47,6 +47,10 @@
       "pi",
       "--mode",
       "json",
+      "--model",
+      "openai-codex/gpt-5.3-codex-spark",
+      "--thinking",
+      "low",
       "make atomic commits and push"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
