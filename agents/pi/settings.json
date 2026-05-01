@@ -7,10 +7,12 @@
   "quietStartup": true,
   "transport": "auto",
   "theme": "frappe",
-  "lastChangelogVersion": "0.70.6",
+  "lastChangelogVersion": "0.71.1",
   "pi-custom-codex": {
     "fast": true,
     "verbosity": "low"
   },
-  "packages": ["npm:pi-web-providers"]
+  "packages": [
+    "npm:pi-web-providers"
+  ]
 }
