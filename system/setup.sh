@@ -14,8 +14,6 @@ packages=(
     docker-compose
     fwupd
     gnome-keyring
-    google-cloud-cli
-    google-cloud-cli-bq
     inetutils
     less
     libnotify
