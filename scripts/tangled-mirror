@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -gt 1 ]]; then
+  echo "Usage: $(basename "$0") [repo-name]" >&2
+  exit 2
+fi
+
+owner="${TANGLED_OWNER:-davidgasquez.com}"
+remote="${REMOTE:-origin}"
+
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+
+origin_url="$(git remote get-url "$remote")"
+repo="${1:-$(basename -s .git "${origin_url%/}")}"
+tangled_url="git@tangled.org:${owner}/${repo}"
+
+cat <<EOF
+Create this repository on Tangled before continuing:
+
+  https://tangled.org/repo/new
+
+Use:
+  owner: ${owner}
+  name:  ${repo}
+
+Expected SSH URL:
+  ${tangled_url}
+
+Press Enter when it exists, or Ctrl-C to abort.
+EOF
+read -r _
+
+add_push_url() {
+  local url="$1"
+
+  if ! git remote get-url --push --all "$remote" | grep -Fxq "$url"; then
+    git remote set-url --add --push "$remote" "$url"
+  fi
+}
+
+if ! git config --get-all "remote.${remote}.pushurl" >/dev/null; then
+  git remote set-url --add --push "$remote" "$origin_url"
+else
+  add_push_url "$origin_url"
+fi
+
+add_push_url "$tangled_url"
+
+git remote -v
+
+git push "$remote" --all
+git push "$remote" --tags
