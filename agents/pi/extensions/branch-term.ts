@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { writeFileSync } from "node:fs";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { SessionManager } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { SessionManager } from "@earendil-works/pi-coding-agent";
 
 const TERMINAL_FLAG = "branch-terminal";
 const SNAPSHOT_META_TYPE = "branch-term";

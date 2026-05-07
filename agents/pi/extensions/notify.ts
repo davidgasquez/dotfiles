@@ -5,7 +5,7 @@ import { basename, join } from "node:path";
 import type {
   ExtensionAPI,
   ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
+} from "@earendil-works/pi-coding-agent";
 
 const APP_NAME = "Pi";
 const BODY = "Ready for input";

@@ -2,7 +2,7 @@ import {
   SettingsManager,
   type ExtensionAPI,
   type ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
+} from "@earendil-works/pi-coding-agent";
 
 const SETTINGS_KEY = "pi-custom-codex";
 const DEFAULT_CONFIG = {

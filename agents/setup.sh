@@ -10,14 +10,12 @@ PI_AGENT_DIR="${HOME}/.pi/agent"
 AMP_DIR="${HOME}/.config/amp"
 
 packages=(
-  agent-browser
-  googleworkspace-cli-bin
   openai-codex-bin
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
 npm install -g @tobilu/qmd
-npm install -g @mariozechner/pi-coding-agent
+npm install -g @earendil-works/pi-coding-agent
 
 mkdir -p "${GLOBAL_AGENTS_DIR}"
 ln -sfT "${AGENTS_DIR}/skills" "${GLOBAL_SKILLS_DIR}"
