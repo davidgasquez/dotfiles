@@ -11,6 +11,5 @@
   "pi-custom-codex": {
     "fast": true,
     "verbosity": "low"
-  },
-  "packages": ["npm:pi-web-providers"]
+  }
 }
