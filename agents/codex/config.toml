@@ -13,3 +13,6 @@ terminal_resize_reflow = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 100
+
+[projects."/home/david/projects/filecoin-data-portal"]
+trust_level = "trusted"
