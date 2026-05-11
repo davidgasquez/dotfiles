@@ -7,6 +7,8 @@ extensions:
   - npm:pi-powerline-footer
   - npm:pi-mcp-adapter
   - npm:pi-interview
+  - npm:pi-tool-display
+  - git:github.com/nicobailon/visual-explainer
 thinking: medium
 append-system-prompt: true
 ---
