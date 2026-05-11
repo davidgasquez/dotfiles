@@ -90,7 +90,7 @@ def agent_files(cwd: Path) -> list[Path]:
 
 
 def resolve_profile(value: str, cwd: Path) -> Path:
-    if "/" in value or value.startswith("~"):
+    if looks_like_profile_path(value):
         path = Path(value).expanduser()
         if not path.is_absolute():
             path = cwd / path
@@ -300,6 +300,10 @@ def resolve_skill(value: str, cwd: Path) -> str:
 
 
 def looks_like_path(value: str) -> bool:
+    return value.startswith(("~", ".", "/")) or "/" in value or value.endswith(".md")
+
+
+def looks_like_profile_path(value: str) -> bool:
     return value.startswith(("~", ".", "/")) or "/" in value or value.endswith(".md")
 
 
