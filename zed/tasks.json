@@ -44,7 +44,7 @@
       "+new-window",
       "--working-directory=$ZED_WORKTREE_ROOT",
       "-e",
-      "scripts/auto-commit"
+      "auto-commit"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "never",
