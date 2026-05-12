@@ -4,10 +4,9 @@ set -euo pipefail
 HOST_DIR=$(dirname "$(realpath "$0")")
 HYPR_CONFIG_DIR="${HOME}/.config/hypr"
 
-echo "Installing llama.cpp-hip..."
-paru -S --needed --noconfirm llama.cpp-hip
-
-echo "llama.cpp-hip installed."
+echo "Installing llama.cpp and whisper.cpp ..."
+paru -S --noconfirm llama.cpp-hip whisper.cpp-hip
+echo "Installed."
 
 mkdir -p "${HYPR_CONFIG_DIR}"
 ln -sf "${HOST_DIR}/hypr/monitor.conf" "${HYPR_CONFIG_DIR}/monitor.conf"
