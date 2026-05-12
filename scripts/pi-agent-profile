@@ -5,6 +5,9 @@ import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 
 ALLOWED_KEYS = {
     "model",
@@ -21,10 +24,10 @@ ISOLATION_FLAGS = [
     "--no-context-files",
     "--no-prompt-templates",
 ]
-HELP = """Usage: pi-agent-profile [--dry-run] [--terminal] <profile.md|name> [pi args/messages...]
+HELP = """Usage: pi-agent-profile [--dry-run] [--terminal] <profile.md|name|url> [pi args/messages...]
        pi-agent-profile --list-agents
 
-Run Pi with an isolated Markdown profile.
+Run Pi with an isolated Markdown profile. Profile URLs must use http(s) and end in .md.
 """
 
 
@@ -89,7 +92,11 @@ def agent_files(cwd: Path) -> list[Path]:
     ]
 
 
-def resolve_profile(value: str, cwd: Path) -> Path:
+def resolve_profile(value: str, cwd: Path) -> str | Path:
+    if looks_like_url(value):
+        validate_profile_url(value)
+        return value
+
     if looks_like_profile_path(value):
         path = Path(value).expanduser()
         if not path.is_absolute():
@@ -107,8 +114,8 @@ def resolve_profile(value: str, cwd: Path) -> Path:
     raise UsageError(f"profile not found: {value}")
 
 
-def load_profile(path: Path) -> tuple[dict[str, str | list[str] | bool], str]:
-    text = path.read_text(encoding="utf-8").removeprefix("\ufeff")
+def load_profile(profile: str | Path) -> tuple[dict[str, str | list[str] | bool], str]:
+    text = read_profile_text(profile).removeprefix("\ufeff")
 
     if not text.startswith("---\n"):
         return {}, text.strip()
@@ -116,15 +123,32 @@ def load_profile(path: Path) -> tuple[dict[str, str | list[str] | bool], str]:
     try:
         end = text.index("\n---", 4)
     except ValueError:
-        raise UsageError(f"{path}: missing closing frontmatter delimiter")
+        raise UsageError(f"{profile}: missing closing frontmatter delimiter")
 
     frontmatter = text[4:end]
     body = text[end + 4 :].lstrip("\n")
-    return parse_frontmatter(path, frontmatter), body.strip()
+    return parse_frontmatter(profile, frontmatter), body.strip()
+
+
+def read_profile_text(profile: str | Path) -> str:
+    if isinstance(profile, Path):
+        return profile.read_text(encoding="utf-8")
+
+    request = Request(profile, headers={"User-Agent": "pi-agent-profile"})
+    try:
+        with urlopen(request, timeout=15) as response:
+            content_type = response.headers.get_content_charset() or "utf-8"
+            return response.read().decode(content_type)
+    except HTTPError as error:
+        raise UsageError(f"{profile}: HTTP {error.code}")
+    except URLError as error:
+        raise UsageError(f"{profile}: {error.reason}")
+    except UnicodeDecodeError:
+        raise UsageError(f"{profile}: response is not valid text")
 
 
 def parse_frontmatter(
-    path: Path, frontmatter: str
+    path: str | Path, frontmatter: str
 ) -> dict[str, str | list[str] | bool]:
     data: dict[str, str | list[str] | bool] = {}
     lines = frontmatter.splitlines()
@@ -166,7 +190,7 @@ def parse_frontmatter(
 
 
 def parse_yaml_list(
-    path: Path, lines: list[str], start: int, key: str
+    path: str | Path, lines: list[str], start: int, key: str
 ) -> tuple[list[str], int]:
     items: list[str] = []
     i = start
@@ -203,7 +227,7 @@ def unquote(value: str) -> str:
     return value
 
 
-def parse_bool(path: Path, number: int, key: str, value: str) -> bool:
+def parse_bool(path: str | Path, number: int, key: str, value: str) -> bool:
     normalized = value.lower()
     if normalized == "true":
         return True
@@ -212,7 +236,7 @@ def parse_bool(path: Path, number: int, key: str, value: str) -> bool:
     raise UsageError(f"{path}:{number}: expected true or false for {key}")
 
 
-def pi_command(profile: Path, passthrough: list[str], cwd: Path) -> list[str]:
+def pi_command(profile: str | Path, passthrough: list[str], cwd: Path) -> list[str]:
     data, prompt = load_profile(profile)
     command = ["pi", *ISOLATION_FLAGS]
     command += skills_flags(data.get("skills"), cwd)
@@ -305,6 +329,18 @@ def looks_like_path(value: str) -> bool:
 
 def looks_like_profile_path(value: str) -> bool:
     return value.startswith(("~", ".", "/")) or "/" in value or value.endswith(".md")
+
+
+def looks_like_url(value: str) -> bool:
+    return urlparse(value).scheme in {"http", "https"}
+
+
+def validate_profile_url(value: str) -> None:
+    parsed = urlparse(value)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise UsageError(f"invalid profile URL: {value}")
+    if not parsed.path.endswith(".md"):
+        raise UsageError(f"profile URL must end in .md: {value}")
 
 
 def print_agent_files(cwd: Path) -> None:
