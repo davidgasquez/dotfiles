@@ -8,6 +8,7 @@ packages=(
     blueman
     bluez
     cloudflare-warp-bin
+    ccache
     tailscale
     docker
     docker-buildx
