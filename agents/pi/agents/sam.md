@@ -1,7 +1,7 @@
 ---
 model: openai-codex/gpt-5.5
 extensions:
-  - npm:pi-web-access
+  - npm:pi-web-providers
   - npm:pi-subagents
   - npm:pi-prompt-template-model
   - npm:pi-powerline-footer
