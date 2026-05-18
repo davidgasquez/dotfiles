@@ -13,8 +13,9 @@
     "sidebar_side": "right",
     "dock": "right",
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "claude-opus-4.6",
+      "effort": "high",
+      "provider": "openai-subscribed",
+      "model": "gpt-5.5",
       "enable_thinking": true
     },
     "favorite_models": [],
@@ -22,7 +23,13 @@
   },
   "languages": {
     "Python": {
-      "language_servers": ["ty", "!basedpyright", "!pyright", "!pylsp", "..."]
+      "language_servers": [
+        "ty",
+        "!basedpyright",
+        "!pyright",
+        "!pylsp",
+        "..."
+      ]
     }
   },
   "lsp": {
