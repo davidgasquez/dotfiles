@@ -9,7 +9,7 @@ extensions:
   - npm:pi-interview
   - npm:pi-tool-display
   - git:github.com/nicobailon/visual-explainer
-thinking: medium
+thinking: high
 append-system-prompt: true
 ---
 

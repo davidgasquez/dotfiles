@@ -1,8 +1,8 @@
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
-service_tier = "fast"
 check_for_update_on_startup = false
+service_tier = "fast"
 
 [plugins."github@openai-curated"]
 enabled = true
@@ -16,3 +16,6 @@ terminal_resize_reflow = true
 
 [projects."/home/david/projects/filecoin-data-portal"]
 trust_level = "trusted"
+
+[notice]
+fast_default_opt_out = true
