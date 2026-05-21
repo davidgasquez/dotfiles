@@ -5,10 +5,6 @@
   "outline_panel": {
     "dock": "left"
   },
-  "git_panel": {
-    "dock": "left"
-  },
-  "diff_view_style": "split",
   "agent": {
     "sidebar_side": "right",
     "dock": "right",
@@ -23,13 +19,7 @@
   },
   "languages": {
     "Python": {
-      "language_servers": [
-        "ty",
-        "!basedpyright",
-        "!pyright",
-        "!pylsp",
-        "..."
-      ]
+      "language_servers": ["ty", "!basedpyright", "!pyright", "!pylsp", "..."]
     }
   },
   "lsp": {
@@ -72,18 +62,5 @@
   "icon_theme": "Catppuccin Frappé",
   "terminal": {
     "copy_on_select": true
-  },
-  "auto_install_extensions": {
-    "astro": true,
-    "basher": true,
-    "catppuccin-icons": true,
-    "csv": true,
-    "dockerfile": true,
-    "git-firefly": true,
-    "html": true,
-    "ini": true,
-    "make": true,
-    "sql": true,
-    "toml": true
   }
 }
