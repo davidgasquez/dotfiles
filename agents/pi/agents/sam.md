@@ -8,6 +8,7 @@ extensions:
   - npm:pi-mcp-adapter
   - npm:pi-interview
   - npm:pi-tool-display
+  - npm:@juicesharp/rpiv-ask-user-question
   - git:github.com/nicobailon/visual-explainer
 thinking: high
 append-system-prompt: true
