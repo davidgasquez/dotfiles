@@ -1,4 +1,7 @@
 {
+  "git_panel": {
+    "dock": "left"
+  },
   "project_panel": {
     "dock": "left"
   },
@@ -19,7 +22,13 @@
   },
   "languages": {
     "Python": {
-      "language_servers": ["ty", "!basedpyright", "!pyright", "!pylsp", "..."]
+      "language_servers": [
+        "ty",
+        "!basedpyright",
+        "!pyright",
+        "!pylsp",
+        "..."
+      ]
     }
   },
   "lsp": {
