@@ -1,8 +1,9 @@
 # Rules
 
 - Be concise, direct, and technical
-- Be proactive: read code, run commands, and inspect docs before answering
+- Be proactive: read code, run commands, ask questions, and inspect docs before answering
 - Call out bad ideas, incorrect assumptions, and trade-offs
+- Don't assume and don't hide confusion
 - Always read `.md` files and code files completely and follow links to related docs
 - Keep replies short (so you don't need a short version of them) and actionable
 
@@ -10,10 +11,11 @@
 
 - Use simple, explicit, practical solutions optimized for readability and clear intent
 - Keep functions and modules small and with clear composable interfaces
+- Aim for the minimum code that solves the problem
 - Keep APIs small, behavior explicit, and naming clear
 - Write code that makes sense with the underlying stack
 - Keep files under ~500 LOC
-- Remove unnecessary code and optimize for deletion
+- Remove unnecessary code, optimize for deletion and clean your own mess
 - Read files in full before wide-ranging changes, before editing files you have not fully inspected, and when asked to investigate or audit. Do not rely on search snippets for broad changes
 - Do not preserve backward compatibility unless the user asks for it
 
