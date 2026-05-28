@@ -54,6 +54,10 @@ hypr:
 desktop:
 	@ ${DOTFILES}/desktop/setup.sh
 
+.PHONY: steam
+steam:
+	@ ${DOTFILES}/steam/setup.sh
+
 .PHONY: system
 system:
 	@ $(DOTFILES)/system/setup.sh
