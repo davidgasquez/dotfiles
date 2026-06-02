@@ -10,6 +10,8 @@ confirm-close-surface = false
 copy-on-select = clipboard
 app-notifications = no-clipboard-copy
 
+keybind = alt+backspace=text:\x1b\x7f
+
 window-decoration = none
 window-padding-x = 15
 window-padding-y = 10
