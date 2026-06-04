@@ -11,11 +11,32 @@ enabled = true
 goals = true
 terminal_resize_reflow = true
 
+[tui]
+pet = "disabled"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 100
 
 [projects."/home/david/projects/filecoin-data-portal"]
 trust_level = "trusted"
 
+[projects."/home/david/projects/dotfiles"]
+trust_level = "trusted"
+
+[projects."/home/david/projects/notes"]
+trust_level = "trusted"
+
 [notice]
 fast_default_opt_out = true
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/web-browser/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/web-fetch/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/web-search/SKILL.md"
+enabled = false
