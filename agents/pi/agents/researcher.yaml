@@ -1,10 +1,11 @@
 model: openai-codex/gpt-5.5
-thinking: high
+thinking: medium
 extensions:
   - npm:pi-web-providers
-  - npm:pi-mcp-adapter
+  - npm:pi-subagents
+  - npm:pi-intercom
   - npm:pi-interview
   - npm:pi-tool-display
   - npm:@juicesharp/rpiv-ask-user-question
   - git:github.com/nicobailon/visual-explainer
-system-prompt: sam.system.md
+  - npm:@plannotator/pi-extension

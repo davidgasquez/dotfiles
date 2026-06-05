@@ -1,4 +1,5 @@
 {
+  "cli_default_open_behavior": "existing_window",
   "git_panel": {
     "dock": "left"
   },

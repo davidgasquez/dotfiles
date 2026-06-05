@@ -1,13 +1,13 @@
 {
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "low",
+  "defaultThinkingLevel": "medium",
   "collapseChangelog": true,
   "enableSkillCommands": false,
   "quietStartup": true,
   "transport": "websocket-cached",
   "theme": "frappe",
-  "lastChangelogVersion": "0.78.0",
+  "lastChangelogVersion": "0.78.1",
   "pi-custom-codex": {
     "fast": true,
     "verbosity": "low"
