@@ -3,6 +3,7 @@ set -euo pipefail
 
 packages=(
     git
+    git-lfs
     github-cli
 )
 
@@ -13,3 +14,6 @@ paru -S --needed --noconfirm "${packages[@]}"
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 ln -snf "${SCRIPT_DIR}/gitconfig" "${HOME}/.gitconfig"
 ln -snf "${SCRIPT_DIR}/.gitignore_global" "${HOME}/.gitignore_global"
+
+# Configure Git LFS filters globally
+git lfs install --skip-repo

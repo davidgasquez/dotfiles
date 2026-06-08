@@ -19,13 +19,13 @@ packages=(
     htop
     jq
     nvtop
+    poppler
     prek-bin
     ripgrep
     sheldon
     shellcheck
     starship
     tmux
-    todoist-cli-bin
     uv
     npm
     wget
