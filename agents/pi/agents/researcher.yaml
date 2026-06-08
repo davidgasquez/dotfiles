@@ -5,7 +5,7 @@ extensions:
   - npm:pi-subagents
   - npm:pi-intercom
   - npm:pi-interview
-  - npm:pi-tool-display
-  - npm:@juicesharp/rpiv-ask-user-question
   - git:github.com/nicobailon/visual-explainer
   - npm:@plannotator/pi-extension
+  - npm:@narumitw/pi-goal
+append-system-prompt: researcher.system.md
