@@ -35,6 +35,12 @@ trust_level = "trusted"
 [projects."/home/david/projects/notes"]
 trust_level = "trusted"
 
+[projects."/home/david/projects/personal"]
+trust_level = "trusted"
+
+[projects."/home/david/projects/sandbox"]
+trust_level = "trusted"
+
 [notice]
 fast_default_opt_out = true
 
