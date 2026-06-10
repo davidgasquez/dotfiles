@@ -7,9 +7,10 @@
   "quietStartup": true,
   "transport": "websocket-cached",
   "theme": "frappe",
-  "lastChangelogVersion": "0.79.0",
+  "lastChangelogVersion": "0.79.1",
   "pi-custom-codex": {
     "fast": true,
     "verbosity": "low"
-  }
+  },
+  "defaultProjectTrust": "always"
 }
