@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-session_dir="$(mktemp -d -t pi-session.XXXXXX)"
+work_dir="$(mktemp -d -t pi-session.XXXXXX)"
+session_dir="${HOME}/.pi/agent/sessions/--tmp--"
 
-exec ghostty +new-window --working-directory="${session_dir}" -e zsh -ic "pi --session-dir \"${session_dir}\""
+exec ghostty +new-window --working-directory="${work_dir}" -e zsh -ic "pi --session-dir \"${session_dir}\""
