@@ -7,7 +7,6 @@ PIPEWIRE_CONFIG_DIR="${HOME}/.config/pipewire/pipewire.conf.d"
 
 packages=(
     libratbag
-    llama.cpp-hip
     piper
     whisper.cpp-hip
 )

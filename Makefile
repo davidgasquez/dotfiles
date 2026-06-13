@@ -58,6 +58,10 @@ desktop:
 steam:
 	@ ${DOTFILES}/steam/setup.sh
 
+.PHONY: llama
+llama:
+	@ ${DOTFILES}/llama/setup.sh
+
 .PHONY: system
 system:
 	@ $(DOTFILES)/system/setup.sh
