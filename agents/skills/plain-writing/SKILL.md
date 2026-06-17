@@ -1,7 +1,7 @@
 ---
 name: plain-writing
 description: >-
-  Write and edit prose in the user's plain style: simple everyday words, complete sentences, no dashes, no jargon, no analogies, no filler, and full clear explanations. Use this whenever you draft or revise any prose for the user, such as documents, reports, summaries, README files, research notes, commit and PR descriptions. Also use it whenever the user asks to simplify, clean up, tighten, reword, or make writing clearer or easier to read. Default to this style for prose written for the user unless they ask for a different one. Do not apply it to code itself, only to the words around it.
+  Write and edit prose in a plain style: simple everyday words, complete sentences, no dashes, no jargon, no analogies, no filler, and full clear explanations. Use this whenever the user ask you to draft or revise documents, reports, summaries, README files, research notes, commit and PR descriptions. Also use it whenever the user asks to simplify, clean up, tighten, reword, or make writing clearer or easier to read.
 ---
 
 # Plain Writing
