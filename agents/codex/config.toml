@@ -44,6 +44,9 @@ trust_level = "trusted"
 [projects."/home/david/projects/davidgasquez.com"]
 trust_level = "trusted"
 
+[projects."/home/david/projects/research"]
+trust_level = "trusted"
+
 [notice]
 fast_default_opt_out = true
 
