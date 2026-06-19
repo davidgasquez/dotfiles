@@ -2,7 +2,7 @@
 
 state_file = "auto"
 
-engine = "cohere"
+engine = "whisper"
 
 [hotkey]
 enabled = false
@@ -18,10 +18,12 @@ enabled = true
 theme = "default"
 volume = 0.7
 
-[cohere]
-model = "cohere-transcribe-q4f16"
+[whisper]
+model = "large-v3-turbo"
 language = "en"
-on_demand_loading = true
+translate = false
+on_demand_loading = false
+context_window_optimization = false
 
 [output]
 mode = "clipboard"

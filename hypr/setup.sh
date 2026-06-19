@@ -37,10 +37,13 @@ packages=(
     qt6-wayland
     uwsm
     voxtype-bin
+    vulkan-icd-loader
+    vulkan-radeon
     waybar
     wireplumber
     wl-clip-persist
     wl-clipboard
+    wtype
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
     xdg-utils
@@ -55,6 +58,7 @@ services=(
     hyprpaper.service
     hyprpolkitagent.service
     mako.service
+    voxtype.service
     waybar.service
 )
 
@@ -77,4 +81,12 @@ ln -sf "${DOTFILES}/hypr/voxtype/config.toml" "${VOXTYPE_CONFIG_DIR}/config.toml
 ln -sf "${DOTFILES}/hypr/fcitx5/config" "${FCITX_CONFIG_DIR}/config"
 ln -sf "${DOTFILES}/hypr/uwsm/env" "${UWSM_CONFIG_DIR}/env"
 
-systemctl --user enable "${services[@]}"
+voxtype setup --download --model large-v3-turbo --no-post-install
+
+if [ "$(readlink -f /usr/bin/voxtype)" != "/usr/lib/voxtype/voxtype-vulkan" ]; then
+    sudo voxtype setup onnx --disable
+    sudo voxtype setup gpu --enable
+fi
+
+systemctl --user enable --now "${services[@]}"
+systemctl --user restart voxtype.service
