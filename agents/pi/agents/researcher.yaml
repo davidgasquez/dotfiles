@@ -1,5 +1,5 @@
 model: openai-codex/gpt-5.5
-thinking: medium
+thinking: high
 extensions:
   - npm:pi-web-providers
   - npm:pi-subagents
@@ -8,4 +8,6 @@ extensions:
   - git:github.com/nicobailon/visual-explainer
   - npm:@plannotator/pi-extension
   - npm:@narumitw/pi-goal
+skills:
+  - qmd
 append-system-prompt: researcher.system.md
