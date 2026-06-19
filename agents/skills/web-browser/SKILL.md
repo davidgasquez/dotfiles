@@ -1,6 +1,6 @@
 ---
 name: web-browser
-description: Allows interaction with web pages by clicking buttons, filling forms, navigating links, evaluating JavaScript, and taking screenshots. It remote-controls Brave/Chrome/Chromium browsers using the Chrome DevTools Protocol (CDP).
+description: Allows interaction with web pages by clicking buttons, filling forms, navigating links, evaluating JavaScript, and taking screenshots. It remote-controls Brave browsers using the Chrome DevTools Protocol (CDP).
 license: Stolen from Armin who stole it from Mario
 ---
 
