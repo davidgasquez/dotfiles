@@ -5,6 +5,11 @@ description: >-
 
 Improve the style of the text.
 
+## Prereads
+
+- [Plain Writing](https://raw.githubusercontent.com/shreyashankar/plain-writing-skill/refs/heads/main/SKILL.md)
+- [Unslop](https://github.com/theclaymethod/unslop) (clone into `/tmp` and explore there)
+
 ## Focus
 
 $ARGUMENTS
