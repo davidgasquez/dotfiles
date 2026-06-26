@@ -94,18 +94,3 @@ fi
 if ! tailscale status &>/dev/null; then
     tailscale up
 fi
-
-# Enable WARP
-if ! systemctl is-enabled --quiet warp-svc; then
-    sudo systemctl enable --now warp-svc
-fi
-
-# Register WARP if not already registered
-if ! warp-cli registration show &>/dev/null; then
-    warp-cli registration new # Needs manual intervention, check help and see if it can be forced
-fi
-
-# Connect WARP if not already connected
-if ! warp-cli status | grep -q "Status update: Connected"; then
-    warp-cli connect
-fi
