@@ -3,8 +3,6 @@ name: web-search
 description: Generic web search. Use when you need fast, headless web search.
 ---
 
-# Web Search
-
 Search the web in a headless and fast way.
 
 ## Workflow

@@ -3,8 +3,6 @@ name: web-fetch
 description: Fetch the contents of a public web page as Markdown.
 ---
 
-# Web Fetch
-
 Use the `web-fetch` script for public Internet URLs:
 
 ```bash
