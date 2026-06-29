@@ -16,6 +16,9 @@ enabled = true
 [plugins."google-calendar@openai-curated"]
 enabled = true
 
+[plugins."cloudflare@openai-curated"]
+enabled = true
+
 [features]
 goals = true
 terminal_resize_reflow = true
@@ -44,7 +47,13 @@ trust_level = "trusted"
 [projects."/home/david/projects/davidgasquez.com"]
 trust_level = "trusted"
 
-[projects."/home/david/projects/research"]
+[projects."/home/david/projects/handbook"]
+trust_level = "trusted"
+
+[projects."/home/david/projects/infrastructure"]
+trust_level = "trusted"
+
+[projects."/home/david/projects/filoscope"]
 trust_level = "trusted"
 
 [notice]
