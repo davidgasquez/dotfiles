@@ -4,6 +4,14 @@ description: Resources and guidelines for awesome frontend UX and design.
 
 Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.
 
+## Guidelines
+
+- Fast and efficient. Load only required data, render charts appropiately, ...
+- Prefer minimal, monochrome, monospace fonts, high contrast, sharp rectangles, utilitarian layout designs. Consider datasheet and control panel style if match.
+- Use semantic HTML, modern CSS
+- As vanilla as possible (no React or other frameworks)
+- Accesible
+
 ## Focus
 
 $ARGUMENTS
