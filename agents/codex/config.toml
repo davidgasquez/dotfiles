@@ -29,36 +29,6 @@ pet = "disabled"
 [tui.model_availability_nux]
 "gpt-5.5" = 100
 
-[projects."/home/david/projects/filecoin-data-portal"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/dotfiles"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/notes"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/personal"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/sandbox"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/davidgasquez.com"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/handbook"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/infrastructure"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/filoscope"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/nexusdatalabs.dev"]
-trust_level = "trusted"
-
 [notice]
 fast_default_opt_out = true
 
