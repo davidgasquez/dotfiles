@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+codex_bin="/usr/bin/codex"
+
+if [[ ! -x "${codex_bin}" ]]; then
+    printf 'Error: %s is not executable\n' "${codex_bin}" >&2
+    exit 1
+fi
+
+if root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+    :
+else
+    root="$(pwd -P)"
+fi
+
+root=${root//\\/\\\\}
+root=${root//\"/\\\"}
+
+exec "${codex_bin}" -c "projects={\"${root}\"={trust_level=\"trusted\"}}" "$@"
