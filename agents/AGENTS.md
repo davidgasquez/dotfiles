@@ -10,7 +10,7 @@
 - Aim for the minimum code that solves the problem
 - Use simple, explicit, practical solutions optimized for readability and clear intent
 - Keep functions and modules small and with clear composable interfaces
-- Keep APIs small, behavior explicit, and naming clear
+- Keep APIs and public interfaces small, behavior explicit, intention-revealing, and naming clear
 - No speculative abstractions, one-use interfaces, factories, config, or scaffolding for later
 - Remove unnecessary code, optimize for deletion and clean your own mess
 - Read files in full before wide-ranging changes, before editing files you have not fully inspected, and when asked to investigate or audit
