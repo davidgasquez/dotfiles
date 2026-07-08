@@ -1,6 +1,8 @@
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
 check_for_update_on_startup = false
 service_tier = "fast"
 
