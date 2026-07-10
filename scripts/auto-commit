@@ -1,49 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-model="${AUTO_COMMIT_MODEL:-openai-codex/gpt-5.3-codex-spark}"
-thinking="${AUTO_COMMIT_THINKING:-low}"
 prompt="${AUTO_COMMIT_PROMPT:-make atomic commits and push}"
 
-pi --mode json \
-    --model "${model}" \
-    --thinking "${thinking}" \
-    "${prompt}" "$@" \
-    | python3 -u -c '
-import json
-import sys
-
-printed_delta = False
-needs_newline = False
-
-for raw in sys.stdin:
-    try:
-        event = json.loads(raw)
-    except json.JSONDecodeError:
-        print(raw, end="", flush=True)
-        continue
-
-    if event.get("type") != "message_update":
-        continue
-
-    update = event.get("assistantMessageEvent") or {}
-    update_type = update.get("type")
-
-    if update_type == "text_delta":
-        text = update.get("delta", "")
-        if text:
-            print(text, end="", flush=True)
-            printed_delta = True
-            needs_newline = not text.endswith("\n")
-        continue
-
-    if update_type == "text_end":
-        content = update.get("content", "")
-        if content and not printed_delta:
-            print(content, end="", flush=True)
-            needs_newline = not content.endswith("\n")
-        if needs_newline:
-            print(flush=True)
-        printed_delta = False
-        needs_newline = False
-'
+pi --print "${prompt}" "$@"
