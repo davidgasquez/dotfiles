@@ -1,6 +1,7 @@
 ---
 name: explain-diff-html
 description: Use when the user asks for a rich explanation of a code change, diff, branch, or PR. Produces HTML output.
+disable-model-invocation: true
 ---
 
 # Explain Diff

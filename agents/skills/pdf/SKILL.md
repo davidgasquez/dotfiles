@@ -1,6 +1,7 @@
 ---
 name: "pdf"
 description: "Use when tasks involve reading or reviewing PDF files. Extract text directly or do visual checks by rendering pages when layout or suspected missing data."
+disable-model-invocation: true
 ---
 
 # PDF

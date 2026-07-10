@@ -1,6 +1,7 @@
 ---
 name: web-search
 description: Generic web search. Use when you need fast, headless web search.
+disable-model-invocation: true
 ---
 
 Search the web in a headless and fast way.

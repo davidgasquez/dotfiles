@@ -3,7 +3,7 @@
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
   "collapseChangelog": true,
-  "enableSkillCommands": false,
+  "enableSkillCommands": true,
   "quietStartup": true,
   "transport": "websocket-cached",
   "theme": "frappe",

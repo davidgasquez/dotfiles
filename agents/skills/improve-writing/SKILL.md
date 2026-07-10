@@ -1,6 +1,8 @@
 ---
+name: improve-writing
 description: >-
   Write and edit prose in a plain style: simple everyday words, complete sentences, no dashes, no jargon, no analogies, no filler, and full clear explanations. Use this whenever the user ask you to draft or revise documents, reports, summaries, README files, research notes, commit and PR descriptions. Also use it whenever the user asks to simplify, clean up, tighten, reword, or make writing clearer or easier to read.
+disable-model-invocation: true
 ---
 
 Improve the style of the text.
@@ -10,10 +12,6 @@ Improve the style of the text.
 - [Plain Writing](https://raw.githubusercontent.com/shreyashankar/plain-writing-skill/refs/heads/main/SKILL.md)
 - [Unslop](https://github.com/theclaymethod/unslop) (clone into `/tmp` and explore there)
 - [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing)
-
-## Focus
-
-$ARGUMENTS
 
 ## The rules
 

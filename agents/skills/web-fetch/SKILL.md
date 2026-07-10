@@ -1,6 +1,7 @@
 ---
 name: web-fetch
 description: Fetch the contents of a public web page as Markdown.
+disable-model-invocation: true
 ---
 
 Use the `web-fetch` script for public Internet URLs:
