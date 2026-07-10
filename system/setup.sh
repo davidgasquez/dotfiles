@@ -7,7 +7,6 @@ packages=(
     bind
     blueman
     bluez
-    cloudflare-warp-bin
     ccache
     tailscale
     docker
