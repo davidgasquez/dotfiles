@@ -6,30 +6,95 @@ sandbox_mode = "danger-full-access"
 check_for_update_on_startup = false
 service_tier = "fast"
 
-[plugins."github@openai-curated"]
-enabled = true
-
-[plugins."gmail@openai-curated"]
-enabled = true
-
-[plugins."google-drive@openai-curated"]
-enabled = true
-
-[plugins."google-calendar@openai-curated"]
-enabled = true
-
-[plugins."cloudflare@openai-curated"]
-enabled = true
-
 [tui]
-pet = "disabled"
+status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-used"]
+status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 100
 
+[tui.keymap.composer]
+queue = ["tab", "alt-enter"]
+
 [notice]
 fast_default_opt_out = true
+hide_rate_limit_model_nudge = true
 
 [[skills.config]]
 path = "/home/david/projects/dotfiles/agents/skills/web-browser/SKILL.md"
 enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.6-d37358633e00/skills/market-sizing/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.6-d37358633e00/skills/jupyter-notebooks/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.6-d37358633e00/skills/build-report/report-to-google-doc/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.6-d37358633e00/skills/build-report/report-to-google-slides/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.6-d37358633e00/skills/build-report/report-to-pdf/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/explain-diff-html/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/frontend/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/improve-writing/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-business-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-minimal-letterhead/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-market-trends-report/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-legal-memorandum/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-investment-committee-memo/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-financial-budget/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-three-statement-forecast/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/pdf/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/web-fetch/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/projects/dotfiles/agents/skills/web-search/SKILL.md"
+enabled = false
+
+[projects."/home/david/projects/filoscope"]
+trust_level = "trusted"
