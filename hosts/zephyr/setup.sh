@@ -68,17 +68,6 @@ else
     echo "Switcheroo Control already enabled"
 fi
 
-# PowerTOP
-echo "Setting up PowerTOP service..."
-SCRIPT_DIR=$(dirname "$(realpath "$0")")
-sudo cp "${SCRIPT_DIR}/powertop.service" /etc/systemd/system/powertop.service
-if ! systemctl is-enabled --quiet powertop.service; then
-    echo "Enabling PowerTOP service..."
-    sudo systemctl enable --now powertop.service
-else
-    echo "PowerTOP service already enabled"
-fi
-
 mkdir -p "${HYPR_CONFIG_DIR}"
 ln -sf "${HOST_DIR}/hypr/monitor.conf" "${HYPR_CONFIG_DIR}/monitor.conf"
 
