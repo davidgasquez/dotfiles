@@ -1,3 +1,4 @@
 {
-  "amp.git.commit.coauthor.enabled": false
+  "amp.git.commit.coauthor.enabled": false,
+  "amp.gauge": "cost"
 }
