@@ -1,5 +1,5 @@
-model = "gpt-5.5"
-model_reasoning_effort = "high"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "ultra"
 personality = "pragmatic"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
@@ -29,7 +29,7 @@ terminal_resize_reflow = true
 pet = "disabled"
 
 [tui.model_availability_nux]
-"gpt-5.5" = 100
+"gpt-5.6-sol" = 100
 
 [notice]
 fast_default_opt_out = true
