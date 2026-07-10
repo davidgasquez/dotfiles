@@ -1,8 +1,7 @@
 # Rules
 
-- Be concise, direct, and technical
-- Read files completely and follow links to related docs
-- Keep replies concise (so I don't need a short version of them) and actionable
+- Be direct, technical, and tactful
+- Lead with the conclusion and include evidence, material caveats, and the next action
 
 ## Code
 
@@ -23,7 +22,7 @@
 - Validate conditions explicitly instead of relying on exceptions
 - Verify changes work by running the code, tests, and linters
 - For ad-hoc scripts, write them to a temp file (e.g. /tmp), run, edit if needed, remove when done or do it entirely inline
-- Fix bugs at the root cause by inspect callers and fixing the shared path when possible
+- Fix bugs at the root cause by inspecting callers and fixing the shared path when possible
 
 ## Git
 
