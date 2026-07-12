@@ -22,7 +22,6 @@ packages=(
     networkmanager
     pacman-contrib
     power-profiles-daemon
-    rclone
     rocm-smi-lib
     sox
     ufw
