@@ -96,5 +96,73 @@ enabled = false
 path = "/home/david/projects/dotfiles/agents/skills/web-search/SKILL.md"
 enabled = false
 
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.8-13ceeea1f599/skills/jupyter-notebooks/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.8-13ceeea1f599/skills/market-sizing/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.8-13ceeea1f599/skills/product-business-analysis/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.8-13ceeea1f599/skills/build-report/report-to-pdf/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.8-13ceeea1f599/skills/build-report/report-to-google-slides/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/data-analytics/0.2.8-13ceeea1f599/skills/build-report/report-to-google-doc/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/github/0.1.8-2841cf9749ae/skills/yeet/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/google-calendar/1.2.4/skills/google-calendar-daily-brief/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/google-calendar/1.2.4/skills/google-calendar-free-up-time/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/google-calendar/1.2.4/skills/google-calendar-group-scheduler/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-project-kickoff/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-project-tracker/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-operating-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-operating-calendar/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-sales-pipeline/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-strategy-memorandum/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/david/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.0/skills/artifact-template-team-alignment/SKILL.md"
+enabled = false
+
 [projects."/home/david/projects/filoscope"]
 trust_level = "trusted"
