@@ -34,14 +34,8 @@ packages=(
 # Install system packages
 paru -S --needed --noconfirm "${packages[@]}"
 
-sudo rm -f /etc/sysctl.d/99-swappiness.conf
-sudo cp "${DOTFILES}/system/99-swappiness.conf" /etc/sysctl.d/99-swappiness.conf
+# ZRAM Generator
 sudo install -Dm644 "${DOTFILES}/system/zram-generator.conf" /etc/systemd/zram-generator.conf
-
-tmpfs_entry='tmpfs   /tmp    tmpfs   defaults,noatime,mode=1777,size=2G   0  0'
-if ! grep -Eq '^\s*tmpfs\s+/tmp\s+tmpfs\b' /etc/fstab; then
-    echo "$tmpfs_entry" | sudo tee -a /etc/fstab >/dev/null
-fi
 
 # Network Manager
 if ! systemctl is-enabled --quiet NetworkManager.service; then
