@@ -66,10 +66,6 @@ llama:
 system:
 	@ $(DOTFILES)/system/setup.sh
 
-.PHONY: maintenance
-maintenance:
-	@ ${DOTFILES}/scripts/run-maintenance-tasks
-
 .PHONY: zephyr
 zephyr:
 	@ ${DOTFILES}/hosts/zephyr/setup.sh
@@ -77,9 +73,3 @@ zephyr:
 .PHONY: helix
 helix:
 	@ ${DOTFILES}/hosts/helix/setup.sh
-
-.PHONY: post-installation
-post-installation:
-	@ echo "GPU Setup"
-	@ echo "Pacman/paru config"
-	@ echo "Performance Kernel Parameters"

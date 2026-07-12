@@ -48,21 +48,10 @@ make system    # system config files
 
 The repository includes useful scripts in the `scripts/` directory, including:
 
-- `run-maintenance-tasks`: update and clean the system
 - `web-search` / `web-fetch`: quick terminal web helpers
 - `dirty-dirs-git` / `pull-all-dirs`: manage multiple git repositories
-- `record-audio`, `extract-subs`, `yt2srt`: media helpers
-- `pi-sandbox`, `pi-agent-profile`: Pi agent helpers
-
-### 🔧 Post-Installation Steps
-
-After setting up the basic configuration, run:
-
-```bash
-make post-installation
-```
-
-This prints the remaining manual checks that still need to be automated.
+- `record-audio`: audio recording helper
+- `pi-sandbox`: Pi agent helper
 
 ## 📜 License
 

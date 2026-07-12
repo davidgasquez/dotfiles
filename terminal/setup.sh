@@ -41,7 +41,7 @@ paru -S --needed --noconfirm "${packages[@]}"
 uv tool install --reinstall -U 'markitdown[pdf, youtube-transcription]'
 
 # Create directories
-mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/ghostty" "${HOME}/.config/sheldon" "${HOME}/.config/starship"
+mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/ghostty" "${HOME}/.config/sheldon"
 
 # Create symlinks
 ln -sf "${DOTFILES}/terminal/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
@@ -51,10 +51,5 @@ ln -sf "${DOTFILES}/terminal/zshrc" "${HOME}/.zshrc"
 ln -sf "${DOTFILES}/terminal/sheldon/plugins.toml" "${HOME}/.config/sheldon/plugins.toml"
 ln -sf "${DOTFILES}/terminal/inputrc" "${HOME}/.inputrc"
 ln -sf "${DOTFILES}/terminal/starship.toml" "${HOME}/.config/starship.toml"
-
-# Optional: ble.sh configuration (link if present)
-if [[ -f "${DOTFILES}/terminal/blerc.sh" ]]; then
-    ln -sf "${DOTFILES}/terminal/blerc.sh" "${HOME}/.blerc"
-fi
 
 systemctl --user enable --now app-com.mitchellh.ghostty.service
