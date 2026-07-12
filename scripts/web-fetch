@@ -64,7 +64,7 @@ run_first_success() {
 
 run_all() {
   local url="$1"
-  local tmp err name label failures=0 successes=0
+  local tmp err name label successes=0
   tmp="$(mktemp)"
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
@@ -82,7 +82,6 @@ run_all() {
       printf '\n\n'
       successes=$((successes + 1))
     else
-      failures=$((failures + 1))
       printf '_Failed._\n\n'
       printf '%s failed:\n' "$label" >&2
       cat "$err" >&2
@@ -92,10 +91,6 @@ run_all() {
   if [ "$successes" -eq 0 ]; then
     echo "All converters failed" >&2
     return 1
-  fi
-
-  if [ "$failures" -gt 0 ]; then
-    return 0
   fi
 
   return 0
