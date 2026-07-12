@@ -1,6 +1,7 @@
 ---
 name: skill-writer
 description: Guide for creating effective skills
+disable-model-invocation: true
 ---
 
 # Skill Creator
