@@ -6,7 +6,7 @@ usage() {
 Usage: web-fetch [--all] <url>
 
 Convert a public web URL to Markdown.
-Default order: r.jina.ai, markitdown, defuddle.md.
+Default order: r.jina.ai, defuddle.md, markitdown.
 Use --all to print output from all three converters.
 EOF
 }
@@ -23,7 +23,10 @@ markitdown_url() {
 }
 
 jina_url() {
-  curl -fsSL "https://r.jina.ai/$1"
+  curl -fsSL \
+    -H 'Accept: text/markdown' \
+    -H 'X-No-Cache: true' \
+    "https://r.jina.ai/$1"
 }
 
 defuddle_url() {
@@ -49,10 +52,14 @@ run_first_success() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in jina markitdown defuddle; do
+  for name in jina defuddle markitdown; do
     if run_converter "$name" "$url" >"$tmp" 2>"$err"; then
-      cat "$tmp"
-      return 0
+      if [[ -s "$tmp" ]]; then
+        cat "$tmp"
+        return 0
+      fi
+      printf '%s returned no content\n' "$name" >&2
+      continue
     fi
     printf '%s failed:\n' "$name" >&2
     cat "$err" >&2
@@ -69,7 +76,7 @@ run_all() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in jina markitdown defuddle; do
+  for name in jina defuddle markitdown; do
     case "$name" in
       markitdown) label="markitdown" ;;
       jina) label="r.jina.ai" ;;
