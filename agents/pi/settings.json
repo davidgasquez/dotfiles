@@ -5,12 +5,14 @@
   "collapseChangelog": true,
   "enableSkillCommands": true,
   "quietStartup": true,
-  "transport": "websocket-cached",
+  "transport": "auto",
   "theme": "frappe",
   "lastChangelogVersion": "0.80.6",
   "pi-custom-codex": {
     "fast": true,
     "verbosity": "low"
   },
-  "defaultProjectTrust": "always"
+  "defaultProjectTrust": "always",
+  "showCacheMissNotices": true,
+  "treeFilterMode": "no-tools"
 }
