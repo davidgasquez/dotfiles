@@ -14,6 +14,7 @@
 - Remove unnecessary code, optimize for deletion and clean your own mess
 - Read files in full before wide-ranging changes, before editing files you have not fully inspected, and when asked to investigate or audit
 - Never preserve backward compatibility unless the user asks for it
+- The codebase is your memory system, make the code self-explanatory
 
 ### Execution Model
 
