@@ -29,6 +29,12 @@ Read them before making anything else.
 - [NN/g 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/)
 - [NN/g 5 Principles of Visual Design in UX](https://www.nngroup.com/articles/principles-visual-design)
 - [Inclusive Design Principles](https://inclusivedesignprinciples.info/)
+- [The Elements of Typographic Style Applied to the Web](https://webtypography.net/toc)
+
+## Styles
+
+- [Proportional Web](https://owickstrom.github.io/the-proportional-web/)
+- [Monospace Web](https://owickstrom.github.io/the-monospace-web/)
 
 ## Workflow
 
