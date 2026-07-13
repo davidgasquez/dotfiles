@@ -3,18 +3,18 @@ import {
   type ExtensionAPI,
   type ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
+import {
+  clampThinkingLevel,
+  streamOpenAICodexResponses,
+} from "@earendil-works/pi-ai/compat";
 
 const SETTINGS_KEY = "pi-custom-codex";
+const PROVIDER = "openai-codex";
+const API = "openai-codex-responses";
 const DEFAULT_CONFIG = {
   fast: true,
   verbosity: "low",
 } as const;
-const SUPPORTED_VERBOSITY_APIS = new Set([
-  "openai-responses",
-  "openai-codex-responses",
-  "azure-openai-responses",
-]);
-
 type Verbosity = "low" | "medium" | "high";
 type Config = {
   fast: boolean;
@@ -126,32 +126,6 @@ function formatConfig(config: Config): string {
   return `custom-codex fast=${config.fast ? "on" : "off"} verbosity=${config.verbosity}`;
 }
 
-function supportsFastMode(ctx: ExtensionContext): boolean {
-  return (
-    ctx.model?.provider === "openai" || ctx.model?.provider === "openai-codex"
-  );
-}
-
-function supportsVerbosityControl(ctx: ExtensionContext): boolean {
-  return typeof ctx.model?.api === "string"
-    ? SUPPORTED_VERBOSITY_APIS.has(ctx.model.api)
-    : false;
-}
-
-function patchVerbosity(
-  payload: Record<string, unknown>,
-  verbosity: Verbosity,
-): Record<string, unknown> {
-  const text = isObject(payload.text) ? payload.text : {};
-  return {
-    ...payload,
-    text: {
-      ...text,
-      verbosity,
-    },
-  };
-}
-
 export default function customCodexExtension(pi: ExtensionAPI): void {
   let activeConfig: Config = { ...DEFAULT_CONFIG };
   let settingsWriteQueue: Promise<void> = Promise.resolve();
@@ -239,33 +213,23 @@ export default function customCodexExtension(pi: ExtensionAPI): void {
     },
   });
 
-  pi.on("session_start", async (_event, ctx) => {
-    await reloadConfig(ctx);
+  pi.registerProvider(PROVIDER, {
+    api: API,
+    streamSimple(model, context, options) {
+      const reasoning = options?.reasoning
+        ? clampThinkingLevel(model, options.reasoning)
+        : undefined;
+
+      return streamOpenAICodexResponses(model, context, {
+        ...options,
+        reasoningEffort: reasoning === "off" ? undefined : reasoning,
+        serviceTier: activeConfig.fast ? "priority" : undefined,
+        textVerbosity: activeConfig.verbosity,
+      });
+    },
   });
 
-  pi.on("before_provider_request", (event, ctx) => {
-    if (!isObject(event.payload)) return undefined;
-
-    let nextPayload = event.payload;
-    let changed = false;
-
-    if (
-      activeConfig.fast &&
-      supportsFastMode(ctx) &&
-      !Object.prototype.hasOwnProperty.call(nextPayload, "service_tier")
-    ) {
-      nextPayload = {
-        ...nextPayload,
-        service_tier: "priority",
-      };
-      changed = true;
-    }
-
-    if (supportsVerbosityControl(ctx)) {
-      nextPayload = patchVerbosity(nextPayload, activeConfig.verbosity);
-      changed = true;
-    }
-
-    return changed ? nextPayload : undefined;
+  pi.on("session_start", async (_event, ctx) => {
+    await reloadConfig(ctx);
   });
 }
