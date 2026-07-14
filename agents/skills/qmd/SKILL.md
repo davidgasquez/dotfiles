@@ -1,6 +1,6 @@
 ---
 name: qmd
-description: Search local markdown knowledge bases, notes, docs, and wikis with QMD. Use when users ask to find notes, retrieve documents, inspect a wiki, answer from indexed markdown, or set up QMD access.
+description: Search local markdown knowledge bases, notes, and docs with qmd. Use when users ask to research on local notes, retrieve documents semantically, or mentions qmd access.
 license: MIT
 ---
 
