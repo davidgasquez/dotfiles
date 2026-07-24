@@ -18,7 +18,7 @@ echo "Enabling ratbagd for Piper mouse DPI configuration..."
 sudo systemctl enable --now ratbagd.service
 
 mkdir -p "${HYPR_CONFIG_DIR}" "${PIPEWIRE_CONFIG_DIR}"
-ln -sf "${HOST_DIR}/hypr/monitor.conf" "${HYPR_CONFIG_DIR}/monitor.conf"
+ln -sf "${HOST_DIR}/hypr/monitors.lua" "${HYPR_CONFIG_DIR}/monitors.lua"
 ln -sf "${HOST_DIR}/pipewire/pipewire.conf.d/20-office-output-notch-128hz.conf" "${PIPEWIRE_CONFIG_DIR}/20-office-output-notch-128hz.conf"
 
 echo "Restart PipeWire to apply the output notch:"
