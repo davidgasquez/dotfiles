@@ -8,7 +8,7 @@ PIPEWIRE_CONFIG_DIR="${HOME}/.config/pipewire/pipewire.conf.d"
 packages=(
     libratbag
     piper
-    whisper.cpp-hip
+    whisper-cpp
 )
 
 echo "Installing Helix packages..."
