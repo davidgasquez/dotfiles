@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
-CONFIG_DIR="${HOME}/.config"
-ICONS_DEFAULT_DIR="${HOME}/.icons/default"
+ICON_THEME="Papirus-Dark"
 CURSOR_THEME="catppuccin-frappe-light-cursors"
 CURSOR_SIZE="24"
+FONT_NAME="Inter Display 11"
 
 packages=(
     brave-bin
@@ -27,9 +26,7 @@ packages=(
 
 paru -S --needed --noconfirm "${packages[@]}"
 
+gsettings set org.gnome.desktop.interface icon-theme "${ICON_THEME}"
 gsettings set org.gnome.desktop.interface cursor-theme "${CURSOR_THEME}"
 gsettings set org.gnome.desktop.interface cursor-size "${CURSOR_SIZE}"
-
-mkdir -p "${CONFIG_DIR}" "${ICONS_DEFAULT_DIR}"
-
-ln -sf "${DOTFILES}/desktop/icons/default/index.theme" "${ICONS_DEFAULT_DIR}/index.theme"
+gsettings set org.gnome.desktop.interface font-name "${FONT_NAME}"
