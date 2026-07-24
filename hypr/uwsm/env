@@ -1,6 +1,4 @@
 export EDITOR="zeditor --wait"
 export XCURSOR_THEME=catppuccin-frappe-light-cursors
 export XCURSOR_SIZE=24
-export HYPRCURSOR_THEME=catppuccin-frappe-light-cursors
-export HYPRCURSOR_SIZE=24
 export XMODIFIERS=@im=fcitx
