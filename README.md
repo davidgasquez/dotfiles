@@ -48,7 +48,7 @@ make system    # system config files
 
 The repository includes useful scripts in the `scripts/` directory, including:
 
-- `web-search` / `web-fetch`: quick terminal web helpers
+- `web-fetch`: convert public web pages to Markdown
 - `dirty-dirs-git` / `pull-all-dirs`: manage multiple git repositories
 - `record-audio`: audio recording helper
 - `pi-sandbox`: Pi agent helper
