@@ -14,6 +14,8 @@ This repository tracks some of the dotfiles for my Arch Linux installation.
 - **Modular organization**: Each application or unique setup has its own directory
 - **Make-based automation**: The Makefile is the entrypoint that triggers all the subscripts
 - **Theme consistency**: Catppuccin Frappe theme used across all applications that support it
+- Before changing configurations, check the application's official documentation, repository, or resources for the latest syntax, best practices, deprecations, recommendations, ...
+- For privileged operations, explain the exact action and use inline `pkexec` with an absolute executable path. Keep `sudo` on the scripts.
 
 ## Coding Style & Naming Conventions
 
