@@ -8,7 +8,7 @@ width=360
 height=140
 padding=14,16
 
-font=Inter 11
+font=Adwaita Sans 11
 markup=1
 format=<b>%s</b>\n<span foreground="#a5adce">%b</span>
 text-alignment=left

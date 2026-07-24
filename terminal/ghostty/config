@@ -1,6 +1,5 @@
 theme = Catppuccin Frappe
 
-font-family = JetBrainsMono Nerd Font
 font-size = 12
 
 gtk-single-instance = true

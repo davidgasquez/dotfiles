@@ -6,7 +6,7 @@
   border-radius: 0;
   box-shadow: none;
   min-height: 0;
-  font-family: "JetBrainsMono Nerd Font", Inter, sans-serif;
+  font-family: "JetBrains Mono", "Symbols Nerd Font", monospace;
   font-size: 12px;
 }
 
@@ -28,7 +28,7 @@ tooltip label {
 button {
   all: initial;
   color: @text;
-  font-family: "JetBrainsMono Nerd Font", Inter, sans-serif;
+  font-family: "JetBrains Mono", "Symbols Nerd Font", monospace;
   font-size: 12px;
 }
 
