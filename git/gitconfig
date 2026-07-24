@@ -57,8 +57,5 @@
   pruneTags = true
   all = true
 
-[credential]
-	helper = store
-
 [help]
   autocorrect = prompt
