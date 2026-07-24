@@ -29,6 +29,7 @@ Do not blindly run every command. Skip work that is unnecessary, unsafe, or alre
 - Do not start SMART self-tests automatically.
 - Do not start a Btrfs scrub or balance while another Btrfs operation is active.
 - Preserve command output and continue when independent tasks fail.
+- Propose a plan to the user once you have all the context.
 
 ## System health
 
