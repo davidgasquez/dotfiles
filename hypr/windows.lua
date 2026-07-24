@@ -8,14 +8,12 @@ hl.window_rule({
   name = "smart-gaps-single-tiled",
   match = { workspace = tiled_single, float = false },
   border_size = 0,
-  rounding = 0,
 })
 
 hl.window_rule({
   name = "smart-gaps-maximized",
   match = { workspace = maximized, float = false },
   border_size = 0,
-  rounding = 0,
 })
 
 hl.window_rule({
@@ -36,7 +34,6 @@ hl.window_rule({
   content = "game",
   immediate = true,
   border_size = 0,
-  rounding = 0,
 })
 
 hl.window_rule({

@@ -1,5 +1,4 @@
-local home = assert(os.getenv("HOME"), "HOME is required to load the monitor configuration")
-dofile(home .. "/.config/hypr/monitors.lua")
+require("monitors")
 
 require("input")
 require("looknfeel")
