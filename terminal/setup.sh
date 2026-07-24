@@ -5,7 +5,6 @@ DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
 
 packages=(
     ghostty
-    alacritty
     aria2
     bash-completion
     bat
@@ -41,10 +40,9 @@ paru -S --needed --noconfirm "${packages[@]}"
 uv tool install --reinstall -U 'markitdown[pdf, youtube-transcription]'
 
 # Create directories
-mkdir -p "${HOME}/.config/alacritty" "${HOME}/.config/ghostty" "${HOME}/.config/sheldon"
+mkdir -p "${HOME}/.config/ghostty" "${HOME}/.config/sheldon"
 
 # Create symlinks
-ln -sf "${DOTFILES}/terminal/alacritty.toml" "${HOME}/.config/alacritty/alacritty.toml"
 ln -snf "${DOTFILES}/terminal/ghostty/config" "${HOME}/.config/ghostty/config"
 ln -sf "${DOTFILES}/terminal/bashrc" "${HOME}/.bashrc"
 ln -sf "${DOTFILES}/terminal/zshrc" "${HOME}/.zshrc"
