@@ -6,7 +6,7 @@ usage() {
 Usage: web-fetch [--all] <url>
 
 Convert a public web URL to Markdown.
-Default order: r.jina.ai, defuddle.md, markitdown.
+Default order: markitdown, r.jina.ai, defuddle.md.
 Use --all to print output from all three converters.
 EOF
 }
@@ -52,7 +52,7 @@ run_first_success() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in jina defuddle markitdown; do
+  for name in markitdown jina defuddle; do
     if run_converter "$name" "$url" >"$tmp" 2>"$err"; then
       if [[ -s "$tmp" ]]; then
         cat "$tmp"
@@ -76,7 +76,7 @@ run_all() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in jina defuddle markitdown; do
+  for name in markitdown jina defuddle; do
     case "$name" in
       markitdown) label="markitdown" ;;
       jina) label="r.jina.ai" ;;

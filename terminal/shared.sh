@@ -7,7 +7,7 @@ alias ll='eza -l --icons'
 alias la='eza -la --icons'
 alias tree='eza --tree --icons'
 alias cat='bat -pp'
-alias up='paru -Syu --skipreview --noconfirm && (uv tool upgrade --all & pi update & pull-all-dirs ~/projects & wait)'
+alias up='paru -Syu && uv tool upgrade --all && pi update && pull-all-dirs ~/projects'
 alias copy='wl-copy'
 alias pasta='wl-paste'
 

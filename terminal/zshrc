@@ -43,9 +43,9 @@ zstyle ':completion:*' menu select
 # Smarter completion initialization
 autoload -Uz compinit
 if [[ -f ~/.zcompdump && ~/.zcompdump -nt /usr/share/zsh ]] && [[ ! ~/.zcompdump -ot /usr/local/share/zsh ]]; then
-  compinit -C -u
+  compinit -C
 else
-  compinit -u
+  compinit
 fi
 
 # Shared shell config
