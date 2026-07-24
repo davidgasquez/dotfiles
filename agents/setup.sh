@@ -25,7 +25,6 @@ ln -sf "${AGENTS_DIR}/codex/config.toml" "${CODEX_DIR}/config.toml"
 ln -sf "${AGENTS_DIR}/AGENTS.md" "${CODEX_DIR}/AGENTS.md"
 
 mkdir -p "${PI_AGENT_DIR}"
-ln -sfT "${AGENTS_DIR}/pi/agents" "${PI_AGENT_DIR}/agents"
 ln -sf "${AGENTS_DIR}/AGENTS.md" "${PI_AGENT_DIR}/AGENTS.md"
 ln -sf "${AGENTS_DIR}/pi/settings.json" "${PI_AGENT_DIR}/settings.json"
 ln -sfT "${AGENTS_DIR}/pi/extensions" "${PI_AGENT_DIR}/extensions"
