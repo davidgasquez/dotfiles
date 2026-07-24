@@ -6,7 +6,7 @@ personality = "pragmatic"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 check_for_update_on_startup = false
-service_tier = "fast"
+service_tier = "priority"
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-used"]
