@@ -100,5 +100,4 @@ if [ "$(readlink -f /usr/bin/voxtype)" != "/usr/lib/voxtype/voxtype-vulkan" ]; t
 fi
 
 systemctl --user daemon-reload
-systemctl --user enable --now "${services[@]}"
-systemctl --user restart voxtype.service
+systemctl --user enable "${services[@]}"
