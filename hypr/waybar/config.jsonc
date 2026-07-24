@@ -137,6 +137,6 @@
   "clock": {
     "format": "{:%a %d %b  %H:%M}",
     "tooltip-format": "{:%A, %d %B %Y\n%H:%M}",
-    "on-click": "uwsm app -- brave --app=https://calendar.google.com/calendar/r",
+    "on-click": "uwsm-app -- brave --app=https://calendar.google.com/calendar/r",
   },
 }

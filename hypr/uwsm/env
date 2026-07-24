@@ -1,9 +1,6 @@
 export EDITOR="zeditor --wait"
-export ELECTRON_OZONE_PLATFORM_HINT=wayland
-export GDK_BACKEND=wayland
 export XCURSOR_THEME=catppuccin-frappe-light-cursors
 export XCURSOR_SIZE=24
 export HYPRCURSOR_THEME=catppuccin-frappe-light-cursors
 export HYPRCURSOR_SIZE=24
-export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx

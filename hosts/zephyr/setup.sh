@@ -52,6 +52,6 @@ else
 fi
 
 mkdir -p "${HYPR_CONFIG_DIR}"
-ln -sf "${HOST_DIR}/hypr/monitor.conf" "${HYPR_CONFIG_DIR}/monitor.conf"
+ln -sf "${HOST_DIR}/hypr/monitors.lua" "${HYPR_CONFIG_DIR}/monitors.lua"
 
 # Optionally, theme Plymouth (https://github.com/adi1090x/plymouth-themes)

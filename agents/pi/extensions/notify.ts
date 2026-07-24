@@ -103,7 +103,7 @@ function notify(title: string, target?: TargetWindow): void {
   args.push(title, BODY);
 
   const command = target
-    ? `if [ "$(notify-send ${args.map(shellQuote).join(" ")})" = default ]; then hyprctl dispatch workspace ${target.workspace}; hyprctl dispatch focuswindow address:${target.address}; fi`
+    ? `if [ "$(notify-send ${args.map(shellQuote).join(" ")})" = default ]; then hyprctl dispatch ${shellQuote(`hl.dsp.focus({ workspace = ${target.workspace} })`)}; hyprctl dispatch ${shellQuote(`hl.dsp.focus({ window = "address:${target.address}" })`)}; fi`
     : `notify-send ${args.map(shellQuote).join(" ")}`;
 
   const child = spawn("bash", ["-lc", command], {
