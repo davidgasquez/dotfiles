@@ -7,6 +7,7 @@ packages=(
     bind
     blueman
     bluez
+    bluez-utils
     ccache
     tailscale
     docker
@@ -38,40 +39,32 @@ paru -S --needed --noconfirm "${packages[@]}"
 sudo install -Dm644 "${DOTFILES}/system/zram-generator.conf" /etc/systemd/zram-generator.conf
 
 # Network Manager
-if ! systemctl is-enabled --quiet NetworkManager.service; then
-    sudo systemctl enable --now NetworkManager.service
-fi
+sudo systemctl enable --now NetworkManager.service
 
 # Firewall
-if ! systemctl is-enabled --quiet ufw; then
-    sudo systemctl enable --now ufw
-    sudo ufw enable
-fi
+sudo systemctl enable --now ufw
+sudo ufw --force enable
 
 # SSD Trim
-if ! systemctl is-enabled --quiet fstrim.timer; then
-    sudo systemctl enable --now fstrim.timer
-fi
+sudo systemctl enable --now fstrim.timer
 
 # Out-of-memory daemon
-if ! systemctl is-enabled --quiet systemd-oomd.service; then
-    sudo systemctl enable --now systemd-oomd.service
-fi
+sudo systemctl enable --now systemd-oomd.service
 
 # Power Profiles
-if ! systemctl is-enabled --quiet power-profiles-daemon.service; then
-    sudo systemctl enable --now power-profiles-daemon.service
-fi
+sudo systemctl enable --now power-profiles-daemon.service
 
 # Gnome Keyring
-if ! systemctl --user is-enabled --quiet gnome-keyring-daemon.socket; then
-    systemctl --user enable --now gnome-keyring-daemon.socket
-fi
+systemctl --user enable --now gnome-keyring-daemon.service
+
+# Bluetooth
+sudo systemctl enable --now bluetooth.service
+
+# Package cache cleanup
+sudo systemctl enable --now paccache.timer
 
 # Start Dockler on demand
-if ! systemctl is-enabled --quiet docker.socket; then
-    sudo systemctl enable --now docker.socket
-fi
+sudo systemctl enable --now docker.socket
 if systemctl is-enabled --quiet docker.service; then
     sudo systemctl disable docker.service
 fi
@@ -80,9 +73,7 @@ if ! groups "$USER" | grep -q "\bdocker\b"; then
 fi
 
 # Tailscale
-if ! systemctl is-enabled --quiet tailscaled; then
-    sudo systemctl enable --now tailscaled
-fi
+sudo systemctl enable --now tailscaled
 if ! tailscale status &>/dev/null; then
     tailscale up
 fi
