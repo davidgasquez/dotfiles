@@ -122,13 +122,13 @@ bind(
   "XF86AudioMute",
   "Toggle audio mute",
   "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-  repeat_locked
+  locked
 )
 bind(
   "XF86AudioMicMute",
   "Toggle microphone mute",
   "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
-  repeat_locked
+  locked
 )
 bind("XF86AudioNext", "Next track", "playerctl next", locked)
 bind("XF86AudioPause", "Toggle playback", "playerctl play-pause", locked)
