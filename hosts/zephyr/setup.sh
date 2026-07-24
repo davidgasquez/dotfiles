@@ -27,12 +27,13 @@ sudo pacman -Suy
 
 packages=(
     brightnessctl
+    linux-g14
     powertop
     power-profiles-daemon
     plymouth
-    python-gobject # Required for power-profiles-daemon
     asusctl
     rog-control-center
+    sof-firmware
 )
 
 # Install packages
@@ -44,12 +45,7 @@ echo "Setting keyboard backlight..."
 brightnessctl --device=asus::kbd_backlight set 3
 
 # Power Profiles Daemon
-if ! systemctl is-enabled --quiet power-profiles-daemon; then
-    echo "Enabling Power Profiles Daemon..."
-    sudo systemctl enable --now power-profiles-daemon
-else
-    echo "Power Profiles Daemon already enabled"
-fi
+sudo systemctl enable --now power-profiles-daemon
 
 mkdir -p "${HYPR_CONFIG_DIR}"
 ln -sf "${HOST_DIR}/hypr/monitors.lua" "${HYPR_CONFIG_DIR}/monitors.lua"
