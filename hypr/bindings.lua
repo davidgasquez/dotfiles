@@ -75,6 +75,11 @@ bind(
   "Open clipboard history",
   [[selection=$(cliphist list | fuzzel --dmenu --with-nth=2 --only-match --no-run-if-empty --prompt='Clipboard > ') && [ -n "$selection" ] && printf '%s\n' "$selection" | cliphist decode | wl-copy]]
 )
+bind(
+  "SUPER + CTRL + SHIFT + V",
+  "Delete clipboard history item",
+  [[selection=$(cliphist list | fuzzel --dmenu --with-nth=2 --only-match --no-run-if-empty --prompt='Delete clipboard > ') && [ -n "$selection" ] && printf '%s\n' "$selection" | cliphist delete]]
+)
 
 bind("PRINT", "Capture output", "hyprshot -m output")
 bind("SHIFT + PRINT", "Capture region", "hyprshot -m region")

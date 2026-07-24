@@ -1,13 +1,15 @@
 [Unit]
-Description=Store Wayland text clipboard history
+Description=Store Wayland %I clipboard history
 PartOf=graphical-session.target
 After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/wl-paste --type text --watch /usr/bin/cliphist store
+ExecStartPre=-/usr/bin/chmod 0600 %C/cliphist/db
+ExecStart=/usr/bin/wl-paste --type %I --watch /usr/bin/cliphist store
 Restart=on-failure
 RestartSec=1s
+UMask=0077
 
 [Install]
 WantedBy=graphical-session.target
