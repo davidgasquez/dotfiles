@@ -33,5 +33,3 @@ gsettings set org.gnome.desktop.interface cursor-size "${CURSOR_SIZE}"
 mkdir -p "${CONFIG_DIR}" "${ICONS_DEFAULT_DIR}"
 
 ln -sf "${DOTFILES}/desktop/icons/default/index.theme" "${ICONS_DEFAULT_DIR}/index.theme"
-ln -sf "${DOTFILES}/desktop/brave-flags.conf" "${CONFIG_DIR}/brave-flags.conf"
-ln -sf "${DOTFILES}/desktop/electron-flags.conf" "${CONFIG_DIR}/electron-flags.conf"
