@@ -17,8 +17,6 @@ packages=(
     ttf-droid
     ttf-jetbrains-mono-nerd
     ttf-liberation
-    ttf-mac-fonts
-    ttf-ms-fonts
     ttf-roboto
     ttf-ubuntu-font-family
 )
