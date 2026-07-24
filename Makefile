@@ -69,3 +69,15 @@ zephyr:
 .PHONY: helix
 helix:
 	@ ${DOTFILES}/hosts/helix/setup.sh
+
+.PHONY: check
+check: lint-sh
+	@ prek run --all-files
+	@ git ls-files -z '*.lua' | xargs -0 -r luac -p
+	@ systemd-analyze --user verify hypr/systemd/user/*.service
+	@ systemd-analyze verify secrets/*.service secrets/*.timer
+	@ if [ -n "$${HYPRLAND_INSTANCE_SIGNATURE:-}" ]; then test -z "$$(hyprctl configerrors)"; fi
+
+.PHONY: doctor
+doctor:
+	@ scripts/doctor

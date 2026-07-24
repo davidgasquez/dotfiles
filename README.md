@@ -34,6 +34,8 @@ make secrets   # gopass and secret sync setup
 make hypr      # Hyprland config
 make desktop   # desktop app flags/config
 make system    # system config files
+make check     # validate tracked configuration
+make doctor    # check live workstation drift
 ```
 
 ### Environment Variables

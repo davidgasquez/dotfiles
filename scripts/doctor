@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+failures=0
+
+pass() {
+    printf 'ok: %s\n' "$1"
+}
+
+fail() {
+    printf 'fail: %s\n' "$1" >&2
+    failures=$((failures + 1))
+}
+
+for command in bootctl btrfs pacdiff paru shellcheck systemctl; do
+    if command -v "${command}" >/dev/null; then
+        pass "${command} is installed"
+    else
+        fail "${command} is missing"
+    fi
+done
+
+if [[ -z "$(systemctl --failed --no-legend)" ]]; then
+    pass 'no failed system units'
+else
+    fail 'failed system units detected'
+fi
+
+if [[ -z "$(systemctl --user --failed --no-legend)" ]]; then
+    pass 'no failed user units'
+else
+    fail 'failed user units detected'
+fi
+
+if [[ -z "$(pacdiff --output)" ]]; then
+    pass 'no pending pacnew or pacsave files'
+else
+    fail 'pending pacnew or pacsave files detected'
+fi
+
+if [[ "$(< /sys/module/zswap/parameters/enabled)" == N ]]; then
+    pass 'zswap is disabled'
+else
+    fail 'zswap is enabled'
+fi
+
+if swapon --show=NAME --noheadings | grep -qx '/dev/zram0'; then
+    pass 'zram swap is active'
+else
+    fail 'zram swap is not active'
+fi
+
+if [[ "$(findmnt -no FSTYPE /)" == btrfs ]]; then
+    if systemctl is-enabled --quiet btrfs-scrub@-.timer; then
+        pass 'monthly Btrfs scrub is enabled'
+    else
+        fail 'monthly Btrfs scrub is disabled'
+    fi
+
+    if btrfs device stats / | awk '$2 != 0 { found = 1 } END { exit found }'; then
+        pass 'Btrfs device error counters are zero'
+    else
+        fail 'Btrfs device error counters are nonzero'
+    fi
+fi
+
+boot_options=$(findmnt -no OPTIONS /boot)
+if [[ ",${boot_options}," == *,fmask=0177,* && ",${boot_options}," == *,dmask=0077,* ]]; then
+    pass 'ESP mount is root-only'
+else
+    fail 'ESP mount is not root-only'
+fi
+
+if systemctl is-enabled --quiet systemd-boot-update.service; then
+    pass 'automatic systemd-boot updates are enabled'
+else
+    fail 'automatic systemd-boot updates are disabled'
+fi
+
+boot_status=$(bootctl status --no-pager 2>&1 || true)
+running_boot_version=$(sed -n 's/.*Product: systemd-boot \([0-9]\+\).*/\1/p' <<< "${boot_status}" | head -n 1)
+installed_systemd_version=$(pacman -Q systemd | awk '{ print $2 }' | cut -d. -f1)
+if [[ -n "${running_boot_version}" && "${running_boot_version}" == "${installed_systemd_version}" ]]; then
+    pass "running systemd-boot matches systemd ${installed_systemd_version}"
+else
+    fail "running systemd-boot ${running_boot_version:-unknown} does not match systemd ${installed_systemd_version}"
+fi
+
+if pacman -Q wireless-regdb >/dev/null 2>&1; then
+    pass 'wireless regulatory database is installed'
+else
+    fail 'wireless regulatory database is missing'
+fi
+
+if (( failures > 0 )); then
+    printf '%d check(s) failed\n' "${failures}" >&2
+    exit 1
+fi
+
+printf 'All doctor checks passed\n'
