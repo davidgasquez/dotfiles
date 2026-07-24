@@ -32,6 +32,7 @@ packages=(
     pavucontrol
     pipewire
     pipewire-alsa
+    pipewire-jack
     pipewire-libcamera
     pipewire-pulse
     playerctl
@@ -53,8 +54,8 @@ paru -S --needed --noconfirm "${packages[@]}"
 
 # Start Hyprland session services.
 services=(
-    cliphist-image.service
-    cliphist-text.service
+    cliphist@image.service
+    cliphist@text.service
     hypridle.service
     hyprpaper.service
     hyprpolkitagent.service
@@ -66,7 +67,6 @@ services=(
 mkdir -p "${HYPR_CONFIG_DIR}" "${WAYBAR_CONFIG_DIR}" "${MAKO_CONFIG_DIR}" "${FUZZEL_CONFIG_DIR}" "${VOXTYPE_CONFIG_DIR}" "${FCITX_CONFIG_DIR}" "${UWSM_CONFIG_DIR}" "${CLIPHIST_CONFIG_DIR}" "${SYSTEMD_USER_DIR}" "${PICTURES_DIR}"
 
 ln -sf "${DOTFILES}/hypr/wallpaper.png" "${PICTURES_DIR}/wallpaper.png"
-ln -sf "${DOTFILES}/hypr/frappe.conf" "${HYPR_CONFIG_DIR}/frappe.conf"
 ln -sf "${DOTFILES}/.luarc.json" "${HYPR_CONFIG_DIR}/.luarc.json"
 ln -sf "${DOTFILES}/hypr/hyprland.lua" "${HYPR_CONFIG_DIR}/hyprland.lua"
 ln -sf "${DOTFILES}/hypr/autostart.lua" "${HYPR_CONFIG_DIR}/autostart.lua"
@@ -87,9 +87,9 @@ ln -sf "${DOTFILES}/hypr/fuzzel/fuzzel.ini" "${FUZZEL_CONFIG_DIR}/fuzzel.ini"
 ln -sf "${DOTFILES}/hypr/voxtype/config.toml" "${VOXTYPE_CONFIG_DIR}/config.toml"
 ln -sf "${DOTFILES}/hypr/fcitx5/config" "${FCITX_CONFIG_DIR}/config"
 ln -sf "${DOTFILES}/hypr/uwsm/env" "${UWSM_CONFIG_DIR}/env"
+ln -sf "${DOTFILES}/hypr/uwsm/env-hyprland" "${UWSM_CONFIG_DIR}/env-hyprland"
 ln -sf "${DOTFILES}/hypr/cliphist/config" "${CLIPHIST_CONFIG_DIR}/config"
-ln -sf "${DOTFILES}/hypr/systemd/user/cliphist-image.service" "${SYSTEMD_USER_DIR}/cliphist-image.service"
-ln -sf "${DOTFILES}/hypr/systemd/user/cliphist-text.service" "${SYSTEMD_USER_DIR}/cliphist-text.service"
+ln -sf "${DOTFILES}/hypr/systemd/user/cliphist@.service" "${SYSTEMD_USER_DIR}/cliphist@.service"
 
 
 voxtype setup --download --model large-v3-turbo --no-post-install
@@ -100,4 +100,4 @@ if [ "$(readlink -f /usr/bin/voxtype)" != "/usr/lib/voxtype/voxtype-vulkan" ]; t
 fi
 
 systemctl --user daemon-reload
-systemctl --user enable "${services[@]}"
+systemctl --user enable --now "${services[@]}"
