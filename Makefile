@@ -26,10 +26,6 @@ git:
 fonts:
 	@ $(DOTFILES)/fonts/setup.sh
 
-.PHONY: code
-code:
-	@ $(DOTFILES)/code/setup.sh
-
 .PHONY: agents
 agents:
 	@ $(DOTFILES)/agents/setup.sh
