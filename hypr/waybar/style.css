@@ -123,11 +123,6 @@ button {
   color: @yellow;
 }
 
-#idle_inhibitor.deactivated {
-  margin: 0;
-  min-width: 0;
-}
-
 #custom-expand-icon {
   color: @overlay0;
   margin-right: 12px;
