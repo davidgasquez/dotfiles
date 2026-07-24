@@ -21,10 +21,6 @@ else
     echo "Repository g14 found on pacman.conf"
 fi
 
-# Update system
-echo "Updating system packages..."
-sudo pacman -Suy
-
 packages=(
     brightnessctl
     linux-g14
@@ -46,8 +42,12 @@ brightnessctl --device=asus::kbd_backlight set 3
 
 # Power Profiles Daemon
 sudo systemctl enable --now power-profiles-daemon
+powerprofilesctl set balanced
+
+# Keep systemd-boot current with the installed systemd package.
+sudo systemctl enable systemd-boot-update.service
 
 mkdir -p "${HYPR_CONFIG_DIR}"
-ln -sf "${HOST_DIR}/hypr/monitors.lua" "${HYPR_CONFIG_DIR}/monitors.lua"
+ln -sfnT "${HOST_DIR}/hypr/monitors.lua" "${HYPR_CONFIG_DIR}/monitors.lua"
 
 # Optionally, theme Plymouth (https://github.com/adi1090x/plymouth-themes)

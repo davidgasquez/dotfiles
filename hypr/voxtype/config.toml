@@ -22,7 +22,7 @@ volume = 0.7
 model = "large-v3-turbo"
 language = "en"
 translate = false
-on_demand_loading = false
+on_demand_loading = true
 context_window_optimization = false
 
 [output]

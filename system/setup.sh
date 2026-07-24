@@ -6,6 +6,7 @@ DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
 packages=(
     bind
     blueman
+    btrfs-progs
     bluez
     bluez-utils
     ccache
@@ -13,6 +14,7 @@ packages=(
     docker
     docker-buildx
     docker-compose
+    dosfstools
     fwupd
     gnome-keyring
     inetutils
@@ -28,6 +30,7 @@ packages=(
     ufw
     unzip
     util-linux
+    wireless-regdb
     xdg-user-dirs
     zram-generator
 )
@@ -63,7 +66,12 @@ sudo systemctl enable --now bluetooth.service
 # Package cache cleanup
 sudo systemctl enable --now paccache.timer
 
-# Start Dockler on demand
+# Btrfs integrity checking
+if [[ "$(findmnt -no FSTYPE /)" == "btrfs" ]]; then
+    sudo systemctl enable --now btrfs-scrub@-.timer
+fi
+
+# Start Docker on demand
 sudo systemctl enable --now docker.socket
 if systemctl is-enabled --quiet docker.service; then
     sudo systemctl disable docker.service
