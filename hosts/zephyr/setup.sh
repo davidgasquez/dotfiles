@@ -32,7 +32,6 @@ packages=(
     plymouth
     python-gobject # Required for power-profiles-daemon
     asusctl
-    supergfxctl
     rog-control-center
 )
 
@@ -50,22 +49,6 @@ if ! systemctl is-enabled --quiet power-profiles-daemon; then
     sudo systemctl enable --now power-profiles-daemon
 else
     echo "Power Profiles Daemon already enabled"
-fi
-
-# SuperGFXD
-if ! systemctl is-enabled --quiet supergfxd; then
-    echo "Enabling SuperGFXD..."
-    sudo systemctl enable --now supergfxd
-else
-    echo "SuperGFXD already enabled"
-fi
-
-# Switcheroo Control
-if ! systemctl is-enabled --quiet switcheroo-control; then
-    echo "Enabling Switcheroo Control..."
-    sudo systemctl enable --now switcheroo-control
-else
-    echo "Switcheroo Control already enabled"
 fi
 
 mkdir -p "${HYPR_CONFIG_DIR}"
