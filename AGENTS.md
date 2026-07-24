@@ -6,6 +6,7 @@ This repository tracks some of the dotfiles for my Arch Linux installation.
 
 - Each directory contains related (and ideally selfcontained) configuration files
 - Makefile orchestrates each target
+- `setup.sh` are declarative of the ideal state (no `rm` or migrations)
 
 ### Patterns and Principles
 
