@@ -37,17 +37,19 @@ packages=(
 paru -S --needed --noconfirm "${packages[@]}"
 
 # Install uv tools
-uv tool install --reinstall -U 'markitdown[pdf, youtube-transcription]'
+if ! command -v markitdown >/dev/null; then
+    uv tool install 'markitdown[pdf, youtube-transcription]'
+fi
 
 # Create directories
 mkdir -p "${HOME}/.config/ghostty" "${HOME}/.config/sheldon"
 
 # Create symlinks
-ln -snf "${DOTFILES}/terminal/ghostty/config" "${HOME}/.config/ghostty/config"
-ln -sf "${DOTFILES}/terminal/bashrc" "${HOME}/.bashrc"
-ln -sf "${DOTFILES}/terminal/zshrc" "${HOME}/.zshrc"
-ln -sf "${DOTFILES}/terminal/sheldon/plugins.toml" "${HOME}/.config/sheldon/plugins.toml"
-ln -sf "${DOTFILES}/terminal/inputrc" "${HOME}/.inputrc"
-ln -sf "${DOTFILES}/terminal/starship.toml" "${HOME}/.config/starship.toml"
+ln -sfnT "${DOTFILES}/terminal/ghostty/config" "${HOME}/.config/ghostty/config"
+ln -sfnT "${DOTFILES}/terminal/bashrc" "${HOME}/.bashrc"
+ln -sfnT "${DOTFILES}/terminal/zshrc" "${HOME}/.zshrc"
+ln -sfnT "${DOTFILES}/terminal/sheldon/plugins.toml" "${HOME}/.config/sheldon/plugins.toml"
+ln -sfnT "${DOTFILES}/terminal/inputrc" "${HOME}/.inputrc"
+ln -sfnT "${DOTFILES}/terminal/starship.toml" "${HOME}/.config/starship.toml"
 
 systemctl --user enable --now app-com.mitchellh.ghostty.service

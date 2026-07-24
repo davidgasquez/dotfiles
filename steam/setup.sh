@@ -31,7 +31,7 @@ fi
 paru -S --needed --noconfirm "${packages[@]}"
 
 mkdir -p "${MANGOHUD_CONFIG_DIR}"
-ln -sf "${DOTFILES}/steam/MangoHud.conf" "${MANGOHUD_CONFIG_DIR}/MangoHud.conf"
+ln -sfnT "${DOTFILES}/steam/MangoHud.conf" "${MANGOHUD_CONFIG_DIR}/MangoHud.conf"
 
 if ! getent group gamemode >/dev/null; then
     echo "error: gamemode group does not exist after installing gamemode" >&2

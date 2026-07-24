@@ -9,7 +9,7 @@ paru -S --needed --noconfirm zed
 
 mkdir -p "${ZED_CONFIG_DIR}" "${ZED_THEMES_DIR}"
 
-ln -snf "${DOTFILES}/zed/settings.json" "${ZED_CONFIG_DIR}/settings.json"
-ln -snf "${DOTFILES}/zed/keymap.json" "${ZED_CONFIG_DIR}/keymap.json"
-ln -snf "${DOTFILES}/zed/tasks.json" "${ZED_CONFIG_DIR}/tasks.json"
-ln -snf "${DOTFILES}/zed/theme-catppuccin-blue.json" "${ZED_THEMES_DIR}/theme-catppuccin-blue.json"
+ln -sfnT "${DOTFILES}/zed/settings.json" "${ZED_CONFIG_DIR}/settings.json"
+ln -sfnT "${DOTFILES}/zed/keymap.json" "${ZED_CONFIG_DIR}/keymap.json"
+ln -sfnT "${DOTFILES}/zed/tasks.json" "${ZED_CONFIG_DIR}/tasks.json"
+ln -sfnT "${DOTFILES}/zed/theme-catppuccin-blue.json" "${ZED_THEMES_DIR}/theme-catppuccin-blue.json"

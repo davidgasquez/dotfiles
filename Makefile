@@ -15,8 +15,9 @@ lint-sh:
 .PHONY: paru
 paru:
 	@ sudo pacman -S --needed base-devel
-	@ git clone https://aur.archlinux.org/paru.git /tmp/paru
-	@ cd /tmp/paru && makepkg -si --noconfirm
+	@ tmp=$$(mktemp -d); trap 'rm -rf "$$tmp"' EXIT; \
+		git clone https://aur.archlinux.org/paru.git "$$tmp"; \
+		cd "$$tmp" && makepkg -si
 
 .PHONY: git
 git:

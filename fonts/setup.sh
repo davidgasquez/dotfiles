@@ -18,4 +18,4 @@ packages=(
 paru -S --needed --noconfirm "${packages[@]}"
 
 mkdir -p "${FONTCONFIG_DIR}"
-ln -snf "${DOTFILES}/fonts/fontconfig/fonts.conf" "${FONTCONFIG_DIR}/fonts.conf"
+ln -sfnT "${DOTFILES}/fonts/fontconfig/fonts.conf" "${FONTCONFIG_DIR}/fonts.conf"

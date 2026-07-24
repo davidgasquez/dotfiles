@@ -15,8 +15,8 @@ packages=(
 paru -S --needed --noconfirm "${packages[@]}"
 
 mkdir -p "${SYSTEMD_USER_DIR}"
-ln -sf "${SCRIPT_DIR}/gopass-sync.service" "${SYSTEMD_USER_DIR}/gopass-sync.service"
-ln -sf "${SCRIPT_DIR}/gopass-sync.timer" "${SYSTEMD_USER_DIR}/gopass-sync.timer"
+ln -sfnT "${SCRIPT_DIR}/gopass-sync.service" "${SYSTEMD_USER_DIR}/gopass-sync.service"
+ln -sfnT "${SCRIPT_DIR}/gopass-sync.timer" "${SYSTEMD_USER_DIR}/gopass-sync.timer"
 systemctl --user daemon-reload
 systemctl --user enable --now gopass-sync.timer
 
