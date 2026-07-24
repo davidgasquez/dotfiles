@@ -13,8 +13,7 @@
 - **Terminal**: [Ghostty](https://ghostty.org/) by default, with [Alacritty](https://alacritty.org/) installed too
 - **Theme**: [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappe flavor)
 - **Shell**: `zsh` with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
-- **Coding**: VS Code, Zed, Codex, and Pi
-- **Note-taking**: VS Code with Foam Extension
+- **Coding**: Zed, Codex, and Pi
 
 ## 📦 Configuration
 
@@ -29,7 +28,6 @@ make paru      # install paru AUR helper
 make terminal  # shell, prompt, terminal config
 make git       # git config
 make fonts     # font setup
-make code      # VS Code config
 make zed       # Zed config
 make agents    # agent config
 make secrets   # gopass and secret sync setup
