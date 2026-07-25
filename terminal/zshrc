@@ -21,6 +21,7 @@ setopt \
 
 # Bindkeys
 bindkey -e
+zmodload zsh/terminfo
 
 # Cache generated shell initialization
 ZSH_CONFIG_FILE="${${(%):-%N}:A}"
@@ -118,13 +119,15 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+[[ -n ${terminfo[kcuu1]} ]] && bindkey "${terminfo[kcuu1]}" history-substring-search-up
+[[ -n ${terminfo[kcud1]} ]] && bindkey "${terminfo[kcud1]}" history-substring-search-down
 
 # Cursor movement
-bindkey '^[[1;5C' forward-word
-bindkey '^[[1;3C' forward-word
-bindkey '^[[1;3D' backward-word
-bindkey '^[[1;5D' backward-word
-bindkey '^[[3~' delete-char
+[[ -n ${terminfo[kRIT3]} ]] && bindkey "${terminfo[kRIT3]}" forward-word
+[[ -n ${terminfo[kRIT5]} ]] && bindkey "${terminfo[kRIT5]}" forward-word
+[[ -n ${terminfo[kLFT3]} ]] && bindkey "${terminfo[kLFT3]}" backward-word
+[[ -n ${terminfo[kLFT5]} ]] && bindkey "${terminfo[kLFT5]}" backward-word
+[[ -n ${terminfo[kdch1]} ]] && bindkey "${terminfo[kdch1]}" delete-char
 
 # Autosuggestions
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
