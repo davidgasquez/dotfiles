@@ -41,7 +41,7 @@ hl.config({
   },
 })
 
-hl.animation({ leaf = "global", enabled = true, speed = 4, bezier = "default" })
+hl.animation({ leaf = "global", enabled = true, speed = 2, bezier = "default" })
 
 hl.permission({ binary = "/usr/bin/grim", type = "screencopy", mode = "allow" })
 hl.permission({
