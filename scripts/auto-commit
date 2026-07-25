@@ -3,4 +3,4 @@ set -euo pipefail
 
 prompt="${AUTO_COMMIT_PROMPT:-make atomic commits and push}"
 
-pi --print "${prompt}" "$@"
+exec "${HOME}/.local/bin/pi" --print "${prompt}" "$@"

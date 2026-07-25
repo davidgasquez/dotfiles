@@ -25,7 +25,7 @@
       "+new-window",
       "--working-directory=$ZED_WORKTREE_ROOT",
       "-e",
-      "pi"
+      "$HOME/.local/bin/pi"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "never",
@@ -44,7 +44,7 @@
       "+new-window",
       "--working-directory=$ZED_WORKTREE_ROOT",
       "-e",
-      "auto-commit"
+      "$HOME/projects/dotfiles/scripts/auto-commit"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "never",
