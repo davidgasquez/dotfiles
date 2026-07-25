@@ -34,10 +34,11 @@ shopt -s no_empty_cmd_completion direxpand
 shopt -s histappend cmdhist lithist
 
 # FZF
-eval "$(fzf --bash)"
+source /usr/share/fzf/key-bindings.bash
+source /usr/share/fzf/completion.bash
 
 # Zoxide
-eval "$(zoxide init bash)"
+eval "$(zoxide init bash --cmd cd)"
 
 # PATH
 export PATH="$HOME/projects/dotfiles/scripts:$HOME/.cargo/bin:$HOME/.local/bin:$PATH"

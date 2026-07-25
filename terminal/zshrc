@@ -1,7 +1,13 @@
 # ZSH
 
 # PATH
-export PATH=$HOME/projects/dotfiles/scripts:$HOME/.cargo/bin:$HOME/.local/bin:$PATH
+typeset -U path PATH
+path=(
+  "$HOME/projects/dotfiles/scripts"
+  "$HOME/.cargo/bin"
+  "$HOME/.local/bin"
+  $path
+)
 
 # History
 HISTFILE=~/.histfile
@@ -9,47 +15,95 @@ HISTSIZE=50000
 SAVEHIST=50000
 
 # Avoid % in prompt
-set +o prompt_cr +o prompt_sp
-
-# Shelldon
-eval "$(sheldon -q --non-interactive source)"
-
-# Starship
-eval "$(starship init zsh)"
+unsetopt prompt_cr prompt_sp
 
 # Options
-setopt autocd
-setopt extended_glob
-setopt hist_ignore_all_dups
-setopt hist_expire_dups_first
-setopt hist_verify
-setopt extended_history
-setopt hist_reduce_blanks
-setopt inc_append_history
-setopt share_history
-setopt correct
-setopt auto_menu
+setopt \
+  auto_cd \
+  auto_menu \
+  correct \
+  extended_glob \
+  extended_history \
+  hist_fcntl_lock \
+  hist_ignore_all_dups \
+  hist_reduce_blanks \
+  hist_verify \
+  share_history
 
 # Bindkeys
 bindkey -e
 
-# Completions
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-zstyle :compinstall filename '/home/david/.zshrc'
-zstyle ':completion:*' menu select
-
-# Initialize Completions
-# Smarter completion initialization
-autoload -Uz compinit
-if [[ -f ~/.zcompdump && ~/.zcompdump -nt /usr/share/zsh ]] && [[ ! ~/.zcompdump -ot /usr/local/share/zsh ]]; then
-  compinit -C
-else
-  compinit
+# Cache generated shell initialization
+ZSH_CONFIG_FILE="${${(%):-%N}:A}"
+ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+if [[ ! -d "$ZSH_CACHE_DIR/completions" ]]; then
+  command mkdir -p -- "$ZSH_CACHE_DIR/completions" || return 1
 fi
 
+_cache_init() {
+  local cache_name=$1
+  shift
+
+  local command_path=$commands[$1]
+  local cache_file="$ZSH_CACHE_DIR/$cache_name.zsh"
+  local temporary_file="$cache_file.$$.tmp"
+
+  if [[ -z $command_path ]]; then
+    print -u2 "Cannot initialize $cache_name: command not found: $1"
+    return 1
+  fi
+
+  if [[ ! -s $cache_file || $command_path -nt $cache_file || $ZSH_CONFIG_FILE -nt $cache_file ]]; then
+    if ! "$@" >| "$temporary_file"; then
+      command rm -f -- "$temporary_file"
+      print -u2 "Failed to generate $cache_name initialization"
+      return 1
+    fi
+    command mv -f -- "$temporary_file" "$cache_file" || return 1
+  fi
+
+  if [[ ! -s $cache_file.zwc || $cache_file -nt $cache_file.zwc ]]; then
+    zcompile "$cache_file"
+  fi
+
+  source "$cache_file"
+}
+
+# Completions
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR/completions"
+zstyle ':completion:*' menu select
+
+autoload -Uz compinit
+ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION"
+completion_cache_stale=
+
+if [[ ! -s $ZSH_COMPDUMP ]]; then
+  completion_cache_stale=1
+else
+  for completion_dir in $fpath; do
+    if [[ -d $completion_dir && $completion_dir -nt $ZSH_COMPDUMP ]]; then
+      completion_cache_stale=1
+      break
+    fi
+  done
+fi
+
+if [[ -n $completion_cache_stale ]]; then
+  command rm -f -- "$ZSH_COMPDUMP" "$ZSH_COMPDUMP.zwc"
+  compinit -d "$ZSH_COMPDUMP"
+else
+  compinit -C -d "$ZSH_COMPDUMP"
+fi
+
+if [[ -s $ZSH_COMPDUMP && ( ! -s $ZSH_COMPDUMP.zwc || $ZSH_COMPDUMP -nt $ZSH_COMPDUMP.zwc ) ]]; then
+  zcompile "$ZSH_COMPDUMP"
+fi
+
+unset completion_cache_stale completion_dir
+
 # Shared shell config
-source "${${(%):-%N}:A:h}/shared.sh"
+source "${ZSH_CONFIG_FILE:h}/shared.sh"
 
 qgs() {
   git pull &&
@@ -63,22 +117,33 @@ subdl() {
 }
 
 # FZF
-source <(fzf --zsh)
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 # Zoxide
-eval "$(zoxide init zsh)"
-
-# Move cursor
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;3C" forward-word
-bindkey "^[[1;3D" backward-word
-bindkey "^[[1;5D" backward-word
-
-# Supr delete
-bindkey "^[[3~" delete-char
+_cache_init zoxide zoxide init zsh --cmd cd || return 1
 
 # History substring search
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=blue,fg=black,bold'
+source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=blue,fg=black,bold'
+# Cursor movement
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;3C' forward-word
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;5D' backward-word
+bindkey '^[[3~' delete-char
+
+# Autosuggestions
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Starship
+_cache_init starship starship init zsh || return 1
+unfunction _cache_init
+
+# Syntax highlighting must be loaded after all custom widgets
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

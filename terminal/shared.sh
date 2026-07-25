@@ -1,7 +1,6 @@
 # Shared shell config for bash and zsh
 
 # Common aliases
-alias cd='z'
 alias ls='eza --color=auto --icons=always'
 alias ll='eza -l --icons'
 alias la='eza -la --icons'

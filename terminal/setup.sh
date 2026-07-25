@@ -21,7 +21,6 @@ packages=(
     poppler
     prek-bin
     ripgrep
-    sheldon
     shellcheck
     starship
     tmux
@@ -30,6 +29,9 @@ packages=(
     wget
     zoxide
     zsh
+    zsh-autosuggestions
+    zsh-history-substring-search
+    zsh-syntax-highlighting
     yt-dlp
 )
 
@@ -42,14 +44,15 @@ if ! command -v markitdown >/dev/null; then
 fi
 
 # Create directories
-mkdir -p "${HOME}/.config/ghostty" "${HOME}/.config/sheldon"
+mkdir -p \
+    "${HOME}/.config/ghostty" \
+    "${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/completions"
 
 # Create symlinks
 ln -sfnT "${DOTFILES}/terminal/ghostty/config" "${HOME}/.config/ghostty/config"
 ln -sfnT "${DOTFILES}/terminal/bashrc" "${HOME}/.bashrc"
 ln -sfnT "${DOTFILES}/terminal/zshrc" "${HOME}/.zshrc"
 ln -sfnT "${DOTFILES}/terminal/zprofile" "${HOME}/.zprofile"
-ln -sfnT "${DOTFILES}/terminal/sheldon/plugins.toml" "${HOME}/.config/sheldon/plugins.toml"
 ln -sfnT "${DOTFILES}/terminal/inputrc" "${HOME}/.inputrc"
 ln -sfnT "${DOTFILES}/terminal/starship.toml" "${HOME}/.config/starship.toml"
 
