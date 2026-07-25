@@ -1,4 +1,6 @@
+import { lookup } from "node:dns/promises";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { isIP } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -86,6 +88,67 @@ function httpUrl(value: string, label: string): string {
     throw new Error(`${label} must not contain credentials.`);
   }
   return trimmed;
+}
+
+function isPublicIp(address: string): boolean {
+  if (isIP(address) === 4) {
+    const [a, b] = address.split(".").map(Number);
+    return !(
+      a === 0 ||
+      a === 10 ||
+      a === 127 ||
+      (a === 100 && b >= 64 && b <= 127) ||
+      (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && (b === 0 || b === 168)) ||
+      (a === 198 && (b === 18 || b === 19)) ||
+      a >= 224
+    );
+  }
+
+  const normalized = address.toLowerCase();
+  return !(
+    normalized === "::" ||
+    normalized === "::1" ||
+    normalized.startsWith("::ffff:") ||
+    normalized.startsWith("fc") ||
+    normalized.startsWith("fd") ||
+    /^fe[89a-f]/.test(normalized) ||
+    normalized.startsWith("ff") ||
+    normalized.startsWith("2001:db8:")
+  );
+}
+
+async function publicHttpUrl(value: string, label: string): Promise<string> {
+  const parsed = httpUrl(value, label);
+  const hostname = new URL(parsed).hostname.replace(/^\[|\]$/g, "");
+  const normalized = hostname.toLowerCase();
+
+  if (
+    normalized === "localhost" ||
+    normalized.endsWith(".localhost") ||
+    normalized.endsWith(".local")
+  ) {
+    throw new Error(`${label} must resolve to a public address.`);
+  }
+
+  const family = isIP(hostname);
+  let addresses: string[];
+  try {
+    addresses = family
+      ? [hostname]
+      : (await lookup(hostname, { all: true })).map((entry) => entry.address);
+  } catch {
+    throw new Error(`${label} host could not be resolved.`);
+  }
+  if (
+    addresses.length === 0 ||
+    addresses.some((address) => !isPublicIp(address))
+  ) {
+    throw new Error(`${label} must resolve only to public addresses.`);
+  }
+
+  return parsed;
 }
 
 function parseSearchResults(raw: string, limit: number): SearchResult[] {
@@ -260,7 +323,7 @@ export default function webExtension(pi: ExtensionAPI): void {
     description: `Fetch a public HTTP(S) URL and return its main content as Markdown. Output is truncated to ${OUTPUT_LIMIT}; complete oversized output is saved under /tmp.`,
     parameters: FetchParams,
     async execute(_toolCallId, params, signal) {
-      const url = httpUrl(params.url, "URL");
+      const url = await publicHttpUrl(params.url, "URL");
       const content = (
         await runCommand(pi, "web-fetch", [url], "Web fetch", {
           signal,

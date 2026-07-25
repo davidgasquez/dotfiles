@@ -6,8 +6,8 @@ usage() {
 Usage: web-fetch [--all] <url>
 
 Convert a public web URL to Markdown.
-Default order: markitdown, r.jina.ai, defuddle.md.
-Use --all to print output from all three converters.
+Default order: r.jina.ai, defuddle.md.
+Use --all to print output from both converters.
 EOF
 }
 
@@ -16,10 +16,6 @@ strip_scheme() {
   url="${url#https://}"
   url="${url#http://}"
   printf '%s' "$url"
-}
-
-markitdown_url() {
-  markitdown "$1"
 }
 
 jina_url() {
@@ -38,7 +34,6 @@ run_converter() {
   local url="$2"
 
   case "$name" in
-    markitdown) markitdown_url "$url" ;;
     jina) jina_url "$url" ;;
     defuddle) defuddle_url "$url" ;;
     *) echo "Unknown converter: $name" >&2; return 2 ;;
@@ -52,7 +47,7 @@ run_first_success() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in markitdown jina defuddle; do
+  for name in jina defuddle; do
     if run_converter "$name" "$url" >"$tmp" 2>"$err"; then
       if [[ -s "$tmp" ]]; then
         cat "$tmp"
@@ -76,9 +71,8 @@ run_all() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in markitdown jina defuddle; do
+  for name in jina defuddle; do
     case "$name" in
-      markitdown) label="markitdown" ;;
       jina) label="r.jina.ai" ;;
       defuddle) label="defuddle.md" ;;
     esac
