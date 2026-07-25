@@ -15,7 +15,7 @@ local function launch(command)
   return "uwsm-app -- " .. command
 end
 
-bind("SUPER + RETURN", "Open terminal", launch("ghostty +new-window"))
+bind("SUPER + RETURN", "Open terminal", hl.dsp.exec_raw("ghostty +new-window"))
 bind("SUPER + SHIFT + Q", "Close window", hl.dsp.window.close())
 bind("SUPER + M", "Open power mode", hl.dsp.submap("power"))
 bind("SUPER + SHIFT + X", "Open file manager", launch("thunar"))
