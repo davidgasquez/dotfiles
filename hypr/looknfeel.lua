@@ -44,6 +44,7 @@ hl.config({
 hl.animation({ leaf = "global", enabled = true, speed = 2, bezier = "default" })
 
 hl.permission({ binary = "/usr/bin/grim", type = "screencopy", mode = "allow" })
+hl.permission({ binary = "/usr/bin/hyprlock", type = "screencopy", mode = "allow" })
 hl.permission({
   binary = "/usr/(lib|libexec|lib64)/xdg-desktop-portal-hyprland",
   type = "screencopy",
