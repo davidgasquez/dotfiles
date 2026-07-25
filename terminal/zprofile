@@ -1,3 +1,10 @@
+typeset -U path PATH
+path=(
+    "$HOME/projects/dotfiles/scripts"
+    "$HOME/.local/bin"
+    $path
+)
+
 if uwsm check may-start; then
     exec uwsm start default
 fi

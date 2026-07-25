@@ -1,14 +1,5 @@
 # ZSH
 
-# PATH
-typeset -U path PATH
-path=(
-  "$HOME/projects/dotfiles/scripts"
-  "$HOME/.cargo/bin"
-  "$HOME/.local/bin"
-  $path
-)
-
 # History
 HISTFILE=~/.histfile
 HISTSIZE=50000
