@@ -1,10 +1,9 @@
-import { complete, type UserMessage } from "@earendil-works/pi-ai";
+import type { UserMessage } from "@earendil-works/pi-ai";
 import type {
   ExtensionAPI,
   ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
 
-const STATUS_KEY = "session-topic";
 const MAX_LABEL_LENGTH = 60;
 const NAMING_PROMPT = `You create short session title for coding tasks.
 
@@ -50,12 +49,7 @@ function sanitizeLabel(value: string): string | undefined {
   if (!normalized) return undefined;
 
   const capped = normalized.slice(0, MAX_LABEL_LENGTH).trim();
-  return capped.length > 0 ? capped : undefined;
-}
-
-function clearStatus(ctx: ExtensionContext): void {
-  if (!ctx.hasUI) return;
-  ctx.ui.setStatus(STATUS_KEY, undefined);
+  return capped || undefined;
 }
 
 async function deriveLabel(
@@ -63,32 +57,41 @@ async function deriveLabel(
   ctx: ExtensionContext,
 ): Promise<string | undefined> {
   const model = ctx.model;
-  if (!model) return undefined;
+  if (!model) throw new Error("no model is selected");
 
-  const auth = await ctx.modelRegistry.getApiKeyAndHeaders(model);
-  if (!auth.ok || !auth.apiKey) return undefined;
+  const provider = ctx.modelRegistry.getProvider(model.provider);
+  if (!provider) throw new Error(`provider ${model.provider} is unavailable`);
 
+  const auth = await ctx.modelRegistry.getProviderAuth(model.provider);
+  if (!auth) throw new Error(`provider ${model.provider} is not authenticated`);
+
+  const requestModel = auth.auth.baseUrl
+    ? { ...model, baseUrl: auth.auth.baseUrl }
+    : model;
   const userMessage: UserMessage = {
     role: "user",
     content: [{ type: "text", text: prompt }],
     timestamp: Date.now(),
   };
-
-  const response = await complete(
-    model,
-    {
-      systemPrompt: NAMING_PROMPT,
-      messages: [userMessage],
-    },
-    {
-      apiKey: auth.apiKey,
-      headers: auth.headers,
-      maxTokens: 24,
-      signal: ctx.signal,
-    },
-  );
+  const response = await provider
+    .streamSimple(
+      requestModel,
+      { systemPrompt: NAMING_PROMPT, messages: [userMessage] },
+      {
+        apiKey: auth.auth.apiKey,
+        headers: auth.auth.headers,
+        env: auth.env,
+        maxTokens: 24,
+        cacheRetention: "none",
+        signal: ctx.signal,
+      },
+    )
+    .result();
 
   if (response.stopReason === "aborted") return undefined;
+  if (response.stopReason === "error") {
+    throw new Error(response.errorMessage ?? "provider request failed");
+  }
   return sanitizeLabel(extractText(response.content));
 }
 
@@ -96,17 +99,16 @@ export default function sessionTopicExtension(pi: ExtensionAPI): void {
   let namingStarted = false;
   let sessionToken = 0;
 
-  pi.on("session_start", async (_event, ctx) => {
+  pi.on("session_start", () => {
     sessionToken += 1;
     namingStarted = false;
-    clearStatus(ctx);
   });
 
-  pi.on("session_shutdown", async () => {
+  pi.on("session_shutdown", () => {
     sessionToken += 1;
   });
 
-  pi.on("before_agent_start", async (event, ctx) => {
+  pi.on("before_agent_start", (event, ctx) => {
     if (pi.getSessionName() || namingStarted) return;
 
     const prompt = event.prompt.trim();
@@ -117,11 +119,19 @@ export default function sessionTopicExtension(pi: ExtensionAPI): void {
 
     void deriveLabel(prompt, ctx)
       .then((label) => {
-        if (requestToken !== sessionToken || pi.getSessionName()) return;
-        if (!label) return;
-
+        if (requestToken !== sessionToken || pi.getSessionName() || !label)
+          return;
         pi.setSessionName(label);
       })
-      .catch(() => {});
+      .catch((error) => {
+        if (requestToken !== sessionToken) return;
+        namingStarted = false;
+        const message = error instanceof Error ? error.message : String(error);
+        if (ctx.hasUI) {
+          ctx.ui.notify(`Session naming failed: ${message}`, "warning");
+        } else {
+          console.error(`Session naming failed: ${message}`);
+        }
+      });
   });
 }

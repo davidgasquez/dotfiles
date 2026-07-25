@@ -8,10 +8,6 @@
   "transport": "auto",
   "theme": "frappe",
   "lastChangelogVersion": "0.82.0",
-  "pi-custom-codex": {
-    "fast": true,
-    "verbosity": "low"
-  },
   "defaultProjectTrust": "always",
   "showCacheMissNotices": true,
   "treeFilterMode": "no-tools"

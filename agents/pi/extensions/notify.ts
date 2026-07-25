@@ -10,12 +10,15 @@ import type {
 const APP_NAME = "Pi";
 const BODY = "Ready for input";
 const ICON = join(tmpdir(), "pi-notify-icon.svg");
+const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><rect width="128" height="128" rx="28" fill="#8CAAEE"/><text x="64" y="84" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="72" fill="#303446">π</text></svg>`;
 
-writeFileSync(
-  ICON,
-  `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><rect width="128" height="128" rx="28" fill="#8CAAEE"/><text x="64" y="84" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="72" fill="#303446">π</text></svg>`,
-  "utf8",
-);
+function ensureIcon(): void {
+  try {
+    writeFileSync(ICON, ICON_SVG, { encoding: "utf8", flag: "wx" });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+  }
+}
 
 type HyprWindow = {
   address?: string;
@@ -94,6 +97,7 @@ function shellQuote(value: string): string {
 }
 
 function notify(title: string, target?: TargetWindow): void {
+  ensureIcon();
   const args = ["--app-name", APP_NAME, "--icon", ICON];
 
   if (target) {
@@ -115,12 +119,13 @@ function notify(title: string, target?: TargetWindow): void {
 }
 
 export default function notifyExtension(pi: ExtensionAPI): void {
-  pi.on("agent_end", async (_event, ctx) => {
+  pi.on("agent_settled", (_event, ctx) => {
+    if (!ctx.hasUI || !ctx.isIdle()) return;
+
     const title = pi.getSessionName() ?? APP_NAME;
     const target = findSessionWindow(ctx, title);
+    if (target && isVisible(target)) return;
 
-    if (!ctx.hasUI || ctx.hasPendingMessages() || (target && isVisible(target)))
-      return;
     notify(title, target);
   });
 }
