@@ -2,21 +2,19 @@
 
 # History
 HISTFILE=~/.histfile
-HISTSIZE=50000
+HISTSIZE=100000
 SAVEHIST=50000
 
-# Avoid % in prompt
-unsetopt prompt_cr prompt_sp
+# Hide the partial-line prompt marker
+PROMPT_EOL_MARK=''
 
 # Options
 setopt \
   auto_cd \
-  auto_menu \
-  correct \
-  extended_glob \
   extended_history \
   hist_fcntl_lock \
   hist_ignore_all_dups \
+  hist_ignore_space \
   hist_reduce_blanks \
   hist_verify \
   share_history
