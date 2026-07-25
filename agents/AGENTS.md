@@ -28,6 +28,6 @@
 ## Git
 
 - Commits: keep them atomic and use short descriptive messages prefixed with a relevant emoji (`🐛 Fix upsert logic`)
-- Pull requests: use a short title prefixed with a relevant emoji (`🚀 Deploy new users flow`) and a concise body describing the changes (no summary header)
+- Pull requests: use a short title prefixed with a relevant emoji (`🚀 Deploy new users flow`) and a concise body describing the changes (no summary header, no validation section)
 - Branches: use simple descriptive names (`fix-async-stream`, `add-users-model`)
 - Use `gh` for PRs, reviews, issues, and anything related with GitHub like search
