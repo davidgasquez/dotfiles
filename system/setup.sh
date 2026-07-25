@@ -52,6 +52,10 @@ sudo ufw --force enable
 sudo systemctl enable --now fstrim.timer
 
 # Out-of-memory daemon
+sudo install -Dm644 "${DOTFILES}/system/oomd-pressure.conf" /etc/systemd/system/system.slice.d/60-oomd-pressure.conf
+sudo install -Dm644 "${DOTFILES}/system/oomd-pressure.conf" /etc/systemd/user/app.slice.d/60-oomd-pressure.conf
+sudo systemctl daemon-reload
+systemctl --user daemon-reload
 sudo systemctl enable --now systemd-oomd.service
 
 # Power Profiles

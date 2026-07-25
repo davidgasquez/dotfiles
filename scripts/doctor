@@ -12,7 +12,7 @@ fail() {
     failures=$((failures + 1))
 }
 
-for command in bootctl btrfs pacdiff paru shellcheck systemctl; do
+for command in bootctl btrfs oomctl pacdiff paru shellcheck systemctl; do
     if command -v "${command}" >/dev/null; then
         pass "${command} is installed"
     else
@@ -49,6 +49,15 @@ if swapon --show=NAME --noheadings | grep -qx '/dev/zram0'; then
 else
     fail 'zram swap is not active'
 fi
+
+oomd_paths=$(oomctl dump | sed -n 's/^[[:space:]]*Path: //p')
+for path in "/system.slice" "/user.slice/user-${UID}.slice/user@${UID}.service/app.slice"; do
+    if grep -Fqx "${path}" <<< "${oomd_paths}"; then
+        pass "systemd-oomd monitors ${path}"
+    else
+        fail "systemd-oomd does not monitor ${path}"
+    fi
+done
 
 if [[ "$(findmnt -no FSTYPE /)" == btrfs ]]; then
     if systemctl is-enabled --quiet btrfs-scrub@-.timer; then
