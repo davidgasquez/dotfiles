@@ -16,5 +16,4 @@ window-padding-x = 15
 window-padding-y = 10
 resize-overlay = never
 
-shell-integration = detect
 shell-integration-features = cursor,title,ssh-env,ssh-terminfo,path
