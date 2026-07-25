@@ -15,11 +15,3 @@ alias pasta='wl-paste'
 open() {
   xdg-open "$@" >/dev/null 2>&1
 }
-
-# Hyprland
-# Only check for starting Hyprland if we're in a TTY and no Wayland session is active
-if [[ -z "$WAYLAND_DISPLAY" ]] && [[ "$(tty)" == /dev/tty* ]]; then
-  if uwsm check may-start; then
-    exec uwsm start default
-  fi
-fi
