@@ -171,7 +171,6 @@ hl.define_submap("resize", function()
 
   bind("ESCAPE", "Exit resize mode", hl.dsp.submap("reset"))
   bind("RETURN", "Exit resize mode", hl.dsp.submap("reset"))
-  bind("catchall", "Exit resize mode", hl.dsp.submap("reset"))
 end)
 
 bind("SUPER + SHIFT + L", "Open power mode", hl.dsp.submap("power"))
