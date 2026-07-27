@@ -12,6 +12,7 @@ Improve the style of the text.
 - [Plain Writing](https://raw.githubusercontent.com/shreyashankar/plain-writing-skill/refs/heads/main/SKILL.md)
 - [Unslop](https://github.com/theclaymethod/unslop) (clone into `/tmp` and explore there)
 - [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing)
+- [Anti AI Copy](https://raw.githubusercontent.com/IgorWarzocha/howaboua-pi-stuff/refs/heads/main/packages/pi-skill-anti-ai-copy/skills/anti-ai-copy/SKILL.md)
 
 ## The rules
 
