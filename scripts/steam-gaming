@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if pgrep -x steam >/dev/null; then
+    echo "error: exit Steam before starting a Gamescope session" >&2
+    exit 1
+fi
+
+monitor=$(hyprctl -j monitors | jq -er '
+    (first(.[] | select(.focused)) // error("no focused monitor"))
+    | [.name, .width, .height, .refreshRate]
+    | @tsv
+')
+IFS=$'\t' read -r output width height refresh <<< "${monitor}"
+
+printf 'Starting Steam on %s at %sx%s@%s Hz\n' "${output}" "${width}" "${height}" "${refresh}"
+
+gamemoded --request="$$" >/dev/null
+
+exec gamescope \
+    -e -f \
+    -w "${width}" -h "${height}" \
+    -W "${width}" -H "${height}" \
+    -r "${refresh}" \
+    -S fit -F linear \
+    --mangoapp \
+    -- steam -gamepadui "$@"
