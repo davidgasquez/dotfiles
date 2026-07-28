@@ -7,8 +7,12 @@
 
 - Before adding code, check: does it need to exist, is it already here, does stdlib/native platform handle it, does an installed dependency handle it, can it be one line, etc
 - Aim for the minimum code that solves the problem
+- Start from the data (types / schema) and functions call stack, and build from there
+  - Define concrete inputs/outputs (data in -> data out) of the problem you are solving
+  - Inspect real values
 - Use simple, explicit, practical solutions optimized for readability and clear intent
 - Keep functions and modules small and with clear composable interfaces
+  - Model work as a sequence/DAG with contracts for shape, meaning, ...
 - Keep APIs and public interfaces small, behavior explicit, intention-revealing, and naming clear
 - No speculative abstractions, one-use interfaces, factories, config, or scaffolding for later
 - Remove unnecessary code, optimize for deletion and clean your own mess
