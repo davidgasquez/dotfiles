@@ -1,7 +1,7 @@
 ---
 name: improve-writing
 description: >-
-  Write and edit prose in a plain style: simple everyday words, complete sentences, no dashes, no jargon, no analogies, no filler, and full clear explanations. Use this whenever the user ask you to draft or revise documents, reports, summaries, README files, research notes, commit and PR descriptions. Also use it whenever the user asks to simplify, clean up, tighten, reword, or make writing clearer or easier to read.
+  Write and edit prose in a plain style: simple everyday words, complete sentences, no dashes, no jargon, no analogies, no filler, and full clear explanations. Use this whenever the user ask you to draft or revise public facing documents, reports, summaries, README files, research notes, commit and PR descriptions. Also use it whenever the user asks to simplify, clean up, tighten, reword, or make writing clearer or easier to read.
 disable-model-invocation: true
 ---
 
