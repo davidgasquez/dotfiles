@@ -10,5 +10,7 @@
   "lastChangelogVersion": "0.84.1",
   "defaultProjectTrust": "always",
   "showCacheMissNotices": true,
-  "treeFilterMode": "no-tools"
+  "treeFilterMode": "no-tools",
+  "tuiMode": "fullscreen",
+  "fullscreenScrollbar": "auto"
 }
