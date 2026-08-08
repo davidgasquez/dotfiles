@@ -10,7 +10,7 @@ PI_AGENT_DIR="${HOME}/.pi/agent"
 AMP_DIR="${HOME}/.config/amp"
 
 packages=(
-  openai-codex
+  extra/openai-codex
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
