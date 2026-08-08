@@ -12,6 +12,6 @@ Use `qmd` to query a large curated set of resources semantically.
   - Search the Handbook first for relevant personal notes.
   - Search other relevant collections to validate or expand on those notes.
   - Retrieve and read the full documents before drawing conclusions.
-3. Treat Handbook notes as the preferred synthesis. When a relevant note cites an original or external source, read that source before relying on its claims, and distinguish the note's interpretation from the source.
-4. Respond concisely with the most relevant findings. Cite QMD document IDs and line ranges, plus upstream URLs when consulted. Present URLs as descriptive Markdown links so they are easy to open. Include non-Handbook material only when it adds useful evidence or context.
+3. Treat Handbook notes as the preferred synthesis. When a relevant Handbook note links to an external source, read it.
+4. Respond concisely with the most relevant findings. Don't cite QMD document IDs and line ranges, but actual files or URLs. Present URLs as descriptive Markdown links so they are easy to open.
 5. If the library has no strong match, say so explicitly.
