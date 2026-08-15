@@ -10,7 +10,8 @@ PI_AGENT_DIR="${HOME}/.pi/agent"
 AMP_DIR="${HOME}/.config/amp"
 
 packages=(
-  extra/openai-codex
+  openai-codex
+  chatgpt-desktop
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
