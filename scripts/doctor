@@ -50,14 +50,12 @@ else
     fail 'zram swap is not active'
 fi
 
-oomd_paths=$(oomctl dump | sed -n 's/^[[:space:]]*Path: //p')
-for path in "/system.slice" "/user.slice/user-${UID}.slice/user@${UID}.service/app.slice"; do
-    if grep -Fqx "${path}" <<< "${oomd_paths}"; then
-        pass "systemd-oomd monitors ${path}"
-    else
-        fail "systemd-oomd does not monitor ${path}"
-    fi
-done
+oomd_path="/user.slice/user-${UID}.slice/user@${UID}.service/app.slice"
+if oomctl dump | sed -n 's/^[[:space:]]*Path: //p' | grep -Fqx "${oomd_path}"; then
+    pass "systemd-oomd monitors ${oomd_path}"
+else
+    fail "systemd-oomd does not monitor ${oomd_path}"
+fi
 
 if [[ "$(findmnt -no FSTYPE /)" == btrfs ]]; then
     if systemctl is-enabled --quiet btrfs-scrub@-.timer; then
