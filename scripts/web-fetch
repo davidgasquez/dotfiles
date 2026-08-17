@@ -6,8 +6,8 @@ usage() {
 Usage: web-fetch [--all] <url>
 
 Convert a public web URL to Markdown.
-Default order: r.jina.ai, defuddle.md.
-Use --all to print output from both converters.
+Default order: r.jina.ai, defuddle.md, markdown.new.
+Use --all to print output from all three converters.
 EOF
 }
 
@@ -29,6 +29,15 @@ defuddle_url() {
   curl -fsSL "https://defuddle.md/$(strip_scheme "$1")"
 }
 
+markdown_new_url() {
+  jq -cn --arg url "$1" '{url: $url, method: "ai"}' |
+    curl -fsSL \
+      -H 'Content-Type: application/json' \
+      --data-binary @- \
+      'https://markdown.new/' |
+    jq -er '.content | select(type == "string" and length > 0)'
+}
+
 run_converter() {
   local name="$1"
   local url="$2"
@@ -36,6 +45,7 @@ run_converter() {
   case "$name" in
     jina) jina_url "$url" ;;
     defuddle) defuddle_url "$url" ;;
+    markdown-new) markdown_new_url "$url" ;;
     *) echo "Unknown converter: $name" >&2; return 2 ;;
   esac
 }
@@ -47,7 +57,7 @@ run_first_success() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in jina defuddle; do
+  for name in jina defuddle markdown-new; do
     if run_converter "$name" "$url" >"$tmp" 2>"$err"; then
       if [[ -s "$tmp" ]]; then
         cat "$tmp"
@@ -71,10 +81,11 @@ run_all() {
   err="$(mktemp)"
   trap 'rm -f "$tmp" "$err"' RETURN
 
-  for name in jina defuddle; do
+  for name in jina defuddle markdown-new; do
     case "$name" in
       jina) label="r.jina.ai" ;;
       defuddle) label="defuddle.md" ;;
+      markdown-new) label="markdown.new" ;;
     esac
 
     printf '## %s\n\n' "$label"
