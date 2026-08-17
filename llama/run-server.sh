@@ -3,10 +3,10 @@
 set -euo pipefail
 
 ROCBLAS_USE_HIPBLASLT=1 llama-server \
-    -hf unsloth/Qwen3.6-27B-MTP-GGUF:UD-Q4_K_XL \
+    -hf unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL \
     --host 127.0.0.1 \
     --port 8080 \
-    -a qwen-3.6-27b-q4 \
+    -a qwen-3.8-27b-q4 \
     -ngl 999 \
     --flash-attn on \
     --ctx-size 32768 \
@@ -18,7 +18,7 @@ ROCBLAS_USE_HIPBLASLT=1 llama-server \
     --jinja \
     --reasoning-format deepseek \
     --reasoning auto \
-    --temp 0.6 \
+    --temp 1.0 \
     --top-p 0.95 \
     --top-k 20 \
     --min-p 0 \
