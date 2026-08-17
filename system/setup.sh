@@ -38,8 +38,10 @@ packages=(
 # Install system packages
 paru -S --needed --noconfirm "${packages[@]}"
 
-# ZRAM Generator
+# Compressed swap
 sudo install -Dm644 "${DOTFILES}/system/zram-generator.conf" /etc/systemd/zram-generator.conf
+sudo install -Dm644 "${DOTFILES}/system/disable-zswap.conf" /etc/tmpfiles.d/disable-zswap.conf
+sudo systemd-tmpfiles --create --boot /etc/tmpfiles.d/disable-zswap.conf
 
 # Network Manager
 sudo systemctl enable --now NetworkManager.service
