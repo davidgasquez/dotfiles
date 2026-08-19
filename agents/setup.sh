@@ -12,11 +12,11 @@ AMP_DIR="${HOME}/.config/amp"
 packages=(
   openai-codex
   chatgpt-desktop
+  pi-coding-agent-bin
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
 npm install -g @tobilu/qmd
-npm install -g @earendil-works/pi-coding-agent
 
 mkdir -p "${GLOBAL_AGENTS_DIR}"
 ln -sfT "${AGENTS_DIR}/skills" "${GLOBAL_SKILLS_DIR}"
