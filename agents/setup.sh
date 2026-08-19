@@ -13,10 +13,10 @@ packages=(
   openai-codex
   chatgpt-desktop
   pi-coding-agent-bin
+  qmd
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
-npm install -g @tobilu/qmd
 
 mkdir -p "${GLOBAL_AGENTS_DIR}"
 ln -sfT "${AGENTS_DIR}/skills" "${GLOBAL_SKILLS_DIR}"

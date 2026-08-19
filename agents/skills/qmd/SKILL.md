@@ -221,7 +221,6 @@ Only mutate indexes when the user asked for setup or maintenance. Searching and
 retrieving are safe; collection/index mutation is not a casual first step.
 
 ```bash
-npm install -g @tobilu/qmd
 qmd collection add ~/notes --name notes
 qmd update
 qmd embed
