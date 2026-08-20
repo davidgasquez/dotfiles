@@ -25,7 +25,7 @@
       "+new-window",
       "--working-directory=$ZED_WORKTREE_ROOT",
       "-e",
-      "$HOME/.local/bin/pi"
+      "/usr/bin/pi"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "never",
