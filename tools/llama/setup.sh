@@ -2,7 +2,9 @@
 set -euo pipefail
 
 packages=(
-    llama.cpp-hip
+    ggml
+    ggml-hip
+    llama-cpp
 )
 
 echo "Installing llama packages..."
