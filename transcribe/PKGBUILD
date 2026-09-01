@@ -1,0 +1,50 @@
+pkgname=transcribe-cpp-hip
+pkgver=0.2.3
+pkgrel=1
+pkgdesc='C/C++ speech-to-text inference library and CLI based on ggml (ROCm/HIP)'
+arch=('x86_64')
+url='https://github.com/handy-computer/transcribe.cpp'
+license=('MIT')
+depends=(
+  gcc-libs
+  glibc
+  hip-runtime-amd
+  hipblas
+  openblas
+  rocblas
+)
+makedepends=(
+  cmake
+  rocm-hip-sdk
+)
+provides=("transcribe.cpp=${pkgver}")
+conflicts=(
+  transcribe.cpp
+  transcribe-cpp-vulkan
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('1cc81c908b9814c414ff9643fd44893ecc7dafe860f650ea475a16506628e474')
+
+build() {
+  export PATH="/opt/rocm/bin:${PATH}"
+
+  cmake -S "transcribe.cpp-${pkgver}" -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DAMDGPU_TARGETS=gfx1100 \
+    -DTRANSCRIBE_BUILD_TESTS=OFF \
+    -DTRANSCRIBE_BUILD_TOOLS=OFF \
+    -DTRANSCRIBE_HIP=ON \
+    -DTRANSCRIBE_INSTALL=OFF \
+    -Wno-dev
+
+  cmake --build build --target transcribe-cli
+}
+
+package() {
+  install -Dm755 build/bin/transcribe-cli "${pkgdir}/usr/bin/transcribe-cli"
+  install -Dm644 "transcribe.cpp-${pkgver}/LICENSE" \
+    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm644 "transcribe.cpp-${pkgver}/README.md" \
+    "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+}

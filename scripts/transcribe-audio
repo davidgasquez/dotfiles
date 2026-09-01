@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOTFILES_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")"
+readonly DOTFILES_DIR
+readonly TRANSCRIBE_DIR="${DOTFILES_DIR}/transcribe"
+readonly DEFAULT_MODEL="${TRANSCRIBE_DIR}/models/MOSS-Transcribe-Diarize-Q8_0.gguf"
+readonly TMP_ROOT="/tmp"
+TMP_DIR=""
+
+cleanup() {
+  [[ -z ${TMP_DIR} ]] || rm -rf -- "${TMP_DIR}"
+}
+
+trap cleanup EXIT
+
+error() {
+  printf '✗ %s\n' "$*" >&2
+  exit 1
+}
+
+usage() {
+  cat <<'EOF'
+Usage: transcribe-audio [--language en|zh] [--output-dir DIR] MEDIA
+
+Creates <name>.transcript.md and <name>.transcript.json.
+EOF
+}
+
+require_cmd() {
+  command -v "$1" >/dev/null 2>&1 || error "Missing dependency: $1"
+}
+
+format_time() {
+  local ms=$1
+  local hours=$((ms / 3600000))
+  local minutes=$(((ms / 60000) % 60))
+  local seconds=$(((ms / 1000) % 60))
+  local millis=$((ms % 1000))
+  printf '%02d:%02d:%02d.%03d' "$hours" "$minutes" "$seconds" "$millis"
+}
+
+main() {
+  local language="en"
+  local output_dir=""
+  local input=""
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -l|--language)
+        language="${2:-}"
+        [[ -n ${language} ]] || error "$1 requires en or zh"
+        shift 2
+        ;;
+      -o|--output-dir)
+        output_dir="${2:-}"
+        [[ -n ${output_dir} ]] || error "$1 requires a directory"
+        shift 2
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      -*)
+        error "Unknown option: $1"
+        ;;
+      *)
+        [[ -z ${input} ]] || error "Only one media file is supported"
+        input="$1"
+        shift
+        ;;
+    esac
+  done
+
+  [[ ${language} == en || ${language} == zh ]] || error "Language must be en or zh"
+  [[ -n ${input} ]] || error "Missing media file"
+  [[ -f ${input} ]] || error "Media file not found: ${input}"
+
+  require_cmd ffmpeg
+  require_cmd jq
+  require_cmd transcribe-cli
+
+  local model="${TRANSCRIBE_MODEL:-${DEFAULT_MODEL}}"
+  [[ -f ${model} ]] || error "Model not found: ${model}. Run ${TRANSCRIBE_DIR}/setup.sh"
+
+  input="$(realpath "${input}")"
+  if [[ -z ${output_dir} ]]; then
+    output_dir="$(dirname "${input}")"
+  fi
+  mkdir -p "${output_dir}"
+  output_dir="$(realpath "${output_dir}")"
+
+  local filename
+  filename="$(basename "${input}")"
+  local stem="${filename%.*}"
+  local markdown_path="${output_dir}/${stem}.transcript.md"
+  local json_path="${output_dir}/${stem}.transcript.json"
+  TMP_DIR="$(mktemp -d "${TMP_ROOT}/transcribe-audio.XXXXXX")"
+
+  local wav_path="${TMP_DIR}/audio.wav"
+  local batch_path="${TMP_DIR}/batch.txt"
+  local raw_path="${TMP_DIR}/raw.jsonl"
+  local log_path="${TMP_DIR}/transcribe.log"
+  local normalized_path="${TMP_DIR}/transcript.json"
+  local markdown_tmp="${TMP_DIR}/transcript.md"
+
+  printf 'Preparing %s\n' "${filename}" >&2
+  ffmpeg -nostdin -hide_banner -loglevel error -y \
+    -i "${input}" -map 0:a:0 -vn -ar 16000 -ac 1 -c:a pcm_s16le "${wav_path}"
+  printf '%s\n' "${wav_path}" > "${batch_path}"
+
+  printf 'Transcribing with MOSS Q8_0 on ROCm\n' >&2
+  if ! transcribe-cli --quiet \
+    --backend rocm \
+    --model "${model}" \
+    --language "${language}" \
+    --diarize \
+    --timestamps segment \
+    --batch "${batch_path}" \
+    --batch-jsonl > "${raw_path}" 2> "${log_path}"; then
+    cat "${log_path}" >&2
+    error "transcribe-cli failed"
+  fi
+
+  jq --slurp \
+    --arg source "${input}" \
+    --arg language "${language}" \
+    '
+      (first(.[] | select(.type == "batch_header")) // {}) as $header |
+      (first(.[] | select(.type != "batch_header")) // error("missing transcription result")) as $result |
+      $result + {
+        source: $source,
+        engine: "transcribe.cpp",
+        model: "MOSS-Transcribe-Diarize-Q8_0",
+        backend: "rocm",
+        language: $language,
+        load_ms: $header.load_ms
+      } |
+      del(.file)
+    ' "${raw_path}" > "${normalized_path}"
+
+  local run_error
+  run_error="$(jq -r '.error // empty' "${normalized_path}")"
+  [[ -z ${run_error} ]] || error "Transcription failed: ${run_error}"
+
+  {
+    printf '# Transcript: %s\n\n' "${filename}"
+    printf -- "- Source: \`%s\`\n" "${input}"
+    printf -- '- Model: MOSS-Transcribe-Diarize Q8_0\n\n'
+
+    while IFS=$'\t' read -r t0_ms t1_ms speaker_id encoded_text; do
+      local text
+      text="$(printf '%s' "${encoded_text}" | base64 --decode | tr '\n' ' ')"
+      printf '[%s–%s] **S%02d:** %s\n\n' \
+        "$(format_time "${t0_ms}")" \
+        "$(format_time "${t1_ms}")" \
+        "${speaker_id}" \
+        "${text}"
+    done < <(jq -r '.segments[]? | [.t0_ms, .t1_ms, .speaker_id, (.text | @base64)] | @tsv' "${normalized_path}")
+  } > "${markdown_tmp}"
+
+  mv "${normalized_path}" "${json_path}"
+  mv "${markdown_tmp}" "${markdown_path}"
+
+  printf '%s\n%s\n' "${markdown_path}" "${json_path}"
+}
+
+main "$@"
