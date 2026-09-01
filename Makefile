@@ -59,6 +59,10 @@ steam:
 llama:
 	@ ${DOTFILES}/tools/llama/setup.sh
 
+.PHONY: transcribe
+transcribe:
+	@ ${DOTFILES}/tools/transcribe/setup.sh
+
 .PHONY: system
 system:
 	@ $(DOTFILES)/system/setup.sh
