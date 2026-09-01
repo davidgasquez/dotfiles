@@ -53,11 +53,11 @@ desktop:
 
 .PHONY: steam
 steam:
-	@ ${DOTFILES}/steam/setup.sh
+	@ ${DOTFILES}/tools/steam/setup.sh
 
 .PHONY: llama
 llama:
-	@ ${DOTFILES}/llama/setup.sh
+	@ ${DOTFILES}/tools/llama/setup.sh
 
 .PHONY: system
 system:

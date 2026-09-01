@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
+DOTFILES=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")
 MANGOHUD_CONFIG_DIR="${HOME}/.config/MangoHud"
 
 packages=(
@@ -31,7 +31,7 @@ fi
 paru -S --needed --noconfirm "${packages[@]}"
 
 mkdir -p "${MANGOHUD_CONFIG_DIR}"
-ln -sfnT "${DOTFILES}/steam/MangoHud.conf" "${MANGOHUD_CONFIG_DIR}/MangoHud.conf"
+ln -sfnT "${DOTFILES}/tools/steam/MangoHud.conf" "${MANGOHUD_CONFIG_DIR}/MangoHud.conf"
 
 if ! getent group gamemode >/dev/null; then
     echo "error: gamemode group does not exist after installing gamemode" >&2

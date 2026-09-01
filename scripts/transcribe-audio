@@ -3,7 +3,7 @@ set -euo pipefail
 
 DOTFILES_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")"
 readonly DOTFILES_DIR
-readonly TRANSCRIBE_DIR="${DOTFILES_DIR}/transcribe"
+readonly TRANSCRIBE_DIR="${DOTFILES_DIR}/tools/transcribe"
 readonly DEFAULT_MODEL="${TRANSCRIBE_DIR}/models/MOSS-Transcribe-Diarize-Q8_0.gguf"
 readonly TMP_ROOT="/tmp"
 TMP_DIR=""
