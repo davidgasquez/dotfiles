@@ -91,6 +91,9 @@
     "tooltip-format-plugged": "plugged in {capacity}%",
     "tooltip-format-full": "full {capacity}%",
     "tooltip-format-not-charging": "plugged in {capacity}%",
+    "events": {
+      "on-discharging-critical": "notify-send -u critical -a Battery -i battery-caution-symbolic 'Very low battery' 'Plug in the charger?'",
+    },
     "on-click": "bash -lc '$HOME/.config/waybar/battery-status'",
   },
 
