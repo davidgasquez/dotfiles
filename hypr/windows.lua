@@ -17,6 +17,15 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  name = "bitwarden-browser-extension",
+  match = { class = ".*nngceckbapebfimnlniiiahkandclblb.*" },
+  float = true,
+  center = true,
+  max_size = { 480, 650 },
+  animation = "popin 90%",
+})
+
+hl.window_rule({
   name = "slack-workspace",
   match = { class = "^slack$" },
   workspace = "3 silent",
