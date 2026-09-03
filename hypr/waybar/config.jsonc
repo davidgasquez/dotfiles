@@ -9,6 +9,7 @@
   "modules-left": ["hyprland/workspaces", "hyprland/submap"],
   "modules-center": ["mpris"],
   "modules-right": [
+    "temperature",
     "wireplumber",
     "backlight",
     "battery",
@@ -68,6 +69,16 @@
     "tooltip-format": "Brightness {percent}%",
     "on-scroll-up": "brightnessctl -e4 -n2 set 1%+",
     "on-scroll-down": "brightnessctl -e4 -n2 set 1%-",
+  },
+
+  "temperature": {
+    "thermal-zone": 0,
+    "warning-threshold": 80,
+    "critical-threshold": 90,
+    "format": "",
+    "format-warning": " {temperatureC}°C",
+    "format-critical": " {temperatureC}°C",
+    "tooltip-format": "Temperature {temperatureC}°C",
   },
 
   "battery": {

@@ -77,6 +77,7 @@ button {
 #mpris,
 #wireplumber,
 #backlight,
+#temperature,
 #battery,
 #power-profiles-daemon,
 #idle_inhibitor,
@@ -92,6 +93,19 @@ button {
 
 #wireplumber.muted {
   color: @overlay0;
+}
+
+#temperature {
+  margin-right: 14px;
+}
+
+#temperature.warning {
+  color: @yellow;
+}
+
+#temperature.critical {
+  color: @red;
+  font-weight: 700;
 }
 
 #battery.charging,
