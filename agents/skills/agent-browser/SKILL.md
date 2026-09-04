@@ -31,6 +31,10 @@ export AGENT_BROWSER_SESSION="$(agent-browser session id --scope worktree --pref
 
 The default (unnamed) session is a single shared browser: it is shared with every other agent on the machine and it persists across conversations, so working in it can hijack another agent's page mid-task or navigate away from something the human left open. Every example below assumes a named session is active. See [Run multiple browsers in parallel](#run-multiple-browsers-in-parallel) and `references/session-management.md`.
 
+### Never use a live browser profile
+
+**Never pass a live profile such as `~/.config/BraveSoftware/Brave-Browser` to `--profile`.** Agent-browser injects `--password-store=basic` and `--use-mock-keychain`, which can make Brave discard cookies it cannot decrypt. For authenticated Brave access, attach to an already-running CDP-enabled Brave with `--auto-connect` or `--cdp`; otherwise use a dedicated automation profile.
+
 ## Quickstart
 
 ```bash
@@ -421,7 +425,7 @@ EOF
 --webgpu                # enable WebGPU (software Vulkan on Linux, no GPU needed)
 --auto-connect          # connect to an already-running Chrome
 --cdp <port|url>        # connect to a CDP port or WebSocket URL; root query slash is optional
---profile <name|path>   # use a Chrome profile (login state survives)
+--profile <name|path>   # dedicated automation profiles only; never a live profile
 --headers <json>        # HTTP headers scoped to the URL's origin
 --proxy <url>           # proxy server
 --ca-cert <path>        # trust a CA in local Chromium on Linux (install --with-deps provides certutil)
