@@ -6,7 +6,31 @@ personality = "pragmatic"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 check_for_update_on_startup = false
-service_tier = "priority"
+service_tier = "fast"
+
+[[skills.config]]
+path = "~/.agents/skills/grill/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.agents/skills/pdf/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.agents/skills/python-development/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.agents/skills/social-search/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.agents/skills/transcribe/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "~/.agents/skills/web-browser/SKILL.md"
+enabled = false
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-used"]
