@@ -29,7 +29,7 @@ path = "~/.agents/skills/transcribe/SKILL.md"
 enabled = false
 
 [[skills.config]]
-path = "~/.agents/skills/web-browser/SKILL.md"
+path = "~/.agents/skills/agent-browser/SKILL.md"
 enabled = false
 
 [tui]

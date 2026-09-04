@@ -10,6 +10,7 @@ PI_AGENT_DIR="${HOME}/.pi/agent"
 AMP_DIR="${HOME}/.config/amp"
 
 packages=(
+  agent-browser-bin
   openai-codex
   chatgpt-desktop
   pi-coding-agent-bin
