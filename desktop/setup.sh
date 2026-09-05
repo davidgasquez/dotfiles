@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+DOTFILES=$(dirname "$(dirname "$(realpath "$0")")")
+
 ICON_THEME="Papirus-Dark"
 CURSOR_THEME="catppuccin-frappe-light-cursors"
 CURSOR_SIZE="24"
@@ -25,6 +27,9 @@ packages=(
 )
 
 paru -S --needed --noconfirm "${packages[@]}"
+
+mkdir -p "${HOME}/.config"
+ln -sfnT "${DOTFILES}/desktop/brave-flags.conf" "${HOME}/.config/brave-flags.conf"
 
 gsettings set org.gnome.desktop.interface icon-theme "${ICON_THEME}"
 gsettings set org.gnome.desktop.interface cursor-theme "${CURSOR_THEME}"
