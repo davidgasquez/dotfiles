@@ -1,5 +1,5 @@
-model = "gpt-5.6-sol"
-model_reasoning_effort = "xhigh"
+model = "gpt-6-astra"
+model_reasoning_effort = "medium"
 model_verbosity = "low"
 model_reasoning_summary = "concise"
 personality = "pragmatic"
@@ -37,7 +37,7 @@ status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-use
 status_line_use_colors = true
 
 [tui.model_availability_nux]
-"gpt-5.6-sol" = 100
+gpt-6-astra = 100
 
 [tui.keymap.composer]
 queue = ["tab", "alt-enter"]
