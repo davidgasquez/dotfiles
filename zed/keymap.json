@@ -14,7 +14,6 @@
     }
   },
   {
-    "context": "Workspace",
     "bindings": {
       "ctrl-_": ["task::Spawn", { "task_name": "Open External Terminal" }],
       "ctrl-shift-a": ["task::Spawn", { "task_name": "pi" }],
