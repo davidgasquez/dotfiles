@@ -140,6 +140,3 @@ enabled = false
 
 [apps.connector_openai_safety_settings]
 enabled = false
-
-[projects."/home/david/Documents/Codex/2026-09-06/check-my-activity-and-prefered-games-2"]
-trust_level = "trusted"
