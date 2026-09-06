@@ -140,27 +140,3 @@ enabled = false
 
 [apps.connector_openai_safety_settings]
 enabled = false
-
-[projects."/home/david/Documents/Codex/2026-09-05/i-x20"]
-trust_level = "trusted"
-
-[projects."/home/david/Documents/Codex/2026-09-05/realtime-voice-chat"]
-trust_level = "trusted"
-
-[projects."/home/david/Documents/Codex/2026-09-05/realtime-voice-chat-2"]
-trust_level = "trusted"
-
-[projects."/home/david/projects/dotfiles"]
-trust_level = "trusted"
-
-[projects."/home/david/Documents/Codex/2026-09-05/realtime-voice-chat-3"]
-trust_level = "trusted"
-
-[projects."/home/david/Documents/Codex/2026-09-05/cuan"]
-trust_level = "trusted"
-
-[projects."/home/david/Documents/Codex/2026-09-05/similar-to-windows-shift-a-that"]
-trust_level = "trusted"
-
-[projects."/home/david/Documents/Codex/2026-09-05/che"]
-trust_level = "trusted"
