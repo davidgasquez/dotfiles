@@ -19,9 +19,10 @@ packages=(
 
 paru -S --needed --noconfirm "${packages[@]}"
 
-mkdir -p "${HOME}/.local/bin" "${HOME}/.local/share/applications"
+mkdir -p "${HOME}/.local/bin" "${HOME}/.local/share/applications" "${HOME}/.config"
 ln -sfT "${AGENTS_DIR}/chatgpt/launch.sh" "${HOME}/.local/bin/chatgpt-launch"
 ln -sfT "${AGENTS_DIR}/chatgpt/chatgpt.desktop" "${HOME}/.local/share/applications/chatgpt.desktop"
+ln -sfT "${AGENTS_DIR}/chatgpt/chatgpt-flags.conf" "${HOME}/.config/chatgpt-flags.conf"
 update-desktop-database "${HOME}/.local/share/applications"
 
 mkdir -p "${GLOBAL_AGENTS_DIR}"
