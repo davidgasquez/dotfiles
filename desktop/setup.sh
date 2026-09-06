@@ -29,7 +29,11 @@ packages=(
 paru -S --needed --noconfirm "${packages[@]}"
 
 mkdir -p "${HOME}/.config"
-ln -sfnT "${DOTFILES}/desktop/brave-flags.conf" "${HOME}/.config/brave-flags.conf"
+if [[ "$(hostname)" == "zephyr" ]]; then
+    ln -sfnT "${DOTFILES}/hosts/zephyr/brave-flags.conf" "${HOME}/.config/brave-flags.conf"
+else
+    ln -sfnT "${DOTFILES}/desktop/brave-flags.conf" "${HOME}/.config/brave-flags.conf"
+fi
 
 gsettings set org.gnome.desktop.interface icon-theme "${ICON_THEME}"
 gsettings set org.gnome.desktop.interface cursor-theme "${CURSOR_THEME}"
