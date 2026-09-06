@@ -1,3 +1,5 @@
 hl.on("hyprland.start", function()
   hl.exec_cmd("uwsm-app -- spotify")
+  hl.exec_cmd("uwsm-app -- brave --no-startup-window --keep-alive-for-test")
+  hl.exec_cmd("chatgpt-launch --autostart")
 end)
