@@ -47,6 +47,7 @@ packages=(
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
     xdg-utils
+    ydotool
 )
 
 # Install Hyprland and related packages
