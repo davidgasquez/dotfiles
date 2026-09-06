@@ -12,7 +12,7 @@
 - **Launcher**: [Fuzzel](https://codeberg.org/dnkl/fuzzel)
 - **Terminal**: [Ghostty](https://ghostty.org/)
 - **Theme**: [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappe flavor)
-- **Shell**: `zsh` with [Starship](https://starship.rs/) prompt and [Sheldon](https://sheldon.cli.rs/) plugin manager
+- **Shell**: `zsh` with [Starship](https://starship.rs/)
 - **Coding**: Zed, Codex, and Pi
 
 ## 📦 Configuration
