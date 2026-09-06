@@ -3,14 +3,14 @@ set -euo pipefail
 
 if [[ "${1:-}" == "--autostart" ]]; then
   # Match the window directly: exec rules depend on the launcher's PID.
-  hyprctl eval 'hl.window_rule({name="chatgpt-startup",enabled=true,match={class="^chatgpt$"},workspace="special:chatgpt-startup silent",no_focus=true,suppress_event="activate activatefocus"})'
+  hyprctl eval 'hl.window_rule({name="chatgpt-startup",enabled=true,match={class="^[Cc]hat[Gg][Pp][Tt]$"},workspace="special:chatgpt-startup silent",no_focus=true,suppress_event="activate activatefocus"})'
   trap 'hyprctl eval '\''hl.window_rule({name="chatgpt-startup",enabled=false})'\''' EXIT
   hyprctl dispatch 'hl.dsp.exec_cmd("exec env CODEX_ELECTRON_START_IN_BACKGROUND=1 /usr/bin/chatgpt")'
 
   # Closing the initial window leaves ChatGPT running in its tray.
   for (( attempt = 0; attempt < 300; attempt++ )); do
     window=$(hyprctl -j clients | jq -r '
-      [.[] | select(.class == "chatgpt" and .mapped and (.floating | not)
+      [.[] | select((.class | ascii_downcase) == "chatgpt" and .mapped and (.floating | not)
         and .workspace.name == "special:chatgpt-startup")]
       | .[0].address // empty
     ')
@@ -37,7 +37,7 @@ workspace=$(hyprctl -j activeworkspace | jq -er '.id')
 
 find_window() {
   hyprctl -j clients | jq -r --argjson workspace "${workspace}" '
-    [.[] | select(.class == "chatgpt" and .mapped and (.floating | not))]
+    [.[] | select((.class | ascii_downcase) == "chatgpt" and .mapped and (.floating | not))]
     | sort_by([(.workspace.id != $workspace), .focusHistoryID])
     | .[0].address // empty
   '
