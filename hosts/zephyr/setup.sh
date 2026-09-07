@@ -23,7 +23,7 @@ fi
 
 packages=(
     brightnessctl
-    linux-g14
+    linux
     powertop
     power-profiles-daemon
     plymouth
