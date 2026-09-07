@@ -23,16 +23,14 @@ find_window() {
   '
 }
 
-open_chat() {
+focus_window() {
   hyprctl dispatch "hl.dsp.window.move({window=\"address:${window}\",workspace=${workspace},follow=false})"
   hyprctl dispatch "hl.dsp.focus({window=\"address:${window}\"})"
-  # ChatGPT's New standalone chat command, outside the selected project.
-  hyprctl dispatch "hl.dsp.send_shortcut({window=\"address:${window}\",mods=\"CTRL ALT\",key=\"o\"})"
 }
 
 window=$(find_window)
 if [[ -n "${window}" ]]; then
-  open_chat
+  focus_window
   exit 0
 fi
 
@@ -51,7 +49,7 @@ fi
 for (( attempt = 0; attempt < 150; attempt++ )); do
   window=$(find_window)
   if [[ -n "${window}" ]]; then
-    open_chat
+    focus_window
     exit 0
   fi
   sleep 0.1
