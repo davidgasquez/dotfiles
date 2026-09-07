@@ -9,30 +9,6 @@ check_for_update_on_startup = false
 service_tier = "fast"
 web_search = "live"
 
-[[skills.config]]
-path = "~/.agents/skills/grill/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "~/.agents/skills/pdf/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "~/.agents/skills/python-development/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "~/.agents/skills/social-search/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "~/.agents/skills/transcribe/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "~/.agents/skills/agent-browser/SKILL.md"
-enabled = false
-
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-used"]
 status_line_use_colors = true
@@ -50,93 +26,9 @@ hide_rate_limit_model_nudge = true
 [desktop]
 followUpQueueMode = "steer"
 show-context-window-usage = true
-appearanceLightCodeThemeId = "catppuccin"
-appearanceDarkCodeThemeId = "catppuccin"
 open-link-in-target-preference = "external-browser"
 open-local-url-in-target-preference = "external-browser"
 git-branch-prefix = ""
 git-pull-request-merge-method = "squash"
 git-create-pull-request-as-draft = false
 keepRemoteControlAwakeWhilePluggedIn = true
-
-[desktop.appearanceDarkChromeTheme]
-accent = "#8caaee"
-accentSource = "custom"
-contrast = 60
-ink = "#c6d0f5"
-opaqueWindows = false
-surface = "#303446"
-
-[desktop.appearanceDarkChromeTheme.fonts]
-
-[desktop.appearanceDarkChromeTheme.semanticColors]
-diffAdded = "#a6d189"
-diffRemoved = "#e78284"
-skill = "#ca9ee6"
-
-[marketplaces.openai-bundled]
-source_type = "local"
-source = "/home/david/.codex/.tmp/bundled-marketplaces/openai-bundled"
-
-[marketplaces.openai-primary-runtime]
-source_type = "local"
-source = "/home/david/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
-
-[plugins."codex-app-tools@openai-bundled"]
-enabled = true
-
-[plugins."sites@openai-bundled"]
-enabled = true
-
-[plugins."browser@openai-bundled"]
-enabled = true
-
-[plugins."unified-computer-use@openai-bundled"]
-enabled = true
-
-[plugins."chrome@openai-bundled"]
-enabled = true
-
-[plugins."visualize@openai-bundled"]
-enabled = true
-
-[plugins."documents@openai-primary-runtime"]
-enabled = true
-
-[plugins."pdf@openai-primary-runtime"]
-enabled = true
-
-[plugins."spreadsheets@openai-primary-runtime"]
-enabled = true
-
-[plugins."presentations@openai-primary-runtime"]
-enabled = true
-
-[plugins."template-creator@openai-primary-runtime"]
-enabled = true
-
-[mcp_servers.node_repl]
-args = []
-command = "/usr/lib/chatgpt/resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120
-
-[mcp_servers.node_repl.env]
-NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = "/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
-NODE_REPL_NODE_PATH = "/usr/lib/chatgpt/resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/home/david/.codex:/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
-CODEX_HOME = "/home/david/.codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-BROWSER_USE_TINYSKY_ENABLED = "1"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.901.51231"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/david/.codex/plugins/cache/openai-bundled/browser/26.901.51231/scripts/browser-service.mjs"}'
-CODEX_CLI_PATH = "/usr/lib/chatgpt/resources/codex"
-
-[apps.connector_openai_hotline]
-enabled = false
-
-[apps.connector_openai_safety_settings]
-enabled = false
