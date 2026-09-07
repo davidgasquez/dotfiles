@@ -26,6 +26,7 @@ packages=(
     tmux
     uv
     npm
+    wacli
     wget
     zoxide
     zsh
