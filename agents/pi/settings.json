@@ -7,7 +7,7 @@
   "quietStartup": true,
   "transport": "auto",
   "theme": "frappe",
-  "lastChangelogVersion": "0.86.1",
+  "lastChangelogVersion": "0.87.0",
   "defaultProjectTrust": "always",
   "showCacheMissNotices": true,
   "treeFilterMode": "no-tools",
