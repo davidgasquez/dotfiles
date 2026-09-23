@@ -23,6 +23,7 @@ fi
 
 packages=(
     brightnessctl
+    cloudflare-warp-bin
     linux
     powertop
     power-profiles-daemon
@@ -43,6 +44,10 @@ brightnessctl --device=asus::kbd_backlight set 3
 # Power Profiles Daemon
 sudo systemctl enable --now power-profiles-daemon
 powerprofilesctl set balanced
+
+# Cloudflare WARP (register and connect once; the daemon manages reconnection).
+sudo systemctl enable --now warp-svc.service
+echo "WARP first-time setup: warp-cli registration new && warp-cli connect"
 
 # Keep systemd-boot current with the installed systemd package.
 sudo systemctl enable systemd-boot-update.service
