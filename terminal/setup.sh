@@ -20,6 +20,7 @@ packages=(
     nvtop
     poppler
     prek-bin
+    markitdown-bin
     ripgrep
     shellcheck
     starship
@@ -38,11 +39,6 @@ packages=(
 
 # Install packages
 paru -S --needed --noconfirm "${packages[@]}"
-
-# Install uv tools
-if ! command -v markitdown >/dev/null; then
-    uv tool install 'markitdown[pdf, youtube-transcription]'
-fi
 
 # Create directories
 mkdir -p \
