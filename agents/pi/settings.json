@@ -1,7 +1,7 @@
 {
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-astra",
-  "defaultThinkingLevel": "medium",
+  "defaultModel": "gpt-6.1-sol",
+  "defaultThinkingLevel": "high",
   "collapseChangelog": true,
   "enableSkillCommands": true,
   "quietStartup": true,
