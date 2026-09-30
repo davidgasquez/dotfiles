@@ -1,8 +1,10 @@
 {
-  "defaultProvider": "openai-codex",
+  "defaultProvider": "openai",
   "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "high",
-  "defaultTools": ["+codemode"],
+  "defaultTools": [
+    "+codemode"
+  ],
   "collapseChangelog": true,
   "enableSkillCommands": true,
   "quietStartup": true,
