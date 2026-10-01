@@ -40,7 +40,7 @@
     "command": "$HOME/projects/dotfiles/scripts/auto-commit",
     "cwd": "$ZED_WORKTREE_ROOT",
     "reveal": "no_focus",
-    "hide": "never",
+    "hide": "on_success",
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
     "show_summary": false,
