@@ -37,18 +37,10 @@
   },
   {
     "label": "Generate Commit and Push",
-    "command": "setsid",
-    "args": [
-      "-f",
-      "ghostty",
-      "+new-window",
-      "--working-directory=$ZED_WORKTREE_ROOT",
-      "-e",
-      "$HOME/projects/dotfiles/scripts/auto-commit"
-    ],
+    "command": "$HOME/projects/dotfiles/scripts/auto-commit",
     "cwd": "$ZED_WORKTREE_ROOT",
-    "reveal": "never",
-    "hide": "always",
+    "reveal": "no_focus",
+    "hide": "never",
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
     "show_summary": false,
