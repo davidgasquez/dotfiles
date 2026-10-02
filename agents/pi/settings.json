@@ -6,14 +6,11 @@
     "+codemode"
   ],
   "collapseChangelog": true,
-  "enableSkillCommands": true,
   "quietStartup": true,
-  "transport": "auto",
   "theme": "frappe",
-  "lastChangelogVersion": "0.99.2",
   "defaultProjectTrust": "always",
   "showCacheMissNotices": true,
   "treeFilterMode": "no-tools",
-  "tuiMode": "fullscreen",
-  "fullscreenScrollbar": "auto"
+  "lastChangelogVersion": "1.0.0",
+  "enableInstallTelemetry": false
 }
