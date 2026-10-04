@@ -15,6 +15,7 @@ packages=(
     eza
     ffmpeg
     fzf
+    gogcli-bin
     htop
     jq
     nvtop
@@ -27,7 +28,7 @@ packages=(
     tmux
     uv
     npm
-    wacli
+    wacli-bin
     wget
     zoxide
     zsh
