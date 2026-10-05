@@ -6,11 +6,12 @@
     "+codemode"
   ],
   "collapseChangelog": true,
-  "quietStartup": true,
+  "quietStartup": "header",
   "theme": "frappe",
   "defaultProjectTrust": "always",
   "showCacheMissNotices": true,
   "treeFilterMode": "no-tools",
   "lastChangelogVersion": "1.0.2",
-  "enableInstallTelemetry": false
+  "enableInstallTelemetry": false,
+  "deviceId": "9bb11f8c-e2d6-4f07-a856-e7c8a4178d2d"
 }
