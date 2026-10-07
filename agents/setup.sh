@@ -29,15 +29,15 @@ mkdir -p "${GLOBAL_AGENTS_DIR}"
 ln -sfT "${AGENTS_DIR}/skills" "${GLOBAL_SKILLS_DIR}"
 
 mkdir -p "${CODEX_DIR}"
-ln -sf "${AGENTS_DIR}/AGENTS.md" "${CODEX_DIR}/AGENTS.md"
+# ln -sf "${AGENTS_DIR}/AGENTS.md" "${CODEX_DIR}/AGENTS.md"
 
 mkdir -p "${PI_AGENT_DIR}"
-ln -sf "${AGENTS_DIR}/AGENTS.md" "${PI_AGENT_DIR}/AGENTS.md"
+# ln -sf "${AGENTS_DIR}/AGENTS.md" "${PI_AGENT_DIR}/AGENTS.md"
 ln -sf "${AGENTS_DIR}/pi/settings.json" "${PI_AGENT_DIR}/settings.json"
 ln -sfT "${AGENTS_DIR}/pi/web-search.json" "${PI_AGENT_DIR}/web-search.json"
 ln -sfT "${AGENTS_DIR}/pi/extensions" "${PI_AGENT_DIR}/extensions"
 ln -sfT "${AGENTS_DIR}/pi/themes" "${PI_AGENT_DIR}/themes"
 
 mkdir -p "${AMP_DIR}"
-ln -sf "${AGENTS_DIR}/AGENTS.md" "${AMP_DIR}/AGENTS.md"
+# ln -sf "${AGENTS_DIR}/AGENTS.md" "${AMP_DIR}/AGENTS.md"
 ln -sf "${AGENTS_DIR}/amp/settings.json" "${AMP_DIR}/settings.json"
