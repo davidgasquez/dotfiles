@@ -15,5 +15,6 @@
   "showCacheMissNotices": true,
   "treeFilterMode": "no-tools",
   "lastChangelogVersion": "1.0.4",
-  "enableInstallTelemetry": false
+  "enableInstallTelemetry": false,
+  "deviceId": "1aff5b98-c332-4ee9-a3b4-3eaee6514d17"
 }
