@@ -1,6 +1,7 @@
 ---
 name: git
 description: Apply Git and GitHub conventions when working with changes, commits, branches, pull requests, reviews, or issues.
+disable-model-invocation: true
 ---
 
 # Git
