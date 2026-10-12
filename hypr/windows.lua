@@ -38,6 +38,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  name = "pi-subagents",
+  match = { class = "^com[.]mitchellh[.]ghostty[.]subagent[.]h[a-f0-9]{8}$" },
+  workspace = "special:magic silent",
+  no_initial_focus = true,
+})
+
+hl.window_rule({
   name = "gaming",
   match = { class = "^(steam_app_[0-9]+|gamescope)$" },
   content = "game",
