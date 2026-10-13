@@ -1,4 +1,5 @@
 {
+  "diff_view_style": "unified",
   "cli_default_open_behavior": "existing_window",
   "git_panel": {
     "dock": "left"
@@ -10,7 +11,9 @@
     "dock": "left"
   },
   "agent": {
-    "sidebar_side": "right",
+    "threads_sidebar": {
+      "position": "right"
+    },
     "dock": "right",
     "default_model": {
       "effort": "high",
