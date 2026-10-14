@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Chrome Warm & Blank",
+  "version": "1.0.0",
+  "description": "Keep Chrome resident and open a minimal local New Tab page.",
+  "permissions": [
+    "background"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "blank.html"
+  }
+}

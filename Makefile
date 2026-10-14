@@ -35,6 +35,10 @@ agents:
 zed:
 	@ $(DOTFILES)/zed/setup.sh
 
+.PHONY: chrome
+chrome:
+	@ $(DOTFILES)/chrome/setup.sh
+
 .PHONY: terminal
 terminal:
 	@ $(DOTFILES)/terminal/setup.sh
@@ -79,7 +83,7 @@ helix:
 check: lint-sh
 	@ prek run --all-files
 	@ git ls-files -z '*.lua' | xargs -0 -r luac -p
-	@ systemd-analyze --user verify hypr/systemd/user/*.service
+	@ systemd-analyze --user verify hypr/systemd/user/*.service chrome/*.service
 	@ systemd-analyze verify secrets/*.service secrets/*.timer
 	@ if [ -n "$${HYPRLAND_INSTANCE_SIGNATURE:-}" ]; then test -z "$$(hyprctl configerrors)"; fi
 
