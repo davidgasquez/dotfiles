@@ -11,6 +11,7 @@ packages=(
     btop
     bun
     chafa
+    cloudflare-cf
     duckdb
     eza
     ffmpeg
