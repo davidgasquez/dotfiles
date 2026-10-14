@@ -21,23 +21,6 @@ Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Inst
 
 Once Arch is installed and this repository cloned locally, run the `make` targets defined in the `Makefile`. Each target handles one part of the system.
 
-Common targets:
-
-```bash
-make paru      # install paru AUR helper
-make terminal  # shell, prompt, terminal config
-make git       # git config
-make fonts     # font setup
-make zed       # Zed config
-make agents    # agent config
-make secrets   # gopass and secret sync setup
-make hypr      # Hyprland config
-make desktop   # desktop app flags/config
-make system    # system config files
-make check     # validate tracked configuration
-make doctor    # check live workstation drift
-```
-
 ### Environment Variables
 
 - Secrets live in `gopass` with the store synced at `~/.secrets`; run `make secrets` to install the sync service and timer.
