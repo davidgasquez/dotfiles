@@ -80,7 +80,7 @@ in
 
   system.autoUpgrade = {
     enable = true;
-    flake = "/etc/nixos";
+    flake = "/etc/nixos#${config.networking.hostName}";
     upgrade = false;
     flags = [
       "--no-update-lock-file"
@@ -93,13 +93,14 @@ in
     randomizedDelaySec = lib.mkDefault "15min";
   };
   systemd.services.nixos-upgrade = {
+    path = [ pkgs.gh ];
     preStart = ''
       /run/wrappers/bin/sudo -u david -- ${pkgs.bash}/bin/bash -euc '
         cd /etc/nixos
-        git diff --quiet
-        git diff --cached --quiet
-        git pull --ff-only
-        test "$(git rev-parse HEAD)" = "$(git rev-parse "@{upstream}")"
+        test "$(git branch --show-current)" = main
+        test -z "$(git status --porcelain)"
+        git -c pull.rebase=false -c rebase.autoStash=false pull --ff-only origin main
+        test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
       '
     '';
     serviceConfig = {
