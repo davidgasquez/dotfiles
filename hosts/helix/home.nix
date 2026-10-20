@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -8,6 +8,30 @@
 
   home.stateVersion = "26.05";
   home.file."projects/nixos".source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos";
+
+  home.packages = [ pkgs.gcr_3 ];
+
+  programs.gpg = {
+    enable = true;
+    settings.default-key = "F2750587F59F961961BFE122E376A4D9EADE15CF";
+    publicKeys = [
+      {
+        source = ./davidgasquez.asc;
+        trust = "ultimate";
+      }
+    ];
+  };
+
+  services.gpg-agent = {
+    enable = true;
+    pinentry.package = pkgs.pinentry-gnome3;
+  };
+
+  programs.git.signing = {
+    key = "F2750587F59F961961BFE122E376A4D9EADE15CF";
+    format = "openpgp";
+    signByDefault = true;
+  };
 
   programs.direnv = {
     enable = true;
