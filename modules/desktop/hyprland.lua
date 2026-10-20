@@ -171,6 +171,12 @@ hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
 hl.window_rule({
+  name = "spotify-workspace",
+  match = { class = "spotify" },
+  workspace = "10 silent",
+})
+
+hl.window_rule({
   name  = "suppress-maximize-events",
   match = { class = ".*" },
   suppress_event = "maximize",

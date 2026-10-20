@@ -6,6 +6,11 @@
 }:
 
 let
+  spotify = pkgs.spotify.overrideAttrs (previous: {
+    preFixup = (previous.preFixup or "") + ''
+      gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
+    '';
+  });
   waitForNetwork = pkgs.writeShellScript "wait-for-network" ''
     until ${pkgs.curl}/bin/curl --silent --head --output /dev/null \
       --connect-timeout 3 --max-time 5 "$1"; do
@@ -21,11 +26,7 @@ in
     chatgpt
     proton-pass-cli
     seahorse
-    (spotify.overrideAttrs (previous: {
-      preFixup = (previous.preFixup or "") + ''
-        gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
-      '';
-    }))
+    spotify
     slack
     file-roller
     xfce4-settings
@@ -128,6 +129,40 @@ in
     Service = {
       Type = "exec";
       ExecStart = "${waitForNetwork} https://www.google.com ${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --no-startup-window";
+      Restart = "on-failure";
+      RestartSec = 2;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  systemd.user.services.spotify = {
+    Unit = {
+      Description = "Spotify background mode";
+      X-SwitchMethod = "keep-old";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+      Requisite = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "exec";
+      ExecStart = "${waitForNetwork} https://open.spotify.com ${spotify}/bin/spotify";
+      Restart = "on-failure";
+      RestartSec = 2;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  systemd.user.services.slack = {
+    Unit = {
+      Description = "Slack background mode";
+      X-SwitchMethod = "keep-old";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+      Requisite = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "exec";
+      ExecStart = "${waitForNetwork} https://slack.com ${pkgs.slack}/bin/slack --startup";
       Restart = "on-failure";
       RestartSec = 2;
     };
