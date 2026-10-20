@@ -28,7 +28,6 @@ in
         skill = palette.${config.catppuccin.accent}.hex;
       };
     };
-    projectlessWorkspaceRoot = "${config.home.homeDirectory}/codex";
     keepRemoteControlAwakeWhilePluggedIn = true;
     preventSleepWhileRunning = true;
     followUpQueueMode = "steer";
