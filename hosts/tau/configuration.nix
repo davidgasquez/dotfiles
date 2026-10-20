@@ -5,6 +5,7 @@
     ../../modules/agents
     ./hardware.nix
     ./maintenance.nix
+    ./pihole.nix
   ];
 
   networking.hostName = "tau";
