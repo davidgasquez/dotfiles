@@ -103,17 +103,9 @@
 
   users.users.david = {
     extraGroups = [ "networkmanager" ];
-    openssh.authorizedKeys.keys = config.users.users.root.openssh.authorizedKeys.keys ++ [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgpvOS6iWDJwiII1zkAm2vBBbvY1wE4RWxUtLtd6bdb david@tau"
-    ];
   };
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINi60nuEfDo+kp+t7rNVSX+wtuFHRYiPmdBuesDbN2kN"
-  ];
 
   programs.nix-ld.enable = true;
-
-  services.openssh.settings.PermitRootLogin = "prohibit-password";
 
   home-manager.users.david.imports = [ ./home.nix ];
 

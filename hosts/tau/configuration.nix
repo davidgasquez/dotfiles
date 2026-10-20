@@ -16,12 +16,11 @@
   systemd.oomd.enableSystemSlice = true;
 
   users.mutableUsers = false;
+  # Tailscale SSH authenticates users without local passwords or authorized keys.
+  users.allowNoPasswordLogin = true;
   users.users.david = {
     linger = true;
     hashedPassword = "!";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP/Zjl7ztFYGhOvvXaHxjzdDQUCtMUjouh5SJM4z8UlT"
-    ];
   };
 
   services.glances = {
@@ -42,6 +41,4 @@
   services.tailscale = {
     openFirewall = true;
   };
-
-  services.openssh.settings.PermitRootLogin = "no";
 }

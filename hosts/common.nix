@@ -6,18 +6,6 @@
   ...
 }:
 
-let
-  hosts = {
-    helix = {
-      ip = "100.102.221.87";
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIak4uAeQGdx71kgfYyrTRZ5wVIIAoKGCa7O4dU29kgI";
-    };
-    tau = {
-      ip = "100.125.95.52";
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINT9oAnQHaivtO+EEU2xJHi4EwQBSPjiopVkS8as0GD8";
-    };
-  };
-in
 {
   zramSwap.enable = true;
   systemd.oomd.enableUserSlices = true;
@@ -47,31 +35,16 @@ in
 
   services.tailscale = {
     enable = true;
-    extraSetFlags = [ "--ssh=false" ];
+    extraSetFlags = [ "--ssh" ];
   };
-  services.openssh = {
-    enable = true;
-    openFirewall = false;
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-    };
+  systemd.services.tailscaled-set = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.RemainAfterExit = true;
   };
-
-  networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [ 22 ];
-
-  programs.ssh = {
-    extraConfig = lib.concatMapAttrsStringSep "" (name: host: ''
-      Host ${name} ${host.ip}
-        HostName ${host.ip}
-        IdentityAgent none
-        IdentitiesOnly yes
-    '') hosts;
-    knownHosts = lib.mapAttrs (_: host: {
-      extraHostNames = [ host.ip ];
-      publicKey = host.key;
-    }) hosts;
-  };
+  programs.ssh.extraConfig = ''
+    Host helix tau
+      User david
+  '';
 
   nix.settings.experimental-features = [
     "nix-command"

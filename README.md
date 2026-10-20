@@ -51,6 +51,16 @@ Use `boot` instead of `switch` for kernel changes, then reboot during the
 `ssh tau sudo -n nixos-rebuild switch --rollback`. Automatic deployments use
 the same checkout and keep the existing reboot policy.
 
+## SSH access
+
+Tau and Helix use Tailscale SSH with MagicDNS. Connect from an authenticated
+device in the tailnet with `ssh tau` or `ssh helix` (use `david@` if your local
+username differs). Tailscale manages authentication and host keys; no SSH
+public keys are maintained in this repository and OpenSSH's server is disabled.
+The tailnet's SSH access policy controls permitted users and may require browser
+reauthentication. `tailscale ssh david@tau` or `tailscale ssh david@helix` also
+verifies host keys directly through Tailscale.
+
 ## Personal documents
 
 Edit and commit documents in Git, then push to `personal`'s `main` branch.
