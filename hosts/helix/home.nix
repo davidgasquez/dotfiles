@@ -30,7 +30,7 @@
   programs.git.signing = {
     key = "F2750587F59F961961BFE122E376A4D9EADE15CF";
     format = "openpgp";
-    signByDefault = true;
+    signByDefault = false;
   };
 
   programs.direnv = {
