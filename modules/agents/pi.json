@@ -1,0 +1,8 @@
+{
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-6.1-sol",
+  "defaultTools": ["+codemode"],
+  "packages": ["npm:pi-web-access"],
+  "hideThinkingBlock": true,
+  "theme": "frappe"
+}

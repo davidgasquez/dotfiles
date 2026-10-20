@@ -1,0 +1,23 @@
+name: Validate
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702 # v31.11.2
+        with:
+          enable_kvm: false
+          set_as_trusted_user: false
+      - name: Check tracked Nix formatting
+        shell: bash
+        run: git ls-files -z '*.nix' | xargs -0 nix fmt --no-update-lock-file -- --check
+      - name: Check all flake outputs (no system builds)
+        run: nix flake check --all-systems --no-update-lock-file

@@ -1,0 +1,30 @@
+{
+  "cli_default_open_behavior": "new_window",
+  "project_panel": {
+    "dock": "left"
+  },
+  "session": {
+    "trust_all_worktrees": true
+  },
+  "icon_theme": {
+    "mode": "system",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "base_keymap": "Zed",
+  "ui_font_size": 16,
+  "ui_font_family": "Inter",
+  "buffer_font_size": 15,
+  "buffer_font_family": "JetBrains Mono",
+  "theme": {
+    "mode": "system"
+  },
+  "languages": {
+    "Nix": {
+      "language_servers": [
+        "nil",
+        "!nixd"
+      ]
+    }
+  }
+}

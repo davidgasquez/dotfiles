@@ -1,39 +1,37 @@
-<div align="center">
-  <h1>.dotfiles</h1>
-  <p><em>Here you will find my dotfiles, living in peace and harmony.</em></p>
-</div>
+# Personal NixOS Configuration ❄️
 
-![image](https://github.com/davidgasquez/dotfiles/assets/1682202/6c4492d8-98ce-4430-9921-4d7ba70f4193)
+The declarative home for my system and dotfiles, where they live in harmony, most of the time.
 
 ## 🔍 Overview
 
-- **OS:** Arch Linux
-- **WM**: [Hyprland](https://hyprland.org/)
-- **Launcher**: [Fuzzel](https://codeberg.org/dnkl/fuzzel)
-- **Terminal**: [Ghostty](https://ghostty.org/)
-- **Theme**: [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappe flavor)
-- **Shell**: `zsh` with [Starship](https://starship.rs/)
-- **Coding**: Zed, Codex, and Pi
+- **OS:** NixOS with Home Manager
+- **WM:** [Hyprland](https://hyprland.org/)
+- **Launcher:** [Fuzzel](https://codeberg.org/dnkl/fuzzel)
+- **Terminal:** [Ghostty](https://ghostty.org/)
+- **Theme:** [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappé)
+- **Shell:** `zsh` with [Starship](https://starship.rs/)
+- **Coding:** Zed, Codex, and Pi
 
 ## 📦 Configuration
 
-Follow the [Arch Linux installation guide](https://wiki.archlinux.org/title/Installation_guide) to set up your system.
+The repository lives at `/home/david/projects/dotfiles` on Helix and Tau. The
+`arch` branch preserves the Arch Linux configuration used by Zephyr.
 
-Once Arch is installed and this repository cloned locally, run the `make` targets defined in the `Makefile`. Each target handles one part of the system.
+- `flake.nix` / `flake.lock`: system definitions and pinned dependencies.
+- `hosts/`: shared and machine-specific system and Home Manager settings.
+- `home/`: shared Home Manager base.
+- `modules/`: features pairing system and Home Manager config (`desktop`, `agents` with skills, codex, pi).
 
-### Environment Variables
+Build and apply locally.
 
-- Secrets live in `gopass` with the store synced at `~/.secrets`; run `make secrets` to install the sync service and timer.
-- User session variables live in `~/.config/environment.d/*.conf`.
+```sh
+cd /home/david/projects/dotfiles
+sudo -n nixos-rebuild build --flake . --no-link
+sudo -n nixos-rebuild switch --flake .
+```
 
-### 🧰 Utility Scripts
-
-The repository includes useful scripts in the `scripts/` directory, including:
-
-- `web-fetch`: convert public web pages to Markdown
-- `dirty-dirs-git` / `pull-all-dirs`: manage multiple git repositories
-- `record-audio`: audio recording helper
-- `pi-sandbox`: Pi agent helper
+Update dependencies on Helix with `nixos-update`, review the lock, then commit
+and push. Format Nix files with `nix fmt`.
 
 ## 📜 License
 

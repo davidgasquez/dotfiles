@@ -1,24 +1,15 @@
-# Repository Guidelines
+# Repository Guidance
 
-This repository tracks some of the dotfiles for my Arch Linux installation.
+This shared NixOS flake configures `helix` (`x86_64-linux`, desktop) and `tau` (Raspberry Pi 5, `aarch64-linux`, services). Each machine checks out this repository at `/home/david/projects/dotfiles`. The `arch` branch preserves the Arch Linux configuration used by `zephyr`.
 
-## Architecture
+## Principles
 
-- Each directory contains related (and ideally selfcontained) configuration files
-- Makefile orchestrates each target
-- `setup.sh` are declarative of the ideal state (no `rm` or migrations)
-
-### Patterns and Principles
-
-- **Symbolic linking**: Use symlinks rather than copying dotfiles
-- **Modular organization**: Each application or unique setup has its own directory
-- **Make-based automation**: The Makefile is the entrypoint that triggers all the subscripts
-- **Theme consistency**: Catppuccin Frappe theme used across all applications that support it
+- Keep changes small and declarative following the Nix style and modern best practices
+- Make minimal, idiomatic changes. Reuse existing modules, options, and abstractions. Avoid unnecessary refactoring or introducing new frameworks
+- Keep system in sync
+- Respect configuration boundaries
+- Code should be self explanatory, no need for useless comments or md files
+- Use --no-link with nix build and nixos-rebuild build to avoid creating result in this directory.
+- For rebuilds, use `sudo -n nixos-rebuild`; David can run this command without a password. For other privileged operations, explain the exact action and use inline `pkexec` with an absolute executable path. Keep `sudo` on the scripts.
 - Before changing configurations, check the application's official documentation, repository, or resources for the latest syntax, best practices, deprecations, recommendations, ...
-- For privileged operations, explain the exact action and use inline `pkexec` with an absolute executable path. Keep `sudo` on the scripts.
-
-## Coding Style & Naming Conventions
-
-- Shell: `#!/usr/bin/env bash` with `set -euo pipefail`; hyphenated script names; keep functions small.
-- Make: tabs for recipes; small, composable targets; reuse variables like `DOTFILES`.
-- Configs: keep JSON/TOML valid and minimal.
+- Deploy safely and preserve rollback options

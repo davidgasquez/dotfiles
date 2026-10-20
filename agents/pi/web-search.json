@@ -1,7 +1,0 @@
-{
-  "workflow": "none",
-  "allowBrowserCookies": false,
-  "fetchRouting": {
-    "allowRemoteHostedProviders": false
-  }
-}

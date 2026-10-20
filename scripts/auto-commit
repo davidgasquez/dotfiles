@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-prompt="${AUTO_COMMIT_PROMPT:-split work into atomic commits and push}"
-
-exec /usr/bin/pi --thinking low --print "${prompt}" "$@"

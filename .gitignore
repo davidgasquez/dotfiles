@@ -1,2 +1,4 @@
-.qmd/*
-!.qmd/index.yml
+/result*
+*.local
+*.local.*
+.env
