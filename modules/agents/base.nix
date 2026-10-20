@@ -29,7 +29,7 @@ in
       approval_policy = "never";
       sandbox_workspace_write.network_access = true;
       web_search = "live";
-      projects."/home/david/projects/dotfiles".trust_level = "trusted";
+      projects."/etc/nixos".trust_level = "trusted";
       apps = {
         connector_openai_hotline.enabled = false;
         connector_openai_safety_settings.enabled = false;

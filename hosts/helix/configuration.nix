@@ -34,7 +34,7 @@
         pkgs.gitMinimal
       ];
       text = ''
-        cd /home/david/projects/dotfiles
+        cd /etc/nixos
         git diff --quiet
         git diff --cached --quiet
         nix flake update --refresh

@@ -7,6 +7,7 @@
   ];
 
   home.stateVersion = "26.05";
+  home.file."projects/nixos".source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos";
 
   programs.direnv = {
     enable = true;

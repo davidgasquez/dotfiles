@@ -14,8 +14,9 @@ The declarative home for my system and dotfiles, where they live in harmony, mos
 
 ## 📦 Configuration
 
-The repository lives at `/home/david/projects/dotfiles` on Helix and Tau. The
-`arch` branch preserves the Arch Linux configuration used by Zephyr.
+The repository lives at `/etc/nixos` on Helix and Tau, with a
+`~/projects/nixos` symlink on Helix. The `arch` branch preserves the Arch Linux
+configuration used by Zephyr.
 
 - `flake.nix` / `flake.lock`: system definitions and pinned dependencies.
 - `hosts/`: shared and machine-specific system and Home Manager settings.
@@ -25,7 +26,7 @@ The repository lives at `/home/david/projects/dotfiles` on Helix and Tau. The
 Build and apply locally.
 
 ```sh
-cd /home/david/projects/dotfiles
+cd /etc/nixos
 sudo -n nixos-rebuild build --flake . --no-link
 sudo -n nixos-rebuild switch --flake .
 ```

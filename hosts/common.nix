@@ -80,7 +80,7 @@ in
 
   system.autoUpgrade = {
     enable = true;
-    flake = "/home/david/projects/dotfiles";
+    flake = "/etc/nixos";
     upgrade = false;
     flags = [
       "--no-update-lock-file"
@@ -95,7 +95,7 @@ in
   systemd.services.nixos-upgrade = {
     preStart = ''
       /run/wrappers/bin/sudo -u david -- ${pkgs.bash}/bin/bash -euc '
-        cd /home/david/projects/dotfiles
+        cd /etc/nixos
         git diff --quiet
         git diff --cached --quiet
         git pull --ff-only
@@ -110,7 +110,7 @@ in
 
   programs.git = {
     enable = true;
-    config.safe.directory = "/home/david/projects/dotfiles";
+    config.safe.directory = "/etc/nixos";
   };
 
   home-manager = {
