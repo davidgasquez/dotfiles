@@ -47,10 +47,10 @@ let
       git -c pull.rebase=false -c rebase.autoStash=false pull --ff-only origin main
       test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
 
-      rclone --config ${rcloneConfig} sync . personal-drive: \
+      rclone sync . personal-drive: \
         --filter-from ${filters} \
         --backup-dir "personal-drive:.personal-sync-backups/$(date -u +%Y%m%dT%H%M%S.%NZ)" \
-        --max-delete 10 --verbose "$@"
+        --checksum --max-delete 10 --verbose "$@"
     '';
   };
 in
@@ -67,7 +67,10 @@ in
       ExecStart = "${sync}/bin/personal-sync";
       StateDirectory = "personal-sync";
       StateDirectoryMode = "0700";
-      Environment = [ "GIT_TERMINAL_PROMPT=0" ];
+      Environment = [
+        "GIT_TERMINAL_PROMPT=0"
+        "RCLONE_CONFIG=${rcloneConfig}"
+      ];
       TimeoutStartSec = "1h";
       TimeoutStopSec = "2min";
       UMask = "0077";
