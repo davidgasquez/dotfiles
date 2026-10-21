@@ -7,11 +7,6 @@ disable-model-invocation: true
 
 # QMD - Query Markdown Documents
 
-## Execution
-
-Follow [nix-run](../nix-run/SKILL.md) to execute commands on demand with `nix run 'github:openclaw/nix-openclaw-tools#qmd' -- <args>`.
-In the examples below, replace `qmd` with that prefix. Keep the existing home and XDG directories to reuse collections, indexes, and model caches.
-
 ## How search works
 
 QMD searches local markdown collections: notes, docs, wikis, transcripts, and

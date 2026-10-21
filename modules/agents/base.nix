@@ -1,6 +1,12 @@
-{ lib, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
+  qmd = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.qmd;
   agentSkills = pkgs.runCommand "agent-skills" { } ''
     cp -r ${./skills} "$out"
     chmod -R u+w "$out"
@@ -11,6 +17,18 @@ let
   '';
 in
 {
+  home.packages = [
+    (pkgs.symlinkJoin {
+      inherit (qmd) name meta;
+      paths = [ qmd ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram "$out/bin/qmd" \
+          --set-default QMD_SKILLS_DIR "${qmd}/share/skills/qmd"
+      '';
+    })
+  ];
+
   home.file = lib.mapAttrs' (
     name: _:
     lib.nameValuePair ".agents/skills/${name}" {
