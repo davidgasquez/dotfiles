@@ -14,16 +14,14 @@ The declarative home for my system and dotfiles, where they live in harmony, mos
 
 ## 📦 Configuration
 
-The repository lives at `/etc/nixos` on Helix and Tau, with a
-`~/projects/nixos` symlink on Helix. The `arch` branch preserves the Arch Linux
-configuration used by Zephyr.
+The repository lives at `/etc/nixos` on Helix and Tau.
 
 - `flake.nix` / `flake.lock`: system definitions and pinned dependencies.
 - `hosts/`: shared and machine-specific system and Home Manager settings.
 - `home/`: shared Home Manager base.
-- `modules/`: features pairing system and Home Manager config (`desktop`, `agents` with skills, codex, pi).
+- `modules/`: features pairing system and Home Manager config
 
-Build and apply locally.
+You can build and apply locally.
 
 ```sh
 cd /etc/nixos
