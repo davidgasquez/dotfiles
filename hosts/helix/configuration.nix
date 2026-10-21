@@ -22,10 +22,6 @@
   };
 
   networking.hostName = "helix";
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-  };
   networking.networkmanager = {
     enable = true;
     dns = "systemd-resolved";

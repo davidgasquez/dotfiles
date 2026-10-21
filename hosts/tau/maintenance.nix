@@ -1,7 +1,4 @@
 {
-  nix.gc.automatic = true;
-  nix.gc.options = "--delete-older-than 60d";
-
   system.autoUpgrade = {
     dates = "02:00";
     persistent = false;
