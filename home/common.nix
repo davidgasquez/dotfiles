@@ -51,6 +51,12 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     history.size = 50000;
+    initContent = ''
+      bindkey '^[[1;3D' backward-word
+      bindkey '^[[1;3C' forward-word
+      bindkey '^[[1;5D' backward-word
+      bindkey '^[[1;5C' forward-word
+    '';
     shellAliases = {
       cat = "bat -pp";
       ls = "eza --color=auto --icons=always";
