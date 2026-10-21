@@ -83,6 +83,17 @@ in
     userSettings = builtins.fromJSON (builtins.readFile ./zed.json);
     userKeymaps = [
       {
+        context = "Editor";
+        bindings = {
+          "ctrl-ç" = [
+            "editor::ToggleComments"
+            { advance_downwards = false; }
+          ];
+          "ctrl-shift-up" = "editor::MoveLineUp";
+          "ctrl-shift-down" = "editor::MoveLineDown";
+        };
+      }
+      {
         context = "Workspace || Terminal";
         bindings."ctrl-_" = [
           "task::Spawn"
