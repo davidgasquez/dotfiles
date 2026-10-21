@@ -6,34 +6,27 @@ disable-model-invocation: true
 
 Search X, Hacker News, and Bluesky unless the user limits the scope. Run the searches in parallel and combine the most relevant results with source links.
 
-Iterate and tweak the searches until you've covered the desired search.
+Refine queries when results are sparse or off-topic. Pull the thread and try alternative terms. Don't report anything if the platform didn't return a match.
 
 ## X
 
-Use the current Brave profile's X session:
+Use [twitter-cli](https://github.com/public-clis/twitter-cli) with the current user's Chrome X session. Chrome profiles are detected automatically; set `TWITTER_CHROME_PROFILE` only when a specific profile is needed.
+
+Follow [nix-run](../nix-run/SKILL.md) for on-demand execution. Use Python 3.13 to avoid native dependency builds with Python 3.15, and the Git source for the latest X API compatibility fixes.
 
 ```bash
 QUERY='your search query'
-TWITTER_BROWSER=brave TWITTER_CHROME_PROFILE=Default \
-  uvx --from 'git+https://github.com/public-clis/twitter-cli.git' \
+TWITTER_BROWSER=chrome \
+  nix run 'nixpkgs#uv' -- tool run --python 3.13 \
+  --from 'git+https://github.com/public-clis/twitter-cli.git' \
   twitter search "$QUERY" --max 20 --json
 ```
 
-Do not add filters unless the user requests them. Common query operators:
+Do not add filters unless the user requests them. Queries support exact phrases, `OR`, exclusions (`-term`), and X operators such as `from:handle` or `filter:follows`. For language, dates, media, or engagement filters, check `twitter search --help`.
 
-- Exact phrase: `"data platform"`
-- Either term: `AI OR agents`
-- Exclude term: `AI -crypto`
-- Account: `from:handle`, `to:handle`
-- Followed accounts: `filter:follows`
-- Content: `filter:links`, `filter:media`, `filter:images`, `filter:videos`
-- Exclude: `-filter:replies`, `-filter:retweets`
-- Language/date: `lang:en`, `since:YYYY-MM-DD`, `until:YYYY-MM-DD`
-- Engagement: `min_faves:10`, `min_retweets:5`
+Use `--type latest` for chronological results; the default is `top`.
 
-Use `--type Latest` for chronological results; the default is Top. Other types: `Photos`, `Videos`.
-
-Read posts from `.data`. Build URLs as `https://x.com/<author.screenName>/status/<id>`. Retry once on `api_error` or HTTP 0.
+Check `.ok` before reading posts from `.data`. Build URLs as `https://x.com/<author.screenName>/status/<id>`. Retry once on transient API/network errors; stop on authentication or rate-limit errors. If cookies are missing or expired, ask the user to sign in to X in Chrome; never print cookie values.
 
 ## Hacker News
 
