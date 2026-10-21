@@ -33,7 +33,6 @@
         type = "ethernet";
       };
       match.path = "pci-0000:24:00.0";
-      ethernet.wake-on-lan = 64;
       ipv4 = {
         method = "auto";
         dhcp-client-id = "mac";
