@@ -6,16 +6,15 @@
 }:
 
 let
-  chatgpt = pkgs.chatgpt.overrideAttrs (previous: {
-    preFixup = (previous.preFixup or "") + ''
-      gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
-    '';
-  });
-  spotify = pkgs.spotify.overrideAttrs (previous: {
-    preFixup = (previous.preFixup or "") + ''
-      gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
-    '';
-  });
+  withOzone =
+    pkg:
+    pkg.overrideAttrs (previous: {
+      preFixup = (previous.preFixup or "") + ''
+        gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
+      '';
+    });
+  chatgpt = withOzone pkgs.chatgpt;
+  spotify = withOzone pkgs.spotify;
   waitForNetwork = pkgs.writeShellScript "wait-for-network" ''
     until ${pkgs.curl}/bin/curl --silent --head --output /dev/null \
       --connect-timeout 3 --max-time 5 "$1"; do
@@ -105,74 +104,48 @@ in
     permissions = [ "background" ];
   };
 
-  systemd.user.services.chrome-background = {
-    Unit = {
-      Description = "Google Chrome background mode";
-      X-SwitchMethod = "keep-old";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-      Requisite = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "exec";
-      ExecStart = "${waitForNetwork} https://www.google.com ${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --no-startup-window";
-      Restart = "on-failure";
-      RestartSec = 2;
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-
-  systemd.user.services.spotify = {
-    Unit = {
-      Description = "Spotify background mode";
-      X-SwitchMethod = "keep-old";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-      Requisite = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "exec";
-      ExecStart = "${waitForNetwork} https://open.spotify.com ${spotify}/bin/spotify";
-      Restart = "on-failure";
-      RestartSec = 2;
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-
-  systemd.user.services.slack = {
-    Unit = {
-      Description = "Slack background mode";
-      X-SwitchMethod = "keep-old";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-      Requisite = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "exec";
-      ExecStart = "${waitForNetwork} https://slack.com ${pkgs.slack}/bin/slack --startup";
-      Restart = "on-failure";
-      RestartSec = 2;
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-
-  systemd.user.services.chatgpt = {
-    Unit = {
-      Description = "ChatGPT background mode";
-      X-SwitchMethod = "keep-old";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-      Requisite = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "exec";
-      ExecStart = "${waitForNetwork} https://chatgpt.com ${chatgpt}/bin/chatgpt";
-      Environment = [ "CODEX_ELECTRON_START_IN_BACKGROUND=1" ];
-      Restart = "on-failure";
-      RestartSec = 2;
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
+  systemd.user.services =
+    lib.mapAttrs
+      (_: app: {
+        Unit = {
+          Description = "${app.name} background mode";
+          X-SwitchMethod = "keep-old";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+          Requisite = [ "graphical-session.target" ];
+        };
+        Service = {
+          Type = "exec";
+          ExecStart = "${waitForNetwork} ${app.url} ${app.exec}";
+          Environment = app.env or [ ];
+          Restart = "on-failure";
+          RestartSec = 2;
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
+      })
+      {
+        chrome-background = {
+          name = "Google Chrome";
+          url = "https://www.google.com";
+          exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --no-startup-window";
+        };
+        spotify = {
+          name = "Spotify";
+          url = "https://open.spotify.com";
+          exec = "${spotify}/bin/spotify";
+        };
+        slack = {
+          name = "Slack";
+          url = "https://slack.com";
+          exec = "${pkgs.slack}/bin/slack --startup";
+        };
+        chatgpt = {
+          name = "ChatGPT";
+          url = "https://chatgpt.com";
+          exec = "${chatgpt}/bin/chatgpt";
+          env = [ "CODEX_ELECTRON_START_IN_BACKGROUND=1" ];
+        };
+      };
   xdg.dataFile."icons/hicolor/32x32/apps/chatgpt.png".source =
     pkgs.runCommand "chatgpt-icon.png" { nativeBuildInputs = [ pkgs.imagemagick ]; }
       ''
