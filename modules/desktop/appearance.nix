@@ -87,7 +87,7 @@ in
         exec = "${lib.getExe config.services.voxtype.package} status --follow --format json --icon-theme nerd-font";
         return-type = "json";
         format = "{}";
-        tooltip-format = "Dictado · Super+Shift+O";
+        tooltip-format = "F9";
       };
       clock = {
         format = "{:%a %d %b  %H:%M}";
