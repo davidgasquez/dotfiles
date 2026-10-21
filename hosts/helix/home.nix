@@ -6,8 +6,6 @@
   home.stateVersion = "26.05";
   home.file."projects/nixos".source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos";
 
-  home.packages = [ pkgs.gcr_3 ];
-
   programs.btop = {
     package = pkgs.btop.override { rocmSupport = true; };
     settings.shown_boxes = "cpu gpu0 mem net proc";
