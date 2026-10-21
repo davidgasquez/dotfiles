@@ -96,6 +96,26 @@ in
     projects = "${config.home.homeDirectory}/projects";
   };
 
+  services.voxtype = {
+    enable = true;
+    package = pkgs.voxtype-vulkan;
+    loadModels = [ "large-v3-turbo" ];
+    settings = {
+      audio.feedback.enabled = true;
+      hotkey.enabled = false;
+      osd.enabled = false;
+      output.notification = {
+        on_recording_start = false;
+        on_recording_stop = true;
+      };
+      whisper = {
+        model = "large-v3-turbo";
+        language = "auto";
+        translate = false;
+      };
+    };
+  };
+
   services.hyprpolkitagent.enable = true;
   programs.hyprlock = {
     enable = true;

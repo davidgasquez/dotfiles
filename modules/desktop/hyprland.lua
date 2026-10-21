@@ -104,6 +104,7 @@ hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd([[uwsm app -- zeditor --new -
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("uwsm app -- google-chrome-stable --new-window"), { description = "Open browser" })
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("uwsm app -- google-chrome-stable --app=https://app.todoist.com/app/today"), { description = "Open Todoist" })
 hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("uwsm app -- pi-scratch"), { description = "Open Pi scratch" })
+hl.bind(mainMod .. " + SHIFT + O", hl.dsp.exec_cmd("voxtype record toggle"), { description = "Toggle voice recording" })
 hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history"))
 hl.bind(mainMod .. " + CTRL + SHIFT + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history --delete"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())

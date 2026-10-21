@@ -69,6 +69,7 @@ in
       ];
       modules-center = [ "mpris" ];
       modules-right = [
+        "custom/voxtype"
         "wireplumber"
         "group/tray-expander"
         "clock"
@@ -81,6 +82,12 @@ in
       "hyprland/submap" = {
         format = "󰘳 {}";
         tooltip = false;
+      };
+      "custom/voxtype" = {
+        exec = "${lib.getExe config.services.voxtype.package} status --follow --format json --icon-theme nerd-font";
+        return-type = "json";
+        format = "{}";
+        tooltip-format = "Dictado · Super+Shift+O";
       };
       clock = {
         format = "{:%a %d %b  %H:%M}";
@@ -171,13 +178,15 @@ in
       #workspaces button.active { background: @surface0; color: @accent; }
       #workspaces button.urgent { background: @red; color: @base; }
       .modules-right { margin: 4px 10px 4px 0; }
-      #mpris, #wireplumber, #tray-expander, #clock {
+      #mpris, #custom-voxtype, #wireplumber, #tray-expander, #clock {
         background: @surface0;
         border-radius: 4px;
         color: @subtext0;
       }
-      #wireplumber, #tray-expander { margin-right: 4px; }
-      #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
+      #custom-voxtype, #wireplumber, #tray-expander { margin-right: 4px; }
+      #custom-voxtype, #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
+      #custom-voxtype.recording { color: @red; }
+      #custom-voxtype.transcribing { color: @yellow; }
       #mpris { margin: 4px 12px; padding: 0 10px; }
       #mpris.paused { color: @overlay1; }
       #clock { padding: 0 10px; color: @text; }
