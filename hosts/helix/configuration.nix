@@ -22,6 +22,10 @@
   };
 
   networking.hostName = "helix";
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+  };
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [
