@@ -4,6 +4,7 @@
   home.packages = with pkgs; [
     bat
     eza
+    gnumake
     jq
     ffmpeg
     ripgrep
