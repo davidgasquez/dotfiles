@@ -153,6 +153,7 @@ in
       before_sleep_cmd = "${pkgs.systemd}/bin/loginctl lock-session";
       after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
       inhibit_sleep = 3;
+      ignore_wayland_inhibit = true;
     };
     settings.listener = [
       {
