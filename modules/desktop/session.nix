@@ -2,14 +2,13 @@
   config,
   lib,
   pkgs,
+  palette,
+  accent,
   ...
 }:
 
 let
   inherit (config.gtk) font;
-  palette =
-    (lib.importJSON "${config.catppuccin.sources.palette}/palette.json")
-    .${config.catppuccin.flavor}.colors;
   lock = pkgs.writeShellApplication {
     name = "lock-session";
     runtimeInputs = with pkgs; [
@@ -123,12 +122,12 @@ in
         prompt = palette.subtext1;
         placeholder = palette.overlay1;
         input = palette.text;
-        match = palette.${config.catppuccin.accent};
+        match = accent;
         selection = palette.surface2;
         selection-text = palette.text;
-        selection-match = palette.${config.catppuccin.accent};
+        selection-match = accent;
         counter = palette.overlay1;
-        border = palette.${config.catppuccin.accent};
+        border = accent;
       };
     };
   };
@@ -186,7 +185,7 @@ in
           inner_color = "rgba(00000000)";
           check_color = "rgba(00000000)";
           fail_color = "rgba(00000000)";
-          font_color = "rgb(${lib.removePrefix "#" palette.${config.catppuccin.accent}.hex})";
+          font_color = "rgb(${lib.removePrefix "#" accent.hex})";
           font_family = font.name;
           dots_size = 0.7;
           dots_spacing = 0.3;

@@ -19,6 +19,11 @@ let
   };
 in
 {
+  _module.args = {
+    inherit palette;
+    accent = palette.${config.catppuccin.accent};
+  };
+
   catppuccin = {
     enable = true;
     autoEnable = false;

@@ -1,17 +1,12 @@
-{ config, lib, ... }:
+{ palette, accent, ... }:
 
-let
-  palette =
-    (lib.importJSON "${config.catppuccin.sources.palette}/palette.json")
-    .${config.catppuccin.flavor}.colors;
-in
 {
   programs.codex.settings.desktop = {
     "browser-family-enabled:chrome" = false;
     appearanceTheme = "dark";
     appearanceDarkCodeThemeId = "catppuccin";
     appearanceDarkChromeTheme = {
-      accent = palette.${config.catppuccin.accent}.hex;
+      accent = accent.hex;
       accentSource = "custom";
       contrast = 60;
       fonts = {
@@ -25,7 +20,7 @@ in
       semanticColors = {
         diffAdded = palette.green.hex;
         diffRemoved = palette.red.hex;
-        skill = palette.${config.catppuccin.accent}.hex;
+        skill = accent.hex;
       };
     };
     keepRemoteControlAwakeWhilePluggedIn = true;

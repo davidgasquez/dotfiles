@@ -2,14 +2,12 @@
   config,
   lib,
   pkgs,
+  accent,
   ...
 }:
 
 let
   inherit (config.gtk) font;
-  palette =
-    (lib.importJSON "${config.catppuccin.sources.palette}/palette.json")
-    .${config.catppuccin.flavor}.colors;
 in
 {
   programs.waybar = {
@@ -50,7 +48,7 @@ in
         calendar = {
           mode = "month";
           first-day-of-week = 1;
-          format.today = "<span color='${palette.${config.catppuccin.accent}.hex}'><b><u>{}</u></b></span>";
+          format.today = "<span color='${accent.hex}'><b><u>{}</u></b></span>";
         };
       };
       mpris = {
