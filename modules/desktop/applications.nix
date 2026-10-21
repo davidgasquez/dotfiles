@@ -40,6 +40,7 @@ in
   programs.ghostty = {
     enable = true;
     settings = {
+      async-backend = "epoll";
       gtk-single-instance = true;
       quit-after-last-window-closed = false;
       confirm-close-surface = false;
@@ -115,6 +116,11 @@ in
   };
   xdg.configFile."systemd/user/graphical-session.target.wants/app-com.mitchellh.ghostty.service".source =
     "${config.programs.ghostty.package}/share/systemd/user/app-com.mitchellh.ghostty.service";
+  xdg.configFile."systemd/user/app-com.mitchellh.ghostty.service.d/startup.conf".text = ''
+    [Service]
+    Type=notify
+    ExecReload=${pkgs.coreutils}/bin/kill -USR2 $MAINPID
+  '';
 
   xdg.configFile."chrome/extension/manifest.json".text = builtins.toJSON {
     manifest_version = 3;
