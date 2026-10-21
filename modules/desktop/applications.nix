@@ -6,6 +6,11 @@
 }:
 
 let
+  chatgpt = pkgs.chatgpt.overrideAttrs (previous: {
+    preFixup = (previous.preFixup or "") + ''
+      gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
+    '';
+  });
   spotify = pkgs.spotify.overrideAttrs (previous: {
     preFixup = (previous.preFixup or "") + ''
       gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
@@ -179,7 +184,7 @@ in
     };
     Service = {
       Type = "exec";
-      ExecStart = "${waitForNetwork} https://chatgpt.com ${pkgs.chatgpt}/bin/chatgpt";
+      ExecStart = "${waitForNetwork} https://chatgpt.com ${chatgpt}/bin/chatgpt";
       Environment = [ "CODEX_ELECTRON_START_IN_BACKGROUND=1" ];
       Restart = "on-failure";
       RestartSec = 2;
