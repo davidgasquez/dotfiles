@@ -36,7 +36,7 @@
     });
   };
   networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
-    61208
+    config.services.glances.port
   ];
 
   services.tailscale = {

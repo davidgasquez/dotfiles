@@ -1,5 +1,11 @@
 { config, lib, ... }:
 
+let
+  quad9 = [
+    "9.9.9.9"
+    "149.112.112.112"
+  ];
+in
 {
   services.pihole-ftl = {
     enable = true;
@@ -8,10 +14,7 @@
     ];
     settings = {
       dns = {
-        upstreams = [
-          "9.9.9.9"
-          "149.112.112.112"
-        ];
+        upstreams = quad9;
         listeningMode = "ALL";
       };
       database.maxDBdays = 7;
@@ -44,10 +47,7 @@
   };
 
   services.tailscale.extraSetFlags = [ "--accept-dns=false" ];
-  networking.nameservers = [
-    "9.9.9.9"
-    "149.112.112.112"
-  ];
+  networking.nameservers = quad9;
   networking.resolvconf.extraConfig = "allow_keys=static";
 
   networking.firewall.interfaces = {
