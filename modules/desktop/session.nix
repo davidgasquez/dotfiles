@@ -95,6 +95,44 @@ in
     })
   ];
 
+  programs.fuzzel = {
+    enable = true;
+    settings = {
+      main = {
+        font = "${font.name}:size=${toString (font.size + 1)}";
+        icon-theme = config.gtk.iconTheme.name;
+        terminal = "${lib.getExe config.programs.ghostty.package} +new-window -e";
+        launch-prefix = "${pkgs.uwsm}/bin/uwsm app --";
+        lines = 10;
+        minimal-lines = true;
+        width = 56;
+        line-height = 24;
+        image-size-ratio = 0;
+        horizontal-pad = 20;
+        vertical-pad = 20;
+        inner-pad = 10;
+      };
+      border = {
+        radius = 8;
+        width = 1;
+        selection-radius = 4;
+      };
+      colors = lib.mapAttrs (_: color: "${lib.removePrefix "#" color.hex}ff") {
+        background = palette.base;
+        text = palette.text;
+        prompt = palette.subtext1;
+        placeholder = palette.overlay1;
+        input = palette.text;
+        match = palette.${config.catppuccin.accent};
+        selection = palette.surface2;
+        selection-text = palette.text;
+        selection-match = palette.${config.catppuccin.accent};
+        counter = palette.overlay1;
+        border = palette.${config.catppuccin.accent};
+      };
+    };
+  };
+
   programs.hyprshot = {
     enable = true;
     saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";

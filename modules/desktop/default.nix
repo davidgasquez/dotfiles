@@ -24,6 +24,7 @@ in
   home-manager.users.david.imports = [
     ./session.nix
     ./appearance.nix
+    ./waybar.nix
     ./applications.nix
     ./zed.nix
     ./codex-desktop.nix
