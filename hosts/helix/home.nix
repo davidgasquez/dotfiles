@@ -1,10 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ../../modules/agents/codex.nix
-    ../../modules/agents/pi.nix
-  ];
+  imports = [ ../../modules/agents/pi.nix ];
 
   home.stateVersion = "26.05";
   home.file."projects/nixos".source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos";

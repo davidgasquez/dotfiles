@@ -55,6 +55,19 @@ in
       '';
     })
     (writeShellApplication {
+      name = "pi-scratch";
+      runtimeInputs = [
+        coreutils
+        config.programs.ghostty.package
+        config.programs.pi-coding-agent.package
+      ];
+      text = ''
+        work_dir=$(mktemp -d -t pi-session.XXXXXX)
+        exec ghostty +new-window --working-directory="$work_dir" -e pi \
+          --session-dir "$HOME/.pi/agent/sessions/--tmp--"
+      '';
+    })
+    (writeShellApplication {
       name = "clipboard-history";
       runtimeInputs = [
         config.services.cliphist.package

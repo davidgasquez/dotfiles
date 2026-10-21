@@ -12,22 +12,7 @@
     package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
 
-  home.packages = [
-    pkgs.libnotify
-    (pkgs.writeShellApplication {
-      name = "pi-scratch";
-      runtimeInputs = [
-        pkgs.coreutils
-        config.programs.ghostty.package
-        config.programs.pi-coding-agent.package
-      ];
-      text = ''
-        work_dir=$(mktemp -d -t pi-session.XXXXXX)
-        exec ghostty +new-window --working-directory="$work_dir" -e pi \
-          --session-dir "$HOME/.pi/agent/sessions/--tmp--"
-      '';
-    })
-  ];
+  home.packages = [ pkgs.libnotify ];
 
   home.file.".pi/agent/extensions" = {
     source = ./pi/extensions;

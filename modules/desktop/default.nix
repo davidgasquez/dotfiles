@@ -26,6 +26,7 @@ in
     ./appearance.nix
     ./applications.nix
     ./zed.nix
+    ./codex-desktop.nix
   ];
 
   programs.chromium = {
