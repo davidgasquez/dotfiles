@@ -33,63 +33,6 @@ sudo -n nixos-rebuild switch --flake .
 
 A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. Both hosts pull `main` and rebuild.
 
-Deploy committed changes to Tau (builds on the Pi):
-
-```sh
-git push origin main
-ssh tau 'cd /etc/nixos && test "$(git branch --show-current)" = main &&
-  test -z "$(git status --porcelain)" &&
-  git -c pull.rebase=false -c rebase.autoStash=false pull --ff-only origin main &&
-  test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" &&
-  sudo -n nixos-rebuild build --flake /etc/nixos#tau --no-link --no-update-lock-file &&
-  sudo -n nixos-rebuild switch --flake /etc/nixos#tau --no-update-lock-file'
-```
-
-Use `boot` instead of `switch` for kernel changes, then reboot during the
-02:00–05:00 maintenance window. Roll back with
-`ssh tau sudo -n nixos-rebuild switch --rollback`. Automatic deployments use
-the same checkout and keep the existing reboot policy.
-
-## SSH access
-
-Tau and Helix use Tailscale SSH with MagicDNS. Connect from an authenticated
-device in the tailnet with `ssh tau` or `ssh helix` (use `david@` if your local
-username differs). Tailscale manages authentication and host keys; no SSH
-public keys are maintained in this repository and OpenSSH's server is disabled.
-The tailnet's SSH access policy controls permitted users and may require browser
-reauthentication. `tailscale ssh david@tau` or `tailscale ssh david@helix` also
-verifies host keys directly through Tailscale.
-
-## Personal documents
-
-Edit and commit documents in Git, then push to `personal`'s `main` branch.
-Tau publishes GitHub to Google Drive every 15 minutes using a dedicated clone
-in `~/.local/state/personal-sync/repo`. Drive is a copy for reading and sharing;
-edits there are not imported and may be overwritten by the next publication.
-The service never commits or pushes, and does not use `~/personal`.
-
-Overwritten or deleted Drive files are moved to dated folders inside
-`.personal-sync-backups` on the same Drive remote. This directory is excluded
-from publication and is not automatically pruned. Each run allows at most
-10 file deletions (a file count, not bisync's percentage).
-
-The existing `personal-drive:` rclone credentials are required. No bisync
-initialization or `--resync` is needed. Preview or run a publication on Tau
-with the same arguments as the timer:
-
-```sh
-systemctl --user stop personal-sync.timer
-systemctl --user stop personal-sync.service
-STATE_DIRECTORY="$HOME/.local/state/personal-sync" personal-sync --dry-run
-systemctl --user start personal-sync.service
-systemctl --user start personal-sync.timer
-```
-
-On failure, inspect `journalctl --user -u personal-sync.service`. Fix Git access
-or rclone credentials and restart the service; no bidirectional state needs
-repairing. Restore a Drive backup by copying it into a working Git checkout,
-reviewing and committing it, then pushing to `main`.
-
 ## 📜 License
 
 MIT © David Gasquez
