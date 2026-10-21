@@ -1,6 +1,8 @@
-{ config, ... }:
+{ config, inputs, ... }:
 
 {
+  imports = [ inputs.nixos-hardware.nixosModules.raspberry-pi-5 ];
+
   nixpkgs.hostPlatform = "aarch64-linux";
 
   boot.loader.generic-extlinux-compatible.configurationLimit = 30;

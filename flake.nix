@@ -24,15 +24,14 @@
     inputs@{ nixpkgs, ... }:
     let
       mkHost =
-        name: modules:
+        name:
         nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
             inputs.home-manager.nixosModules.home-manager
             ./hosts/common.nix
             ./hosts/${name}/configuration.nix
-          ]
-          ++ modules;
+          ];
         };
     in
     {
@@ -41,8 +40,8 @@
       );
 
       nixosConfigurations = {
-        helix = mkHost "helix" [ ];
-        tau = mkHost "tau" [ inputs.nixos-hardware.nixosModules.raspberry-pi-5 ];
+        helix = mkHost "helix";
+        tau = mkHost "tau";
       };
     };
 }
