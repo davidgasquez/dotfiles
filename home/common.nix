@@ -9,7 +9,6 @@
     ffmpeg
     yt-dlp
     ripgrep
-    nil
   ];
 
   programs.btop.enable = true;

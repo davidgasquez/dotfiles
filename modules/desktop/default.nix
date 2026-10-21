@@ -8,6 +8,7 @@ in
     ./session.nix
     ./appearance.nix
     ./applications.nix
+    ./zed.nix
   ];
 
   programs.chromium = {
