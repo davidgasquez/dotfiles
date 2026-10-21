@@ -31,8 +31,10 @@ sudo -n nixos-rebuild build --flake . --no-link
 sudo -n nixos-rebuild switch --flake .
 ```
 
-Update dependencies on Helix with `nixos-update`, review the lock, then commit
-and push. Format Nix files with `nix fmt`.
+Both hosts update themselves: pull, `nix flake update --commit-lock-file`,
+rebuild, then push. Tau runs at 02:00; Helix runs after boot, applies on the
+next boot, and sends a critical notification on failure. Run it now with
+`sudo systemctl start nixos-upgrade`. Format Nix files with `nix fmt`.
 
 Deploy committed changes to Tau (builds on the Pi):
 

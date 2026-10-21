@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  lib,
   pkgs,
   ...
 }:
@@ -55,26 +54,18 @@
     enable = true;
     flake = "/etc/nixos#${config.networking.hostName}";
     upgrade = false;
-    flags = [
-      "--no-update-lock-file"
-      "--option"
-      "allow-dirty"
-      "false"
-    ];
-    dates = "02:00";
-    persistent = false;
-    randomizedDelaySec = lib.mkDefault "15min";
+    flags = [ "--no-update-lock-file" ];
   };
   systemd.services.nixos-upgrade = {
     path = [ pkgs.gh ];
     preStart = ''
-      /run/wrappers/bin/sudo -u david -- ${pkgs.bash}/bin/bash -euc '
-        cd /etc/nixos
-        test "$(git branch --show-current)" = main
-        test -z "$(git status --porcelain)"
-        git -c pull.rebase=false -c rebase.autoStash=false pull --ff-only origin main
-        test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
-      '
+      cd /etc/nixos
+      /run/wrappers/bin/sudo -u david -H git pull --ff-only || true
+      /run/wrappers/bin/sudo -u david -H nix flake update --commit-lock-file
+    '';
+    postStart = ''
+      cd /etc/nixos
+      /run/wrappers/bin/sudo -u david -H git push
     '';
     serviceConfig = {
       Nice = 10;

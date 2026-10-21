@@ -1,14 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./boot.nix
+    ./update.nix
     ../../modules/desktop
     ../../modules/agents
   ];
@@ -26,30 +22,6 @@
   };
 
   networking.hostName = "helix";
-  environment.systemPackages = [
-    (pkgs.writeShellApplication {
-      name = "nixos-update";
-      runtimeInputs = [
-        config.nix.package
-        pkgs.gitMinimal
-      ];
-      text = ''
-        cd /etc/nixos
-        git diff --quiet
-        git diff --cached --quiet
-        nix flake update --refresh
-        nix flake check --all-systems --no-build --no-update-lock-file
-        printf 'Review flake.lock, build both hosts, then commit and push from Helix.\n'
-      '';
-    })
-  ];
-  system.autoUpgrade = {
-    randomizedDelaySec = "0";
-  };
-  systemd.timers.nixos-upgrade.timerConfig = {
-    OnCalendar = lib.mkForce [ ];
-    OnBootSec = "1min";
-  };
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [

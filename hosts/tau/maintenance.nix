@@ -3,6 +3,9 @@
   nix.gc.options = "--delete-older-than 60d";
 
   system.autoUpgrade = {
+    dates = "02:00";
+    persistent = false;
+    randomizedDelaySec = "15min";
     allowReboot = true;
     rebootWindow = {
       lower = "02:00";
