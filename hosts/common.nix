@@ -57,15 +57,8 @@
     flags = [ "--no-update-lock-file" ];
   };
   systemd.services.nixos-upgrade = {
-    path = [ pkgs.gh ];
     preStart = ''
-      cd /etc/nixos
-      /run/wrappers/bin/sudo -u david -H git pull --ff-only || true
-      /run/wrappers/bin/sudo -u david -H nix flake update --commit-lock-file
-    '';
-    postStart = ''
-      cd /etc/nixos
-      /run/wrappers/bin/sudo -u david -H git push
+      /run/wrappers/bin/sudo -u david -H git -C /etc/nixos pull --ff-only
     '';
     serviceConfig = {
       Nice = 10;
