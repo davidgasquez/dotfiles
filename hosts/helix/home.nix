@@ -10,12 +10,7 @@
 
   programs.btop = {
     package = pkgs.btop.override { rocmSupport = true; };
-    settings = {
-      shown_boxes = "cpu gpu0 mem net proc";
-      save_config_on_exit = false;
-      color_theme = "TTY";
-      theme_background = false;
-    };
+    settings.shown_boxes = "cpu gpu0 mem net proc";
   };
 
   programs.gpg = {

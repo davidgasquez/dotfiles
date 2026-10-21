@@ -11,7 +11,14 @@
     ripgrep
   ];
 
-  programs.btop.enable = true;
+  programs.btop = {
+    enable = true;
+    settings = {
+      save_config_on_exit = false;
+      color_theme = "TTY";
+      theme_background = false;
+    };
+  };
 
   programs.git = {
     enable = true;
