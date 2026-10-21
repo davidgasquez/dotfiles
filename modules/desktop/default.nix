@@ -1,9 +1,26 @@
-{ pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   session = "${pkgs.uwsm}/bin/uwsm start hyprland.desktop";
 in
 {
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "google-chrome"
+      "chatgpt"
+      "spotify"
+      "slack"
+      "steam"
+      "steam-unwrapped"
+    ];
+
+  home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];
   home-manager.users.david.imports = [
     ./session.nix
     ./appearance.nix

@@ -41,9 +41,7 @@
       );
 
       nixosConfigurations = {
-        helix = mkHost "helix" [
-          { home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ]; }
-        ];
+        helix = mkHost "helix" [ ];
         tau = mkHost "tau" [ inputs.nixos-hardware.nixosModules.raspberry-pi-5 ];
       };
     };

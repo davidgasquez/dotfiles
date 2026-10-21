@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 
 {
   imports = [
@@ -26,16 +26,6 @@
     automatic = true;
     dates = "weekly";
   };
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "google-chrome"
-      "chatgpt"
-      "spotify"
-      "slack"
-      "steam"
-      "steam-unwrapped"
-    ];
   networking.networkmanager = {
     enable = true;
     dns = "systemd-resolved";
