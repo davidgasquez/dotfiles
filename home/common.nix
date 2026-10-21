@@ -4,12 +4,13 @@
   home.packages = with pkgs; [
     bat
     eza
-    btop
     jq
     ffmpeg
     ripgrep
     nil
   ];
+
+  programs.btop.enable = true;
 
   programs.git = {
     enable = true;

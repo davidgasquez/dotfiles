@@ -11,6 +11,16 @@
 
   home.packages = [ pkgs.gcr_3 ];
 
+  programs.btop = {
+    package = pkgs.btop.override { rocmSupport = true; };
+    settings = {
+      shown_boxes = "cpu gpu0 mem net proc";
+      save_config_on_exit = false;
+      color_theme = "TTY";
+      theme_background = false;
+    };
+  };
+
   programs.gpg = {
     enable = true;
     settings.default-key = "F2750587F59F961961BFE122E376A4D9EADE15CF";
