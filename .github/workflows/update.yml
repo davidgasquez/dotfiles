@@ -24,4 +24,5 @@ jobs:
           nix flake update --commit-lock-file
       - name: Check all flake outputs (no system builds)
         run: nix flake check --all-systems --no-update-lock-file
-      - run: git push
+      - name: Push
+        run: git pull --rebase && git push
