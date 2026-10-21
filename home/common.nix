@@ -7,6 +7,7 @@
     gnumake
     jq
     ffmpeg
+    yt-dlp
     ripgrep
     nil
   ];

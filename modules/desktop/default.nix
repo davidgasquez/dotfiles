@@ -13,6 +13,13 @@ in
   programs.chromium = {
     enable = true;
     extensions = [ "olhelnoplefjdmncknfphenjclimckaf" ];
+    extraOptsRecommended.RegisteredProtocolHandlers = [
+      {
+        protocol = "mailto";
+        url = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
+        default = true;
+      }
+    ];
     extraOpts = {
       AIModeSettings = 1;
       SearchContentSharingSettings = 1;

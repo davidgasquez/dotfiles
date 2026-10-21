@@ -12,34 +12,6 @@
     package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
 
-  programs.zed-editor = {
-    userKeymaps = [
-      {
-        context = "Workspace || Terminal";
-        bindings."ctrl-shift-a" = [
-          "task::Spawn"
-          { task_name = "pi"; }
-        ];
-      }
-    ];
-    userTasks = [
-      {
-        label = "pi";
-        command = lib.getExe config.programs.ghostty.package;
-        args = [
-          "+new-window"
-          "-e"
-          (lib.getExe config.programs.pi-coding-agent.package)
-        ];
-        cwd = "$ZED_WORKTREE_ROOT";
-        reveal = "never";
-        hide = "on_success";
-        show_summary = false;
-        show_command = false;
-      }
-    ];
-  };
-
   home.packages = [
     pkgs.libnotify
     (pkgs.writeShellApplication {
