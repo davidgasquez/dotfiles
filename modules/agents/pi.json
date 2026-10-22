@@ -1,8 +1,12 @@
 {
-  "defaultProvider": "openai",
-  "defaultModel": "gpt-6.1-sol",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-5-5",
+  "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
   "packages": ["npm:pi-web-access"],
   "hideThinkingBlock": true,
+  "warnings": {
+    "anthropicExtraUsage": false
+  },
   "theme": "frappe"
 }
