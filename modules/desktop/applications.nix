@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -28,6 +29,8 @@ in
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
   home.packages = with pkgs; [
     chatgpt
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.orca
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.paseo-desktop
     proton-pass-cli
     seahorse
     spotify

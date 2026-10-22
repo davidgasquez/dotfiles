@@ -48,7 +48,7 @@ in
               printf '%s\0icon\x1ffolder-development\n' "$name"
             done \
           | fuzzel --dmenu --only-match --no-run-if-empty \
-              --prompt='Proyectos › ' --placeholder='Abrir en Zed') || exit 0
+              --prompt='~/projects › ' --placeholder='Open') || exit 0
         [ -n "$project" ] || exit 0
         exec zeditor --new -- "$HOME/projects/$project"
       '';

@@ -180,6 +180,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  name = "pi-subagents",
+  match = { class = "^com[.]mitchellh[.]ghostty[.]subagent[.]h[a-f0-9]{8}$" },
+  workspace = "special:magic silent",
+  no_initial_focus = true,
+})
+
+hl.window_rule({
   name  = "suppress-maximize-events",
   match = { class = ".*" },
   suppress_event = "maximize",
