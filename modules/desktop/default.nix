@@ -14,6 +14,7 @@ in
     builtins.elem (lib.getName pkg) [
       "google-chrome"
       "chatgpt"
+      "claude-code"
       "spotify"
       "slack"
       "steam"
