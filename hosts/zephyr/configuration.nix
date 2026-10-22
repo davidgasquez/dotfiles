@@ -1,4 +1,9 @@
-{ inputs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -11,6 +16,10 @@
 
   networking.hostName = "zephyr";
   boot.loader.limine.style.interface.resolution = "2560x1600";
+
+  systemd.services.nixos-upgrade.preStart = lib.mkBefore ''
+    ${pkgs.networkmanager}/bin/nm-online --quiet --timeout=120
+  '';
 
   services.power-profiles-daemon.enable = true;
   services.upower.enable = true;
