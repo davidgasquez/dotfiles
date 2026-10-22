@@ -54,6 +54,8 @@ in
   };
   programs.gamescope.enable = true;
 
+  environment.sessionVariables.GTK_IM_MODULE = "simple";
+
   programs.thunar = {
     enable = true;
     plugins = [ pkgs.thunar-archive-plugin ];
