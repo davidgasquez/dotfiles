@@ -63,6 +63,7 @@ in
       SearchContentSharingSettings = 1;
       PromotionsEnabled = false;
       BrowserLabsEnabled = false;
+      BackgroundModeEnabled = true;
     };
   };
 
@@ -124,6 +125,10 @@ in
     withUWSM = true;
   };
   programs.hyprlock.enable = true;
+  systemd.user.services.wayland-wm-app-daemon = {
+    wantedBy = [ "graphical-session.target" ];
+    enableDefaultPath = false;
+  };
 
   services.greetd = {
     enable = true;
