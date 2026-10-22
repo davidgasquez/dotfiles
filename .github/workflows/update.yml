@@ -21,7 +21,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          nix flake update --commit-lock-file
+          nix flake update --commit-lock-file --option commit-lock-file-summary "⬆️ Update system"
       - name: Check all flake outputs (no system builds)
         run: nix flake check --all-systems --no-update-lock-file
       - name: Push
