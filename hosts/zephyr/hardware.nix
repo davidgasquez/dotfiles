@@ -11,6 +11,7 @@
     "usbhid"
     "usb_storage"
     "sd_mod"
+    "sdhci_pci"
   ];
   boot.kernelModules = [ "kvm-amd" ];
 }
