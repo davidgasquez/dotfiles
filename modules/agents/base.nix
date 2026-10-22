@@ -40,8 +40,8 @@ in
     enable = true;
     mutableSettings = true;
     settings = {
-      model = "gpt-6.1-sol";
-      model_reasoning_effort = "medium";
+      model = "gpt-6-astra";
+      model_reasoning_effort = "xhigh";
       service_tier = "priority";
       sandbox_mode = "danger-full-access";
       approval_policy = "never";
