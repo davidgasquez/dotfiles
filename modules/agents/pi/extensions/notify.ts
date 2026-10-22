@@ -8,6 +8,8 @@ import type {
 } from "@earendil-works/pi-coding-agent";
 
 const APP_NAME = "Pi";
+const ENTRY_TYPE = "notify";
+const FLAG_NAME = "notify";
 const BODY = "Ready for input";
 const ICON = join(tmpdir(), "pi-notify-icon-frappe-mauve.svg");
 const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128"><rect width="128" height="128" rx="28" fill="#CA9EE6"/><text x="64" y="84" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="72" fill="#303446">π</text></svg>`;
@@ -118,9 +120,57 @@ function notify(title: string, target?: TargetWindow): void {
   child.unref();
 }
 
+function restoreEnabled(ctx: ExtensionContext): boolean | undefined {
+  const entry = ctx.sessionManager
+    .getBranch()
+    .findLast(
+      (entry) => entry.type === "custom" && entry.customType === ENTRY_TYPE,
+    );
+  const data = entry?.type === "custom" ? entry.data : undefined;
+  return typeof data === "object" && data && "enabled" in data
+    ? Boolean(data.enabled)
+    : undefined;
+}
+
 export default function notifyExtension(pi: ExtensionAPI): void {
+  let enabled = false;
+
+  const showStatus = (ctx: ExtensionContext) =>
+    ctx.ui.setStatus(ENTRY_TYPE, enabled ? "🔔" : undefined);
+
+  pi.registerFlag(FLAG_NAME, {
+    description: "Enable desktop notifications when Pi is ready for input",
+    type: "boolean",
+    default: false,
+  });
+
+  pi.registerCommand("notify", {
+    description: "Toggle desktop notifications for this session (on|off)",
+    getArgumentCompletions: (prefix) =>
+      ["on", "off"]
+        .filter((value) => value.startsWith(prefix))
+        .map((value) => ({ value, label: value })),
+    handler: async (args, ctx) => {
+      const arg = args.trim().toLowerCase();
+      if (arg && arg !== "on" && arg !== "off") {
+        ctx.ui.notify("Usage: /notify [on|off]", "warning");
+        return;
+      }
+
+      enabled = arg ? arg === "on" : !enabled;
+      pi.appendEntry(ENTRY_TYPE, { enabled });
+      showStatus(ctx);
+      ctx.ui.notify(`Notifications ${enabled ? "on" : "off"}`, "info");
+    },
+  });
+
+  pi.on("session_start", (_event, ctx) => {
+    enabled = restoreEnabled(ctx) ?? pi.getFlag(FLAG_NAME) === true;
+    showStatus(ctx);
+  });
+
   pi.on("agent_settled", (_event, ctx) => {
-    if (!ctx.hasUI || !ctx.isIdle()) return;
+    if (!enabled || !ctx.hasUI || !ctx.isIdle()) return;
 
     const title = pi.getSessionName() ?? APP_NAME;
     const target = findSessionWindow(ctx, title);
