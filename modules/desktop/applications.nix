@@ -21,6 +21,12 @@ let
   '';
   chatgpt = withOzone pkgs.chatgpt;
   spotify = withOzone pkgs.spotify;
+  chromeWarm = pkgs.writeText "chrome-warm.json" (
+    builtins.toJSON {
+      external_crx = ./chrome-warm/extension.crx;
+      external_version = (builtins.fromJSON (builtins.readFile ./chrome-warm/manifest.json)).version;
+    }
+  );
   waitForNetwork = pkgs.writeShellScript "wait-for-network" ''
     until ${pkgs.curl}/bin/curl --silent --head --output /dev/null \
       --connect-timeout 3 --max-time 5 "$1"; do
@@ -76,6 +82,12 @@ in
   '';
   programs.google-chrome = {
     enable = true;
+    package = pkgs.google-chrome.overrideAttrs (previous: {
+      postInstall = (previous.postInstall or "") + ''
+        install -Dm644 ${chromeWarm} \
+          $out/share/google/chrome/extensions/hldjjbpflihgcbcpfdnegkclidfmndfj.json
+      '';
+    });
     commandLineArgs = [ "--disable-features=WebUIOmniboxDynamicAiModeButton" ];
   };
   xdg.desktopEntries.todoist = {
@@ -106,13 +118,6 @@ in
     ExecReload=${pkgs.coreutils}/bin/kill -USR2 $MAINPID
   '';
 
-  xdg.configFile."chrome/extension/manifest.json".text = builtins.toJSON {
-    manifest_version = 3;
-    name = "Chrome Warm";
-    version = "1.0.0";
-    permissions = [ "background" ];
-  };
-
   systemd.user.services =
     lib.mapAttrs
       (_: app: {
@@ -125,7 +130,7 @@ in
         };
         Service = {
           Type = "exec";
-          ExecStart = "${waitForNetwork} ${app.url} ${app.exec}";
+          ExecStart = lib.optionalString (app ? url) "${waitForNetwork} ${app.url} " + app.exec;
           Environment = app.env or [ ];
           Restart = "on-failure";
           RestartSec = 2;
@@ -135,7 +140,6 @@ in
       {
         chrome-background = {
           name = "Google Chrome";
-          url = "https://www.google.com";
           exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --no-startup-window";
         };
         spotify = {

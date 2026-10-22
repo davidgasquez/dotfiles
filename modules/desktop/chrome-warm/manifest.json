@@ -1,0 +1,8 @@
+{
+  "manifest_version": 3,
+  "name": "Chrome Warm",
+  "permissions": [
+    "background"
+  ],
+  "version": "1.0.0"
+}
