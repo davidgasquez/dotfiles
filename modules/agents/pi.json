@@ -1,9 +1,9 @@
 {
-  "defaultProvider": "anthropic",
+  "defaultProvider": "claude-bridge",
   "defaultModel": "claude-opus-5-5",
   "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
-  "packages": ["npm:pi-web-access"],
+  "packages": ["npm:pi-web-access", "npm:pi-claude-bridge"],
   "hideThinkingBlock": true,
   "warnings": {
     "anthropicExtraUsage": false
