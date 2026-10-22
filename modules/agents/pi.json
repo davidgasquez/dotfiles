@@ -3,7 +3,7 @@
   "defaultModel": "claude-opus-5-5",
   "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
-  "packages": ["npm:pi-web-access", "npm:pi-claude-bridge"],
+  "packages": ["npm:pi-web-access", "npm:pi-claude-bridge", "npm:pi-ask-user"],
   "hideThinkingBlock": true,
   "warnings": {
     "anthropicExtraUsage": false
