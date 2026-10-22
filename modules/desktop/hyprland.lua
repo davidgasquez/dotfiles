@@ -65,6 +65,7 @@ hl.window_rule({
 
 hl.animation({ leaf = "global", enabled = true, speed = 1, bezier = "default" })
 hl.animation({ leaf = "workspaces", enabled = false })
+hl.animation({ leaf = "border", enabled = false })
 
 hl.gesture({
   fingers = 3,
