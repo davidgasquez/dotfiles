@@ -14,6 +14,11 @@ let
         gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
       '';
     });
+  paseo-desktop = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.paseo-desktop;
+  paseo = pkgs.writeShellScriptBin "paseo" ''
+    exec ${pkgs.nodejs_22}/bin/node --disable-warning=DEP0040 \
+      ${paseo-desktop}/share/paseo-desktop/packages/cli/dist/index.js "$@"
+  '';
   chatgpt = withOzone pkgs.chatgpt;
   spotify = withOzone pkgs.spotify;
   waitForNetwork = pkgs.writeShellScript "wait-for-network" ''
@@ -29,8 +34,8 @@ in
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
   home.packages = with pkgs; [
     chatgpt
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.orca
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.paseo-desktop
+    paseo-desktop
+    paseo
     proton-pass-cli
     seahorse
     spotify
@@ -52,6 +57,7 @@ in
       resize-overlay = "never";
       copy-on-select = "clipboard";
       app-notifications = "no-clipboard-copy";
+      keybind = [ "ctrl+enter=unbind" ];
     };
   };
   xdg.configFile."xfce4/helpers.rc".text = ''
