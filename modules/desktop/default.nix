@@ -9,6 +9,22 @@ let
   session = "${pkgs.uwsm}/bin/uwsm start hyprland.desktop";
 in
 {
+  imports = [
+    ./boot.nix
+    ./update.nix
+  ];
+
+  networking.networkmanager = {
+    enable = true;
+    dns = "systemd-resolved";
+  };
+  systemd.services.NetworkManager-wait-online.enable = false;
+  services.resolved.enable = true;
+  hardware.bluetooth.enable = true;
+  console.keyMap = "es";
+  users.users.david.extraGroups = [ "networkmanager" ];
+  programs.nix-ld.enable = true;
+
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [
@@ -23,6 +39,7 @@ in
 
   home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];
   home-manager.users.david.imports = [
+    ./home.nix
     ./session.nix
     ./appearance.nix
     ./waybar.nix

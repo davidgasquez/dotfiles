@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     ./boot.nix
-    ./update.nix
     ../../modules/desktop
     ../../modules/agents
   ];
@@ -23,8 +22,6 @@
 
   networking.hostName = "helix";
   networking.networkmanager = {
-    enable = true;
-    dns = "systemd-resolved";
     connectionConfig."ipv4.dad-timeout" = 200;
     ensureProfiles.profiles.helix-lan = {
       connection = {
@@ -40,9 +37,6 @@
       ipv6.method = "auto";
     };
   };
-  systemd.services.NetworkManager-wait-online.enable = false;
-  services.resolved.enable = true;
-  hardware.bluetooth.enable = true;
   services.pipewire.wireplumber.extraConfig."51-preferred-microphone" = {
     "monitor.alsa.rules" = [
       {
@@ -58,13 +52,6 @@
       WakeOnLan = "magic";
     };
   };
-  console.keyMap = "es";
-
-  users.users.david = {
-    extraGroups = [ "networkmanager" ];
-  };
-
-  programs.nix-ld.enable = true;
 
   home-manager.users.david.imports = [ ./home.nix ];
 

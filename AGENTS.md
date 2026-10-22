@@ -1,6 +1,6 @@
 # Repository Guidance
 
-This shared NixOS flake configures `helix` (`x86_64-linux`, desktop) and `tau` (Raspberry Pi 5, `aarch64-linux`, services). Each machine checks out this repository at `/etc/nixos`. The `arch` branch preserves the Arch Linux configuration used by `zephyr`.
+This shared NixOS flake configures `helix` and `zephyr` (`x86_64-linux`, desktops) and `tau` (Raspberry Pi 5, `aarch64-linux`, services). Each machine checks out this repository at `/etc/nixos`. The `arch` branch preserves Zephyr’s previous Arch Linux configuration.
 
 ## Principles
 

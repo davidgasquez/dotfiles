@@ -14,7 +14,7 @@ The declarative home for my system and dotfiles, where they live in harmony, mos
 
 ## 📦 Configuration
 
-The repository lives at `/etc/nixos` on Helix and Tau.
+The repository lives at `/etc/nixos` on Helix, Zephyr, and Tau. Helix and Zephyr share the desktop modules, with hardware and laptop settings under `hosts/`.
 
 - `flake.nix` / `flake.lock`: system definitions and pinned dependencies.
 - `hosts/`: shared and machine-specific system and Home Manager settings.
@@ -29,7 +29,13 @@ sudo -n nixos-rebuild build --flake . --no-link
 sudo -n nixos-rebuild switch --flake .
 ```
 
-A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. Both hosts pull `main` and rebuild.
+A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. All hosts pull `main` and rebuild.
+
+The Zephyr installation test formats a disposable VM disk, boots through Limine, unlocks LUKS, and checks Home Manager activation:
+
+```sh
+nix build --no-link --impure --file tests/zephyr-install.nix
+```
 
 ## 📜 License
 
