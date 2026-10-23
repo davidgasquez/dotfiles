@@ -89,6 +89,16 @@ in
     categories = [ "Office" ];
     terminal = false;
   };
+  xdg.desktopEntries.whatsapp = {
+    name = "WhatsApp";
+    exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --app=https://web.whatsapp.com/";
+    icon = "whatsapp";
+    categories = [
+      "Network"
+      "InstantMessaging"
+    ];
+    terminal = false;
+  };
   programs.mangohud.enable = true;
 
   xdg.mimeApps = {
