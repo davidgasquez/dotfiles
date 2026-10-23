@@ -50,7 +50,10 @@ in
 
   programs.chromium = {
     enable = true;
-    extensions = [ "olhelnoplefjdmncknfphenjclimckaf" ];
+    extensions = [
+      "olhelnoplefjdmncknfphenjclimckaf"
+      "clngdbkpkpeebahjckkjfobafhncgmne"
+    ];
     extraOptsRecommended.RegisteredProtocolHandlers = [
       {
         protocol = "mailto";
