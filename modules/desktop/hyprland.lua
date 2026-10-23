@@ -104,6 +104,14 @@ hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd([[uwsm app -- zeditor --new -
 hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd([[uwsm app -- zeditor --new -- "$HOME/projects/handbook"]]), { description = "Open handbook project" })
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("uwsm-app -- google-chrome-stable --new-window"), { description = "Open browser" })
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("uwsm app -- google-chrome-stable --app=https://app.todoist.com/app/today"), { description = "Open Todoist" })
+hl.bind(mainMod .. " + SHIFT + W", function()
+  local window = hl.get_window("class:^chrome-web[.]whatsapp[.]com__-.*$")
+  if window then
+    hl.dispatch(hl.dsp.focus({ window = window }))
+  else
+    hl.dispatch(hl.dsp.exec_cmd("uwsm-app -- whatsapp.desktop"))
+  end
+end, { description = "Open or focus WhatsApp" })
 hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("uwsm app -- pi-scratch"), { description = "Open Pi scratch" })
 hl.bind("F9", hl.dsp.exec_cmd("voxtype record toggle"), { description = "Toggle voice recording" })
 hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history"))

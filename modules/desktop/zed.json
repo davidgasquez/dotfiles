@@ -19,6 +19,17 @@
   "theme": {
     "mode": "system"
   },
+  "lsp": {
+    "nil": {
+      "settings": {
+        "nix": {
+          "flake": {
+            "autoArchive": true
+          }
+        }
+      }
+    }
+  },
   "languages": {
     "Nix": {
       "language_servers": [

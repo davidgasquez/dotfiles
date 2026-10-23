@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -14,11 +13,6 @@ let
         gappsWrapperArgs+=(--set NIXOS_OZONE_WL 1)
       '';
     });
-  paseo-desktop = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.paseo-desktop;
-  paseo = pkgs.writeShellScriptBin "paseo" ''
-    exec ${pkgs.nodejs_22}/bin/node --disable-warning=DEP0040 \
-      ${paseo-desktop}/share/paseo-desktop/packages/cli/dist/index.js "$@"
-  '';
   chatgpt = withOzone pkgs.chatgpt;
   spotify = withOzone pkgs.spotify;
   chromeWarm = pkgs.writeText "chrome-warm.json" (
@@ -40,8 +34,6 @@ in
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
   home.packages = with pkgs; [
     chatgpt
-    paseo-desktop
-    paseo
     proton-pass-cli
     seahorse
     spotify
@@ -95,6 +87,16 @@ in
     exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --app=https://app.todoist.com/app/today";
     icon = "todoist";
     categories = [ "Office" ];
+    terminal = false;
+  };
+  xdg.desktopEntries.whatsapp = {
+    name = "WhatsApp";
+    exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --app=https://web.whatsapp.com/";
+    icon = "whatsapp";
+    categories = [
+      "Network"
+      "InstantMessaging"
+    ];
     terminal = false;
   };
   programs.mangohud.enable = true;
