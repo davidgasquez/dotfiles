@@ -65,7 +65,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "/etc/nixos#${config.networking.hostName}";
+    flake = "git+file:///etc/nixos?ref=refs/remotes/origin/main#${config.networking.hostName}";
     upgrade = false;
     flags = [ "--no-update-lock-file" ];
   };
