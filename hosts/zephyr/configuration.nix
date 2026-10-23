@@ -25,8 +25,8 @@
   services.power-profiles-daemon.enable = true;
   services.asusd.asusdConfig.text = ''
     (
-      charge_control_end_threshold: 100,
-      base_charge_control_end_threshold: 100,
+      charge_control_end_threshold: 80,
+      base_charge_control_end_threshold: 80,
       disable_nvidia_powerd_on_battery: true,
       ac_command: "",
       bat_command: "",

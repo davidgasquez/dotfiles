@@ -1,5 +1,24 @@
 { lib, pkgs, ... }:
 
+let
+  chargeFull = pkgs.writeShellApplication {
+    name = "battery-charge-full";
+    runtimeInputs = [
+      pkgs.asusctl
+      pkgs.libnotify
+    ];
+    text = ''
+      if asusctl battery oneshot; then
+        notify-send --app-name="Battery" --icon=battery-full-charging \
+          "One-time full charge enabled" "The 80% limit returns when you unplug the charger."
+      else
+        notify-send --app-name="Battery" --urgency=critical \
+          "Could not enable full charging" "The charging limit could not be changed."
+        exit 1
+      fi
+    '';
+  };
+in
 {
   home.stateVersion = "26.05";
 
@@ -45,9 +64,26 @@
 
   programs.waybar.settings.mainBar = {
     modules-right = lib.mkBefore [
-      "battery"
+      "group/battery-controls"
       "backlight"
     ];
+    "group/battery-controls" = {
+      orientation = "inherit";
+      drawer = {
+        transition-duration = 200;
+        transition-left-to-right = false;
+        children-class = "battery-action";
+      };
+      modules = [
+        "battery"
+        "custom/battery-full-charge"
+      ];
+    };
+    "custom/battery-full-charge" = {
+      format = "󰂄 100% once";
+      tooltip-format = "Charge to 100% once; the 80% limit returns when you unplug.";
+      on-click = lib.getExe chargeFull;
+    };
     backlight = {
       format = "󰃠 {percent}%";
       tooltip-format = "Screen brightness {percent}% · Scroll to adjust";
@@ -77,6 +113,20 @@
     };
   };
   programs.waybar.style = lib.mkAfter ''
+    #battery-controls {
+      background: @surface0;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+    #battery-controls #battery { margin-right: 0; }
+    #custom-battery-full-charge {
+      background: @surface1;
+      border-radius: 3px;
+      color: @subtext0;
+      margin: 2px 0 2px 2px;
+      padding: 0 8px;
+    }
+    #custom-battery-full-charge:hover { background: @mauve; color: @crust; }
     #battery.warning { color: @yellow; }
     #battery.critical { color: @red; }
   '';
