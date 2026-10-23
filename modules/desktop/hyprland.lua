@@ -35,6 +35,8 @@ hl.config({
     disable_splash_rendering = true,
     background_color = "rgb(232634)",
     font_family = "Inter",
+    mouse_move_enables_dpms = true,
+    key_press_enables_dpms = true,
   },
 
   input = {

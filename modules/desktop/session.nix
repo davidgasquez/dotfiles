@@ -200,10 +200,11 @@ in
     enable = true;
     settings.general = {
       lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${lib.getExe lock}";
+      on_lock_cmd = "${pkgs.systemd}/bin/systemctl --user restart lock-screen-off.timer";
+      on_unlock_cmd = "${pkgs.systemd}/bin/systemctl --user stop lock-screen-off.timer lock-screen-off.service";
       before_sleep_cmd = "${pkgs.systemd}/bin/loginctl lock-session";
       after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
       inhibit_sleep = 3;
-      ignore_wayland_inhibit = true;
     };
     settings.listener = [
       {
@@ -211,6 +212,27 @@ in
         on-timeout = "${pkgs.systemd}/bin/loginctl lock-session";
       }
     ];
+  };
+  systemd.user.timers.lock-screen-off = {
+    Unit = {
+      Description = "Turn off the display one hour after locking";
+      PartOf = [ "graphical-session.target" ];
+    };
+    Timer = {
+      OnActiveSec = "1h";
+      AccuracySec = "1s";
+    };
+  };
+  systemd.user.services.lock-screen-off = {
+    Unit = {
+      Description = "Turn off the locked display";
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecCondition = "${pkgs.procps}/bin/pidof hyprlock";
+      ExecStart = "${pkgs.hyprland}/bin/hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
+    };
   };
   services.wl-clip-persist.enable = true;
   services.cliphist = {
