@@ -20,6 +20,8 @@
     pkgs.libnotify
   ];
 
+  home.sessionVariables.PI_CLAUDE_CODE_COMMAND = lib.getExe pkgs.claude-code;
+
   home.file.".pi/agent/extensions" = {
     source = ./pi/extensions;
     recursive = true;
@@ -34,20 +36,6 @@
       jqOperation = "$dynamic * $static";
       path = "${config.home.homeDirectory}/.pi/agent/settings.json";
       staticSettings = ./pi.json;
-      mode = "600";
-    }
-  );
-
-  home.activation.piClaudeBridge = lib.hm.dag.entryBetween [ "reloadSystemd" ] [ "linkGeneration" ] (
-    lib.hm.generators.mkImpureConfigMerger {
-      inherit pkgs;
-      format = "json";
-      empty = "{}";
-      jqOperation = "$dynamic * $static";
-      path = "${config.home.homeDirectory}/.pi/agent/claude-bridge.json";
-      staticSettings = (pkgs.formats.json { }).generate "claude-bridge.json" {
-        provider.pathToClaudeCodeExecutable = lib.getExe pkgs.claude-code;
-      };
       mode = "600";
     }
   );

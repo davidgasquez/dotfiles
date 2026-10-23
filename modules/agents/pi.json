@@ -1,9 +1,10 @@
 {
-  "defaultProvider": "claude-bridge",
-  "defaultModel": "claude-opus-5-5",
-  "defaultThinkingLevel": "high",
+  "defaultProvider": "claude-code",
   "defaultTools": ["+codemode"],
-  "packages": ["npm:pi-web-access", "npm:pi-claude-bridge"],
+  "packages": [
+    "npm:pi-web-access",
+    "git:github.com/earendil-works/pi-claude-code@70abb65186592ca788b29b3db22c3160d629c41f"
+  ],
   "extensions": ["-extensions/subagent/index.ts"],
   "hideThinkingBlock": true,
   "warnings": {
