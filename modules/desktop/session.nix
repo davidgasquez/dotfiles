@@ -251,6 +251,7 @@ in
     package = null;
     portalPackage = null;
     systemd.enable = false;
+    xdph.settings.screencopy.allow_token_by_default = true;
     configType = "lua";
     extraConfig = builtins.readFile ./hyprland.lua;
   };
