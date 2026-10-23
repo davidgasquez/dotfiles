@@ -190,7 +190,7 @@ in
           dots_size = 0.7;
           dots_spacing = 0.3;
           placeholder_text = "";
-          fail_text = ''<span foreground="${palette.red.hex}" size="57pt">!</span>'';
+          fail_text = ''<span foreground="#${palette.red.hex}" size="57pt">!</span>'';
           fade_on_empty = false;
         }
       ];
