@@ -28,7 +28,6 @@ in
         "clock"
       ];
       "hyprland/workspaces" = {
-        disable-scroll = true;
         show-special = true;
         special-visible-only = true;
       };
@@ -38,16 +37,16 @@ in
       };
       "custom/voxtype" = {
         exec = "${lib.getExe config.services.voxtype.package} status --follow --format json --icon-theme nerd-font";
+        restart-interval = 5;
         return-type = "json";
         format = "{}";
-        tooltip-format = "F9";
       };
       clock = {
         format = "{:%a %d %b  %H:%M}";
         tooltip-format = "{:%A, %d %B %Y}\n\n<tt>{calendar}</tt>";
         calendar = {
           mode = "month";
-          first-day-of-week = 1;
+          iso8601 = true;
           format.today = "<span color='${accent.hex}'><b><u>{}</u></b></span>";
         };
       };
@@ -63,6 +62,7 @@ in
           "artist"
         ];
         dynamic-len = 50;
+        title-len = 50;
         max-length = 54;
         tooltip-format = "{title}\n{artist}\n\nLeft: play/pause · Right: next · Middle: previous";
       };
@@ -131,19 +131,19 @@ in
       #workspaces button.active { background: @surface0; color: @accent; }
       #workspaces button.urgent { background: @red; color: @base; }
       .modules-right { margin: 4px 10px 4px 0; }
-      #mpris, #custom-voxtype, #wireplumber, #tray-expander, #clock {
+      #mpris, #battery, #backlight, #custom-voxtype, #wireplumber, #tray-expander, #clock {
         background: @surface0;
         border-radius: 4px;
         color: @subtext0;
       }
-      #custom-voxtype, #wireplumber, #tray-expander { margin-right: 4px; }
-      #custom-voxtype, #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
+      #battery, #backlight, #custom-voxtype, #wireplumber, #tray-expander { margin-right: 4px; }
+      #battery, #backlight, #custom-voxtype, #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
       #custom-voxtype.recording { color: @red; }
       #custom-voxtype.transcribing { color: @yellow; }
       #mpris { margin: 4px 12px; padding: 0 10px; }
       #mpris.paused { color: @overlay1; }
       #clock { padding: 0 10px; color: @text; }
-      #mpris:hover, #wireplumber:hover, #tray-expander:hover, #clock:hover { color: @accent; }
+      #mpris:hover, #battery:hover, #backlight:hover, #wireplumber:hover, #tray-expander:hover, #clock:hover { color: @accent; }
       #custom-expand-icon {
         font-size: 10px;
         min-width: 10px;
