@@ -4,6 +4,7 @@
   "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
   "packages": ["npm:pi-web-access", "npm:pi-claude-bridge"],
+  "extensions": ["-extensions/subagent/index.ts"],
   "hideThinkingBlock": true,
   "warnings": {
     "anthropicExtraUsage": false

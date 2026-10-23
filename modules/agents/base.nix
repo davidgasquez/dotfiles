@@ -17,6 +17,8 @@ let
   '';
 in
 {
+  imports = [ ./mcp/pi-workers ];
+
   home.packages = [
     (pkgs.symlinkJoin {
       inherit (qmd) name meta;
