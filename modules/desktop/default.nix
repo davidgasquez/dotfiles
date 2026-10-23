@@ -54,13 +54,18 @@ in
       "olhelnoplefjdmncknfphenjclimckaf"
       "clngdbkpkpeebahjckkjfobafhncgmne"
     ];
-    extraOptsRecommended.RegisteredProtocolHandlers = [
-      {
-        protocol = "mailto";
-        url = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
-        default = true;
-      }
-    ];
+    extraOptsRecommended = {
+      SearchSuggestEnabled = false;
+      BookmarkBarEnabled = true;
+      SpellCheckServiceEnabled = false;
+      RegisteredProtocolHandlers = [
+        {
+          protocol = "mailto";
+          url = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
+          default = true;
+        }
+      ];
+    };
     extraOpts = {
       AIModeSettings = 1;
       SearchContentSharingSettings = 1;
