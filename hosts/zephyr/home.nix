@@ -42,9 +42,10 @@ in
     end)
   '';
 
+  services.hypridle.settings.general.ignore_wayland_inhibit = lib.mkForce false;
   services.hypridle.settings.listener = lib.mkForce [
     {
-      timeout = 60;
+      timeout = 300;
       on-timeout = "${pkgs.brightnessctl}/bin/brightnessctl -q -c backlight -s set 10%";
       on-resume = "${pkgs.brightnessctl}/bin/brightnessctl -q -c backlight -r";
     }
@@ -54,13 +55,17 @@ in
       on-resume = "${pkgs.brightnessctl}/bin/brightnessctl -q -d asus::kbd_backlight -r";
     }
     {
-      timeout = 300;
+      timeout = 600;
       on-timeout = "${pkgs.systemd}/bin/loginctl lock-session";
     }
     {
-      timeout = 600;
+      timeout = 1200;
       on-timeout = "hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
       on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
+    }
+    {
+      timeout = 2100;
+      on-timeout = "${pkgs.systemd}/bin/systemctl suspend";
     }
   ];
 
