@@ -8,6 +8,18 @@
 {
   programs.zed-editor = {
     enable = true;
+    extensions = [
+      "csv"
+      "env"
+      "git-firefly"
+      "html"
+      "ini"
+      "lua"
+      "make"
+      "nix"
+      "sql"
+      "toml"
+    ];
     extraPackages = [ pkgs.nil ];
     userSettings = builtins.fromJSON (builtins.readFile ./zed.json);
     userKeymaps = [
