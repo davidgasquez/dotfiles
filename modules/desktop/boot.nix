@@ -32,7 +32,7 @@
   boot.loader.systemd-boot.enable = false;
   boot.loader.limine = {
     enable = true;
-    maxGenerations = 6;
+    maxGenerations = 10;
     enableEditor = false;
     enrollConfig = true;
     validateChecksums = true;
