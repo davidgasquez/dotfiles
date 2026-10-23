@@ -347,5 +347,192 @@
         "code": ""
       }
     ]
+  },
+  {
+    "name": "Twitter Catppuccin",
+    "enabled": true,
+    "url": "https://github.com/catppuccin/userstyles/tree/main/styles/twitter",
+    "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/twitter/catppuccin.user.less",
+    "author": "Catppuccin",
+    "description": "Soothing pastel theme for Twitter",
+    "sourceCode": "/* ==UserStyle==\n@name Twitter Catppuccin\n@namespace github.com/catppuccin/userstyles/styles/twitter\n@homepageURL https://github.com/catppuccin/userstyles/tree/main/styles/twitter\n@version 2026.08.16\n@updateURL https://github.com/catppuccin/userstyles/raw/main/styles/twitter/catppuccin.user.less\n@supportURL https://github.com/catppuccin/userstyles/issues?q=is%3Aopen+is%3Aissue+label%3Atwitter\n@description Soothing pastel theme for Twitter\n@author Catppuccin\n@license MIT\n\n@preprocessor less\n@var select lightFlavor \"Light Flavor\" [\"latte:Latte*\", \"frappe:Frappé\", \"macchiato:Macchiato\", \"mocha:Mocha\"]\n@var select darkFlavor \"Dark Flavor\" [\"latte:Latte\", \"frappe:Frappé\", \"macchiato:Macchiato\", \"mocha:Mocha*\"]\n@var select accentColor \"Accent\" [\"rosewater:Rosewater\", \"flamingo:Flamingo\", \"pink:Pink\", \"mauve:Mauve*\", \"red:Red\", \"maroon:Maroon\", \"peach:Peach\", \"yellow:Yellow\", \"green:Green\", \"teal:Teal\", \"blue:Blue\", \"sapphire:Sapphire\", \"sky:Sky\", \"lavender:Lavender\", \"subtext0:Gray\"]\n\n@var checkbox colorizeLogo \"Colorize Logo\" 0\n@var checkbox darkenShadows \"Darken Shadows on Dark Themes\" 1\n==/UserStyle== */\n\n@import \"https://userstyles.catppuccin.com/lib/std/v1.less\";\n\n@-moz-document domain(\"twitter.com\"), domain(\"x.com\") {\n  :root {\n    @media (prefers-color-scheme: light) {\n      #catppuccin(@lightFlavor);\n    }\n    @media (prefers-color-scheme: dark) {\n      #catppuccin(@darkFlavor);\n    }\n  }\n\n  #catppuccin(@flavor) {\n    #lib.palette();\n    #lib.defaults();\n\n    body.LightsOut {\n      --border-color: @surface0;\n      --color: @overlay1;\n      --color-emphasis: @text;\n      --hover-bg-color: @surface0;\n      --cpft-text-primary: @text;\n\n      // shadows\n      .r-qo02w8,\n      .r-15ce4ve {\n        @default-shadow:\n          fade(@text, 20%) 0 0 15px,\n          fade(@text, 15%) 0 0 3px 1px;\n        @black-shadow:\n          rgba(0, 0, 0, 0.4) 0 0 15px,\n          rgba(0, 0, 0, 0.35) 0 0 3px 1px;\n\n        box-shadow: @default-shadow;\n\n        & when (@darkenShadows = 1) {\n          box-shadow: if(@flavor = latte, @default-shadow, @black-shadow);\n        }\n      }\n\n      .r-1tbvlxk {\n        @default-shadow: drop-shadow(fade(@text, 25%) 1px -1px 1px);\n        @black-shadow: drop-shadow(rgba(0, 0, 0, 0.5) 1px -1px 1px);\n\n        filter: @default-shadow;\n\n        & when (@darkenShadows = 1) {\n          filter: if(@flavor = latte, @default-shadow, @black-shadow);\n        }\n      }\n\n      .r-1uusn97 {\n        @default-shadow:\n          fade(@text, 20%) 0 0 5px,\n          fade(@text, 15%) 0 1px 4px 1px;\n        @black-shadow:\n          rgba(0, 0, 0, 0.4) 0 0 5px,\n          rgba(0, 0, 0, 0.35) 0 1px 4px 1px;\n\n        box-shadow: @default-shadow;\n\n        & when (@darkenShadows = 1) {\n          box-shadow: if(@flavor = latte, @default-shadow, @black-shadow);\n        }\n      }\n    }\n\n    body,\n    .PageContainer,\n    #placeholder {\n      background-color: @base !important;\n      color: @text;\n    }\n\n    #ScriptLoadFailure span {\n      color: @text;\n    }\n\n    [style*=\"scrollbar-color: rgb(62, 65, 68) rgb(22, 24, 28)\"] {\n      scrollbar-color: @accent transparent !important;\n      scrollbar-width: thin;\n    }\n\n    // bg color\n    [data-testid=\"primaryColumn\"],\n    .r-kemksi {\n      background-color: @base;\n    }\n\n    // arrow on account switcher\n    .r-cqee49 {\n      color: @base;\n    }\n\n    // top nav bg color\n    .r-5zmot {\n      background-color: fade(@base, 75%);\n    }\n\n    // element hover (when on base)\n    .r-1hdo0pc,\n    .r-pjtv4k {\n      background-color: fade(@text, 10%);\n    }\n\n    // element active (when on base)\n    .r-11gmi9o {\n      background-color: fade(@text, 20%);\n    }\n\n    .r-1cuuowz {\n      background-color: fade(@text, 3%);\n    }\n\n    // text\n    .r-1nao33i {\n      color: @text;\n    }\n\n    // white text, seems to appear on accent colors\n    .r-jwli3a {\n      color: if(@flavor = latte, #fff, @crust);\n\n      // cw svg\n      &:has(\n        path[d=\"M3.693 21.707l-1.414-1.414 2.429-2.429c-2.479-2.421-3.606-5.376-3.658-5.513l-.131-.352.131-.352c.133-.353 3.331-8.648 10.937-8.648 2.062 0 3.989.621 5.737 1.85l2.556-2.557 1.414 1.414L3.693 21.707zm-.622-9.706c.356.797 1.354 2.794 3.051 4.449l2.417-2.418c-.361-.609-.553-1.306-.553-2.032 0-2.206 1.794-4 4-4 .727 0 1.424.192 2.033.554l2.263-2.264C14.953 5.434 13.512 5 11.986 5c-5.416 0-8.258 5.535-8.915 7.001zM11.986 10c-1.103 0-2 .897-2 2 0 .178.023.352.067.519l2.451-2.451c-.167-.044-.341-.067-.519-.067zm10.951 1.647l.131.352-.131.352c-.133.353-3.331 8.648-10.937 8.648-.709 0-1.367-.092-2-.223v-2.047c.624.169 1.288.27 2 .27 5.415 0 8.257-5.533 8.915-7-.252-.562-.829-1.724-1.746-2.941l1.438-1.438c1.53 1.971 2.268 3.862 2.33 4.027z\"]\n      ) {\n        color: @text;\n      }\n    }\n\n    // borders\n    .r-1kqtdi0,\n    .r-1roi411 {\n      border-color: @surface0;\n    }\n\n    .r-1igl3o0 {\n      border-bottom-color: @surface0;\n    }\n\n    .r-2sztyj {\n      border-top-color: @surface0;\n    }\n\n    .r-1aihyag {\n      border-right-color: @surface0;\n    }\n\n    .r-1wyyjkm {\n      border-left-color: @subtext0; // border when replying to a dm\n    }\n\n    // is this post relevant to you?\n    .r-1ccsd61,\n    .r-xzxzvz {\n      border-color: @surface2;\n    }\n\n    .r-gu4em3,\n    .r-1bnu78o,\n    .r-z32n2g, // search bar\n    .r-1m3jxhj {\n      background-color: @surface0;\n    }\n\n    // base color border\n    .r-1xc7w19 {\n      border-color: @base;\n    }\n\n    // active border for dms\n    .r-1pbtemp {\n      border-right-color: @accent;\n    }\n\n    // accent color borders\n    .r-vhj8yc {\n      border-color: @accent;\n    }\n\n    // magnifying glass in search bar\n    .r-1bwzh9t {\n      color: @overlay1;\n    }\n\n    // right side content\n    .r-g2wdr4 {\n      background-color: @mantle;\n    }\n\n    .r-14wv3jr {\n      border-color: @mantle;\n    }\n\n    // bg color accent\n    .r-l5o3uw {\n      background-color: @accent;\n\n      .r-jwli3a {\n        color: if(@flavor = latte, #fff, @crust);\n      }\n    }\n\n    // accent element when hovered\n    .r-1vtznih {\n      background-color: darken(@accent, 10%);\n\n      .r-jwli3a {\n        color: if(@flavor = latte, #fff, @crust);\n      }\n    }\n\n    .r-1peqgm7 {\n      background-color: fade(@accent, 10%);\n    }\n\n    // accent element when active\n    .r-yuvema {\n      background-color: darken(@accent, 15%);\n\n      .r-jwli3a {\n        color: if(@flavor = latte, #fff, @crust);\n      }\n    }\n\n    .r-r18ze4 {\n      background-color: fade(@accent, 20%);\n    }\n\n    // white elements when hovered\n    .r-jc7xae {\n      background-color: darken(@text, 4%);\n    }\n\n    // white elements when active\n    .r-6wtuen {\n      background-color: darken(@text, 8%);\n    }\n\n    // tooltips\n    .r-1pr99xn {\n      background-color: @surface1;\n    }\n\n    // new notifications\n    .r-1eltapf {\n      background-color: fade(@sapphire, 10%);\n    }\n\n    // polls\n    .r-eok2q2 {\n      background-color: fade(@accent, 60%);\n    }\n\n    // box shadow around active poll input box\n    .r-9cip40 {\n      box-shadow: @accent 0 0 0 1px;\n    }\n\n    // spaces\n    .r-1blqq69 {\n      border-color: @mauve;\n    }\n\n    // reactions on dms\n    .r-qazpri {\n      color: @overlay1;\n    }\n\n    @keyframes r-1wvy3k1 {\n      0% {\n        box-shadow: fade(@mauve, 40%) 0;\n      }\n\n      100% {\n        box-shadow: fade(@mauve, 0%) 0;\n      }\n    }\n\n    [style=\"background-image: linear-gradient(61.63deg, rgb(45, 66, 255) -15.05%, rgb(156, 99, 250) 104.96%);\"] {\n      background-image: linear-gradient(\n        61.63deg,\n        @blue -15.05%,\n        @mauve 104.96%\n      ) !important;\n    }\n\n    // tweet textbox placeholder\n    .draftjs-styles_0 .public-DraftEditorPlaceholder-root {\n      color: @overlay0;\n    }\n\n    // who can reply? bg\n    .r-rgqbpe {\n      background-color: fade(@blue, 10%);\n    }\n\n    // circles\n    .r-s224ru {\n      background-color: @green;\n    }\n\n    .r-h7o7i8 {\n      background-color: fade(@green, 10%);\n    }\n\n    // live indicator\n    .r-4nw3r4,\n    .r-1dgebii {\n      background-color: @red;\n    }\n\n    // live border\n    .r-b5kvu3 {\n      border-color: @red;\n    }\n\n    // red transparent bg (appears with \"unfollow\" hover)\n    .r-qqmkd0 {\n      background-color: fade(@red, 10%);\n    }\n\n    // red bg on hover\n    .r-12d83nn {\n      background-color: darken(@red, 10%);\n    }\n\n    // red bg when active\n    .r-oybae9 {\n      background-color: darken(@red, 15%);\n    }\n\n    .r-11mg6pl {\n      border-color: if(@flavor = latte, #fff, @crust); // white border\n    }\n\n    // mask over layer\n    .r-11z020y {\n      background-color: fade(desaturate(darken(@accent, 10%), 50%), 12%);\n    }\n\n    // likes\n    [fill=\"rgb(249,22,127)\"],\n    [fill=\"rgb(222,45,108)\"],\n    g[clip-path=\"url(#__lottie_element_562)\"] path,\n    [style=\"color: rgb(249, 24, 128);\"] [viewBox=\"0 0 24 24\"] path {\n      fill: @red !important;\n    }\n\n    // likes when hover\n    .r-1krxqcr {\n      background-color: fade(@red, 10%);\n    }\n\n    // likes when active\n    .r-uuique {\n      background-color: fade(@red, 20%);\n    }\n\n    // heart svg on notifications page\n    .r-vkub15,\n    .r-9l7dzd {\n      color: @red;\n    }\n\n    // bell svg on notifications page\n    .r-1cvl2hr {\n      color: @accent;\n    }\n\n    // retweet svg on notifications page\n    .r-o6sn0f {\n      color: @green;\n    }\n\n    // rt when hover\n    .r-15azkrj {\n      background-color: fade(@green, 10%);\n    }\n\n    // rt when active\n    .r-1x669os {\n      background-color: fade(@green, 20%);\n    }\n\n    // image won't load svg\n    [data-testid=\"card.wrapper\"]\n      [d=\"M21.04 1.54L17.5 5.09c-.04-.02-.08-.03-.13-.04L14.3 3H9.7l-3 2H5C3.62 5 2.5 6.12 2.5 7.5v11c0 .46.12.88.34 1.25l-1.3 1.29 1.42 1.42 19.5-19.5-1.42-1.42zM13.7 5l2.33 1.56-2 1.99C13.44 8.2 12.74 8 12 8c-2.21 0-4 1.79-4 4 0 .74.2 1.44.55 2.03L4.5 18.09V7.5c0-.28.22-.5.5-.5h2.3l3-2h3.4zM12 10c.18 0 .35.02.52.07l-2.45 2.45c-.05-.17-.07-.34-.07-.52 0-1.1.9-2 2-2zm7 11H7.24l2-2H19c.28 0 .5-.22.5-.5V9h2v9.5c0 1.38-1.12 2.5-2.5 2.5z\"] {\n      color: @overlay0;\n    }\n\n    // cw button\n    .r-n94g0g {\n      background-color: fade(@text, 30%); // when hovered\n    }\n\n    .r-z9i421 {\n      background-color: fade(@text, 27%); // when active\n    }\n\n    .r-19130f6 {\n      background-color: @crust; // when hovered\n    }\n\n    .r-l8tqsx {\n      background-color: fade(@text, 10%); // when active\n    }\n\n    // lock svg when you try to write a commu note but can't\n    .r-3gvs5h {\n      background-color: @overlay1;\n    }\n\n    // sunglasses commu note\n    .r-1fkb3t2 {\n      background-color: @surface1;\n    }\n\n    // media player text\n    .r-jwli3a {\n      color: @text;\n    }\n\n    .r-1kwlb9n {\n      background-color: fade(@red, 12%);\n    }\n\n    // hard-coded shit\n    // ugly-ass twitter blue/premium bg. why.\n    [style*=\"https://abs.twimg.com/responsive-web/client-web/background-premiumplus-web\"] {\n      background-image: none !important;\n      background-color: @surface0;\n    }\n\n    [stroke=\"#2F3336\" i] {\n      stroke: @surface2 !important;\n    }\n\n    [stroke=\"#1D9BF0\" i],\n    [style*=\"stroke: rgb(29, 155, 240)\"] {\n      stroke: @accent !important;\n    }\n\n    [stroke=\"#FFD400\" i] {\n      stroke: @yellow !important;\n    }\n\n    [fill=\"#829AAB\" i] {\n      fill: @overlay2 !important;\n    }\n\n    // \"we received your report\" svg\n    [fill=\"#1DA1F2\" i] {\n      fill: if(@flavor = latte, darken(@sky, 15%), darken(@sky, 30%))\n        !important;\n    }\n\n    [fill=\"#78C6EE\" i] {\n      fill: @sky !important;\n    }\n\n    // yellow verified badge\n    [stop-color=\"#f4e72a\" i],\n    [stop-color=\"#cd8105\" i],\n    [stop-color=\"#cb7b00\" i],\n    [stop-color=\"#f4ec26\" i],\n    [stop-color=\"#f9e87f\" i],\n    [stop-color=\"#e2b719\" i] {\n      stop-color: @yellow !important;\n    }\n\n    [fill=\"#d18800\" i] {\n      fill: @yellow !important;\n    }\n\n    // [fill=\"#333333\" i] {\n    //   fill: @crust !important;\n    //\n    //   ~ [fill=\"white\"] {\n    //     fill: @text !important;\n    //   }\n    // }\n\n    [style*=\"border-color: rgb(83, 100, 113)\"] {\n      border-color: @surface1 !important;\n    }\n\n    [style*=\"border-color: rgb(51, 54, 57)\"] {\n      border-color: @surface0 !important;\n    }\n\n    [style*=\"border-color: rgb(103, 7, 15)\"] {\n      border-color: fade(@red, 50%) !important;\n    }\n\n    [style*=\"border-color: rgb(29, 155, 240)\"] {\n      border-color: @accent !important;\n    }\n\n    [style*=\"color: rgb(231, 233, 234)\"]:not(\n      [style*=\"background-color: rgb(231, 233, 234)\"]\n    ),\n    [style*=\"color: rgb(239, 243, 244)\"]:not(\n      [style*=\"background-color: rgb(239, 243, 244)\"]\n    ),\n    [style*=\"color: rgb(255, 255, 255)\"]:not(\n      [style*=\"background-color: rgb(255, 255, 255)\"]\n    ) {\n      color: @text !important;\n    }\n\n    [style*=\"color: rgb(231, 233, 234)\"]:not(\n      [style*=\"background-color: rgb(231, 233, 234)\"]\n    )\n      input::placeholder {\n      color: @subtext1 !important;\n    }\n\n    // faded text\n    [style*=\"color: rgb(113, 118, 123)\"]:not(\n      [style*=\"background-color: rgb(113, 118, 123)\"]\n    ),\n    [style*=\"color: rgb(182, 185, 188)\"]:not(\n      [style*=\"background-color: rgb(182, 185, 188)\"]\n    ) {\n      color: @overlay1 !important;\n    }\n\n    // retweets color\n    [style*=\"color: rgb(0, 186, 124)\"]:not(\n      [style*=\"background-color: rgb(0, 186, 124)\"]\n    ) {\n      color: @green !important;\n    }\n\n    // likes/unfollow color\n    [style*=\"color: rgb(249, 24, 128)\"]:not(\n      [style*=\"background-color: rgb(249, 24, 128)\"]\n    ),\n    [style*=\"color: rgb(244, 33, 46)\"]:not(\n      [style*=\"background-color: rgb(244, 33, 46)\"]\n    ) {\n      color: @red !important;\n    }\n\n    [style*=\"color: rgb(250, 68, 152)\"]:not(\n      [style*=\"background-color: rgb(250, 68, 152)\"]\n    ) {\n      color: @pink !important;\n    }\n\n    [style*=\"color: rgb(255, 212, 0)\"]:not(\n      [style*=\"background-color: rgb(255, 212, 0)\"]\n    ) {\n      color: @yellow !important;\n    }\n\n    [style*=\"color: rgb(120, 86, 255)\"]:not(\n      [style*=\"background-color: rgb(120, 86, 255)\"]\n    ) {\n      color: @mauve !important;\n    }\n\n    [style*=\"color: rgb(255, 122, 0)\"]:not(\n      [style*=\"background-color: rgb(255, 122, 0)\"]\n    ) {\n      color: @peach !important;\n    }\n\n    // accent color (blue)\n    [style*=\"color: rgb(29, 155, 240)\"]:not(\n      [style*=\"background-color: rgb(29, 155, 240)\"]\n    ) {\n      color: @accent !important;\n    }\n\n    // background colors\n    [style*=\"background-color: rgb(142, 205, 248)\"] {\n      background-color: lighten(@accent, 10%) !important;\n    }\n\n    [style*=\"background-color: rgb(2, 17, 61)\"] {\n      background-color: fade(@accent, 15%) !important;\n    }\n\n    [style*=\"background-color: rgba(255, 255, 255, 0.25)\"] {\n      background-color: fade(@text, 25%) !important;\n    }\n\n    [style*=\"background-color: rgb(147, 147, 147)\"] {\n      background-color: @overlay0 !important;\n\n      // for toggle circle\n      + [style*=\"background-color: rgb(250, 250, 250)\"] when not(\n        @flavor = latte\n      ) {\n        background-color: @text !important;\n      }\n    }\n\n    [style*=\"background-color: rgb(29, 155, 240)\"] {\n      background-color: @accent !important;\n\n      [style*=\"color: rgb(255, 255, 255)\"] {\n        color: if(@flavor = latte, #fff, @crust) !important;\n      }\n    }\n\n    [style*=\"background-color: rgb(239, 243, 244)\"] {\n      background-color: @text !important;\n\n      [style*=\"color: rgb(15, 20, 25)\"] {\n        color: if(@flavor = latte, #fff, @crust) !important;\n      }\n    }\n\n    [style*=\"background-color: rgb(244, 33, 46)\"] {\n      background-color: @red !important;\n\n      [style*=\"color: rgb(255, 255, 255)\"] {\n        color: if(@flavor = latte, #fff, @crust) !important;\n      }\n    }\n\n    [style*=\"background-color: rgb(0, 0, 0)\"],\n    [style*=\"background-color: #000\"] {\n      background-color: @base !important;\n    }\n\n    [style*=\"background-color: rgba(15, 20, 25, 0.75)\"] {\n      background-color: fade(@crust, 75%) !important;\n\n      [style*=\"color: rgb(255, 255, 255)\"] svg {\n        color: @text !important;\n      }\n    }\n\n    // whatever\n    .r-l5o3uw,\n    .r-1vtznih,\n    .r-4nw3r4,\n    .r-12d83nn,\n    .r-oybae9,\n    .r-yuvema,\n    .r-3gvs5h,\n    [style=\"background-image: linear-gradient(61.63deg, rgb(45, 66, 255) -15.05%, rgb(156, 99, 250) 104.96%);\"] {\n      [style*=\"color: rgb(255, 255, 255)\"]:not(\n        [style*=\"background-color: rgb(255, 255, 255)\"]\n      ),\n      &[style*=\"color: rgb(255, 255, 255)\"]:not(\n        [style*=\"background-color: rgb(255, 255, 255)\"]\n      ),\n      [style*=\"color: rgb(231, 233, 234)\"]:not(\n        [style*=\"background-color: rgb(231, 233, 234)\"]\n      ),\n      &[style*=\"color: rgb(231, 233, 234)\"]:not(\n        [style*=\"background-color: rgb(231, 233, 234)\"]\n      ),\n      [color=\"white\"] {\n        color: if(@flavor = latte, #fff, @crust) !important;\n      }\n    }\n\n    [data-testid=\"videoComponent\"]:not(.r-4nw3r4),\n    .r-loe9s5,\n    .r-drfeu3:has(\n      [style=\"background-color: rgba(255, 255, 255, 0.25); border-color: rgba(0, 0, 0, 0); backdrop-filter: blur(4px);\"]\n    ) {\n      [style*=\"color: rgb(255, 255, 255)\"]:not(\n        [style*=\"background-color: rgb(255, 255, 255)\"]\n      ),\n      &[style*=\"color: rgb(255, 255, 255)\"]:not(\n        [style*=\"background-color: rgb(255, 255, 255)\"]\n      ),\n      .r-jwli3a {\n        color: #fff !important;\n      }\n    }\n\n    // dms have to be here bc of the above\n    .r-eff69c {\n      background-color: darken(@accent, 5%);\n\n      [style*=\"color: rgb(255, 255, 255)\"] {\n        color: @crust !important;\n      }\n    }\n\n    // follow button\n    [data-testid$=\"-follow\"] {\n      [style*=\"color: rgb(15, 20, 25)\"] {\n        color: if(@flavor = latte, #fff, @crust) !important;\n      }\n    }\n\n    // sports stuff on explore page\n    // a[href^=\"/i/events\"] > div > div > div[style^=\"background-color\"] > div[style*=\"color: rgb(255, 255, 255)\"] span {\n    //   color: #fff !important;\n    // }\n\n    // options\n    & when (@colorizeLogo = 1) {\n      path[d=\"M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z\"] {\n        fill: @accent !important;\n      }\n    }\n\n    a[aria-label^=\"Translated from\"][aria-label$=\"by Google\"] svg path {\n      fill: @text !important;\n    }\n  }\n}\n\n@-moz-document domain(\"api.twitter.com\"), domain(\"api.x.com\") {\n  :root {\n    @media (prefers-color-scheme: light) {\n      #catppuccin(@lightFlavor);\n    }\n    @media (prefers-color-scheme: dark) {\n      #catppuccin(@darkFlavor);\n    }\n  }\n\n  #catppuccin(@flavor) {\n    #lib.palette();\n\n    html {\n      background: @mantle;\n    }\n\n    #header {\n      color: @subtext0;\n      background: @base;\n      border-bottom-color: @surface1;\n\n      .logo a {\n        border-bottom-color: transparent;\n      }\n\n      #session {\n        a {\n          background: transparent;\n          color: @subtext0;\n        }\n\n        h2 img {\n          border-color: @surface1;\n        }\n      }\n    }\n\n    .footer {\n      background: @mantle;\n      border-top-color: @surface1;\n    }\n\n    .auth h2 {\n      color: @subtext1;\n    }\n\n    .oauth #bd {\n      border-color: @surface1;\n    }\n\n    .app-info h3 img {\n      border-color: @base;\n    }\n\n    .permissions.allow strong {\n      color: @green;\n    }\n\n    .button {\n      background: @overlay0;\n      color: @text;\n      border-color: @surface1;\n\n      &:hover {\n        color: @text;\n        border-color: @surface1;\n        background: darken(@surface2, 10%);\n      }\n    }\n\n    .button.selected,\n    .follow-button .unfollow .button {\n      background-color: @accent;\n      color: if(@flavor = latte, #fff, @crust);\n      border-color: darken(@accent, 10%);\n\n      &:hover {\n        background-color: darken(@accent, 10%);\n      }\n\n      .app-info,\n      #bd h3 {\n        color: @subtext0;\n      }\n\n      #ft {\n        color: @overlay0;\n      }\n    }\n  }\n}\n\n@-moz-document domain(\"twitter.com\"), domain(\"x.com\") {\n  :root {\n    @media (prefers-color-scheme: light) {\n      #catppuccin(@lightFlavor);\n    }\n    @media (prefers-color-scheme: dark) {\n      #catppuccin(@darkFlavor);\n    }\n  }\n\n  #catppuccin(@flavor) {\n    #lib.palette();\n\n    #session a,\n    #session input,\n    #session button {\n      background: @surface0;\n      color: @subtext0;\n    }\n\n    #session .user-menu {\n      a:focus,\n      a:hover,\n      button:focus,\n      button:hover,\n      input:focus,\n      input:hover {\n        color: if(@flavor = latte, #fff, @crust);\n        background-color: @accent;\n      }\n    }\n\n    .notice,\n    .notice p,\n    h2 {\n      color: @subtext1;\n    }\n\n    .notice.error {\n      background: fade(@red, 20%);\n      border-color: fade(@red, 25%);\n    }\n\n    // report page? why isn't this themed\n    .ResponsiveLayout--Night .PageContainer {\n      background-color: @base;\n    }\n\n    .list-explanation {\n      color: @subtext0;\n    }\n\n    .ResponsiveLayout--Night .list-btn {\n      &:first-of-type {\n        border-top-color: @mantle;\n      }\n\n      &:hover {\n        background-color: @mantle;\n      }\n    }\n\n    .submit-btn {\n      background-color: @accent;\n      color: if(@flavor = latte, #fff, @crust);\n      border-color: darken(@accent, 10%);\n    }\n\n    .submit-btn:hover,\n    .redirect-btn:hover {\n      background-color: darken(@accent, 10%);\n    }\n\n    .block-btn {\n      color: @maroon;\n      border-color: @maroon;\n    }\n\n    .mute-btn,\n    .unfollow-btn,\n    .email-report-btn {\n      color: @accent;\n      border-color: @accent;\n    }\n\n    .list-btn {\n      border-color: @surface1;\n\n      &:first-of-type {\n        border-top-color: @surface1;\n      }\n\n      &:hover {\n        background-color: @surface0;\n      }\n    }\n\n    // authorize page\n    .js #session .user-menu {\n      background-color: @surface0;\n    }\n\n    .dropdown-caret .caret-outer,\n    .dropdown-caret .caret-inner {\n      border-bottom-color: @surface0;\n    }\n  }\n}\n",
+    "usercssData": {
+      "name": "Twitter Catppuccin",
+      "namespace": "github.com/catppuccin/userstyles/styles/twitter",
+      "homepageURL": "https://github.com/catppuccin/userstyles/tree/main/styles/twitter",
+      "version": "2026.08.16",
+      "updateURL": "https://github.com/catppuccin/userstyles/raw/main/styles/twitter/catppuccin.user.less",
+      "supportURL": "https://github.com/catppuccin/userstyles/issues?q=is%3Aopen+is%3Aissue+label%3Atwitter",
+      "description": "Soothing pastel theme for Twitter",
+      "author": "Catppuccin",
+      "license": "MIT",
+      "preprocessor": "less",
+      "vars": {
+        "lightFlavor": {
+          "type": "select",
+          "label": "Light Flavor",
+          "name": "lightFlavor",
+          "value": "frappe",
+          "default": "latte",
+          "options": [
+            {
+              "name": "latte",
+              "label": "Latte",
+              "value": "latte"
+            },
+            {
+              "name": "frappe",
+              "label": "Frappé",
+              "value": "frappe"
+            },
+            {
+              "name": "macchiato",
+              "label": "Macchiato",
+              "value": "macchiato"
+            },
+            {
+              "name": "mocha",
+              "label": "Mocha",
+              "value": "mocha"
+            }
+          ]
+        },
+        "darkFlavor": {
+          "type": "select",
+          "label": "Dark Flavor",
+          "name": "darkFlavor",
+          "value": "frappe",
+          "default": "mocha",
+          "options": [
+            {
+              "name": "latte",
+              "label": "Latte",
+              "value": "latte"
+            },
+            {
+              "name": "frappe",
+              "label": "Frappé",
+              "value": "frappe"
+            },
+            {
+              "name": "macchiato",
+              "label": "Macchiato",
+              "value": "macchiato"
+            },
+            {
+              "name": "mocha",
+              "label": "Mocha",
+              "value": "mocha"
+            }
+          ]
+        },
+        "accentColor": {
+          "type": "select",
+          "label": "Accent",
+          "name": "accentColor",
+          "value": "mauve",
+          "default": "mauve",
+          "options": [
+            {
+              "name": "rosewater",
+              "label": "Rosewater",
+              "value": "rosewater"
+            },
+            {
+              "name": "flamingo",
+              "label": "Flamingo",
+              "value": "flamingo"
+            },
+            {
+              "name": "pink",
+              "label": "Pink",
+              "value": "pink"
+            },
+            {
+              "name": "mauve",
+              "label": "Mauve",
+              "value": "mauve"
+            },
+            {
+              "name": "red",
+              "label": "Red",
+              "value": "red"
+            },
+            {
+              "name": "maroon",
+              "label": "Maroon",
+              "value": "maroon"
+            },
+            {
+              "name": "peach",
+              "label": "Peach",
+              "value": "peach"
+            },
+            {
+              "name": "yellow",
+              "label": "Yellow",
+              "value": "yellow"
+            },
+            {
+              "name": "green",
+              "label": "Green",
+              "value": "green"
+            },
+            {
+              "name": "teal",
+              "label": "Teal",
+              "value": "teal"
+            },
+            {
+              "name": "blue",
+              "label": "Blue",
+              "value": "blue"
+            },
+            {
+              "name": "sapphire",
+              "label": "Sapphire",
+              "value": "sapphire"
+            },
+            {
+              "name": "sky",
+              "label": "Sky",
+              "value": "sky"
+            },
+            {
+              "name": "lavender",
+              "label": "Lavender",
+              "value": "lavender"
+            },
+            {
+              "name": "subtext0",
+              "label": "Gray",
+              "value": "subtext0"
+            }
+          ]
+        },
+        "colorizeLogo": {
+          "type": "checkbox",
+          "label": "Colorize Logo",
+          "name": "colorizeLogo",
+          "value": null,
+          "default": "0",
+          "options": null
+        },
+        "darkenShadows": {
+          "type": "checkbox",
+          "label": "Darken Shadows on Dark Themes",
+          "name": "darkenShadows",
+          "value": null,
+          "default": "1",
+          "options": null
+        }
+      }
+    },
+    "sections": [
+      {
+        "code": ""
+      }
+    ],
+    "originalDigest": "dd4c836dbb188ee4f2e82c5825a88a85977634e1"
   }
 ]
