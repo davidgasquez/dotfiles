@@ -1,0 +1,351 @@
+[
+  {
+    "name": "Todoist Catppuccin",
+    "enabled": true,
+    "url": "https://github.com/titandrive/stylus_themes/tree/main/todoist",
+    "updateUrl": "https://raw.githubusercontent.com/titandrive/stylus_themes/main/todoist/catppuccin.user.css",
+    "author": "titandrive",
+    "description": "Soothing pastel theme for Todoist",
+    "sourceCode": "/* ==UserStyle==\n@name         Todoist Catppuccin\n@namespace    github.com/titandrive/userstyles/styles/todoist\n@homepageURL  https://github.com/titandrive/stylus_themes/tree/main/todoist\n@version      1.0.0\n@updateURL    https://raw.githubusercontent.com/titandrive/stylus_themes/main/todoist/catppuccin.user.css\n@description  Soothing pastel theme for Todoist\n@author       titandrive\n@license      MIT\n\n@preprocessor less\n@var select lightFlavor \"Light Flavor\" [\"latte:Latte*\", \"frappe:Frappé\", \"macchiato:Macchiato\", \"mocha:Mocha\"]\n@var select darkFlavor \"Dark Flavor\" [\"latte:Latte\", \"frappe:Frappé\", \"macchiato:Macchiato\", \"mocha:Mocha*\"]\n@var select accentColor \"Accent\" [\"rosewater:Rosewater\", \"flamingo:Flamingo\", \"pink:Pink\", \"mauve:Mauve*\", \"red:Red\", \"maroon:Maroon\", \"peach:Peach\", \"yellow:Yellow\", \"green:Green\", \"teal:Teal\", \"blue:Blue\", \"sapphire:Sapphire\", \"sky:Sky\", \"lavender:Lavender\", \"subtext0:Gray\"]\n==/UserStyle== */\n\n@import \"https://userstyles.catppuccin.com/lib/lib.less\";\n\n@-moz-document domain(\"todoist.com\") {\n\n  html.theme_light {\n    #catppuccin(@lightFlavor);\n  }\n\n  html.theme_dark {\n    #catppuccin(@darkFlavor);\n  }\n\n  html:not(.theme_light):not(.theme_dark) {\n    @media (prefers-color-scheme: light) {\n      #catppuccin(@lightFlavor);\n    }\n    @media (prefers-color-scheme: dark) {\n      #catppuccin(@darkFlavor);\n    }\n  }\n\n  #catppuccin(@flavor) {\n    #lib.palette();\n    #lib.defaults();\n\n    --background-primary: @base !important;\n    --background-secondary: @mantle !important;\n    --background-tertiary: @crust !important;\n    --background-elevated: @surface0 !important;\n    --background-hover: @surface0 !important;\n    --background-selected: @surface1 !important;\n    --background-tinted: @surface0 !important;\n\n    --color-base-primary: @base !important;\n    --color-base-secondary: @mantle !important;\n    --color-base-tertiary: @crust !important;\n    --color-surface-0: @surface0 !important;\n    --color-surface-1: @surface1 !important;\n    --color-surface-2: @surface2 !important;\n\n    --left-menu-background: @mantle !important;\n\n    --reactist-bg-default: @base !important;\n    --reactist-bg-aside: @mantle !important;\n    --reactist-bg-menu: @surface0 !important;\n    --reactist-bg-toast: @surface0 !important;\n    --reactist-bg-selected: @surface1 !important;\n    --reactist-bg-highlight: fade(@accent, 15%) !important;\n    --reactist-framework-fill-background: @mantle !important;\n    --reactist-field-readonly-background: @mantle !important;\n    --reactist-banner-background-color: @mantle !important;\n    --reactist-alert-tone-caution-background: @mantle !important;\n    --reactist-alert-tone-critical-background: @mantle !important;\n    --reactist-alert-tone-info-background: @mantle !important;\n    --reactist-alert-tone-positive-background: @mantle !important;\n\n    --product-library-background-base-primary: @base !important;\n    --product-library-background-base-secondary: @mantle !important;\n    --product-library-background-base-tertiary: @crust !important;\n    --product-library-background-grouped-primary: @mantle !important;\n    --product-library-background-grouped-secondary: @base !important;\n    --product-library-background-grouped-tertiary: @crust !important;\n    --product-library-background-raised-primary: @surface0 !important;\n    --product-library-background-raised-secondary: @surface1 !important;\n    --product-library-background-raised-tertiary: @surface0 !important;\n    --product-library-background-raised-quaternary: @surface2 !important;\n    --product-library-selectable-background: @surface0 !important;\n\n    --settings-card-idle-fill: @mantle !important;\n    --settings-card-hover-fill: @surface0 !important;\n    --scrollbar-dark-fill: @mantle !important;\n    --scrollbar-thumb-track: @base !important;\n    --doist-card-background: @surface0 !important;\n    --brand-secondary-background: @mantle !important;\n\n    /* ── Text ─────────────────────────────────────────────── */\n    --text-primary: @text !important;\n    --text-secondary: @subtext0 !important;\n    --text-muted: @overlay0 !important;\n    --text-faded: @overlay0 !important;\n    --text-danger: @red !important;\n    --text-warning: @yellow !important;\n    --text-success: @green !important;\n\n    --color-text-primary: @text !important;\n    --color-text-secondary: @subtext0 !important;\n    --color-text-muted: @overlay0 !important;\n\n    --reactist-content-primary: @text !important;\n    --reactist-content-secondary: @subtext0 !important;\n    --reactist-content-tertiary: @overlay0 !important;\n    --reactist-content-danger: @red !important;\n    --reactist-content-positive: @green !important;\n    --reactist-banner-main-copy-color: @text !important;\n    --reactist-banner-secondary-copy-color: @subtext0 !important;\n    --reactist-field-placeholder-tint: @overlay0 !important;\n\n    --product-library-display-primary-idle-tint: @text !important;\n    --product-library-display-secondary-idle-tint: @subtext0 !important;\n    --product-library-display-tertiary-idle-tint: @overlay0 !important;\n\n    /* ── Accent ───────────────────────────────────────────── */\n    --color-accent: @accent !important;\n    --color-accent-hover: lighten(@accent, 5%) !important;\n    --interactive-accent: @accent !important;\n    --interactive-accent-hover: lighten(@accent, 5%) !important;\n    --color-interactive-accent: @accent !important;\n\n    --reactist-actionable-primary-idle-fill: @accent !important;\n    --reactist-actionable-primary-hover-fill: lighten(@accent, 5%) !important;\n    --reactist-actionable-primary-idle-tint: @base !important;\n    --reactist-actionable-primary-hover-tint: @base !important;\n    --reactist-actionable-primary-disabled-fill: @surface1 !important;\n    --reactist-actionable-primary-disabled-tint: @overlay0 !important;\n    --reactist-bg-brand: @accent !important;\n    --reactist-progressbar-fill: @accent !important;\n    --reactist-switch-checked: @accent !important;\n    --reactist-spinner-tint: @accent !important;\n    --reactist-spinner-fill: @surface1 !important;\n\n    --product-library-actionable-primary-idle-fill: @accent !important;\n    --product-library-actionable-primary-hover-fill: lighten(@accent, 5%) !important;\n    --product-library-actionable-primary-on-idle-tint: @base !important;\n    --product-library-actionable-primary-on-hover-tint: @base !important;\n    --product-library-actionable-primary-disabled-fill: @surface1 !important;\n    --product-library-actionable-primary-on-dark-idle-fill: @accent !important;\n    --product-library-actionable-primary-on-dark-hover-fill: lighten(@accent, 5%) !important;\n    --product-library-actionable-primary-on-dark-on-idle-tint: @base !important;\n    --product-library-actionable-primary-on-dark-on-hover-tint: @base !important;\n    --product-library-selectable-primary-selected-fill: @accent !important;\n    --product-library-selectable-primary-selected-tint: lighten(@accent, 5%) !important;\n\n    /* ── Borders ──────────────────────────────────────────── */\n    --color-border: @surface0 !important;\n    --color-border-subtle: @surface1 !important;\n    --border-subtle: @surface0 !important;\n    --border-default: @surface1 !important;\n\n    --reactist-inputs-idle: @surface1 !important;\n    --reactist-inputs-hover: @surface2 !important;\n    --reactist-inputs-focus: @accent !important;\n    --reactist-inputs-alert: @red !important;\n    --reactist-divider-color: @surface0 !important;\n    --reactist-divider-primary: @surface0 !important;\n    --reactist-divider-secondary: @mantle !important;\n    --reactist-divider-tertiary: @surface1 !important;\n    --reactist-banner-border-color: @surface0 !important;\n    --reactist-alert-tone-caution-border: @surface0 !important;\n    --reactist-alert-tone-critical-border: @surface0 !important;\n    --reactist-alert-tone-info-border: @surface0 !important;\n    --reactist-alert-tone-positive-border: @surface0 !important;\n    --reactist-tab-neutral-border: @surface0 !important;\n    --reactist-tab-neutral-track: @mantle !important;\n    --reactist-tab-neutral-selected-fill: @surface0 !important;\n    --reactist-tab-neutral-selected-tint: @text !important;\n    --reactist-tab-neutral-unselected-tint: @subtext0 !important;\n    --reactist-prose-code-border: @surface0 !important;\n    --reactist-prose-code-fill: @mantle !important;\n    --reactist-prose-horizontal-rule-color: @surface0 !important;\n\n    --product-library-border-idle-tint: @surface0 !important;\n    --product-library-border-hover-tint: @surface1 !important;\n    --product-library-border-focus-tint: @accent !important;\n    --product-library-divider-primary: @surface0 !important;\n    --product-library-divider-secondary: @mantle !important;\n    --product-library-divider-tertiary: @surface1 !important;\n    --product-library-divider-on-dark: @surface1 !important;\n    --settings-card-idle-border-color: @surface0 !important;\n    --settings-card-hover-border-color: @surface1 !important;\n\n    /* ── Scrollbars ───────────────────────────────────────── */\n    --scrollbar-thumb-idle: @surface1 !important;\n    --scrollbar-thumb-hover: @surface2 !important;\n    --reactist-scrollbar-thumb-idle: fade(@surface2, 80%) !important;\n\n    /* ── Focus ring ───────────────────────────────────────── */\n    --focus-marker-box-shadow: 0 0 0 1px @accent, 0 0 0 4px fade(@accent, 30%) !important;\n    --focus-marker-box-shadow-inner: @accent !important;\n    --focus-marker-box-shadow-outer: fade(@accent, 30%) !important;\n\n    /* ── Links ────────────────────────────────────────────── */\n    --reactist-text-link-idle-tint: @blue !important;\n    --reactist-text-link-hover-tint: @lavender !important;\n    --reactist-prose-link-hover-tint: @lavender !important;\n\n    /* ── Icon/quaternary buttons ──────────────────────────── */\n    --reactist-actionable-quaternary-idle-tint: @subtext0 !important;\n    --reactist-actionable-quaternary-hover-tint: @text !important;\n    --reactist-actionable-quaternary-hover-fill: fade(@accent, 15%) !important;\n    --product-library-actionable-quaternary-idle-tint: @subtext0 !important;\n    --product-library-actionable-quaternary-hover-tint: @text !important;\n    --product-library-actionable-quaternary-on-dark-idle-tint: @subtext0 !important;\n    --product-library-actionable-quaternary-on-dark-hover-tint: @text !important;\n    --product-library-actionable-quaternary-on-dark-hover-fill: @surface0 !important;\n    --product-library-actionable-focus-fill: @surface0 !important;\n    --reactist-actionable-focus-fill: @surface0 !important;\n\n    /* ── Error/warning/success ────────────────────────────── */\n    --color-error: @red !important;\n    --color-warning: @yellow !important;\n    --color-success: @green !important;\n\n    /* Override Todoist's hardcoded brand red with accent */\n    --reactist-actionable-tertiary-idle-tint: @accent !important;\n    --reactist-actionable-tertiary-hover-tint: lighten(@accent, 5%) !important;\n    --reactist-actionable-tertiary-on-dark-idle-tint: @accent !important;\n    --reactist-actionable-tertiary-on-dark-hover-tint: lighten(@accent, 5%) !important;\n    --product-library-actionable-tertiary-idle-tint: @accent !important;\n    --product-library-actionable-tertiary-hover-tint: lighten(@accent, 5%) !important;\n    --product-library-actionable-tertiary-on-dark-idle-tint: @accent !important;\n    --product-library-actionable-tertiary-on-dark-hover-tint: lighten(@accent, 5%) !important;\n    --product-library-display-accent-primary-fill: @accent !important;\n    --product-library-display-accent-primary-tint: @accent !important;\n    --reactist-bg-selected: @surface1 !important;\n    --reactist-badge-attention-tint: @accent !important;\n    --product-library-selectable-secondary-selected-fill: fade(@accent, 20%) !important;\n    --product-library-selectable-secondary-on-selected-fill: @accent !important;\n    --product-library-selectable-secondary-on-selected-tint: @accent !important;\n\n    /* Schedule / due date colors */\n    --product-library-schedule-overdue-fill: @red !important;\n    --product-library-schedule-overdue-tint: @red !important;\n    --product-library-schedule-today-fill: @green !important;\n    --product-library-schedule-today-tint: @green !important;\n    --product-library-schedule-tomorrow-fill: @peach !important;\n    --product-library-schedule-tomorrow-tint: @peach !important;\n    --product-library-schedule-next-week-fill: @mauve !important;\n    --product-library-schedule-next-week-tint: @mauve !important;\n    --product-library-schedule-weekend-fill: @blue !important;\n    --product-library-schedule-weekend-tint: @blue !important;\n    --product-library-schedule-postpone-fill: @blue !important;\n    --product-library-schedule-postpone-tint: @blue !important;\n    --product-library-schedule-no-date-fill: @overlay0 !important;\n    --product-library-schedule-no-date-tint: @overlay0 !important;\n\n    /* ── Element overrides ────────────────────────────────── */\n    html, body, #todoist_app, #todoist_app > div {\n      background-color: @base !important;\n      color: @text !important;\n    }\n\n    .task_editor__footer {\n      background-color: @mantle !important;\n    }\n\n    .task_editor__editing_area {\n      border-bottom: none !important;\n    }\n\n    .task_editor,\n    .quick_add__body,\n    .quick_add__body > div,\n    .quick_add__body > div > div,\n    form[data-testid=\"task-editor\"],\n    form[data-testid=\"task-editor\"] > div {\n      background-color: @base !important;\n    }\n\n    /* Sidebar active item and add task button accent color */\n    [class*=\"add_task_top_row\"] span,\n    [data-testid=\"add-task-top\"] span {\n      color: @accent !important;\n    }\n\n    ::-webkit-scrollbar { width: 6px; height: 6px; }\n    ::-webkit-scrollbar-track { background: @mantle; }\n    ::-webkit-scrollbar-thumb { background: @surface1; border-radius: 3px; }\n    ::-webkit-scrollbar-thumb:hover { background: @surface2; }\n\n    /* Tasks/Comments tab buttons */\n    button#tasks[aria-selected=\"true\"],\n    button#comments[aria-selected=\"true\"] {\n      background-color: @surface0 !important;\n      color: @text !important;\n    }\n\n    button#tasks[aria-selected=\"false\"],\n    button#comments[aria-selected=\"false\"] {\n      background-color: transparent !important;\n      color: @subtext0 !important;\n    }\n\n    /* Sidebar list item + section header hover */\n    div[id^=\"sidebar-list-item\"]:hover,\n    div[sidebar-list-item=\"true\"]:hover,\n    div[data-drag-over=\"false\"]:hover,\n    [data-testid=\"project-list-item\"] > div:hover,\n    [data-testid=\"project-list-item\"]:hover > div,\n    li[type=\"project_list_item\"]:hover > div,\n    li[type=\"project_list_item\"]:hover div[id^=\"sidebar-list-item\"],\n    [data-testid=\"sidebar-section-header\"]:hover,\n    [data-testid*=\"section\"]:hover > div,\n    li[type=\"section_list_item\"]:hover > div,\n    li[type=\"section_list_item\"]:hover div[id^=\"sidebar-list-item\"],\n    .JczMOAc:hover {\n      background-color: @surface0 !important;\n    }\n\n    /* Menu item hover — overrides hardcoded reactist styles */\n    [role=\"menu\"] [role=\"menuitem\"]:hover,\n    [role=\"menu\"] [role=\"menuitem\"]:focus,\n    [role=\"menubar\"] [role=\"menuitem\"]:hover,\n    [role=\"menubar\"] [role=\"menuitem\"]:focus {\n      background-color: @surface1 !important;\n    }\n\n    /* Loading screen */\n    #loading,\n    .loading_screen {\n      background-color: @base !important;\n      color: @text !important;\n    }\n\n    .loading_screen svg {\n      fill: @accent !important;\n    }\n\n    .loading_screen--logo .logo_bg {\n      fill: @accent !important;\n    }\n\n    .loading_screen--logo .logo_stripe {\n      fill: @base !important;\n    }\n  }\n}\n\n",
+    "usercssData": {
+      "name": "Todoist Catppuccin",
+      "namespace": "github.com/titandrive/userstyles/styles/todoist",
+      "homepageURL": "https://github.com/titandrive/stylus_themes/tree/main/todoist",
+      "version": "1.0.0",
+      "updateURL": "https://raw.githubusercontent.com/titandrive/stylus_themes/main/todoist/catppuccin.user.css",
+      "description": "Soothing pastel theme for Todoist",
+      "author": "titandrive",
+      "license": "MIT",
+      "preprocessor": "less",
+      "vars": {
+        "lightFlavor": {
+          "type": "select",
+          "label": "Light Flavor",
+          "name": "lightFlavor",
+          "value": "frappe",
+          "default": "latte",
+          "options": [
+            {
+              "name": "latte",
+              "label": "Latte",
+              "value": "latte"
+            },
+            {
+              "name": "frappe",
+              "label": "Frappé",
+              "value": "frappe"
+            },
+            {
+              "name": "macchiato",
+              "label": "Macchiato",
+              "value": "macchiato"
+            },
+            {
+              "name": "mocha",
+              "label": "Mocha",
+              "value": "mocha"
+            }
+          ]
+        },
+        "darkFlavor": {
+          "type": "select",
+          "label": "Dark Flavor",
+          "name": "darkFlavor",
+          "value": "frappe",
+          "default": "mocha",
+          "options": [
+            {
+              "name": "latte",
+              "label": "Latte",
+              "value": "latte"
+            },
+            {
+              "name": "frappe",
+              "label": "Frappé",
+              "value": "frappe"
+            },
+            {
+              "name": "macchiato",
+              "label": "Macchiato",
+              "value": "macchiato"
+            },
+            {
+              "name": "mocha",
+              "label": "Mocha",
+              "value": "mocha"
+            }
+          ]
+        },
+        "accentColor": {
+          "type": "select",
+          "label": "Accent",
+          "name": "accentColor",
+          "value": "mauve",
+          "default": "mauve",
+          "options": [
+            {
+              "name": "rosewater",
+              "label": "Rosewater",
+              "value": "rosewater"
+            },
+            {
+              "name": "flamingo",
+              "label": "Flamingo",
+              "value": "flamingo"
+            },
+            {
+              "name": "pink",
+              "label": "Pink",
+              "value": "pink"
+            },
+            {
+              "name": "mauve",
+              "label": "Mauve",
+              "value": "mauve"
+            },
+            {
+              "name": "red",
+              "label": "Red",
+              "value": "red"
+            },
+            {
+              "name": "maroon",
+              "label": "Maroon",
+              "value": "maroon"
+            },
+            {
+              "name": "peach",
+              "label": "Peach",
+              "value": "peach"
+            },
+            {
+              "name": "yellow",
+              "label": "Yellow",
+              "value": "yellow"
+            },
+            {
+              "name": "green",
+              "label": "Green",
+              "value": "green"
+            },
+            {
+              "name": "teal",
+              "label": "Teal",
+              "value": "teal"
+            },
+            {
+              "name": "blue",
+              "label": "Blue",
+              "value": "blue"
+            },
+            {
+              "name": "sapphire",
+              "label": "Sapphire",
+              "value": "sapphire"
+            },
+            {
+              "name": "sky",
+              "label": "Sky",
+              "value": "sky"
+            },
+            {
+              "name": "lavender",
+              "label": "Lavender",
+              "value": "lavender"
+            },
+            {
+              "name": "subtext0",
+              "label": "Gray",
+              "value": "subtext0"
+            }
+          ]
+        }
+      }
+    },
+    "originalDigest": "4c9714ba2410925aa4fbdd0ef40247e9d314d963",
+    "sections": [
+      {
+        "code": ""
+      }
+    ]
+  },
+  {
+    "name": "WhatsApp Web Catppuccin",
+    "enabled": true,
+    "url": "https://github.com/catppuccin/userstyles/tree/main/styles/whatsapp-web",
+    "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/whatsapp-web/catppuccin.user.less",
+    "author": "Catppuccin",
+    "description": "Soothing pastel theme for WhatsApp Web",
+    "sourceCode": "/* ==UserStyle==\n@name WhatsApp Web Catppuccin\n@namespace github.com/catppuccin/userstyles/styles/whatsapp-web\n@homepageURL https://github.com/catppuccin/userstyles/tree/main/styles/whatsapp-web\n@version 2026.08.16\n@updateURL https://github.com/catppuccin/userstyles/raw/main/styles/whatsapp-web/catppuccin.user.less\n@supportURL https://github.com/catppuccin/userstyles/issues?q=is%3Aopen+is%3Aissue+label%3Awhatsapp-web\n@description Soothing pastel theme for WhatsApp Web\n@author Catppuccin\n@license MIT\n\n@preprocessor less\n@var select lightFlavor \"Light Flavor\" [\"latte:Latte*\", \"frappe:Frappé\", \"macchiato:Macchiato\", \"mocha:Mocha\"]\n@var select darkFlavor \"Dark Flavor\" [\"latte:Latte\", \"frappe:Frappé\", \"macchiato:Macchiato\", \"mocha:Mocha*\"]\n@var select accentColor \"Accent\" [\"rosewater:Rosewater\", \"flamingo:Flamingo\", \"pink:Pink\", \"mauve:Mauve*\", \"red:Red\", \"maroon:Maroon\", \"peach:Peach\", \"yellow:Yellow\", \"green:Green\", \"teal:Teal\", \"blue:Blue\", \"sapphire:Sapphire\", \"sky:Sky\", \"lavender:Lavender\", \"subtext0:Gray\"]\n\n@var checkbox lighterMessages \"Elevated incoming messages\" 0\n==/UserStyle== */\n\n@import \"https://userstyles.catppuccin.com/lib/std/v1.less\";\n\n@-moz-document domain(\"web.whatsapp.com\") {\n  /* Note: Some variables appear to be applied on :root,\n  but without using :has there doesn't seem to be a good\n  way to target the root whenever a certain theme is applied.\n  */\n\n  :root:has(> :not(.dark)),\n  :root .color-refresh,\n  .color-refresh,\n  /* Layer under mount */\n  .app-wrapper-web.app-wrapper-web,\n  .app-wrapper-web.app-wrapper-web:root {\n    #catppuccin(@lightFlavor);\n  }\n\n  :root:has(> .dark),\n  .dark.color-refresh,\n  .color-refresh.dark,\n  /* Layer under mount */\n  .dark .app-wrapper-web.app-wrapper-web,\n  .dark .app-wrapper-web.app-wrapper-web:root {\n    #catppuccin(@darkFlavor);\n  }\n\n  #initialLoad(@styles) {\n    #RGB(splashscreen-startup-background, @styles[@crust]) !important;\n    #RGB(splashscreen-startup-icon, @styles[@surface0]) !important;\n\n    #RGB(splashscreen-primary-title, @styles[@text]) !important;\n\n    #RGB(splashscreen-progress-primary, @styles[@@accentColor]) !important;\n    #RGB(splashscreen-progress-background, @styles[@surface1]) !important;\n\n    #RGB(splashscreen-secondary-lighter, @styles[@overlay2]) !important;\n\n    #RGB(startup-icon, @styles[@surface1]) !important;\n    #RGB(startup-background, @styles[@crust]) !important;\n\n    #RGB(progress-background, @styles[@overlay0]) !important;\n  }\n\n  // Inital loading screen (Avoid FOUC)\n  [style^=\"--splashscreen-startup-background: #F7F5F3;\"] {\n    #initialLoad(@catppuccin[@@lightFlavor]);\n  }\n\n  [style^=\"--splashscreen-startup-background: #0A1014;\"] {\n    #initialLoad(@catppuccin[@@darkFlavor]);\n  }\n\n  #catppuccin(@flavor) {\n    #lib.palette();\n    #lib.defaults();\n\n    @accentContent: if(@flavor = latte, @base, @crust);\n\n    @emphasize: 10%;\n    @deemphasize: if(@flavor = latte, 15%, 30%);\n    @bubble-surface-deemp: 20%;\n\n    @scrim: 30%;\n    @pressed: 20%;\n\n    #WDS(accent, @accent);\n    #WDS(accent-deemphasized, fade(@accent, @deemphasize));\n    #WDS(accent-emphasized, lighten(@accent, @emphasize));\n\n    #WDS(secondary-negative, @red);\n    #WDS(secondary-negative-deemphasized, fade(@red, @deemphasize));\n    #WDS(secondary-negative-emphasized, @red);\n\n    #WDS(secondary-positive, @green);\n    #WDS(secondary-positive-deemphasized, fade(@green, @deemphasize));\n\n    #WDS(secondary-warning, @yellow);\n    #WDS(secondary-warning-deemphasized, fade(@yellow, @deemphasize));\n\n    #WDS(content-default, @text);\n    #WDS(content-deemphasized, @overlay2);\n    #WDS(content-disabled, fade(@text, 50%));\n\n    #WDS(content-on-accent, @accentContent);\n    #WDS(content-action-default, @accent);\n    #WDS(content-action-emphasized, lighten(@accent, @emphasize));\n    #WDS(content-external-link, @blue);\n    #WDS(content-inverse, @crust);\n    #WDS(content-read, @blue);\n\n    #WDS(background-wash-inset, @crust);\n    #WDS(background-wash-plain, @crust);\n    #WDS(background-elevated-wash-plain, @crust);\n    #WDS(background-elevated-wash-inset, @crust);\n    #WDS(background-dimmer, fade(#000, @scrim));\n    #WDS(modal-backdrop-solid, @crust);\n\n    #WDS(surface-default, @mantle);\n    --background-default: var(--WDS-surface-default);\n    --search-container-background: var(--WDS-surface-default);\n    #WDS(surface-emphasized, @base);\n    #WDS(surface-elevated-default, @base);\n    #WDS(surface-elevated-emphasized, mix(@text, @base, @emphasize));\n    #WDS(surface-highlight, fade(@text, @pressed));\n    #WDS(surface-inverse, @text);\n    #WDS(surface-pressed, fade(@text, @pressed));\n\n    #WDS(lines-divider, fade(@text, 10%));\n    #WDS(lines-outline-default, @overlay0);\n    #WDS(lines-outline-deemphasized, fade(@text, @deemphasize));\n\n    #WDS(persistent-activity-indicator, fade(@green, 90%));\n    #WDS(persistent-always-black, #000);\n    #WDS(persistent-always-white, #fff);\n    #WDS(persistent-always-branded, @accent);\n\n    #WDS(\n      systems-bubble-surface-incoming,\n      if(@lighterMessages = 1, @surface1, @base),\n    );\n\n    #WDS(\n      systems-bubble-surface-outgoing,\n      mix(@accent, @base, @bubble-surface-deemp),\n    );\n    #WDS(systems-bubble-content-deemphasized, fade(@text, 50%));\n\n    #WDS(systems-bubble-surface-overlay, @mantle);\n    #WDS(systems-bubble-surface-system, @mantle);\n\n    #WDS(\n      systems-bubble-surface-e2e,\n      mix(@yellow, @mantle, @bubble-surface-deemp),\n    );\n    #WDS(systems-bubble-content-e2e, @yellow);\n\n    #WDS(\n      systems-bubble-surface-business,\n      mix(@teal, @mantle, @bubble-surface-deemp),\n    );\n\n    #WDS(systems-chat-surface-composer, @base);\n    #WDS(systems-chat-background-wallpaper, @crust);\n    #WDS(systems-chat-foreground-wallpaper, @mantle);\n    #WDS(systems-chat-surface-tray, @base);\n    #WDS(systems-status-seen, fade(@text, 50%));\n\n    #WDS(components-platform-gesture-bar, fade(@crust, 50%));\n    #WDS(components-platform-status-bar, fade(@crust, 80%));\n    #WDS(components-surface-nav-bar, @base);\n\n    #WDS(app-wash, @surface0);\n\n    #WDS(white, @crust);\n    #RGB(white, @crust);\n\n    #RGB(attachment-type-stickers-color, @green);\n    #RGB(attachment-type-polls-color, @yellow);\n    #RGB(attachment-type-contacts-color, @sky);\n    #RGB(attachment-type-camera-color, @pink);\n    #RGB(attachment-type-photos-color, @blue);\n    #RGB(attachment-type-documents-color, @mauve);\n    #RGB(attachment-type-audio-color, @peach);\n    /* \\/ Note: Seems to be overwritten by a generated\n    CSS variable, so has no effect :( */\n    #RGB(attachment-type-event-color, @pink);\n\n    #RGB(toast-background, @surface1);\n    #RGB(toast-text, @text);\n\n    #RGB(picker-background, @surface1);\n\n    #RGB(butterbar-blue-nux-background, @sky);\n    #RGB(butterbar-blue-nux-icon-background, darken(@sky, 30%));\n    #RGB(blue-light, @blue);\n\n    #RGB(gray-500, @overlay2);\n\n    #RGB(focus-animation, mix(@accent, @base, 40%));\n    #RGB(focus-animation-deeper, mix(@accent, @base, 30%));\n\n    #RGB(startup-icon, @surface1);\n    #RGB(startup-background, @crust);\n\n    #RGB(progress-background, @surface0);\n\n    /* \"About AI messages\" icon */\n    .st0 {\n      fill: @accent !important;\n      stroke: @surface0;\n    }\n\n    /* TODO: Meta AI/other bot colours */\n\n    input[type=\"time\"]::-webkit-datetime-edit-hour-field:focus,\n    input[type=\"time\"]::-webkit-datetime-edit-minute-field:focus,\n    input[type=\"time\"]::-webkit-datetime-edit-second-field:focus,\n    input[type=\"time\"]::-webkit-datetime-edit-ampm-field:focus,\n    input[type=\"date\"]::-webkit-datetime-edit-year-field:focus,\n    input[type=\"date\"]::-webkit-datetime-edit-month-field:focus,\n    input[type=\"date\"]::-webkit-datetime-edit-day-field:focus {\n      background-color: @accent;\n      color: @accentContent;\n    }\n\n    [data-icon=\"wa-wordmark-refreshed\"] path {\n      fill: if(\n        @flavor = latte,\n        var(--WDS-persistent-always-branded),\n        currentcolor\n      );\n    }\n\n    /* Toasts */\n    #wa-popovers-bucket\n      + span\n      > div\n      button:nth-of-type(1):not(:has(> [data-icon=\"x-alt\"])) {\n      color: var(--WDS-accent-emphasized);\n    }\n\n    /* Date picker */\n    #RGB(date-picker-text-color, @text);\n    .react-calendar__tile:disabled {\n      color: @subtext0;\n    }\n    .react-calendar__month-view__days__day--neighboringMonth {\n      color: @overlay2;\n    }\n  }\n}\n\n#WDS(@id, @color) {\n  --WDS-@{id}: @color;\n  --WDS-@{id}-RGB: #lib.rgbify(@color)[];\n  --WDS-@{id}-rgb: #lib.rgbify(@color)[];\n}\n\n#RGB(@id, @color) {\n  --@{id}: @color;\n  --@{id}-rgb: #lib.rgbify(@color)[];\n}\n\n",
+    "usercssData": {
+      "name": "WhatsApp Web Catppuccin",
+      "namespace": "github.com/catppuccin/userstyles/styles/whatsapp-web",
+      "homepageURL": "https://github.com/catppuccin/userstyles/tree/main/styles/whatsapp-web",
+      "version": "2026.08.16",
+      "updateURL": "https://github.com/catppuccin/userstyles/raw/main/styles/whatsapp-web/catppuccin.user.less",
+      "supportURL": "https://github.com/catppuccin/userstyles/issues?q=is%3Aopen+is%3Aissue+label%3Awhatsapp-web",
+      "description": "Soothing pastel theme for WhatsApp Web",
+      "author": "Catppuccin",
+      "license": "MIT",
+      "preprocessor": "less",
+      "vars": {
+        "lightFlavor": {
+          "type": "select",
+          "label": "Light Flavor",
+          "name": "lightFlavor",
+          "value": "frappe",
+          "default": "latte",
+          "options": [
+            {
+              "name": "latte",
+              "label": "Latte",
+              "value": "latte"
+            },
+            {
+              "name": "frappe",
+              "label": "Frappé",
+              "value": "frappe"
+            },
+            {
+              "name": "macchiato",
+              "label": "Macchiato",
+              "value": "macchiato"
+            },
+            {
+              "name": "mocha",
+              "label": "Mocha",
+              "value": "mocha"
+            }
+          ]
+        },
+        "darkFlavor": {
+          "type": "select",
+          "label": "Dark Flavor",
+          "name": "darkFlavor",
+          "value": "frappe",
+          "default": "mocha",
+          "options": [
+            {
+              "name": "latte",
+              "label": "Latte",
+              "value": "latte"
+            },
+            {
+              "name": "frappe",
+              "label": "Frappé",
+              "value": "frappe"
+            },
+            {
+              "name": "macchiato",
+              "label": "Macchiato",
+              "value": "macchiato"
+            },
+            {
+              "name": "mocha",
+              "label": "Mocha",
+              "value": "mocha"
+            }
+          ]
+        },
+        "accentColor": {
+          "type": "select",
+          "label": "Accent",
+          "name": "accentColor",
+          "value": "mauve",
+          "default": "mauve",
+          "options": [
+            {
+              "name": "rosewater",
+              "label": "Rosewater",
+              "value": "rosewater"
+            },
+            {
+              "name": "flamingo",
+              "label": "Flamingo",
+              "value": "flamingo"
+            },
+            {
+              "name": "pink",
+              "label": "Pink",
+              "value": "pink"
+            },
+            {
+              "name": "mauve",
+              "label": "Mauve",
+              "value": "mauve"
+            },
+            {
+              "name": "red",
+              "label": "Red",
+              "value": "red"
+            },
+            {
+              "name": "maroon",
+              "label": "Maroon",
+              "value": "maroon"
+            },
+            {
+              "name": "peach",
+              "label": "Peach",
+              "value": "peach"
+            },
+            {
+              "name": "yellow",
+              "label": "Yellow",
+              "value": "yellow"
+            },
+            {
+              "name": "green",
+              "label": "Green",
+              "value": "green"
+            },
+            {
+              "name": "teal",
+              "label": "Teal",
+              "value": "teal"
+            },
+            {
+              "name": "blue",
+              "label": "Blue",
+              "value": "blue"
+            },
+            {
+              "name": "sapphire",
+              "label": "Sapphire",
+              "value": "sapphire"
+            },
+            {
+              "name": "sky",
+              "label": "Sky",
+              "value": "sky"
+            },
+            {
+              "name": "lavender",
+              "label": "Lavender",
+              "value": "lavender"
+            },
+            {
+              "name": "subtext0",
+              "label": "Gray",
+              "value": "subtext0"
+            }
+          ]
+        },
+        "lighterMessages": {
+          "type": "checkbox",
+          "label": "Elevated incoming messages",
+          "name": "lighterMessages",
+          "value": null,
+          "default": "0",
+          "options": null
+        }
+      }
+    },
+    "originalDigest": "7746d45aad6a8d44844db9142b2fba45c5b220b8",
+    "sections": [
+      {
+        "code": ""
+      }
+    ]
+  }
+]
