@@ -22,6 +22,8 @@ in
 {
   home.stateVersion = "26.05";
 
+  services.poweralertd.enable = true;
+
   programs.google-chrome.commandLineArgs = [
     "--render-node-override=/dev/dri/by-path/pci-0000:07:00.0-render"
     "--enable-features=AcceleratedVideoEncoder"

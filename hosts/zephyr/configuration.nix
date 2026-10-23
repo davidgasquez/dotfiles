@@ -48,7 +48,16 @@
     config.environment.etc."asusd/asusd.ron".source
   ];
 
-  services.upower.enable = true;
+  services.upower = {
+    enable = true;
+    percentageLow = 20;
+    percentageCritical = 10;
+    percentageAction = 5;
+    criticalPowerAction = "PowerOff";
+  };
+  systemd.services.upower.restartTriggers = [
+    config.environment.etc."UPower/UPower.conf".source
+  ];
   services.fwupd.enable = true;
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
