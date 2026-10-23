@@ -74,7 +74,6 @@ function done(text) {
 createInterface({input:process.stdin}).on('line', line => {
   const record = JSON.parse(line);
   if (record.type === 'set_session_name') emit({type:'response',id:record.id,success:true});
-  if (record.type === 'extension_ui_response') done('answer:' + JSON.stringify(record));
   if (record.type !== 'prompt') return;
   emit({type:'response',id:record.id,success:true,data:{disposition:record.message === '/handled' ? 'handled' : busy ? 'queued' : 'started'}});
   if (record.message === '/handled') return;
@@ -87,7 +86,6 @@ createInterface({input:process.stdin}).on('line', line => {
     writeFileSync(session + '.child', String(child.pid));
     return;
   }
-  if (record.message === 'question') { emit({type:'extension_ui_request',id:'q1',method:'confirm',title:'Continue?'}); return; }
   if (record.message === 'recall') done(remembered);
   else { remembered = record.message; done(record.message); }
 });
@@ -172,7 +170,10 @@ createInterface({input:process.stdin}).on('line', line => {
       .protocolVersion,
     "2025-03-26",
   );
-  assert.equal((await request("tools/list")).result.tools.length, 5);
+  assert.deepEqual(
+    (await request("tools/list")).result.tools.map((tool) => tool.name),
+    ["pi_start", "pi_send", "pi_status", "pi_stop"],
+  );
   assert.equal((await request("unknown")).error.code, -32601);
   assert.equal(
     (await request("tools/call", { name: "pi_status" })).result.isError,
@@ -218,28 +219,6 @@ createInterface({input:process.stdin}).on('line', line => {
     (await call("pi_send", { worker_id: id, message: "/handled" })).disposition,
     "handled",
   );
-
-  await call("pi_send", { worker_id: id, message: "question" });
-  await until(() => messages.length === 4);
-  assert.equal((await call("pi_status", { worker_id: id })).status, "waiting");
-  assert.equal(
-    (
-      await call(
-        "pi_reply",
-        { worker_id: id, question_id: "q1", value: "yes" },
-        "parent-a",
-        true,
-      )
-    ).isError,
-    true,
-  );
-  await call("pi_reply", {
-    worker_id: id,
-    question_id: "q1",
-    confirmed: false,
-  });
-  await until(() => messages.length === 5);
-  assert.match(messages[4].arguments.prompt, /"confirmed":false/);
 
   rejectDelivery = true;
   await call("pi_send", { worker_id: id, message: "retained result" });

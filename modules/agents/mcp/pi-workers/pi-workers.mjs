@@ -6,9 +6,8 @@ import { homedir } from "node:os";
 import { isAbsolute, join } from "node:path";
 
 const workers = new Map();
-const dialogs = new Set(["select", "confirm", "input", "editor"]);
 const instructions =
-  "Delegate with pi_start instead of built-in subagents. Workers share the filesystem, have no parent conversation, and keep Pi's configured model. Give each a focused task and necessary context. Results and questions return automatically to this chat. Use pi_send for follow-ups or steering, pi_reply for questions, pi_status for recovery, and pi_stop when finished. Review their work before reporting completion. No worktrees.";
+  "Delegate with pi_start instead of built-in subagents. Give each a focused task and necessary context. Results return automatically to this chat. Use pi_send for follow-ups or steering, pi_status for recovery, and pi_stop when finished.";
 const string = { type: "string", minLength: 1 };
 const workerId = { ...string, description: "Worker id returned by pi_start." };
 const schema = (properties, required = []) => ({
@@ -21,13 +20,18 @@ const tools = [
   {
     name: "pi_start",
     description:
-      "Start a persistent Pi RPC worker. Returns immediately; its result is sent to this chat automatically. The task must include all relevant context and verification requirements.",
+      "Start a persistent Pi worker and return immediately. Results arrive in this chat automatically. Omit model to use Pi's configured model.",
     inputSchema: schema(
       {
-        task: string,
+        task: {
+          ...string,
+          description:
+            "Focused task with relevant context, constraints, expected output, and verification criteria.",
+        },
         cwd: {
           ...string,
-          description: "Absolute working directory; shared with the parent.",
+          description:
+            "Existing absolute working directory on the shared filesystem.",
         },
         name: string,
         model: string,
@@ -42,7 +46,7 @@ const tools = [
   {
     name: "pi_send",
     description:
-      "Send another task to the same worker, retaining context. While busy, followUp queues work after the current task; steer adjusts the running task. Both start immediately when idle.",
+      "Continue a worker with its existing context. When busy, followUp queues work and steer redirects the current task; either starts immediately when idle.",
     inputSchema: schema(
       {
         worker_id: workerId,
@@ -59,28 +63,13 @@ const tools = [
   {
     name: "pi_status",
     description:
-      "Inspect a worker, or list this chat's workers. Includes latest result, pending questions, session path and callback failures. Normal completion arrives automatically; avoid polling.",
+      "Recover worker state: latest result, session path, and callback errors. Omit worker_id to list this chat's workers. Results arrive automatically; avoid polling.",
     inputSchema: schema({ worker_id: workerId }),
-  },
-  {
-    name: "pi_reply",
-    description:
-      "Answer a pending Pi dialog using its question_id. Use value for select/input/editor, confirmed for confirm, or cancelled:true. Obtain user approval when the question requires it.",
-    inputSchema: schema(
-      {
-        worker_id: workerId,
-        question_id: string,
-        value: { type: "string" },
-        confirmed: { type: "boolean" },
-        cancelled: { type: "boolean", const: true },
-      },
-      ["worker_id", "question_id"],
-    ),
   },
   {
     name: "pi_stop",
     description:
-      "Stop a worker and its running commands. Retains its transcript and latest result. Workers also stop when this MCP connection closes.",
+      "Stop a worker and its commands, preserving its transcript and latest result. Workers also stop when this MCP connection closes.",
     inputSchema: schema({ worker_id: workerId }, ["worker_id"]),
   },
 ];
@@ -197,7 +186,6 @@ function snapshot(worker) {
     session,
     status,
     result,
-    questions: [...worker.questions.values()],
     deliveryError,
   };
 }
@@ -238,7 +226,6 @@ async function stop(worker) {
     signal(worker, "SIGKILL");
   }
   worker.status = "stopped";
-  worker.questions.clear();
   return snapshot(worker);
 }
 
@@ -280,7 +267,6 @@ function event(worker, record) {
     const failed =
       record.aborted || ["error", "aborted"].includes(message?.stopReason);
     worker.status = failed ? "error" : "idle";
-    worker.questions.clear();
     worker.result = failed
       ? `Error: ${message?.errorMessage ?? "Run aborted"}`
       : message?.content
@@ -295,20 +281,6 @@ function event(worker, record) {
       worker,
       `${worker.status === "idle" ? "Completed" : "Failed"}:\n${output}`,
     );
-  } else if (
-    record.type === "extension_ui_request" &&
-    dialogs.has(record.method) &&
-    !worker.stopping
-  ) {
-    worker.questions.set(record.id, record);
-    worker.status = "waiting";
-    notify(worker, `Needs an answer via pi_reply:\n${JSON.stringify(record)}`);
-    if (record.timeout != null)
-      setTimeout(() => {
-        worker.questions.delete(record.id);
-        if (!worker.questions.size && worker.status === "waiting")
-          worker.status = "busy";
-      }, record.timeout).unref();
   }
 }
 
@@ -339,7 +311,7 @@ async function start(args, context) {
     "--session",
     session,
     "--append-system-prompt",
-    "You are a worker for a Codex orchestrator. Work directly on the assigned task; do not spawn subagents. Report blockers and a concise final result with verification. You share the working directory with other agents.",
+    "You are a worker for a Codex orchestrator. Complete the assigned task. You share files with other agents. Preserve their changes. Return a concise result with verification outcomes and any blockers.",
   ];
   if (args.model) argv.push("--model", args.model);
   if (args.thinking) argv.push("--thinking", args.thinking);
@@ -358,7 +330,6 @@ async function start(args, context) {
     status: "starting",
     revision: 0,
     pending: new Map(),
-    questions: new Map(),
     delivery: Promise.resolve(),
     stderr: "",
   };
@@ -377,7 +348,6 @@ async function start(args, context) {
       if (!worker.stopping) {
         worker.status = "error";
         worker.result = reason;
-        worker.questions.clear();
         notify(worker, reason);
       }
       resolve();
@@ -438,8 +408,7 @@ function validate(args, definition) {
       !rule ||
       (rule.type && typeof value !== rule.type) ||
       (rule.minLength && !value.trim()) ||
-      (rule.enum && !rule.enum.includes(value)) ||
-      ("const" in rule && value !== rule.const)
+      (rule.enum && !rule.enum.includes(value))
     )
       throw new Error(`Invalid ${key}`);
   }
@@ -461,33 +430,7 @@ async function callTool(params) {
     throw new Error("Worker not found in this chat");
   if (tool.name === "pi_status") return snapshot(worker);
   if (tool.name === "pi_stop") return stop(worker);
-  if (tool.name === "pi_send") return send(worker, args.message, args.mode);
-  const question = worker.questions.get(args.question_id);
-  if (!question) throw new Error("Question is no longer pending");
-  const answers = ["value", "confirmed", "cancelled"].filter(
-    (key) => key in args,
-  );
-  if (
-    answers.length !== 1 ||
-    (!args.cancelled &&
-      (question.method === "confirm"
-        ? typeof args.confirmed !== "boolean"
-        : typeof args.value !== "string"))
-  )
-    throw new Error("Provide exactly one answer appropriate to the dialog");
-  if (
-    question.method === "select" &&
-    !args.cancelled &&
-    !question.options.includes(args.value)
-  )
-    throw new Error("Answer must be one of the offered options");
-  if (worker.exited || worker.stopping) throw new Error("Worker has stopped");
-  worker.child.stdin.write(
-    `${JSON.stringify({ type: "extension_ui_response", id: question.id, [answers[0]]: args[answers[0]] })}\n`,
-  );
-  worker.questions.delete(question.id);
-  worker.status = worker.questions.size ? "waiting" : "busy";
-  return snapshot(worker);
+  return send(worker, args.message, args.mode);
 }
 
 function output(message) {
