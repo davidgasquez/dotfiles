@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -23,21 +23,6 @@
     linger = true;
     hashedPassword = "!";
   };
-
-  services.glances = {
-    enable = true;
-    package = pkgs.glances.overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        substituteInPlace tests/test_restful.py \
-          --replace-fail 'time.sleep(5)' 'time.sleep(30)'
-      '';
-      # psutil may not detect physical CPU cores on this Pi.
-      disabledTests = old.disabledTests ++ [ "test_phys_core_returns_int" ];
-    });
-  };
-  networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
-    config.services.glances.port
-  ];
 
   services.tailscale = {
     openFirewall = true;

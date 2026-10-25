@@ -50,17 +50,8 @@ in
   networking.nameservers = quad9;
   networking.resolvconf.extraConfig = "allow_keys=static";
 
-  networking.firewall.interfaces = {
-    end0 = {
-      allowedTCPPorts = [ 53 ];
-      allowedUDPPorts = [ 53 ];
-    };
-    ${config.services.tailscale.interfaceName} = {
-      allowedTCPPorts = [
-        53
-        80
-      ];
-      allowedUDPPorts = [ 53 ];
-    };
+  networking.firewall.interfaces.end0 = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 ];
   };
 }
