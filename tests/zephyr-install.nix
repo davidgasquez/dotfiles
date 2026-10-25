@@ -49,7 +49,6 @@ let
               '';
             };
             boot.plymouth.enable = lib.mkForce false;
-            boot.initrd.verbose = lib.mkForce true;
             boot.consoleLogLevel = lib.mkForce 7;
             services.greetd.enable = lib.mkForce false;
             system.autoUpgrade.enable = lib.mkForce false;

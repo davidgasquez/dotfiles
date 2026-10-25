@@ -44,7 +44,7 @@
       armoury_settings: {},
     )
   '';
-  systemd.services.asusd.restartTriggers = [
+  systemd.services.asusd.restartTriggers = lib.mkIf config.services.asusd.enable [
     config.environment.etc."asusd/asusd.ron".source
   ];
 

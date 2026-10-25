@@ -17,7 +17,6 @@
     theme = "spinner";
   };
   boot.consoleLogLevel = 3;
-  boot.initrd.verbose = false;
   boot.kernelParams = [
     "quiet"
     "rd.udev.log_level=3"
@@ -26,8 +25,6 @@
     "systemd.show_status=false"
     "vt.global_cursor_default=0"
   ];
-
-  boot.initrd.systemd.enable = true;
 
   boot.loader.systemd-boot.enable = false;
   boot.loader.limine = {
