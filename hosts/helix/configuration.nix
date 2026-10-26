@@ -22,7 +22,6 @@
 
   networking.hostName = "helix";
 
-  environment.systemPackages = [ pkgs.llama-cpp-vulkan ];
   services.llama-cpp = {
     enable = true;
     package = pkgs.llama-cpp-vulkan;
@@ -34,9 +33,6 @@
           spec-type = "draft-mtp";
           spec-draft-n-max = 2;
           parallel = 1;
-          temp = 1.0;
-          top-p = 0.95;
-          top-k = 20;
           min-p = 0.0;
         };
       };
