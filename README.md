@@ -31,12 +31,6 @@ sudo -n nixos-rebuild switch --flake .
 
 A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. All hosts pull `main` and rebuild.
 
-The Zephyr installation test formats a disposable VM disk, boots through Limine, unlocks LUKS, and checks Home Manager activation:
-
-```sh
-nix build --no-link --impure --file tests/zephyr-install.nix
-```
-
 ## 📜 License
 
 MIT © David Gasquez
