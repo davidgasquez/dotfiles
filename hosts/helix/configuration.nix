@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [
@@ -21,6 +21,33 @@
   };
 
   networking.hostName = "helix";
+
+  environment.systemPackages = [ pkgs.llama-cpp-vulkan ];
+  services.llama-cpp = {
+    enable = true;
+    package = pkgs.llama-cpp-vulkan;
+    settings = {
+      models-max = 1;
+      models-preset = (pkgs.formats.ini { }).generate "llama-cpp-models.ini" {
+        "unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_M" = {
+          hf-repo = "unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_M";
+          spec-type = "draft-mtp";
+          spec-draft-n-max = 2;
+          parallel = 1;
+          temp = 1.0;
+          top-p = 0.95;
+          top-k = 20;
+          min-p = 0.0;
+        };
+      };
+      sleep-idle-seconds = 300;
+    };
+  };
+  systemd.services.llama-cpp = {
+    wantedBy = lib.mkForce [ ];
+    environment.XDG_CACHE_HOME = "/var/cache/llama-cpp";
+  };
+
   networking.networkmanager = {
     connectionConfig."ipv4.dad-timeout" = 200;
     ensureProfiles.profiles.helix-lan = {
