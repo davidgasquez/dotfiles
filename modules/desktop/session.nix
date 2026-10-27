@@ -9,6 +9,7 @@
 
 let
   inherit (config.gtk) font;
+  recordingDirectory = "${config.xdg.userDirs.videos}/Recordings";
   lock = pkgs.writeShellApplication {
     name = "lock-session";
     runtimeInputs = with pkgs; [
@@ -32,6 +33,22 @@ in
     brightnessctl
     wl-clipboard
     pavucontrol
+    (writeShellApplication {
+      name = "screen-record";
+      runtimeInputs = [
+        systemd
+        util-linux
+      ];
+      text = ''
+        exec 9>"$XDG_RUNTIME_DIR/screen-record.lock"
+        flock -n 9 || exit 0
+        if systemctl --user is-active --quiet screen-record.service; then
+          systemctl --user stop screen-record.service
+        else
+          systemctl --user start screen-record.service
+        fi
+      '';
+    })
     (writeShellApplication {
       name = "open-project";
       runtimeInputs = [
@@ -135,6 +152,49 @@ in
   programs.hyprshot = {
     enable = true;
     saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";
+  };
+
+  systemd.user.services.screen-record = {
+    Unit = {
+      Description = "Record the focused monitor";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+      Requisite = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "exec";
+      ExecStart = lib.getExe (
+        pkgs.writeShellApplication {
+          name = "screen-record-start";
+          runtimeInputs = with pkgs; [
+            coreutils
+            hyprland
+            jq
+            gpu-screen-recorder
+          ];
+          text = ''
+            mkdir -p ${lib.escapeShellArg recordingDirectory}
+            monitor=$(hyprctl monitors -j | jq -er '.[] | select(.focused) | .name')
+            filename=${lib.escapeShellArg recordingDirectory}/recording-$(date +%Y-%m-%d_%H-%M-%S-%3N).mp4
+            exec gpu-screen-recorder -w "$monitor" -k h264 -f 60 -fm cfr \
+              -fallback-cpu-encoding yes -o "$filename"
+          '';
+        }
+      );
+      ExecStopPost = pkgs.writeShellScript "screen-record-notify" ''
+        if [ "$SERVICE_RESULT" = success ]; then
+          ${pkgs.libnotify}/bin/notify-send --app-name="Screen recording" \
+            "Recording saved" ${lib.escapeShellArg recordingDirectory}
+        else
+          ${pkgs.libnotify}/bin/notify-send --app-name="Screen recording" --urgency=critical \
+            "Screen recording failed" "See journalctl --user -u screen-record.service for details."
+        fi
+      '';
+      KillSignal = "SIGINT";
+      KillMode = "mixed";
+      TimeoutStopSec = 15;
+      UMask = "0077";
+    };
   };
 
   xdg.configFile."uwsm/env".source =

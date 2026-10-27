@@ -124,6 +124,7 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 hl.bind("PRINT", hl.dsp.exec_cmd("uwsm app -- hyprshot -m output"))
 hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("uwsm app -- hyprshot -m region"))
 hl.bind("CTRL + PRINT", hl.dsp.exec_cmd("uwsm app -- hyprshot -m window"))
+hl.bind("ALT + PRINT", hl.dsp.exec_cmd("uwsm app -- screen-record"), { description = "Start or stop screen recording" })
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("uwsm app -- hyprshot -m region"))
 
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))

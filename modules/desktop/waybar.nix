@@ -22,6 +22,7 @@ in
       ];
       modules-center = [ "mpris" ];
       modules-right = [
+        "custom/screen-record"
         "custom/voxtype"
         "wireplumber"
         "group/tray-expander"
@@ -40,6 +41,13 @@ in
         restart-interval = 5;
         return-type = "json";
         format = "{}";
+      };
+      "custom/screen-record" = {
+        exec = "if ${pkgs.systemd}/bin/systemctl --user is-active --quiet screen-record.service; then echo '󰻂 REC'; fi";
+        interval = 1;
+        hide-empty-text = true;
+        tooltip-format = "Recording screen · Click or Alt+Print to stop";
+        on-click = "${pkgs.systemd}/bin/systemctl --user stop screen-record.service";
       };
       clock = {
         format = "{:%a %d %b  %H:%M}";
@@ -131,13 +139,14 @@ in
       #workspaces button.active { background: @surface0; color: @accent; }
       #workspaces button.urgent { background: @red; color: @base; }
       .modules-right { margin: 4px 10px 4px 0; }
-      #mpris, #battery, #backlight, #custom-voxtype, #wireplumber, #tray-expander, #clock {
+      #mpris, #battery, #backlight, #custom-screen-record, #custom-voxtype, #wireplumber, #tray-expander, #clock {
         background: @surface0;
         border-radius: 4px;
         color: @subtext0;
       }
-      #battery, #backlight, #custom-voxtype, #wireplumber, #tray-expander { margin-right: 4px; }
-      #battery, #backlight, #custom-voxtype, #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
+      #battery, #backlight, #custom-screen-record, #custom-voxtype, #wireplumber, #tray-expander { margin-right: 4px; }
+      #battery, #backlight, #custom-screen-record, #custom-voxtype, #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
+      #custom-screen-record { color: @red; }
       #custom-voxtype.recording { color: @red; }
       #custom-voxtype.transcribing { color: @yellow; }
       #mpris { margin: 4px 12px; padding: 0 10px; }

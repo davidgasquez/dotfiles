@@ -133,6 +133,7 @@ in
     withUWSM = true;
   };
   programs.hyprlock.enable = true;
+  programs.gpu-screen-recorder.enable = true;
   systemd.user.services.wayland-wm-app-daemon = {
     wantedBy = [ "graphical-session.target" ];
     enableDefaultPath = false;
