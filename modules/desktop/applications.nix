@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -15,6 +16,7 @@ let
     });
   chatgpt = withOzone pkgs.chatgpt;
   spotify = withOzone pkgs.spotify;
+  t3code = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code;
   chromeWarm = pkgs.writeText "chrome-warm.json" (
     builtins.toJSON {
       external_crx = ./chrome-warm/extension.crx;
@@ -34,6 +36,8 @@ in
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
   home.packages = with pkgs; [
     chatgpt
+    t3code
+    t3code.desktop
     proton-pass-cli
     seahorse
     spotify
