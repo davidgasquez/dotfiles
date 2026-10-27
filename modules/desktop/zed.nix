@@ -16,11 +16,15 @@
       "ini"
       "lua"
       "make"
+      "markdown-oxide"
       "nix"
       "sql"
       "toml"
     ];
-    extraPackages = [ pkgs.nil ];
+    extraPackages = [
+      pkgs.markdown-oxide
+      pkgs.nil
+    ];
     userSettings = builtins.fromJSON (builtins.readFile ./zed.json);
     userKeymaps = [
       {
