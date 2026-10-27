@@ -13,6 +13,7 @@
     ./disk-config.nix
     ../../modules/desktop
     ../../modules/agents
+    ../../modules/agents/llama-cpp.nix
   ];
 
   networking.hostName = "zephyr";
