@@ -104,6 +104,10 @@ in
     terminal = false;
   };
   programs.mangohud.enable = true;
+  programs.mpv = {
+    enable = true;
+    config.hwdec = "auto";
+  };
 
   xdg.mimeApps = {
     enable = true;
@@ -111,6 +115,9 @@ in
       "inode/directory" = "thunar.desktop";
       "text/html" = "google-chrome.desktop";
       "application/xhtml+xml" = "google-chrome.desktop";
+      "video/mp4" = "mpv.desktop";
+      "video/webm" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop";
       "x-scheme-handler/http" = "google-chrome.desktop";
       "x-scheme-handler/https" = "google-chrome.desktop";
       "x-scheme-handler/mailto" = "google-chrome.desktop";
