@@ -287,14 +287,10 @@ function event(worker, record) {
 async function start(args, context) {
   if (!isAbsolute(args.cwd) || !(await stat(args.cwd)).isDirectory())
     throw new Error("cwd must be an existing absolute directory");
-  // Check the return channel before starting potentially expensive work.
-  await appCall(context, "read_thread", {
-    threadId: context.threadId,
-    hostId: "local",
-    turnLimit: 1,
-    includeOutputs: false,
-    maxOutputCharsPerItem: 0,
-  });
+  if (!process.env.CODEX_APP_TOOLS_PIPE_PATH)
+    throw new Error(
+      "CODEX_APP_TOOLS_PIPE_PATH is missing; launch from the desktop app.",
+    );
   if (closing) throw new Error("MCP is shutting down");
   const root = join(
     process.env.CODEX_HOME ?? join(homedir(), ".codex"),

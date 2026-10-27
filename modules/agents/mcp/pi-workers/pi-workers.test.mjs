@@ -37,8 +37,8 @@ test("MCP lifecycle, Pi RPC and desktop callbacks", async (t) => {
           id: request.id,
           result: {
             success:
-              !rejectDelivery ||
-              request.params.tool !== "send_message_to_thread",
+              request.params.tool === "send_message_to_thread" &&
+              !rejectDelivery,
             contentItems: [],
           },
         }),
