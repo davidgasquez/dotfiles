@@ -25,6 +25,10 @@ hl.config({
     blur = { enabled = false },
   },
 
+  debug = {
+    damage_tracking = 0,
+  },
+
   dwindle = {
     preserve_split = true,
     force_split = 2,
