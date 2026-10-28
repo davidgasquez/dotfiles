@@ -37,9 +37,35 @@ in
     (lib.hiPrio launcher)
   ];
 
+  home.sessionVariables.T3CODE_TELEMETRY_ENABLED = "false";
+
   programs.t3code = {
     enable = true;
     package = t3code;
+    userSettings = {
+      enableProviderUpdateChecks = false;
+      continueThreadsAfterServerUpdate = true;
+      providerInstances.pi = {
+        driver = "pi";
+        enabled = true;
+        config.binaryPath = lib.getExe config.programs.pi-coding-agent.package;
+      };
+      defaultAutoPull = true;
+      pullRequestMergeMethod = "squash";
+      branchNamePrefix = "";
+      idleCompaction = "onReturn";
+      storageCleanup = {
+        worktreeAfterDays = 8;
+        worktreeOnMerge = true;
+        worktreeOnDelete = true;
+        browserArtifactsAfterDays = 8;
+        logsAfterDays = 8;
+      };
+    };
+    clientSettings = {
+      fontFamilyCode = "JetBrains Mono";
+      notificationMode = "notifications-and-sound";
+    };
   };
 
   xdg.mimeApps.defaultApplications."x-scheme-handler/t3code" = "com.t3tools.T3Code.desktop";
@@ -48,7 +74,10 @@ in
     t3codeRemoteOnly =
       lib.hm.dag.entryBetween
         [ "reloadSystemd" ]
-        [ "writeBoundary" ]
+        [
+          "t3codeSettingsActivation"
+          "t3codeClientSettingsActivation"
+        ]
         (
           lib.hm.generators.mkImpureConfigMerger {
             inherit pkgs;
@@ -70,6 +99,7 @@ in
       WorkingDirectory = "%h";
       Environment = [
         "NODE_COMPILE_CACHE=%C/t3code/node"
+        "T3CODE_TELEMETRY_ENABLED=false"
         "PI_CLAUDE_CODE_COMMAND=${config.home.sessionVariables.PI_CLAUDE_CODE_COMMAND}"
       ];
       ExecStart = "${lib.getExe t3code} serve --host 127.0.0.1 --port 3773 --base-dir %h/.t3";
@@ -97,6 +127,7 @@ in
       WorkingDirectory = "%h";
       Environment = [
         "T3CODE_DESKTOP_LAUNCHER_PATH=${lib.getExe launcher}"
+        "T3CODE_TELEMETRY_ENABLED=false"
       ];
       ExecStart = stock;
       Restart = "on-failure";
