@@ -82,7 +82,31 @@ local resizeSubmap = "Redimensionar · ← ↓ ↑ → · Esc salir"
 hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("uwsm app -- chatgpt"), { description = "Open ChatGPT" })
 
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd("ghostty +new-window"))
-hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.close())
+local function is_t3code(window)
+  return window ~= nil
+    and window.initial_class == "com.t3tools.T3Code"
+    and (window.initial_title == "T3 Code" or window.initial_title == "T3 Code (Beta)")
+end
+
+function t3code_show()
+  for _, window in ipairs(hl.get_windows()) do
+    if is_t3code(window) then
+      hl.dispatch(hl.dsp.window.move({ window = window, workspace = hl.get_active_workspace(), follow = false }))
+      hl.dispatch(hl.dsp.focus({ window = window }))
+      return
+    end
+  end
+  error("T3 Code window not found")
+end
+
+hl.bind(mainMod .. " + SHIFT + Q", function()
+  local window = hl.get_active_window()
+  if is_t3code(window) then
+    hl.dispatch(hl.dsp.window.move({ window = window, workspace = "special:t3code", follow = false }))
+  else
+    hl.dispatch(hl.dsp.window.close())
+  end
+end, { description = "Close window or park T3 Code" })
 
 hl.bind(mainMod .. " + M", hl.dsp.submap(powerSubmap))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.submap(powerSubmap))
@@ -195,6 +219,13 @@ hl.window_rule({
   name = "pi-subagents",
   match = { class = "^com[.]mitchellh[.]ghostty[.]subagent[.]h[a-f0-9]{8}$" },
   workspace = "special:magic silent",
+  no_initial_focus = true,
+})
+
+hl.window_rule({
+  name = "t3code-park",
+  match = { initial_class = "^com[.]t3tools[.]T3Code$", initial_title = "^T3 Code( [(]Beta[)])?$" },
+  workspace = "special:t3code silent",
   no_initial_focus = true,
 })
 

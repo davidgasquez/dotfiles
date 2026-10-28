@@ -23,6 +23,7 @@ in
   hardware.bluetooth.enable = true;
   console.keyMap = "es";
   users.users.david.extraGroups = [ "networkmanager" ];
+  users.users.david.linger = true;
   programs.nix-ld.enable = true;
 
   nixpkgs.config.allowUnfreePredicate =
@@ -44,6 +45,7 @@ in
     ./appearance.nix
     ./waybar.nix
     ./applications.nix
+    ./t3code.nix
     ./zed.nix
     ./codex-desktop.nix
   ];
