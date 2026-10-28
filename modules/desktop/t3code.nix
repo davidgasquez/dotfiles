@@ -39,6 +39,11 @@ in
 
   home.sessionVariables.T3CODE_TELEMETRY_ENABLED = "false";
 
+  xdg.configFile."t3code/catppuccin-frappe.json".source = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/SunkenInTime/t3-themes/81470c594bb9f7c7337fb2de98fb361eb100e444/themes/catppuccin-frappe.json";
+    hash = "sha256-KVoP7WKOrkRLxKVx/afTSoXQXY2BLpJRpAD89b3paLk=";
+  };
+
   programs.t3code = {
     enable = true;
     package = t3code;
