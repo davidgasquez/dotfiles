@@ -22,6 +22,7 @@
   };
 
   networking.hostName = "helix";
+  services.tailscale.extraSetFlags = [ "--operator=david" ];
 
   networking.networkmanager = {
     connectionConfig."ipv4.dad-timeout" = 200;
