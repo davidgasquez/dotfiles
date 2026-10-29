@@ -56,9 +56,21 @@ in
         config.binaryPath = lib.getExe config.programs.pi-coding-agent.package;
       };
       defaultAutoPull = true;
+      defaultModelSelection = {
+        instanceId = "pi";
+        model = "openai/gpt-6-astra";
+        options = [
+          {
+            id = "thinking";
+            value = "xhigh";
+          }
+        ];
+      };
       pullRequestMergeMethod = "squash";
       branchNamePrefix = "";
       idleCompaction = "onReturn";
+      snoozeLimitedThreads = true;
+      autoResumeLimitedThreads = true;
       storageCleanup = {
         worktreeAfterDays = 8;
         worktreeOnMerge = true;
@@ -70,6 +82,8 @@ in
     clientSettings = {
       fontFamilyCode = "JetBrains Mono";
       notificationMode = "notifications-and-sound";
+      mathRenderingEnabled = true;
+      glassOpacity = 100;
     };
   };
 
