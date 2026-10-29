@@ -12,7 +12,7 @@ disable-model-invocation: true
 ## Commits
 
 - When asked to commit, inspect `git status` and `git --no-pager diff HEAD`.
-- Keep commits atomic; split independent changes into separate commits.
+- Keep commits atomic and split independent changes into separate commits.
 - Stage only relevant changes and review `git --no-pager diff --cached` before committing.
 - Use `git commit -m "<emoji> <description>"` with an imperative subject under 72 characters, no explicit scope, and no trailing period (`🐛 Fix upsert logic`).
 - Ensure each message accurately reflects its diff and report the resulting commits.
