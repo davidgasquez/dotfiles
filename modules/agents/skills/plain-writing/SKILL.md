@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Plain writing
 
-Write so that a smart reader who lacks your context understands the text in one pass. After drafting, reread the text as that reader and fix whatever they would stumble on.
+Write so that a smart reader who lacks your context understands the text in one pass. For docs, READMEs, and RFCs, also pick a structure from [technical-writing](https://github.com/backnotprop/pstack/blob/main/skills/technical-writing/SKILL.md). After drafting, reread the text as that reader and fix whatever they would stumble on.
 
 ## Structure
 
@@ -20,7 +20,7 @@ Write so that a smart reader who lacks your context understands the text in one 
 ## Sentences
 
 - Use plain everyday words and established terms, and define a technical term the reader may not know. Call each thing by one name, using the real file, command, or symbol name.
-- Use the concrete name instead of a coined term, metaphor, or slogan: "base" for "substrate", "the API" for "the API surface", "a limit that only decreases" for "a ratchet".
+- Use the concrete name instead of a coined term, metaphor, or slogan: "base" for "substrate", "the API" for "the API surface", "a limit that only decreases" for "a ratchet". [unslop](https://github.com/backnotprop/pstack/blob/main/skills/unslop/SKILL.md) lists more of these patterns.
 - Name the actor in active voice: "the loader parses the file".
 - State the mechanism or number.
   - Before: This change matters and makes ranking much faster.
@@ -34,7 +34,7 @@ Write so that a smart reader who lacks your context understands the text in one 
 
 ## Lists and feeds
 
-Readers scan the first two words of each item and assume that every difference between items means something.
+Readers scan the first two words of each item and assume that every difference between items means something, as [Making AI text readable at scale](https://fsdatalab.github.io/blog/agent-text-at-scale) explains with examples.
 
 - Start each item with its verb or subject, in the tense readers expect: past for done, continuous for active, future for planned. Drop a subject that every item shares.
   - Before: `KV persistence`, `Login bug fixed by agent`
@@ -50,10 +50,3 @@ Readers scan the first two words of each item and assume that every difference b
 ## Deslopify
 
 When the user asks to deslopify, rewrite the previous response, or the given text, for a sharp reader with no project context. Return only the rewrite.
-
-## Related skills
-
-- [unslop](https://github.com/backnotprop/pstack/blob/main/skills/unslop/SKILL.md) for a longer catalog of AI writing patterns when a rewrite still reads machine-written.
-- [technical-writing](https://github.com/backnotprop/pstack/blob/main/skills/technical-writing/SKILL.md) for structuring docs, READMEs, and RFCs as tutorials, how-to guides, reference, or explanation.
-- [Making AI text readable at scale](https://fsdatalab.github.io/blog/agent-text-at-scale) for the reasoning and examples behind the list and feed rules.
-- [plain-writing](https://github.com/docwriter-org/plain-writing-skill/blob/main/skills/plain-writing/SKILL.md) for the upstream rules this skill condenses.

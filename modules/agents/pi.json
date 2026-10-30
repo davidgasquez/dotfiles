@@ -1,5 +1,7 @@
 {
-  "defaultProvider": "claude-code",
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-6-astra",
+  "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
   "packages": [
     "npm:pi-web-access",
