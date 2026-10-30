@@ -50,3 +50,10 @@ Readers scan the first two words of each item and assume that every difference b
 ## Deslopify
 
 When the user asks to deslopify, rewrite the previous response, or the given text, for a sharp reader with no project context. Return only the rewrite.
+
+## Related skills
+
+- [unslop](https://github.com/backnotprop/pstack/blob/main/skills/unslop/SKILL.md) for a longer catalog of AI writing patterns when a rewrite still reads machine-written.
+- [technical-writing](https://github.com/backnotprop/pstack/blob/main/skills/technical-writing/SKILL.md) for structuring docs, READMEs, and RFCs as tutorials, how-to guides, reference, or explanation.
+- [Making AI text readable at scale](https://fsdatalab.github.io/blog/agent-text-at-scale) for the reasoning and examples behind the list and feed rules.
+- [plain-writing](https://github.com/docwriter-org/plain-writing-skill/blob/main/skills/plain-writing/SKILL.md) for the upstream rules this skill condenses.
