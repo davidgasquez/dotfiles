@@ -43,7 +43,9 @@
       ''
         (
           cd ${lib.escapeShellArg config.home.homeDirectory}
-          run ${config.home.path}/bin/pi update --extensions --no-approve
+          if ! run ${config.home.path}/bin/pi update --extensions --no-approve; then
+            warnEcho 'Pi extension update failed; retry with pi update --extensions --no-approve.'
+          fi
         )
       '';
 }
