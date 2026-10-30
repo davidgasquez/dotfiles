@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   inputs,
@@ -33,19 +32,4 @@
     recursive = true;
   };
   home.file.".pi/agent/themes/frappe.json".source = ./pi/themes/frappe.json;
-
-  home.activation.piExtensions =
-    lib.hm.dag.entryAfter
-      [
-        "piCodingAgentMutableSettings"
-        "reloadSystemd"
-      ]
-      ''
-        (
-          cd ${lib.escapeShellArg config.home.homeDirectory}
-          if ! run ${config.home.path}/bin/pi update --extensions --no-approve; then
-            warnEcho 'Pi extension update failed; retry with pi update --extensions --no-approve.'
-          fi
-        )
-      '';
 }
