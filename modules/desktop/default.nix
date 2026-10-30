@@ -74,6 +74,23 @@ in
       PromotionsEnabled = false;
       BrowserLabsEnabled = false;
       BackgroundModeEnabled = true;
+      "3rdparty".extensions.ddkjiahejlhfcafbddmgiahcphecmpfh = {
+        defaultFiltering = "complete";
+        rulesets = [
+          "-*"
+          "+ublock-filters"
+          "+easylist"
+          "+easyprivacy"
+          "+pgl"
+          "+ublock-badware"
+          "+urlhaus-full"
+          "+adguard-spyware-url"
+          "+annoyances-cookies"
+          "+annoyances-overlays"
+          "+annoyances-notifications"
+          "+annoyances-others"
+        ];
+      };
     };
   };
 
