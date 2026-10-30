@@ -5,6 +5,7 @@
   "defaultTools": ["+codemode"],
   "packages": [
     "npm:pi-web-access",
+    "npm:pi-subagents",
     "git:github.com/earendil-works/pi-claude-code@70abb65186592ca788b29b3db22c3160d629c41f"
   ],
   "hideThinkingBlock": true,
