@@ -65,18 +65,13 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "git+file:///etc/nixos?ref=refs/remotes/origin/main#${config.networking.hostName}";
+    flake = "github:davidgasquez/dotfiles/main#${config.networking.hostName}";
     upgrade = false;
     flags = [ "--no-update-lock-file" ];
   };
-  systemd.services.nixos-upgrade = {
-    preStart = ''
-      /run/wrappers/bin/sudo -u david -H git -C /etc/nixos pull --ff-only
-    '';
-    serviceConfig = {
-      Nice = 10;
-      IOSchedulingClass = "idle";
-    };
+  systemd.services.nixos-upgrade.serviceConfig = {
+    Nice = 10;
+    IOSchedulingClass = "idle";
   };
 
   programs.git = {

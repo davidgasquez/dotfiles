@@ -115,7 +115,10 @@ in
   };
 
   systemd.user.services.t3code-server = {
-    Unit.Description = "T3 Code server";
+    Unit = {
+      Description = "T3 Code server";
+      X-SwitchMethod = "keep-old";
+    };
     Service = {
       Type = "exec";
       WorkingDirectory = "%h";
@@ -136,6 +139,7 @@ in
   systemd.user.services.t3code-desktop = {
     Unit = {
       Description = "T3 Code desktop";
+      X-SwitchMethod = "keep-old";
       PartOf = [ "graphical-session.target" ];
       After = [
         "graphical-session.target"

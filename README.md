@@ -29,7 +29,7 @@ sudo -n nixos-rebuild build --flake . --no-link
 sudo -n nixos-rebuild switch --flake .
 ```
 
-A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. All hosts pull `main` and rebuild.
+A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. All hosts rebuild directly from GitHub `main`, without changing the local checkout. Helix and Zephyr apply updates shortly after boot and hourly, catching up missed checks after sleep. Running applications pick up updates when restarted, and kernel updates require a reboot; the desktops never reboot automatically. Tau keeps its overnight maintenance window.
 
 ## 📜 License
 

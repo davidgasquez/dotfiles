@@ -1,31 +1,26 @@
-{
-  lib,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
 {
-  system.autoUpgrade.operation = "boot";
-  systemd.timers.nixos-upgrade.timerConfig = {
-    OnCalendar = lib.mkForce [ ];
-    OnBootSec = "1min";
+  system.autoUpgrade.dates = "hourly";
+  systemd.timers.nixos-upgrade.timerConfig.OnBootSec = "1min";
+  systemd.services.nixos-upgrade = {
+    serviceConfig.ExecCondition = "${pkgs.networkmanager}/bin/nm-online --quiet --timeout=120";
+    onFailure = [ "nixos-upgrade-notify.service" ];
   };
-  systemd.services.nixos-upgrade.onFailure = [ "nixos-upgrade-notify.service" ];
 
   systemd.services.nixos-upgrade-notify = {
     description = "Notify about a failed NixOS upgrade";
     path = [ pkgs.libnotify ];
-    environment.DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/1000/bus";
     serviceConfig = {
       Type = "oneshot";
       User = "david";
     };
     script = ''
-      for _ in $(seq 120); do
-        [ -S /run/user/1000/bus ] && break
-        sleep 5
-      done
-      notify-send -u critical "NixOS update failed" "journalctl -u nixos-upgrade"
+      export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+      export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+      if ${pkgs.systemd}/bin/systemctl --user is-active --quiet graphical-session.target; then
+        notify-send -u critical "NixOS update failed" "journalctl -u nixos-upgrade"
+      fi
     '';
   };
 }
