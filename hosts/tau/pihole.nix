@@ -29,6 +29,11 @@ in
   systemd.services.pihole-ftl.serviceConfig.EnvironmentFile =
     "/home/david/.config/pihole/environment";
 
+  systemd.services.pihole-ftl-setup = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.RemainAfterExit = true;
+  };
+
   systemd.services.pihole-gravity = {
     description = "Update Pi-hole blocklists";
     startAt = "weekly";
