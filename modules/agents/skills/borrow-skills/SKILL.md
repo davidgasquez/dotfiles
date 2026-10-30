@@ -6,7 +6,8 @@ disable-model-invocation: true
 
 Find useful skills through these entry points:
 
-- [pstack skill catalog](https://github.com/backnotprop/pstack#skills)
-- [Matt Pocock's skill guide](https://github.com/mattpocock/skills/blob/main/skills/engineering/ask-matt/SKILL.md)
+- [Potato](https://raw.githubusercontent.com/backnotprop/pstack/refs/heads/main/skills/poteto-mode/SKILL.md)
+- [Matt Pocock](https://raw.githubusercontent.com/mattpocock/skills/refs/heads/main/skills/engineering/ask-matt/SKILL.md)
+- [Theo](https://github.com/t3dotgg/tstack/)
 
-Follow relevant links and read and apply whatever helps the current task. Load supporting files only as needed, respecting the user's scope and local repository conventions.
+Follow relevant links and read and apply whatever helps the current task. Load supporting files only as needed, respecting the user's scope and local repository conventions. If you need to run anything extra, use [nix-run](../nix-run/SKILL.md).
