@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  osConfig,
   pkgs,
   inputs,
   ...
@@ -34,16 +35,17 @@
   };
   home.file.".pi/agent/themes/frappe.json".source = ./pi/themes/frappe.json;
 
-  systemd.user.services.pi-extensions-update.Service = {
-    Type = "oneshot";
-    ExecStart = "${config.home.path}/bin/pi update --extensions --no-approve";
-    TimeoutStartSec = "5min";
-  };
-  systemd.user.timers.pi-extensions-update = {
-    Timer = {
-      OnActiveSec = "5min";
-      OnUnitInactiveSec = "1h";
+  systemd.user.services.pi-extensions-update = {
+    Unit.X-SwitchMethod = "keep-old";
+    Install.WantedBy = [ "default.target" ];
+    Service = {
+      Type = "exec";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "pi-extensions-update" ''
+        set -e
+        ${lib.optionalString osConfig.networking.networkmanager.enable "${pkgs.networkmanager}/bin/nm-online --quiet"}
+        exec ${config.home.path}/bin/pi update --extensions --no-approve
+      '';
     };
-    Install.WantedBy = [ "timers.target" ];
   };
 }
