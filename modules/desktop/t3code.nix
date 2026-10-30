@@ -87,7 +87,10 @@ in
     };
   };
 
-  xdg.mimeApps.defaultApplications."x-scheme-handler/t3code" = "com.t3tools.T3Code.desktop";
+  xdg.mimeApps = {
+    associations.added."x-scheme-handler/t3code" = "t3code.desktop";
+    defaultApplications."x-scheme-handler/t3code" = "t3code.desktop";
+  };
 
   home.activation = {
     t3codeRemoteOnly =
