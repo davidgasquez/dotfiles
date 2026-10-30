@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../agents/pi.nix ];
-
   home.file."projects/nixos".source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos";
 
   programs.gpg = {

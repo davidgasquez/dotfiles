@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   imports = [
@@ -7,6 +7,8 @@
     ./maintenance.nix
     ./pihole.nix
   ];
+
+  nixpkgs.config.allowUnfreePredicate = pkg: lib.getName pkg == "claude-code";
 
   networking.hostName = "tau";
   systemd.defaultUnit = "multi-user.target";

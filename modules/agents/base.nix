@@ -17,7 +17,10 @@ let
   '';
 in
 {
-  imports = [ ./mcp/pi-workers ];
+  imports = [
+    ./pi.nix
+    ./mcp/pi-workers
+  ];
 
   home.packages = [
     (pkgs.symlinkJoin {
