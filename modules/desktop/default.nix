@@ -55,6 +55,8 @@ in
     extensions = [
       "olhelnoplefjdmncknfphenjclimckaf"
       "clngdbkpkpeebahjckkjfobafhncgmne"
+      "ddkjiahejlhfcafbddmgiahcphecmpfh"
+      "ghmbeldphafepmbegfdlkpapadhbakde"
     ];
     extraOptsRecommended = {
       SearchSuggestEnabled = false;
@@ -74,21 +76,18 @@ in
       PromotionsEnabled = false;
       BrowserLabsEnabled = false;
       BackgroundModeEnabled = true;
+      PasswordManagerEnabled = false;
       "3rdparty".extensions.ddkjiahejlhfcafbddmgiahcphecmpfh = {
         defaultFiltering = "complete";
         rulesets = [
           "-*"
-          "+ublock-filters"
-          "+easylist"
-          "+easyprivacy"
-          "+pgl"
-          "+ublock-badware"
-          "+urlhaus-full"
+          "+default"
           "+adguard-spyware-url"
           "+annoyances-cookies"
           "+annoyances-overlays"
           "+annoyances-notifications"
           "+annoyances-others"
+          "+spa-0"
         ];
       };
     };
