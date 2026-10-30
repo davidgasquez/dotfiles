@@ -252,6 +252,10 @@ agent-browser plugin run captcha captcha.solve --payload '{"siteKey":"...","url"
 
 `plugin run` is for `command.run` and custom capabilities. Core capabilities and protocol request types use their dedicated command paths.
 
+### Use the user's running Chrome
+
+Ask the user to enable `chrome://inspect/#remote-debugging`, then attach with `--auto-connect`. Work in a new tab and don't `close`.
+
 ### Persist session across runs
 
 ```bash
