@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   inputs,
@@ -32,4 +33,17 @@
     recursive = true;
   };
   home.file.".pi/agent/themes/frappe.json".source = ./pi/themes/frappe.json;
+
+  systemd.user.services.pi-extensions-update.Service = {
+    Type = "oneshot";
+    ExecStart = "${config.home.path}/bin/pi update --extensions --no-approve";
+    TimeoutStartSec = "5min";
+  };
+  systemd.user.timers.pi-extensions-update = {
+    Timer = {
+      OnActiveSec = "5min";
+      OnUnitInactiveSec = "1h";
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
 }
