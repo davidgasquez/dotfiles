@@ -11,6 +11,10 @@ in
     enable = true;
     lists = [
       { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"; }
+      {
+        url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt";
+        description = "HaGeZi Multi PRO";
+      }
     ];
     settings = {
       dns = {
