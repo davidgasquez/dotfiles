@@ -12,7 +12,7 @@ Refine queries when results are sparse or off-topic. Pull the thread and try alt
 
 Use [twitter-cli](https://github.com/public-clis/twitter-cli) with the current user's Chrome X session. Chrome profiles are detected automatically; set `TWITTER_CHROME_PROFILE` only when a specific profile is needed.
 
-Follow [nix-run](../nix-run/SKILL.md) for on-demand execution. Use Python 3.13 to avoid native dependency builds with Python 3.15, and the Git source for the latest X API compatibility fixes.
+Use Python 3.13 to avoid native dependency builds with Python 3.15, and the Git source for the latest X API compatibility fixes.
 
 ```bash
 QUERY='your search query'

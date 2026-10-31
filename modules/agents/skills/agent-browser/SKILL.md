@@ -8,8 +8,7 @@ disable-model-invocation: true
 
 ## Execution
 
-Follow [nix-run](../nix-run/SKILL.md) to execute commands on demand with `nix run 'nixpkgs#agent-browser' -- <args>`.
-In the examples below and tool-provided skills, replace `agent-browser` with that prefix. Browser setup and session requirements still apply.
+In the examples below and tool-provided skills, replace `agent-browser` with `nix run 'nixpkgs#agent-browser' --`.
 
 Fast browser automation CLI for AI agents. Chrome/Chromium via CDP, no Playwright or Puppeteer dependency. Accessibility-tree snapshots with compact `@eN` refs let agents interact with pages in ~200-400 tokens instead of parsing raw HTML.
 

@@ -9,8 +9,7 @@ Use `wacli` only when the user explicitly asks you to interact with WhatsApp or 
 
 ## Execution
 
-Follow [nix-run](../nix-run/SKILL.md) to execute commands on demand with `nix run 'github:openclaw/nix-openclaw-tools#wacli' -- <args>`.
-In the examples below, replace `wacli` with that prefix.
+In the examples below, replace `wacli` with `nix run 'github:openclaw/nix-openclaw-tools#wacli' --`.
 
 ## Safety
 

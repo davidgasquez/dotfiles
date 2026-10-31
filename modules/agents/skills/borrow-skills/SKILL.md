@@ -10,4 +10,4 @@ Find useful skills through these entry points:
 - [Matt Pocock](https://raw.githubusercontent.com/mattpocock/skills/refs/heads/main/skills/engineering/ask-matt/SKILL.md)
 - [Theo](https://github.com/t3dotgg/tstack/)
 
-Follow relevant links and read and apply whatever helps the current task. Load supporting files only as needed, respecting the user's scope and local repository conventions. If you need to run anything extra, use [nix-run](../nix-run/SKILL.md).
+Follow relevant links and read and apply whatever helps the current task. Load supporting files only as needed, respecting the user's scope and local repository conventions. Use `nix run` or `nix shell` for missing tools.

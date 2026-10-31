@@ -8,8 +8,7 @@ disable-model-invocation: true
 
 ## Execution
 
-Follow [nix-run](../nix-run/SKILL.md). Hypruse has no maintained Nix package; run its official uv runner through `nix run 'nixpkgs#uv' -- tool run hypruse <args>`.
-In the examples below and the packaged skill, replace `hypruse` with that prefix.
+In the examples below and the packaged skill, replace `hypruse` with `nix run 'nixpkgs#uv' -- tool run hypruse`.
 
 Before operating the desktop, read the packaged skill:
 
