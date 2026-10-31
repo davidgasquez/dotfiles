@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  system.autoUpgrade.dates = "hourly";
+  system.autoUpgrade.dates = "daily";
   systemd.timers.nixos-upgrade.timerConfig.OnBootSec = "1min";
   systemd.services.nixos-upgrade = {
     serviceConfig.ExecCondition = "${pkgs.networkmanager}/bin/nm-online --quiet --timeout=120";
