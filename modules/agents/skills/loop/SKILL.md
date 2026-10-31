@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 This is a workflow for making your code changes more correct before (or sometimes after) filing a pull request by using different frontier models to implement and review your code in a loop.
 
+Use Pi's `pi-subagents` extension for delegation.
+
 ## Implement
 
 - Delegate implementations / fixes / docs to one or several Pi Claude Opus 5.5 on high thinking effort models
