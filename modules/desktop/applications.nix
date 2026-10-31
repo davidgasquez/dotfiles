@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -14,6 +15,15 @@ let
       '';
     });
   chatgpt = withOzone pkgs.chatgpt;
+  paseoDesktop =
+    (inputs.paseo.packages.${pkgs.stdenv.hostPlatform.system}.desktop.override {
+      electron = pkgs.electron;
+    }).overrideAttrs
+      (previous: {
+        preBuild = (previous.preBuild or "") + ''
+          npm run postinstall
+        '';
+      });
   spotify = withOzone pkgs.spotify;
   chromeWarm = pkgs.writeText "chrome-warm.json" (
     builtins.toJSON {
@@ -34,6 +44,7 @@ in
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
   home.packages = with pkgs; [
     chatgpt
+    paseoDesktop
     proton-pass-cli
     seahorse
     spotify
