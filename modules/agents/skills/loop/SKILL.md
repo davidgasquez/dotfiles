@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 This is a workflow for making your code changes more correct before (or sometimes after) filing a pull request by using different frontier models to implement and review your code in a loop.
 
-Use Pi's `pi-subagents` extension. If only `subagents_enable` is available, call it first. Resolve the requested models with `subagent({ action: "models" })`; report unavailable models instead of substituting. Launch implementations with `subagent({ agent: "worker", task: "...", cwd: "...", model: "provider/model:high" })` and reviews with the `reviewer` agent. Run independent reviews with `subagent({ workflow: "parallel", args: { tasks: [...] } })`, setting `agent`, `task`, `cwd`, and `model` on each task. Wait for native completion notifications before starting dependent work. Keep one writer per worktree.
+Use Pi's `pi-subagents` extension for delegation.
 
 ## Implement
 
