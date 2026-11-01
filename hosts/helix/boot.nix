@@ -1,4 +1,5 @@
 {
+  boot.tmp.cleanOnBoot = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.initrd.systemd.tpm2.enable = true;
   boot.initrd.luks.devices."helix-root" = {
