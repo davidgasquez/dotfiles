@@ -9,5 +9,6 @@ Find useful skills through these entry points:
 - [Potato](https://raw.githubusercontent.com/backnotprop/pstack/refs/heads/main/skills/poteto-mode/SKILL.md)
 - [Matt Pocock](https://raw.githubusercontent.com/mattpocock/skills/refs/heads/main/skills/engineering/ask-matt/SKILL.md)
 - [Theo](https://github.com/t3dotgg/tstack/)
+- [Emil](https://github.com/emilkowalski/skills)
 
 Follow relevant links and read and apply whatever helps the current task. Load supporting files only as needed, respecting the user's scope and local repository conventions. Use `nix run` or `nix shell` for missing tools.

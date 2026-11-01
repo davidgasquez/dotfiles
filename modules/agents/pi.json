@@ -4,6 +4,7 @@
   "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
   "packages": [
+    "npm:pi-compact-tools",
     "npm:pi-web-access",
     "npm:pi-subagents",
     "git:github.com/earendil-works/pi-claude-code"
