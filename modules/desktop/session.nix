@@ -11,7 +11,22 @@
 let
   inherit (config.gtk) font;
   herdrCore = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core;
-  herdrApp = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app;
+  piScratchAttach = pkgs.writeShellApplication {
+    name = "pi-scratch-attach";
+    runtimeInputs = [
+      herdrCore
+      pkgs.jq
+    ];
+    text = ''
+      terminal=$1
+      trap 'trap "" HUP INT TERM; hc kill "$terminal" >/dev/null 2>&1 || true' EXIT
+      trap 'exit 0' HUP INT TERM
+      while hc attach "$terminal"; do
+        hc get "$terminal" --json 2>/dev/null \
+          | jq -e '.state == "live"' >/dev/null || break
+      done
+    '';
+  };
   recordingDirectory = "${config.xdg.userDirs.videos}/Recordings";
   lock = pkgs.writeShellApplication {
     name = "lock-session";
@@ -77,11 +92,10 @@ in
       name = "pi-scratch";
       runtimeInputs = [
         coreutils
+        glib
         jq
         util-linux
-        uwsm
         herdrCore
-        herdrApp
       ];
       text = ''
         exec 9>"$XDG_RUNTIME_DIR/pi-scratch.lock"
@@ -107,36 +121,17 @@ in
         if [ "''${1:-}" = --prepare ]; then
           exit 0
         fi
-        uwsm app -- ${lib.getExe herdrApp} 9>&- >/dev/null 2>&1 &
-        world=""
-        for ((attempt = 0; attempt < 100; attempt++)); do
-          if world=$(herdr-app ls 9>&- 2>/dev/null); then
-            break
-          fi
-          sleep 0.1
-        done
-        if [ -z "$world" ]; then
-          printf 'Could not open Herdr; the Pi reserve is still available.\n' >&2
-          exit 1
-        fi
-        space=$(jq -r 'first(.spaces[] | select(.machine == null and (.name | ascii_downcase) == "scratchpad") | .id)
-          // "pi-scratch"' <<< "$world")
-        tab="pi-scratch-$terminal"
-        hc label "$terminal" "herdr.space=$space" "herdr.tab=$tab" 9>&- >/dev/null
+        work_dir=$(hc get "$terminal" --json 9>&- | jq -er '.cwd')
         next_terminal=$(new_terminal)
         printf '%s\n' "$next_terminal" > "$terminal_file"
-        for ((attempt = 0; attempt < 100; attempt++)); do
-          if herdr-app ls 9>&- | jq -e --arg tab "$tab" \
-            '.spaces[].tabs[] | select(.id == $tab)' >/dev/null; then
-            herdr-app 'do' space.rename --id "$space" --name scratchpad 9>&- >/dev/null
-            herdr-app 'do' tab.rename --id "$tab" --name Pi 9>&- >/dev/null
-            herdr-app 'do' agent.focus --terminal "$terminal" 9>&- >/dev/null
-            exit 0
-          fi
-          sleep 0.1
-        done
-        printf 'Herdr did not show the scratchpad tab in time.\n' >&2
-        exit 1
+        flock -u 9
+        exec 9>&-
+        window_args=$(jq -cn --arg cwd "$work_dir" --arg terminal "$terminal" \
+          '["--working-directory=" + $cwd, "-e", "${lib.getExe piScratchAttach}", $terminal]')
+        gapplication action com.mitchellh.ghostty new-window-command "$window_args" || {
+            hc kill "$terminal" >/dev/null 2>&1 || true
+            exit 1
+          }
       '';
     })
     (writeShellApplication {
