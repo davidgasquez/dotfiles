@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   palette,
   accent,
   ...
@@ -9,6 +10,8 @@
 
 let
   inherit (config.gtk) font;
+  herdrCore = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core;
+  herdrApp = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app;
   recordingDirectory = "${config.xdg.userDirs.videos}/Recordings";
   lock = pkgs.writeShellApplication {
     name = "lock-session";
@@ -74,13 +77,66 @@ in
       name = "pi-scratch";
       runtimeInputs = [
         coreutils
-        config.programs.ghostty.package
-        config.programs.pi-coding-agent.package
+        jq
+        util-linux
+        uwsm
+        herdrCore
+        herdrApp
       ];
       text = ''
-        work_dir=$(mktemp -d -t pi-session.XXXXXX)
-        exec ghostty +new-window --working-directory="$work_dir" -e pi \
-          --session-dir "$HOME/.pi/agent/sessions/--tmp--"
+        exec 9>"$XDG_RUNTIME_DIR/pi-scratch.lock"
+        flock 9
+        terminal_file="$XDG_RUNTIME_DIR/pi-scratch.terminal"
+        new_terminal() {
+          local work_dir
+          work_dir=$(mktemp -d -t pi-session.XXXXXX)
+          hc run --json --bg --no-parent --label app=pi-scratch \
+            --cwd "$work_dir" ${lib.getExe config.programs.pi-coding-agent.package} \
+            --session-dir "$HOME/.pi/agent/sessions/--tmp--" 9>&- | jq -er '.address'
+        }
+        terminal=""
+        if [ -s "$terminal_file" ]; then
+          terminal=$(hc get "$(<"$terminal_file")" --json 9>&- 2>/dev/null \
+            | jq -er 'select(.state == "live" and .labels.app == "pi-scratch"
+                and (.labels["herdr.space"] // "") == "") | .address') || terminal=""
+        fi
+        if [ -z "$terminal" ]; then
+          terminal=$(new_terminal)
+          printf '%s\n' "$terminal" > "$terminal_file"
+        fi
+        if [ "''${1:-}" = --prepare ]; then
+          exit 0
+        fi
+        uwsm app -- ${lib.getExe herdrApp} 9>&- >/dev/null 2>&1 &
+        world=""
+        for ((attempt = 0; attempt < 100; attempt++)); do
+          if world=$(herdr-app ls 9>&- 2>/dev/null); then
+            break
+          fi
+          sleep 0.1
+        done
+        if [ -z "$world" ]; then
+          printf 'Could not open Herdr; the Pi reserve is still available.\n' >&2
+          exit 1
+        fi
+        space=$(jq -r 'first(.spaces[] | select(.machine == null and (.name | ascii_downcase) == "scratchpad") | .id)
+          // "pi-scratch"' <<< "$world")
+        tab="pi-scratch-$terminal"
+        hc label "$terminal" "herdr.space=$space" "herdr.tab=$tab" 9>&- >/dev/null
+        next_terminal=$(new_terminal)
+        printf '%s\n' "$next_terminal" > "$terminal_file"
+        for ((attempt = 0; attempt < 100; attempt++)); do
+          if herdr-app ls 9>&- | jq -e --arg tab "$tab" \
+            '.spaces[].tabs[] | select(.id == $tab)' >/dev/null; then
+            herdr-app 'do' space.rename --id "$space" --name scratchpad 9>&- >/dev/null
+            herdr-app 'do' tab.rename --id "$tab" --name Pi 9>&- >/dev/null
+            herdr-app 'do' agent.focus --terminal "$terminal" 9>&- >/dev/null
+            exit 0
+          fi
+          sleep 0.1
+        done
+        printf 'Herdr did not show the scratchpad tab in time.\n' >&2
+        exit 1
       '';
     })
     (writeShellApplication {
@@ -152,6 +208,21 @@ in
   programs.hyprshot = {
     enable = true;
     saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";
+  };
+
+  systemd.user.services.pi-scratch-prepare = {
+    Unit = {
+      Description = "Prewarm a fresh Pi scratch session";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+      Requisite = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${config.home.path}/bin/pi-scratch --prepare";
+      UMask = "0077";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 
   systemd.user.services.screen-record = {

@@ -23,6 +23,7 @@ in
   ];
 
   home.packages = [
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core
     (pkgs.symlinkJoin {
       inherit (qmd) name meta;
       paths = [ qmd ];

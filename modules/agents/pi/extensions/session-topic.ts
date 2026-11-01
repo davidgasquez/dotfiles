@@ -77,7 +77,8 @@ async function deriveLabel(
   if (signal.aborted || response.stopReason === "aborted") return undefined;
   if (response.stopReason !== "stop") {
     throw new Error(
-      response.errorMessage ?? `title request ended with ${response.stopReason}`,
+      response.errorMessage ??
+        `title request ended with ${response.stopReason}`,
     );
   }
   const label = sanitizeLabel(extractText(response.content));
@@ -90,12 +91,40 @@ export default function sessionTopicExtension(pi: ExtensionAPI): void {
   let failures = 0;
   let inFlight: AbortController | undefined;
 
-  pi.on("session_start", (_event, ctx) => {
+  async function syncHerdrName(name: string | undefined): Promise<void> {
+    const terminal = process.env.HC_TERMINAL_ID;
+    if (!terminal) return;
+
+    try {
+      const result = await pi.exec("hc", ["get", terminal, "--json"], {
+        timeout: 2000,
+      });
+      if (result.code !== 0) return;
+      const tab = JSON.parse(result.stdout).labels?.["herdr.tab"];
+      if (typeof tab !== "string" || !tab) return;
+
+      await pi.exec(
+        "herdr-app",
+        ["do", "tab.rename", "--id", tab, "--name", name ?? "Pi"],
+        { timeout: 2000 },
+      );
+    } catch {
+      return;
+    }
+  }
+
+  pi.on("session_info_changed", async (event) => {
+    await syncHerdrName(event.name);
+  });
+
+  pi.on("session_start", async (_event, ctx) => {
     inFlight?.abort();
     inFlight = undefined;
     firstPrompt = undefined;
     failures = 0;
-    if (pi.getSessionName() || !ctx.sessionManager.getSessionFile()) return;
+    const name = pi.getSessionName();
+    await syncHerdrName(name);
+    if (name || !ctx.sessionManager.getSessionFile()) return;
 
     for (const entry of ctx.sessionManager.getBranch()) {
       if (entry.type !== "message" || entry.message.role !== "user") continue;
@@ -112,8 +141,11 @@ export default function sessionTopicExtension(pi: ExtensionAPI): void {
 
   pi.on("input", (event, ctx) => {
     if (
-      event.source === "extension" || pi.getSessionName() ||
-      !ctx.sessionManager.getSessionFile() || inFlight || failures >= MAX_FAILURES
+      event.source === "extension" ||
+      pi.getSessionName() ||
+      !ctx.sessionManager.getSessionFile() ||
+      inFlight ||
+      failures >= MAX_FAILURES
     ) {
       return;
     }
