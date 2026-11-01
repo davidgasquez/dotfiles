@@ -85,7 +85,10 @@ local resizeSubmap = "Redimensionar · ← ↓ ↑ → · Esc salir"
 
 hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("uwsm app -- chatgpt"), { description = "Open ChatGPT" })
 
-hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd("ghostty +new-window"))
+hl.bind(
+  mainMod .. " + RETURN",
+  hl.dsp.exec_cmd([[@gapplication@ action com.mitchellh.ghostty new-window-command @ghosttyNewWindowArgs@]])
+)
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.close(), { description = "Close window" })
 
 hl.bind(mainMod .. " + M", hl.dsp.submap(powerSubmap))

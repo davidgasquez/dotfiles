@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -60,6 +60,19 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     history.size = 50000;
+    completionInit =
+      let
+        zsh = config.programs.zsh.package;
+        gitCompletion = pkgs.runCommand "zsh-git-completion" { nativeBuildInputs = [ zsh ]; } ''
+          mkdir -p "$out/share/zsh/site-functions"
+          cp ${zsh}/share/zsh/${zsh.version}/functions/_git "$out/share/zsh/site-functions/_git"
+          zsh -fc 'zcompile -U -- "$1"' -- "$out/share/zsh/site-functions/_git"
+        '';
+      in
+      ''
+        fpath=("${gitCompletion}/share/zsh/site-functions" "''${fpath[@]:A}")
+        autoload -U compinit && compinit
+      '';
     initContent = ''
       bindkey '^[[1;3D' backward-word
       bindkey '^[[1;3C' forward-word

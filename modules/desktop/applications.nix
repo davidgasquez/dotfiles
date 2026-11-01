@@ -58,6 +58,7 @@ in
     settings = {
       async-backend = "epoll";
       gtk-single-instance = true;
+      linux-cgroup = "never";
       quit-after-last-window-closed = false;
       confirm-close-surface = false;
       window-padding-x = 10;

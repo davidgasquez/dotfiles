@@ -313,6 +313,13 @@ in
     systemd.enable = false;
     xdph.settings.screencopy.allow_token_by_default = true;
     configType = "lua";
-    extraConfig = builtins.readFile ./hyprland.lua;
+    extraConfig =
+      lib.replaceStrings
+        [ "@gapplication@" "@ghosttyNewWindowArgs@" ]
+        [
+          (lib.getExe' pkgs.glib "gapplication")
+          (lib.escapeShellArg (builtins.toJSON [ "--working-directory=${config.home.homeDirectory}" ]))
+        ]
+        (builtins.readFile ./hyprland.lua);
   };
 }
