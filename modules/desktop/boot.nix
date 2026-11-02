@@ -5,6 +5,8 @@
 }:
 
 {
+  boot.tmp.cleanOnBoot = true;
+
   boot.loader.efi.canTouchEfiVariables = true;
   fileSystems."/boot".options = lib.mkForce [
     "fmask=0077"
