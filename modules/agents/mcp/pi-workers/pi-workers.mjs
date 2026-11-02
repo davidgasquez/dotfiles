@@ -1,8 +1,6 @@
 import { execFile, spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { readFileSync } from "node:fs";
 import { createConnection } from "node:net";
-import { isAbsolute } from "node:path";
 import { createInterface } from "node:readline";
 import { promisify } from "node:util";
 
@@ -10,18 +8,17 @@ const hcBin = process.env.PI_WORKERS_HC ?? "hc";
 const run = promisify(execFile);
 const watches = new Map();
 const instructions =
-  'Delegate to interactive Pi workers in hc terminals instead of built-in subagents. Run `hc --skill` once to learn hc. Launch each worker with its own absolute session file and a focused task with context, constraints, expected output, and verification, e.g. `hc run --bg --name review --cwd /repo pi --session /tmp/review.jsonl "<task>"`, then call hc_watch with the returned terminal and that session. Completions, errors, blocks, cancellations, and exits then arrive in this chat automatically; do not poll. Use hc send, interrupt, read, and kill to steer, inspect, and clean up.';
+  "Launch, steer, and clean up workers as the delegate skill and `hc --skill` describe. After each `hc run`, call hc_watch with the returned terminal. Brief notices (completed, blocked, error, cancelled, exited) then arrive in this chat automatically; do not poll or `hc wait` on watched terminals. Notices carry no output: collect it with `hc read --lines 100 <terminal>` and verify actual results. Call hc_watch again to see the latest notice or delivery error, or after a watch lost notice.";
 const tool = {
   name: "hc_watch",
   description:
-    "Relay an hc terminal running interactive Pi to this chat: each completion (final text from the Pi session), error, block, cancellation, and exit arrives automatically. Calling it again returns the latest result and any delivery error.",
+    "Notify this chat when an hc terminal completes, blocks, errors, is cancelled, or exits. Notices are brief; read output with `hc read --lines 100 <terminal>`. Calling it again returns the latest notice and delivery error and resubscribes a lost watch.",
   inputSchema: {
     type: "object",
     properties: {
       terminal: { type: "string", description: "Address or name from hc run." },
-      session: { type: "string", description: "Absolute pi --session path." },
     },
-    required: ["terminal", "session"],
+    required: ["terminal"],
     additionalProperties: false,
   },
 };
@@ -132,21 +129,13 @@ async function hcGet(terminal) {
 }
 
 function snapshot(watch) {
-  const { terminal, name, session, status, result, deliveryError } = watch;
-  return { terminal, name, session, status, result, deliveryError };
+  const { terminal, name, status, notice, deliveryError } = watch;
+  return { terminal, name, status, notice, deliveryError };
 }
 
-function report(watch, result) {
-  watch.result = result;
-  deliver(watch, result);
-}
-
-function deliver(watch, result) {
-  const text =
-    result.length > 24_000
-      ? `${result.slice(0, 24_000)}\n[Truncated; full output is in the session.]`
-      : result;
-  const prompt = `[Pi worker ${watch.terminal}${watch.name ? ` ${watch.name}` : ""}]\n${text}\nSession: ${watch.session}`;
+function notify(watch, text, keep = true) {
+  if (keep) watch.notice = text;
+  const prompt = `[hc ${watch.terminal}${watch.name ? ` ${watch.name}` : ""}] ${text}\nOutput: hc read --lines 100 ${watch.terminal}`;
   watch.delivery = watch.delivery.then(async () => {
     try {
       await appCall(watch.owner, "send_message_to_thread", {
@@ -162,65 +151,37 @@ function deliver(watch, result) {
   });
 }
 
-function lastAssistant(session) {
-  const lines = readFileSync(session, "utf8").trimEnd().split("\n").reverse();
-  // The newest record is always parsed so a partial tail is reported, not skipped.
-  for (const [index, line] of lines.entries()) {
-    if (index > 0 && !line.includes('"assistant"')) continue;
-    const entry = JSON.parse(line);
-    if (entry.type === "message" && entry.message?.role === "assistant")
-      return entry;
-  }
-}
-
-// A repeated done counts when the transcript has a new assistant entry or read error (e.g. after a rebind).
-function observeOutcome(watch, status, previous) {
-  let entry, unreadable;
-  try {
-    entry = lastAssistant(watch.session);
-  } catch (error) {
-    unreadable = `Session transcript unreadable (${error.message}); check the session path or hc read ${watch.terminal}.`;
-  }
-  const key = entry?.id ?? unreadable;
-  const fresh = key !== undefined && key !== watch.reported;
-  if (
-    !fresh &&
-    (status.state === previous || (status.state === "done" && entry))
-  )
-    return;
-  watch.reported = key ?? watch.reported;
-  const message = fresh && entry ? entry.message : {};
-  const text = message.content
-    ?.filter((block) => block.type === "text")
-    .map((block) => block.text)
-    .join("\n");
-  report(
-    watch,
-    status.state === "error"
-      ? `Error: ${message.errorMessage ?? status.msg ?? "unknown"}${unreadable ? `\n${unreadable}` : ""}`
-      : unreadable
-        ? `Completed, but ${unreadable}`
-        : `Completed:\n${text || "No assistant text in the session."}`,
-  );
-}
-
-// Pi reports done/error when a run settles, idle when it is cancelled, and blocked for dialogs.
-// hc may not emit a turn event for blocked -> done, so outcomes follow status words.
-function observeStatus(watch, status) {
+// Notices follow status transitions; hc's turn counter (bumped when the status leaves working)
+// exposes new work hidden in a snapshot gap. Status events carry no turn and the turn event
+// follows them, so a live exit from working advances it at once in case the stream drops between.
+function observeStatus(watch, status, turn) {
   const previous = watch.status;
-  watch.status = status?.state;
-  if (status?.state === "done" || status?.state === "error")
-    observeOutcome(watch, status, previous);
-  else if (status?.state === "blocked" && previous !== "blocked")
-    report(
+  const state = status?.state;
+  const newWork =
+    typeof turn === "number" && watch.turn !== undefined && turn !== watch.turn;
+  watch.status = state;
+  if (typeof turn === "number") watch.turn = turn;
+  else if (
+    previous === "working" &&
+    state &&
+    state !== "working" &&
+    typeof watch.turn === "number"
+  )
+    watch.turn++;
+  if (state === previous && !newWork) return;
+  if (state === "done") notify(watch, "completed");
+  else if (state === "error")
+    notify(watch, `error${status.msg ? `: ${status.msg}` : ""}`);
+  else if (state === "blocked")
+    notify(
       watch,
-      `Blocked (${status.kind ?? "needs a person"})${status.msg ? `: ${status.msg}` : ""}\nAnswer with: hc attach ${watch.terminal}`,
+      `blocked${status.kind ? ` (${status.kind})` : ""}${status.msg ? `: ${status.msg}` : ""}; needs a person`,
     );
   else if (
-    status?.state === "idle" &&
-    ["working", "blocked"].includes(previous)
+    state === "idle" &&
+    (newWork || ["working", "blocked"].includes(previous))
   )
-    report(watch, "Cancelled.");
+    notify(watch, "cancelled");
 }
 
 function observeExit(watch, { reason, exit_code, signal }) {
@@ -228,9 +189,9 @@ function observeExit(watch, { reason, exit_code, signal }) {
   watch.finished = true;
   watch.status = "finished";
   watch.child?.kill();
-  report(
+  notify(
     watch,
-    `Exited (${reason}${exit_code != null ? `, code ${exit_code}` : signal != null ? `, signal ${signal}` : ""}).`,
+    `exited (${reason}${exit_code != null ? `, code ${exit_code}` : signal != null ? `, signal ${signal}` : ""})`,
   );
 }
 
@@ -239,7 +200,7 @@ function observeTerminals(watch, seq, terminals) {
   for (const record of terminals) {
     if (record.address !== watch.terminal) continue;
     if (record.state === "finished") observeExit(watch, record);
-    else observeStatus(watch, record.status);
+    else observeStatus(watch, record.status, record.turn);
   }
 }
 
@@ -269,7 +230,10 @@ function subscribe(watch) {
           const { type, data } = record.params;
           watch.seq = record.params.seq;
           if (type === "status") observeStatus(watch, data.status);
+          else if (type === "turn" && typeof data.turn === "number")
+            watch.turn = data.turn;
           else if (type === "finished") observeExit(watch, data);
+          else if (type === "removed") observeExit(watch, { reason: "removed" });
         }
       },
       (error) => console.error(`hc events: ${error.message}`),
@@ -280,14 +244,12 @@ function subscribe(watch) {
       const message = `hc events ended: ${stderr.trim() || "no output"}`;
       reject(new Error(message));
       if (started && !watch.finished && !closing)
-        deliver(watch, `Watch lost (${message}); call hc_watch again.`);
+        notify(watch, `watch lost (${message}); call hc_watch again`, false);
     });
   });
 }
 
 async function watch(args, context) {
-  if (!isAbsolute(args.session))
-    throw new Error("session must be an absolute Pi session path");
   if (!process.env.CODEX_APP_TOOLS_PIPE_PATH)
     throw new Error(
       "CODEX_APP_TOOLS_PIPE_PATH is missing; launch from the desktop app.",
@@ -299,7 +261,6 @@ async function watch(args, context) {
     watch = watches.get(record.address) ?? {
       terminal: record.address,
       name: record.name,
-      session: args.session,
       owner: context,
       seq: 0,
       delivery: Promise.resolve(),
@@ -308,16 +269,14 @@ async function watch(args, context) {
   }
   if (watch.owner.threadId !== context.threadId)
     throw new Error("Terminal is watched by another chat");
-  if (watch.session !== args.session)
-    throw new Error(`Terminal is watched with session ${watch.session}`);
   if (!watch.finished && !closing) await (watch.events ??= subscribe(watch));
   return snapshot(watch);
 }
 
 async function callTool({ name, arguments: args, _meta }) {
   if (name !== tool.name) throw new Error(`Unknown tool: ${name}`);
-  if (typeof args?.terminal !== "string" || typeof args.session !== "string")
-    throw new Error("Expected terminal and session strings");
+  if (typeof args?.terminal !== "string" || Object.keys(args).length !== 1)
+    throw new Error("Expected only a terminal string");
   return watch(args, owner(_meta));
 }
 
@@ -325,7 +284,7 @@ function output(message) {
   process.stdout.write(`${JSON.stringify({ jsonrpc: "2.0", ...message })}\n`);
 }
 
-const toolResult = (value, isError) => ({
+const toolResult = (value, isError = false) => ({
   content: [{ type: "text", text: isError ? value : JSON.stringify(value) }],
   isError,
 });
@@ -347,7 +306,7 @@ async function handle(request) {
           ? params.protocolVersion
           : supported.at(-1),
         capabilities: { tools: {} },
-        serverInfo: { name: "pi-workers", version: "2.0.0" },
+        serverInfo: { name: "pi-workers", version: "3.0.0" },
         instructions,
       },
     });
