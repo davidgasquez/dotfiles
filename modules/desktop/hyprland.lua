@@ -121,7 +121,6 @@ hl.bind(mainMod .. " + SHIFT + W", function()
     hl.dispatch(hl.dsp.exec_cmd("uwsm-app -- whatsapp.desktop"))
   end
 end, { description = "Open or focus WhatsApp" })
-hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("uwsm app -- pi-scratch"), { description = "Open Pi scratch" })
 hl.bind("F9", hl.dsp.exec_cmd("voxtype record toggle"), { description = "Toggle voice recording" })
 hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history"))
 hl.bind(mainMod .. " + CTRL + SHIFT + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history --delete"))

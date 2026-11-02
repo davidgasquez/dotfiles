@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   palette,
   accent,
   ...
@@ -10,23 +9,6 @@
 
 let
   inherit (config.gtk) font;
-  herdrCore = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core;
-  piScratchAttach = pkgs.writeShellApplication {
-    name = "pi-scratch-attach";
-    runtimeInputs = [
-      herdrCore
-      pkgs.jq
-    ];
-    text = ''
-      terminal=$1
-      trap 'trap "" HUP INT TERM; hc kill "$terminal" >/dev/null 2>&1 || true' EXIT
-      trap 'exit 0' HUP INT TERM
-      while hc attach "$terminal"; do
-        hc get "$terminal" --json 2>/dev/null \
-          | jq -e '.state == "live"' >/dev/null || break
-      done
-    '';
-  };
   recordingDirectory = "${config.xdg.userDirs.videos}/Recordings";
   lock = pkgs.writeShellApplication {
     name = "lock-session";
@@ -86,52 +68,6 @@ in
               --prompt='~/projects › ' --placeholder='Open') || exit 0
         [ -n "$project" ] || exit 0
         exec zeditor --new -- "$HOME/projects/$project"
-      '';
-    })
-    (writeShellApplication {
-      name = "pi-scratch";
-      runtimeInputs = [
-        coreutils
-        glib
-        jq
-        util-linux
-        herdrCore
-      ];
-      text = ''
-        exec 9>"$XDG_RUNTIME_DIR/pi-scratch.lock"
-        flock 9
-        terminal_file="$XDG_RUNTIME_DIR/pi-scratch.terminal"
-        new_terminal() {
-          local work_dir
-          work_dir=$(mktemp -d -t pi-session.XXXXXX)
-          hc run --json --bg --no-parent --label app=pi-scratch \
-            --cwd "$work_dir" ${lib.getExe config.programs.pi-coding-agent.package} \
-            --session-dir "$HOME/.pi/agent/sessions/--tmp--" 9>&- | jq -er '.address'
-        }
-        terminal=""
-        if [ -s "$terminal_file" ]; then
-          terminal=$(hc get "$(<"$terminal_file")" --json 9>&- 2>/dev/null \
-            | jq -er 'select(.state == "live" and .labels.app == "pi-scratch"
-                and (.labels["herdr.space"] // "") == "") | .address') || terminal=""
-        fi
-        if [ -z "$terminal" ]; then
-          terminal=$(new_terminal)
-          printf '%s\n' "$terminal" > "$terminal_file"
-        fi
-        if [ "''${1:-}" = --prepare ]; then
-          exit 0
-        fi
-        work_dir=$(hc get "$terminal" --json 9>&- | jq -er '.cwd')
-        next_terminal=$(new_terminal)
-        printf '%s\n' "$next_terminal" > "$terminal_file"
-        flock -u 9
-        exec 9>&-
-        window_args=$(jq -cn --arg cwd "$work_dir" --arg terminal "$terminal" \
-          '["--working-directory=" + $cwd, "-e", "${lib.getExe piScratchAttach}", $terminal]')
-        gapplication action com.mitchellh.ghostty new-window-command "$window_args" || {
-            hc kill "$terminal" >/dev/null 2>&1 || true
-            exit 1
-          }
       '';
     })
     (writeShellApplication {
@@ -203,21 +139,6 @@ in
   programs.hyprshot = {
     enable = true;
     saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";
-  };
-
-  systemd.user.services.pi-scratch-prepare = {
-    Unit = {
-      Description = "Prewarm a fresh Pi scratch session";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-      Requisite = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${config.home.path}/bin/pi-scratch --prepare";
-      UMask = "0077";
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
   };
 
   systemd.user.services.screen-record = {
