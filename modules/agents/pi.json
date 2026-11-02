@@ -10,7 +10,6 @@
   "packages": [
     "npm:pi-compact-tools",
     "npm:pi-web-access",
-    "npm:pi-subagents",
     "npm:@gotgenes/pi-anthropic-auth"
   ],
   "hideThinkingBlock": true,

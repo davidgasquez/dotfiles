@@ -8,11 +8,11 @@ disable-model-invocation: true
 
 This is a workflow for making your code changes more correct before (or sometimes after) filing a pull request by using different frontier models to implement and review your code in a loop.
 
-Use Pi's `pi-subagents` extension for delegation.
+Delegate with `hc` following [delegate](../delegate/SKILL.md).
 
 ## Implement
 
-- Delegate implementations / fixes / docs to one or several Pi Claude Opus 5.5 on high thinking effort models
+- Delegate implementations / fixes / docs to one or several Pi Claude Opus 5.5 workers on high thinking
 - Give each one an atomic task
 - Give concise prompts with the task with relevant context, constraints, expected output, and verification criteria
 
@@ -22,5 +22,5 @@ Use Pi's `pi-subagents` extension for delegation.
 - Be careful of scope creep and don't be scared to push back
 - Review changes with Pi Opus 5.5 and Pi GPT-6.1 Sol
 - Maximum 2 rounds (stop early if a round returns only nits)
-- Reviewers don't create subagents
+- Reviewers don't start agents
 - Reviewers should surface cleaning and simplifcation oppotunities
