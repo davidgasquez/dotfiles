@@ -10,6 +10,7 @@
     "git:github.com/earendil-works/pi-claude-code"
   ],
   "hideThinkingBlock": true,
+  "quietStartup": "header",
   "warnings": {
     "anthropicExtraUsage": false
   },
