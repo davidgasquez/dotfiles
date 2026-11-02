@@ -7,7 +7,9 @@
 
 let
   piWorkers = pkgs.writeShellScript "pi-workers" ''
-    export PI_WORKERS_HC=${lib.getExe inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core}
+    export PI_WORKERS_HC=${
+      lib.getExe inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core
+    }
     exec ${lib.getExe pkgs.nodejs_22} ${./pi-workers.mjs}
   '';
 in
