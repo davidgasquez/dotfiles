@@ -1,99 +1,39 @@
-import { spawn } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { mkdir, mkdtemp, stat } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { createConnection } from "node:net";
-import { homedir } from "node:os";
-import { isAbsolute, join } from "node:path";
+import { isAbsolute } from "node:path";
+import { createInterface } from "node:readline";
+import { promisify } from "node:util";
 
-const workers = new Map();
+const hcBin = process.env.PI_WORKERS_HC ?? "hc";
+const run = promisify(execFile);
+const watches = new Map();
 const instructions =
-  "Delegate with pi_start instead of built-in subagents. Give each a focused task and necessary context. Results return automatically to this chat. Use pi_send for follow-ups or steering, pi_status for recovery, and pi_stop when finished.";
-const string = { type: "string", minLength: 1 };
-const workerId = { ...string, description: "Worker id returned by pi_start." };
-const schema = (properties, required = []) => ({
-  type: "object",
-  properties,
-  required,
-  additionalProperties: false,
-});
-const tools = [
-  {
-    name: "pi_start",
-    description:
-      "Start a persistent Pi worker and return immediately. Results arrive in this chat automatically. Omit model to use Pi's configured model.",
-    inputSchema: schema(
-      {
-        task: {
-          ...string,
-          description:
-            "Focused task with relevant context, constraints, expected output, and verification criteria.",
-        },
-        cwd: {
-          ...string,
-          description:
-            "Existing absolute working directory on the shared filesystem.",
-        },
-        name: string,
-        model: string,
-        thinking: {
-          type: "string",
-          enum: ["off", "minimal", "low", "medium", "high", "xhigh"],
-        },
-      },
-      ["task", "cwd"],
-    ),
+  'Delegate to interactive Pi workers in hc terminals instead of built-in subagents. Run `hc --skill` once to learn hc. Launch each worker with its own absolute session file and a focused task with context, constraints, expected output, and verification, e.g. `hc run --bg --name review --cwd /repo pi --session /tmp/review.jsonl "<task>"`, then call hc_watch with the returned terminal and that session. Completions, errors, blocks, cancellations, and exits then arrive in this chat automatically; do not poll. Use hc send, interrupt, read, and kill to steer, inspect, and clean up.';
+const tool = {
+  name: "hc_watch",
+  description:
+    "Relay an hc terminal running interactive Pi to this chat: each completion (final text from the Pi session), error, block, cancellation, and exit arrives automatically. Calling it again returns the latest result and any delivery error.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      terminal: { type: "string", description: "Address or name from hc run." },
+      session: { type: "string", description: "Absolute pi --session path." },
+    },
+    required: ["terminal", "session"],
+    additionalProperties: false,
   },
-  {
-    name: "pi_send",
-    description:
-      "Continue a worker with its existing context. When busy, followUp queues work and steer redirects the current task; either starts immediately when idle.",
-    inputSchema: schema(
-      {
-        worker_id: workerId,
-        message: string,
-        mode: {
-          type: "string",
-          enum: ["followUp", "steer"],
-          default: "followUp",
-        },
-      },
-      ["worker_id", "message"],
-    ),
-  },
-  {
-    name: "pi_status",
-    description:
-      "Recover worker state: latest result, session path, and callback errors. Omit worker_id to list this chat's workers. Results arrive automatically; avoid polling.",
-    inputSchema: schema({ worker_id: workerId }),
-  },
-  {
-    name: "pi_stop",
-    description:
-      "Stop a worker and its commands, preserving its transcript and latest result. Workers also stop when this MCP connection closes.",
-    inputSchema: schema({ worker_id: workerId }, ["worker_id"]),
-  },
-];
+};
 
-// Both MCP stdio and Pi RPC use LF-delimited JSON, including literal U+2028/U+2029.
+// MCP stdio and hc events are JSON lines; readline splits only on CR/LF, never U+2028/U+2029.
 function readJsonLines(stream, onRecord, onError) {
-  let buffer = "";
-  stream.setEncoding("utf8");
-  stream.on("data", (chunk) => {
-    buffer += chunk;
-    let newline;
-    while ((newline = buffer.indexOf("\n")) !== -1) {
-      const line = buffer.slice(0, newline);
-      buffer = buffer.slice(newline + 1);
-      if (!line.trim()) continue;
-      try {
-        onRecord(JSON.parse(line));
-      } catch (error) {
-        onError(error);
-      }
-    }
-    if (buffer.length > 8 * 1024 * 1024) {
-      buffer = "";
-      onError(new Error("JSON record exceeds 8 MiB"));
+  createInterface({ input: stream }).on("line", (line) => {
+    if (!line.trim()) return;
+    try {
+      onRecord(JSON.parse(line));
+    } catch (error) {
+      onError(error);
     }
   });
 }
@@ -177,314 +117,250 @@ function appCall(context, tool, args) {
   });
 }
 
-function snapshot(worker) {
-  const { id, name, cwd, session, status, result, deliveryError } = worker;
-  return {
-    id,
-    name,
-    cwd,
-    session,
-    status,
-    result,
-    deliveryError,
-  };
+// hc reports errors as {error: {message}} JSON on stderr.
+async function hcGet(terminal) {
+  try {
+    const { stdout } = await run(hcBin, ["get", "--json", "--", terminal]);
+    return JSON.parse(stdout);
+  } catch (error) {
+    let message = error.stderr?.trim() || error.message;
+    try {
+      message = JSON.parse(message).error.message;
+    } catch {}
+    throw new Error(`hc get: ${message}`);
+  }
 }
 
-function notify(worker, message) {
-  const prompt = `[Pi worker ${worker.id}: ${worker.name}]\n${message}\nSession: ${worker.session}`;
-  worker.delivery = worker.delivery.then(async () => {
+function snapshot(watch) {
+  const { terminal, name, session, status, result, deliveryError } = watch;
+  return { terminal, name, session, status, result, deliveryError };
+}
+
+function report(watch, result) {
+  watch.result = result;
+  deliver(watch, result);
+}
+
+function deliver(watch, result) {
+  const text =
+    result.length > 24_000
+      ? `${result.slice(0, 24_000)}\n[Truncated; full output is in the session.]`
+      : result;
+  const prompt = `[Pi worker ${watch.terminal}${watch.name ? ` ${watch.name}` : ""}]\n${text}\nSession: ${watch.session}`;
+  watch.delivery = watch.delivery.then(async () => {
     try {
-      await appCall(worker.owner, "send_message_to_thread", {
-        threadId: worker.owner.threadId,
+      await appCall(watch.owner, "send_message_to_thread", {
+        threadId: watch.owner.threadId,
         hostId: "local",
         prompt,
       });
-      delete worker.deliveryError;
+      delete watch.deliveryError;
     } catch (error) {
-      worker.deliveryError = error.message;
-      console.error(`Pi ${worker.id}: callback failed: ${error.message}`);
+      watch.deliveryError = error.message;
+      console.error(`${watch.terminal}: callback failed: ${error.message}`);
     }
   });
 }
 
-function signal(worker, signal) {
-  if (!worker.child.pid) return;
+function lastAssistant(session) {
+  const lines = readFileSync(session, "utf8").trimEnd().split("\n").reverse();
+  // The newest record is always parsed so a partial tail is reported, not skipped.
+  for (const [index, line] of lines.entries()) {
+    if (index > 0 && !line.includes('"assistant"')) continue;
+    const entry = JSON.parse(line);
+    if (entry.type === "message" && entry.message?.role === "assistant")
+      return entry;
+  }
+}
+
+// A repeated done counts when the transcript has a new assistant entry or read error (e.g. after a rebind).
+function observeOutcome(watch, status, previous) {
+  let entry, unreadable;
   try {
-    process.kill(-worker.child.pid, signal);
+    entry = lastAssistant(watch.session);
   } catch (error) {
-    if (error.code !== "ESRCH") throw error;
+    unreadable = `Session transcript unreadable (${error.message}); check the session path or hc read ${watch.terminal}.`;
+  }
+  const key = entry?.id ?? unreadable;
+  const fresh = key !== undefined && key !== watch.reported;
+  if (
+    !fresh &&
+    (status.state === previous || (status.state === "done" && entry))
+  )
+    return;
+  watch.reported = key ?? watch.reported;
+  const message = fresh && entry ? entry.message : {};
+  const text = message.content
+    ?.filter((block) => block.type === "text")
+    .map((block) => block.text)
+    .join("\n");
+  report(
+    watch,
+    status.state === "error"
+      ? `Error: ${message.errorMessage ?? status.msg ?? "unknown"}${unreadable ? `\n${unreadable}` : ""}`
+      : unreadable
+        ? `Completed, but ${unreadable}`
+        : `Completed:\n${text || "No assistant text in the session."}`,
+  );
+}
+
+// Pi reports done/error when a run settles, idle when it is cancelled, and blocked for dialogs.
+// hc may not emit a turn event for blocked -> done, so outcomes follow status words.
+function observeStatus(watch, status) {
+  const previous = watch.status;
+  watch.status = status?.state;
+  if (status?.state === "done" || status?.state === "error")
+    observeOutcome(watch, status, previous);
+  else if (status?.state === "blocked" && previous !== "blocked")
+    report(
+      watch,
+      `Blocked (${status.kind ?? "needs a person"})${status.msg ? `: ${status.msg}` : ""}\nAnswer with: hc attach ${watch.terminal}`,
+    );
+  else if (
+    status?.state === "idle" &&
+    ["working", "blocked"].includes(previous)
+  )
+    report(watch, "Cancelled.");
+}
+
+function observeExit(watch, { reason, exit_code, signal }) {
+  if (watch.finished) return;
+  watch.finished = true;
+  watch.status = "finished";
+  watch.child?.kill();
+  report(
+    watch,
+    `Exited (${reason}${exit_code != null ? `, code ${exit_code}` : signal != null ? `, signal ${signal}` : ""}).`,
+  );
+}
+
+function observeTerminals(watch, seq, terminals) {
+  watch.seq = seq;
+  for (const record of terminals) {
+    if (record.address !== watch.terminal) continue;
+    if (record.state === "finished") observeExit(watch, record);
+    else observeStatus(watch, record.status);
   }
 }
 
-async function stop(worker) {
-  worker.stopping = true;
-  if (!worker.exited) {
-    signal(worker, "SIGTERM");
-    const timer = setTimeout(() => signal(worker, "SIGKILL"), 3_000);
-    await worker.closed;
-    clearTimeout(timer);
-    signal(worker, "SIGKILL");
-  }
-  worker.status = "stopped";
-  return snapshot(worker);
-}
-
-function rpc(worker, type, fields = {}) {
+function subscribe(watch) {
   return new Promise((resolve, reject) => {
-    if (worker.exited || worker.stopping)
-      return reject(new Error("Worker has stopped"));
-    const id = randomUUID();
-    const timer = setTimeout(() => {
-      worker.pending.delete(id);
-      reject(
-        new Error(`Pi ${type} timed out; inspect pi_status before retrying`),
-      );
-    }, 30_000);
-    worker.pending.set(id, (record) => {
-      clearTimeout(timer);
-      record.success ? resolve(record.data) : reject(new Error(record.error));
+    const child = spawn(
+      hcBin,
+      ["events", "--json", "--terminal", watch.terminal],
+      { stdio: ["ignore", "pipe", "pipe"] },
+    );
+    watch.child = child;
+    let stderr = "";
+    let started = false;
+    child.stderr.setEncoding("utf8").on("data", (chunk) => {
+      stderr = (stderr + chunk).slice(-2000);
     });
-    worker.child.stdin.write(`${JSON.stringify({ id, type, ...fields })}\n`);
+    readJsonLines(
+      child.stdout,
+      (record) => {
+        if (record.terminals) {
+          started = true;
+          resolve();
+          observeTerminals(watch, record.seq, record.terminals);
+        } else if (record.method === "missed")
+          observeTerminals(watch, record.params.seq, record.params.terminals);
+        else if (record.method === "event" && record.params.seq > watch.seq) {
+          const { type, data } = record.params;
+          watch.seq = record.params.seq;
+          if (type === "status") observeStatus(watch, data.status);
+          else if (type === "finished") observeExit(watch, data);
+        }
+      },
+      (error) => console.error(`hc events: ${error.message}`),
+    );
+    child.on("error", reject);
+    child.on("close", () => {
+      watch.events = undefined;
+      const message = `hc events ended: ${stderr.trim() || "no output"}`;
+      reject(new Error(message));
+      if (started && !watch.finished && !closing)
+        deliver(watch, `Watch lost (${message}); call hc_watch again.`);
+    });
   });
 }
 
-function event(worker, record) {
-  if (record.type === "response") {
-    worker.pending.get(record.id)?.(record);
-    worker.pending.delete(record.id);
-  } else if (record.type === "agent_start") {
-    worker.revision++;
-    worker.status = "busy";
-    delete worker.assistant;
-  } else if (
-    record.type === "message_end" &&
-    record.message?.role === "assistant"
-  ) {
-    worker.assistant = record.message;
-  } else if (record.type === "agent_settled" && !worker.stopping) {
-    worker.revision++;
-    const message = worker.assistant;
-    const failed =
-      record.aborted || ["error", "aborted"].includes(message?.stopReason);
-    worker.status = failed ? "error" : "idle";
-    worker.result = failed
-      ? `Error: ${message?.errorMessage ?? "Run aborted"}`
-      : message?.content
-          ?.filter((block) => block.type === "text")
-          .map((block) => block.text)
-          .join("\n") || "No assistant text returned.";
-    const output =
-      worker.result.length > 24_000
-        ? `${worker.result.slice(0, 24_000)}\n[Truncated; full output is in the session transcript.]`
-        : worker.result;
-    notify(
-      worker,
-      `${worker.status === "idle" ? "Completed" : "Failed"}:\n${output}`,
-    );
-  }
-}
-
-async function start(args, context) {
-  if (!isAbsolute(args.cwd) || !(await stat(args.cwd)).isDirectory())
-    throw new Error("cwd must be an existing absolute directory");
+async function watch(args, context) {
+  if (!isAbsolute(args.session))
+    throw new Error("session must be an absolute Pi session path");
   if (!process.env.CODEX_APP_TOOLS_PIPE_PATH)
     throw new Error(
       "CODEX_APP_TOOLS_PIPE_PATH is missing; launch from the desktop app.",
     );
-  if (closing) throw new Error("MCP is shutting down");
-  const root = join(
-    process.env.CODEX_HOME ?? join(homedir(), ".codex"),
-    "pi-workers",
-  );
-  await mkdir(root, { recursive: true, mode: 0o700 });
-  const directory = await mkdtemp(join(root, "worker-"));
-  if (closing) throw new Error("MCP is shutting down");
-  const id = randomUUID().slice(0, 8);
-  const session = join(directory, "session.jsonl");
-  const argv = [
-    "--mode",
-    "rpc",
-    "--session",
-    session,
-    "--append-system-prompt",
-    "You are a worker for a Codex orchestrator. Complete the assigned task. You share files with other agents. Preserve their changes. Return a concise result with verification outcomes and any blockers.",
-  ];
-  if (args.model) argv.push("--model", args.model);
-  if (args.thinking) argv.push("--thinking", args.thinking);
-  const child = spawn(process.env.PI_WORKER_BIN ?? "pi", argv, {
-    cwd: args.cwd,
-    stdio: ["pipe", "pipe", "pipe"],
-    detached: true,
-  });
-  const worker = {
-    id,
-    name: args.name ?? id,
-    cwd: args.cwd,
-    session,
-    owner: context,
-    child,
-    status: "starting",
-    revision: 0,
-    pending: new Map(),
-    delivery: Promise.resolve(),
-    stderr: "",
-  };
-  workers.set(id, worker);
-  const fail = (error) => {
-    worker.stderr = error.message;
-    for (const callback of worker.pending.values())
-      callback({ success: false, error: error.message });
-    worker.pending.clear();
-  };
-  worker.closed = new Promise((resolve) =>
-    child.once("close", (code, terminationSignal) => {
-      worker.exited = true;
-      const reason = `Pi exited (${terminationSignal ?? code})${worker.stderr ? `: ${worker.stderr}` : ""}`;
-      fail(new Error(reason));
-      if (!worker.stopping) {
-        worker.status = "error";
-        worker.result = reason;
-        notify(worker, reason);
-      }
-      resolve();
-    }),
-  );
-  child.once("exit", () => signal(worker, "SIGKILL"));
-  child.on("error", fail);
-  child.stdin.on("error", fail);
-  child.stderr.setEncoding("utf8").on("data", (chunk) => {
-    worker.stderr = (worker.stderr + chunk).slice(-4000);
-  });
-  readJsonLines(
-    child.stdout,
-    (record) => event(worker, record),
-    (error) => {
-      fail(error);
-      worker.result = `Invalid Pi output: ${error.message}`;
-      notify(worker, worker.result);
-      void stop(worker);
-    },
-  );
-  try {
-    await rpc(worker, "set_session_name", { name: worker.name });
-    worker.status = "idle";
-    return { ...(await send(worker, args.task)), worker_id: id };
-  } catch (error) {
-    await stop(worker);
-    throw new Error(`${error.message}; session: ${session}`);
+  // Retained watches answer by address even after the terminal was removed with hc rm.
+  let watch = watches.get(args.terminal);
+  if (!watch) {
+    const record = await hcGet(args.terminal);
+    watch = watches.get(record.address) ?? {
+      terminal: record.address,
+      name: record.name,
+      session: args.session,
+      owner: context,
+      seq: 0,
+      delivery: Promise.resolve(),
+    };
+    watches.set(record.address, watch);
   }
+  if (watch.owner.threadId !== context.threadId)
+    throw new Error("Terminal is watched by another chat");
+  if (watch.session !== args.session)
+    throw new Error(`Terminal is watched with session ${watch.session}`);
+  if (!watch.finished && !closing) await (watch.events ??= subscribe(watch));
+  return snapshot(watch);
 }
 
-async function send(worker, message, mode = "followUp") {
-  const { status, revision } = worker;
-  if (["idle", "error"].includes(status) && !worker.exited)
-    worker.status = "busy";
-  try {
-    const data = await rpc(worker, "prompt", {
-      message,
-      streamingBehavior: mode,
-    });
-    if (data?.disposition === "handled" && worker.revision === revision)
-      worker.status = status;
-    return { ...snapshot(worker), disposition: data?.disposition };
-  } catch (error) {
-    if (worker.revision === revision && !worker.exited) worker.status = status;
-    throw error;
-  }
-}
-
-function validate(args, definition) {
-  if (!args || typeof args !== "object" || Array.isArray(args))
-    throw new Error("Expected an arguments object");
-  for (const key of definition.required)
-    if (!(key in args)) throw new Error(`Missing ${key}`);
-  for (const [key, value] of Object.entries(args)) {
-    const rule = definition.properties[key];
-    if (
-      !rule ||
-      (rule.type && typeof value !== rule.type) ||
-      (rule.minLength && !value.trim()) ||
-      (rule.enum && !rule.enum.includes(value))
-    )
-      throw new Error(`Invalid ${key}`);
-  }
-}
-
-async function callTool(params) {
-  const tool = tools.find((item) => item.name === params.name);
-  if (!tool) throw new Error(`Unknown tool: ${params.name}`);
-  const args = params.arguments ?? {};
-  validate(args, tool.inputSchema);
-  const context = owner(params._meta);
-  if (tool.name === "pi_start") return start(args, context);
-  if (tool.name === "pi_status" && !args.worker_id)
-    return [...workers.values()]
-      .filter((worker) => worker.owner.threadId === context.threadId)
-      .map(snapshot);
-  const worker = workers.get(args.worker_id);
-  if (!worker || worker.owner.threadId !== context.threadId)
-    throw new Error("Worker not found in this chat");
-  if (tool.name === "pi_status") return snapshot(worker);
-  if (tool.name === "pi_stop") return stop(worker);
-  return send(worker, args.message, args.mode);
+async function callTool({ name, arguments: args, _meta }) {
+  if (name !== tool.name) throw new Error(`Unknown tool: ${name}`);
+  if (typeof args?.terminal !== "string" || typeof args.session !== "string")
+    throw new Error("Expected terminal and session strings");
+  return watch(args, owner(_meta));
 }
 
 function output(message) {
   process.stdout.write(`${JSON.stringify({ jsonrpc: "2.0", ...message })}\n`);
 }
 
+const toolResult = (value, isError) => ({
+  content: [{ type: "text", text: isError ? value : JSON.stringify(value) }],
+  isError,
+});
+
 async function handle(request) {
-  if (
-    !request ||
-    request.jsonrpc !== "2.0" ||
-    typeof request.method !== "string"
-  ) {
-    output({
-      id: request?.id ?? null,
+  const { id, method, params } = request ?? {};
+  if (request?.jsonrpc !== "2.0" || typeof method !== "string")
+    return output({
+      id: id ?? null,
       error: { code: -32600, message: "Invalid JSON-RPC request" },
     });
-    return;
-  }
-  if (request.id === undefined) return;
-  const { id, method } = request;
-  if (method === "initialize") {
-    const supported = ["2024-11-05", "2025-03-26", "2025-06-18", "2025-11-25"];
+  if (id === undefined) return;
+  const supported = ["2024-11-05", "2025-03-26", "2025-06-18", "2025-11-25"];
+  if (method === "initialize")
     output({
       id,
       result: {
-        protocolVersion: supported.includes(request.params?.protocolVersion)
-          ? request.params.protocolVersion
+        protocolVersion: supported.includes(params?.protocolVersion)
+          ? params.protocolVersion
           : supported.at(-1),
         capabilities: { tools: {} },
-        serverInfo: { name: "pi-workers", version: "1.0.0" },
+        serverInfo: { name: "pi-workers", version: "2.0.0" },
         instructions,
       },
     });
-  } else if (method === "ping") output({ id, result: {} });
-  else if (method === "tools/list") output({ id, result: { tools } });
-  else if (method === "tools/call") {
-    try {
-      output({
-        id,
-        result: {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify(await callTool(request.params)),
-            },
-          ],
-        },
-      });
-    } catch (error) {
-      output({
-        id,
-        result: {
-          content: [{ type: "text", text: error.message }],
-          isError: true,
-        },
-      });
-    }
-  } else
+  else if (method === "ping") output({ id, result: {} });
+  else if (method === "tools/list") output({ id, result: { tools: [tool] } });
+  else if (method === "tools/call")
+    output({
+      id,
+      result: await callTool(params).then(toolResult, (error) =>
+        toolResult(error.message, true),
+      ),
+    });
+  else
     output({
       id,
       error: { code: -32601, message: `Unknown method: ${method}` },
@@ -492,12 +368,10 @@ async function handle(request) {
 }
 
 let closing = false;
-async function shutdown() {
+function shutdown() {
   if (closing) return;
   closing = true;
-  await Promise.allSettled(
-    [...workers.values()].filter((worker) => !worker.exited).map(stop),
-  );
+  for (const watch of watches.values()) watch.child?.kill();
   process.exit(0);
 }
 process.on("SIGTERM", shutdown);
