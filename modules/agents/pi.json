@@ -8,7 +8,7 @@
     "inlineBudget": 500
   },
   "packages": [
-    "npm:pi-compact-tools",
+    "npm:@notrico/pi-fold",
     "npm:pi-web-access",
     "npm:@gotgenes/pi-anthropic-auth"
   ],
