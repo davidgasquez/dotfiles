@@ -27,8 +27,6 @@
     pkgs.libnotify
   ];
 
-  home.sessionVariables.PI_CLAUDE_CODE_COMMAND = lib.getExe pkgs.claude-code;
-
   home.file.".pi/agent/extensions" = {
     source = ./pi/extensions;
     recursive = true;

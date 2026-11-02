@@ -3,11 +3,15 @@
   "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "high",
   "defaultTools": ["+codemode"],
+  "codemode": {
+    "mode": "only",
+    "inlineBudget": 500
+  },
   "packages": [
     "npm:pi-compact-tools",
     "npm:pi-web-access",
     "npm:pi-subagents",
-    "git:github.com/earendil-works/pi-claude-code"
+    "npm:@gotgenes/pi-anthropic-auth"
   ],
   "hideThinkingBlock": true,
   "quietStartup": "header",
