@@ -5,7 +5,8 @@
 
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex, InputState, Input } from "gpui-base";
-import { spaces, panes, agents, terminals, focused, run, exec, theme, shared, setShared, pickFolder, openOverlay, closeOverlay, props, setAgentOrder, layout, nextCommand, notify, home } from "herdr";
+import { spaces, panes, agents, terminals, focused, run, exec, theme, shared, setShared, pickFolder, openOverlay, closeOverlay, props, setAgentOrder, layout, nextCommand, notify, home, machines, window } from "herdr";
+import { DIFF, tally } from "./git.js";
 
 const PI = ["exec", "pi"];
 const ICONS = "mods/workspace-chrome";
@@ -54,6 +55,10 @@ function title(tab, ps) {
   return program?.agent ? "New chat" : !program || program.shell ? "Terminal" : program.name;
 }
 
+const layoutOf = (name) => machines().find((m) => m.name === name)?.layout ?? "unavailable";
+const where = (on, cwd) => JSON.stringify([on ?? null, cwd]);
+const short = (n) => (n >= 10000 ? Math.round(n / 1000) + "k" : n >= 1000 ? (n / 1000).toFixed(1) + "k" : String(n));
+
 // Spaces by where they work: the deepest saved folder, else a standalone chat, else other.
 function grouped() {
   const ps = panes();
@@ -61,16 +66,19 @@ function grouped() {
   const of = new Map(list.map((p) => [p.folder, []]));
   const chats = [];
   const other = [];
+  const remote = new Map(machines().filter((m) => m.name).map((m) => [m.name, []]));
   for (const s of spaces()) {
     const at = place(s, ps);
     const p = s.machine ? null : list
       .filter((p) => inside(at, p.folder) || inside(s.folder, p.folder))
       .sort((a, b) => b.folder.length - a.folder.length)[0];
     if (p) of.get(p.folder).push(s);
-    else if (!s.machine && (isChat(at) || isChat(s.folder))) chats.push(s);
+    else if (s.machine) remote.set(s.machine, [...(remote.get(s.machine) ?? []), s]);
+    else if (isChat(at) || isChat(s.folder)) chats.push(s);
     else other.push(s);
   }
-  return { ps, list, of, chats, other };
+  const machine = [...remote.keys()].sort().map((name) => ({ name, spaces: remote.get(name), layout: layoutOf(name) }));
+  return { ps, list, of, chats, other, remote: machine };
 }
 
 function start(entry, argv) {
@@ -160,6 +168,7 @@ export default class SavedSpaces extends View {
   init(_props, cx) {
     this.hovered = null;
     this.folded = new Set(JSON.parse(localStorage.getItem("folded") ?? "[]"));
+    this.diffs = {};
     const p = props() ?? {};
     if (p.rename) {
       this.input = InputState.new({ value: saved().find((x) => x.folder === p.rename)?.name ?? "" });
@@ -171,11 +180,50 @@ export default class SavedSpaces extends View {
       cx.spawn(async () => {
         for (;;) if ((await nextCommand()) === "new_chat") await chatNow();
       });
+      this.refreshDiffs(cx);
+      cx.timer.every(5000, (cx) => this.refreshDiffs(cx));
     }
     if (p.rename || p.menu) {
       this.handle = cx.focus_handle();
       if (p.menu) this.handle.focus();
     }
+  }
+
+  // The rows' repos, one git run each at a time, while the window is in use.
+  refreshDiffs(cx) {
+    if (this.diffing || (this.diffed && !window()?.active)) return;
+    this.diffed = true;
+    this.diffing = true;
+    const g = grouped();
+    const keys = new Set([
+      ...g.list.map((p) => where(null, p.folder)),
+      ...[...g.other, ...g.remote.filter((m) => m.layout === "ready").flatMap((m) => m.spaces)]
+        .map((s) => [s.machine, place(s, g.ps)]).filter(([, cwd]) => cwd).map(([on, cwd]) => where(on, cwd)),
+    ]);
+    cx.spawn(async (cx) => {
+      const before = JSON.stringify(this.diffs);
+      for (const key of Object.keys(this.diffs)) if (!keys.has(key)) delete this.diffs[key];
+      for (const key of keys) {
+        const [on, cwd] = JSON.parse(key);
+        let d;
+        try { d = tally(await exec("sh", ["-c", DIFF], { cwd, on })); } catch {}
+        if (d) this.diffs[key] = d;
+        else if (d === null) delete this.diffs[key];
+      }
+      this.diffing = false;
+      if (JSON.stringify(this.diffs) !== before) cx.notify();
+    });
+  }
+
+  // A space's name with its repo's +added -deleted beside it; only files changed when no lines did.
+  named(name, d, medium) {
+    const t = theme();
+    return h_flex().flex_1().min_w(0).gap(6).items_center()
+      .child(div().min_w(0).truncate().line_height(1).text_color(t.foreground).when(medium, (el) => el.font_medium()).child(name))
+      .when(Boolean(d), (el) => el.child(h_flex().flex_none().items_center().gap(4).text_size(10.5).line_height(1)
+        .when(d.add > 0, (el) => el.child(div().text_color(t.ansi2 + "b3").child("+" + short(d.add))))
+        .when(d.del > 0, (el) => el.child(div().text_color(t.ansi1 + "b3").child("-" + short(d.del))))
+        .when(!d.add && !d.del, (el) => el.child(div().text_color(t.dim).child("~" + short(d.files))))));
   }
 
   hover(id, on, cx) {
@@ -271,7 +319,7 @@ export default class SavedSpaces extends View {
         .on_click((_e, cx) => (tabs.length ? this.toggle(key, cx) : start(p, PI)))
         .on_mouse_down("right", () => savedMenu(p))
         .child(avatar(p.name, p.color))
-        .child(div().flex_1().min_w(0).truncate().font_medium().text_color(t.foreground).child(p.name))
+        .child(this.named(p.name, this.diffs[where(null, p.folder)], true))
         .when(shown, (el) => el
           .child(this.button("hist-" + i, svg(ICONS + "/clock.svg").size(13), "History", () => history(p.folder, p.name)))
           .child(this.button("term-" + i, svg(ICONS + "/terminal.svg").size(13), "New terminal", () => start(p)))
@@ -297,10 +345,22 @@ export default class SavedSpaces extends View {
       .on_click(() => run("space.select", { id: s.id }))
       .on_mouse_down("right", () => openOverlay({ mod: "sandbox-spaces", kind: "popup", width: 200, height: s.machine ? 100 : 165, props: { menu: { space: s.id } } }))
       .child(avatar(s.name, colors[s.id]))
-      .child(div().flex_1().min_w(0).truncate().text_color(t.foreground).child(s.name))
-      .when(Boolean(s.machine), (el) => el.child(div().flex_none().text_size(11).text_color(t.dim).child(s.machine)))
+      .child(this.named(s.name, this.diffs[where(s.machine, place(s, panes()))], false))
       .when(this.hovered === id, (el) => el.child(hist))
       .child(div().w(22).flex_none().flex().justify_center().child(mark(t, s.status) ?? div()));
+  }
+
+  machine(m) {
+    const t = theme();
+    const ready = m.layout === "ready";
+    const label = h_flex().min_w(0).gap(6).items_center()
+      .child(svg(ICONS + "/server.svg").size(12).flex_none())
+      .child(div().min_w(0).truncate().child(m.name))
+      .when(!ready, (el) => el.child(div().flex_none().text_color(t.dim).opacity(0.7).child(m.layout === "loading" ? "Loading…" : "Unavailable")));
+    return [
+      this.section("remote-new-" + m.name, label, "New space on " + m.name, ready ? () => run("space.new", { machine: m.name }) : null),
+      ...m.spaces.map((s) => this.other(s)),
+    ];
   }
 
   rail(g) {
@@ -310,6 +370,9 @@ export default class SavedSpaces extends View {
         .on_click(() => { const live = g.of.get(p.folder)[0]; live ? run("space.select", { id: live.id }) : start(p, PI); })
         .on_mouse_down("right", () => savedMenu(p))
         .child(avatar(p.name, p.color, 22))))
+      .children(g.remote.map((m) => this.button("rail-remote-" + m.name, svg(ICONS + "/server.svg").size(14),
+        m.name + (m.layout === "ready" ? "" : m.layout === "loading" ? " (loading)" : " (unavailable)"),
+        () => (m.spaces[0] ? run("space.select", { id: m.spaces[0].id }) : m.layout === "ready" && run("space.new", { machine: m.name })))))
       .child(this.button("rail-chat", svg("icons/pi.svg").size(14), "New Pi chat", newChat))
       .child(this.button("rail-history", svg(ICONS + "/clock.svg").size(14), "Chats history", chatHistory));
   }
@@ -379,7 +442,7 @@ export default class SavedSpaces extends View {
     if (p.rename) return this.dialog();
     const t = theme();
     const g = grouped();
-    const order = [...g.list.flatMap((x) => g.of.get(x.folder)), ...g.chats, ...g.other].flatMap((s) => s.tabs.map((tab) => tab.id));
+    const order = [...g.list.flatMap((x) => g.of.get(x.folder)), ...g.other, ...g.remote.flatMap((m) => m.spaces), ...g.chats].flatMap((s) => s.tabs.map((tab) => tab.id));
     const all = agents();
     setAgentOrder(order.flatMap((id) => all.filter((a) => a.tab === id).map((a) => a.address)));
     if (narrow()) return this.rail(g);
@@ -391,6 +454,8 @@ export default class SavedSpaces extends View {
         .when(!g.list.length, (el) => el.child(div().id("add-first").h(28).px(8).flex().items_center().rounded(7)
           .text_size(12).text_color(t.dim).hover((s) => s.bg(t.hover)).on_click((_e, cx) => pick(cx)).child("Add a folder…")))
         .when(g.other.length > 0, (el) => el.child(this.section("other", "Other")).children(g.other.map((s) => this.other(s)))))
+      .when(g.remote.length > 0, (el) => el.child(v_flex().id("remote-list").flex_none().h(Math.min(200, 5 + g.remote.reduce((height, m) => height + 31 + 30 * m.spaces.length, 0))).px(8).pb(4).border_t(1).border_color(t.border)
+        .overflow_y_scrollbar().children(g.remote.flatMap((m) => this.machine(m)))))
       .child(v_flex().flex_none().px(8).pb(8).border_t(1).border_color(t.border)
         .child(this.section("new-chat", "Chats", "New Pi chat (Ctrl+I)", newChat,
           this.button("history", svg(ICONS + "/clock.svg").size(13), "Chats history", chatHistory)))
