@@ -63,6 +63,7 @@
     "ctrl-shift-a": "t3-focus.new-pi"
   },
   "terminal": {
+    "ctrl-d": "pane.close",
     "ctrl-backspace": "send:\u0017",
     "ctrl-left": "send:\u001bb",
     "ctrl-right": "send:\u001bf",
