@@ -33,7 +33,7 @@ const texts = (node) => typeof node === "string" ? [node] : node && typeof node 
 const plain = (v) => JSON.parse(JSON.stringify(v));
 const source = (file) => fs.readFileSync(path.join(__dirname, file), "utf8");
 
-function fixture({ target = { terminal: "A", title: "Work" }, tab } = {}) {
+function fixture({ target = { terminal: "A", title: "Work" } } = {}) {
   const f = { rows: [], terms: [], ps: [], pins: [], calls: [], hcCalls: [], notes: [], closed: [], jobs: [], hcResult: { code: 0, stdout: "{}", stderr: "" } };
   const cx = {
     notify() {}, stop_propagation() {},
@@ -46,7 +46,7 @@ function fixture({ target = { terminal: "A", title: "Work" }, tab } = {}) {
     agents: () => f.rows, terminals: () => f.terms, panes: () => f.ps,
     run: (...a) => f.calls.push(a), notify: (n) => f.notes.push(n), theme: () => ({}),
     shared: (k) => (k === "agents.pins" ? f.pins : null), setShared: (k, v) => { if (k === "agents.pins") f.pins = Array.from(v); },
-    props: () => ({ target, tab, overlay: "menu-1" }), closeOverlay: (id) => f.closed.push(id),
+    props: () => ({ target, overlay: "menu-1" }), closeOverlay: (id) => f.closed.push(id),
     hc: async (args) => { f.hcCalls.push(args); if (f.hcResult instanceof Error) throw f.hcResult; return f.hcResult; },
   };
   const strip = (s) => s.replace(/^import .*;\r?\n/gm, "").replace(/export (const|function|async function) /g, "$1 ");
@@ -87,50 +87,6 @@ test("an idle, done or errored Pi forks with the native key in exactly the click
     assert.deepEqual(f.closed, ["menu-1"]);
     assert.equal(f.notes.length, 0);
   }
-});
-
-test("terminal right-click preserves pane actions and forks the clicked remote Pi", async () => {
-  const f = fixture({ tab: "pane", target: { terminal: "tau/t7", pane: "tau/p7" } });
-  f.add("other", { focused: true }); f.add("tau/t7"); f.open();
-  assert.deepEqual(f.ids(), ["split-right", "split-down", "zoom", "fork", "right-click", "close"]);
-  await f.click("fork");
-  assert.deepEqual(plain(f.hcCalls), [["keys", "tau/t7", "ctrl+alt+shift+f"]]);
-  assert.deepEqual(plain(f.calls), [["agent.focus", { terminal: "tau/t7" }]]);
-});
-
-test("ordinary shells keep the native terminal menu without Fork", async () => {
-  const f = fixture({ tab: "pane", target: { terminal: "shell", pane: "p-shell" } });
-  f.terms = [{ address: "shell", state: "live" }]; f.open();
-  assert.deepEqual(f.ids(), ["split-right", "split-down", "zoom", "right-click", "close"]);
-  for (const id of ["split-right", "split-down", "zoom", "right-click", "close"]) await f.click(id);
-  assert.deepEqual(plain(f.calls), [
-    ["pane.split", { direction: "right", pane: "p-shell" }],
-    ["pane.split", { direction: "down", pane: "p-shell" }],
-    ["pane.zoom", { pane: "p-shell" }],
-    ["terminal.right_click", { terminal: "shell", to: "program" }],
-    ["pane.close", { pane: "p-shell" }],
-  ]);
-  assert.deepEqual(f.hcCalls, []);
-});
-
-test("terminal menu keeps send-back and right-click routing; busy Pis cannot fork", async () => {
-  const f = fixture({ tab: "pane", target: { terminal: "A", pane: "pA" } });
-  f.add("A", { status: "working" });
-  f.terms[0].parent = "parent"; f.terms[0].labels = { "herdr.right-click": "program" };
-  f.terms.push({ address: "parent", name: "Parent" }); f.open();
-  assert.equal(f.item("fork").enabled, false);
-  await f.click("fork"); assert.equal(f.hcCalls.length, 0);
-  assert.equal(f.item("right-click").label, "Use Herdr right-click menu");
-  await f.click("right-click"); await f.click("park");
-  assert.deepEqual(plain(f.calls), [
-    ["terminal.right_click", { terminal: "A", to: "menu" }],
-    ["terminal.park", { terminal: "A" }],
-  ]);
-});
-
-test("sandbox terminal right-click is wired to the conversation menu", () => {
-  const layout = JSON.parse(fs.readFileSync(path.join(__dirname, "../../layouts/sandbox.json"), "utf8"));
-  assert.equal(layout.terminal_menu, "conversation-menu");
 });
 
 test("the fork hint tells the in-place, native picker semantics and that the original stays saved", () => {

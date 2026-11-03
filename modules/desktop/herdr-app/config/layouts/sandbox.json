@@ -1,6 +1,5 @@
 {
   "id": "root",
-  "terminal_menu": "conversation-menu",
   "cloned_from": {
     "name": "my-layout",
     "version": "0.1.11"
