@@ -10,10 +10,12 @@
 {
   programs.pi-coding-agent = {
     enable = true;
-    package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+      nodejs_22 = pkgs.nodejs_24;
+    };
     extraPackages = [
       pkgs.gitMinimal
-      pkgs.nodejs_22
+      pkgs.nodejs_24
     ];
     mutableSettings = true;
     settings = builtins.fromJSON (builtins.readFile ./pi.json);
