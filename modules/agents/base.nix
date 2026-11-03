@@ -47,7 +47,7 @@ in
     mutableSettings = true;
     settings = {
       model = "gpt-6.1-sol";
-      model_reasoning_effort = "high";
+      model_reasoning_effort = "medium";
       service_tier = "priority";
       sandbox_mode = "danger-full-access";
       approval_policy = "never";
