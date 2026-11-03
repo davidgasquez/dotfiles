@@ -9,7 +9,9 @@ export default function customOpenAIExtension(pi: ExtensionAPI): void {
     if (
       ctx.model?.provider !== "openai" ||
       ctx.model.api !== "openai-responses" ||
-      !isRecord(event.payload)
+      ctx.model.baseUrl !== "https://api.openai.com/v1" ||
+      !isRecord(event.payload) ||
+      event.payload.model !== ctx.model.id
     ) {
       return;
     }
