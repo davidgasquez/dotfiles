@@ -19,6 +19,9 @@ let
   herdrApp = pkgs.callPackage ./herdr-app {
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app;
   };
+  piChats = pkgs.writeShellScriptBin "pi-chats" ''
+    exec ${lib.getExe pkgs.nodejs_24} ${./herdr-app/pi-chats/pi-chats.mjs} "$@"
+  '';
   chromeWarm = pkgs.writeText "chrome-warm.json" (
     builtins.toJSON {
       external_crx = ./chrome-warm/extension.crx;
@@ -82,6 +85,7 @@ in
   home.packages = with pkgs; [
     chatgpt
     herdrApp
+    piChats
     proton-pass-cli
     seahorse
     spotify
