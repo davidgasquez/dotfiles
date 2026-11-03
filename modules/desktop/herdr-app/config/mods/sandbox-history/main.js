@@ -153,6 +153,8 @@ export default class History extends View {
     this.input = InputState.new({ placeholder: "Search conversations…" });
     this.input.on("change", (_e, cx) => this.changed(cx));
     this.input.on("submit", (_e, cx) => this.primary(cx));
+    this.input.on("focus", (_e, cx) => { this.typing = true; cx.notify(); });
+    this.input.on("blur", (_e, cx) => { this.typing = false; cx.notify(); });
     this.input.focus();
     cx.timer.after(600, () => this.input.focus());
     this.load(cx);
@@ -225,6 +227,16 @@ export default class History extends View {
         if (!this.closed) cx.notify();
       }
     });
+  }
+
+  dismiss() {
+    closeOverlay(props().overlay);
+  }
+
+  // The settled query's text search hasn't answered yet.
+  seeking() {
+    const q = words(this.query).join(" ");
+    return Boolean(q) && (this.searching || this.wanted !== q || this.results?.query !== q);
   }
 
   rows() {
@@ -323,7 +335,7 @@ export default class History extends View {
     if (this.unreadable) out.push(this.unreadable + " unreadable");
     const r = this.results;
     const q = words(this.query).join(" ");
-    if (q && (this.searching || this.wanted !== q || r?.query !== q)) out.push("searching conversation text…");
+    if (this.seeking()) out.push("searching conversation text…");
     else if (q && r?.error) out.push("text search failed: " + r.error);
     else if (q && r?.truncated === "time") out.push("text search stopped after 20 s (" + r.scanned + " of " + r.total + " newest searched)");
     else if (q && r?.truncated === "limit") out.push("first " + r.hits.size + " text matches");
@@ -352,21 +364,30 @@ export default class History extends View {
     const status = this.status(rows);
     return v_flex().id("history").track_focus(this.handle).size_full().min_h(0).bg(t.popover).text_size(13)
       .on_key_down((e, cx) => {
-        if (e.key === "escape") closeOverlay(props().overlay);
+        if (e.key === "escape") this.dismiss();
         else if (e.key === "down" || e.key === "up") this.move(e.key === "down" ? 1 : -1, cx);
         else if (e.key === "pagedown" || e.key === "pageup") this.move(e.key === "pagedown" ? 8 : -8, cx);
         else return;
         cx.stop_propagation();
         cx.notify();
       })
-      .child(h_flex().flex_none().px(16).pt(14).pb(10).gap(10).items_center()
-        .child(h_flex().id("scope").flex_none().max_w(260).gap(6).items_baseline().tooltip(this.scope.folder)
-          .child(div().flex_none().text_size(15).font_semibold().text_color(t.foreground).child("History"))
-          .child(div().min_w(0).truncate().text_size(13).text_color(t.muted).child(this.scope.label)))
-        .child(h_flex().flex_1().h(34).px(10).gap(8).items_center().rounded(9).border_1().border_color(t.accent).bg(t.background)
-          .child(svg(ICONS + "/search.svg").size(15).text_color(t.dim))
-          .child(Input.new(this.input).flex_1().h_full().text_size(13).text_color(t.foreground)))
-        .child(div().text_size(11).text_color(t.dim).child("Esc")))
+      .child(h_flex().flex_none().px(16).pt(14).pb(10).gap(11).items_center()
+        .child(div().size(32).flex_none().flex().items_center().justify_center().rounded(8).border_1().border_color(t.border).bg(t.raised)
+          .child(svg(ICONS + "/clock.svg").size(16).text_color(t.accent)))
+        .child(v_flex().id("scope").flex_1().min_w(0).gap(1).tooltip(this.scope.folder)
+          .child(div().text_size(14).font_semibold().text_color(t.foreground).child("History"))
+          .child(h_flex().min_w(0).gap(5).items_center().text_size(11.5).text_color(t.muted)
+            .child(svg(this.scope.folder === chatsFolder() ? "icons/pi.svg" : ICONS + "/folder.svg").size(11).flex_none().text_color(t.dim))
+            .child(div().min_w(0).truncate().child(this.scope.label))))
+        .child(div().id("close").size(28).flex_none().flex().items_center().justify_center().rounded(7).text_color(t.dim).cursor_pointer()
+          .hover((st) => st.bg(t.hover).text_color(t.foreground)).tooltip("Close · Esc").accessibility_label("Close history").on_click(() => this.dismiss())
+          .child(svg(ICONS + "/x.svg").size(14))))
+      .child(div().flex_none().px(16).pb(12)
+        .child(h_flex().id("search").h(36).px(11).gap(9).items_center().rounded(9).border_1()
+          .border_color(this.typing ? t.input : t.border).bg(t.background)
+          .child(svg(ICONS + "/search.svg").size(14).flex_none().text_color(this.typing ? t.muted : t.dim))
+          .child(Input.new(this.input).flex_1().h_full().text_size(13).text_color(t.foreground))
+          .when(this.seeking(), (el) => el.child(svg(ICONS + "/spinner.svg").size(12).flex_none().text_color(t.dim).spin(900)))))
       .child(div().id("list").relative().flex_1().min_h(0).p(6).border_t(1).border_color(t.border)
         .when(!rows.length, (el) => el.child(v_flex().p(10).gap(8).text_color(t.dim).child(empty)
           .when(Boolean(this.listError), (el) => el.child(h_flex().child(this.button("retry", "Retry", false, (_e, cx) => this.load(cx)))))))

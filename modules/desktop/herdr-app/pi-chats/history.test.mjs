@@ -58,7 +58,7 @@ function harness(mod, extra = {}) {
     InputState: { new: () => ({ on: (e, fn) => { f["on_" + e] = fn; }, value: () => f.query, focus() {} }) },
     localStorage: { getItem: () => null, setItem() {} },
     spaces: () => f.spaces, panes: () => f.panes, home: () => "/home/u", props: () => f.props ?? { overlay: "o1" },
-    run: (...a) => f.runs.push(plain(a)), theme: () => ({}), closeOverlay: (id) => f.closed.push(id),
+    run: (...a) => f.runs.push(plain(a)), theme: () => f.theme ?? {}, closeOverlay: (id) => f.closed.push(id),
     notify: (n) => f.notes.push(n), pickFolder: (o) => new Promise((resolve) => f.picks.push({ o, resolve })),
     exec: (cmd, args) => new Promise((resolve) => f.execs.push({ cmd, args, resolve })),
     shared: () => f.saved ?? [], setShared() {}, agents: () => [], terminals: () => [], focused: () => null,
@@ -177,7 +177,33 @@ test("selecting by click or keys only selects: nothing is read or launched until
   assert.deepEqual([f.mod.selected, f.scrolled], ["/s/b.jsonl", 0]);
   await f.fire();
   assert.deepEqual([f.execs.length, f.runs, f.closed, f.timers.length], [1, [], [], timers]);
-  assert.deepEqual(clickable(f.tree), ["resume"], "the footer acts on the selection");
+  assert.deepEqual(clickable(f.tree), ["close", "resume"], "the header only dismisses; the footer acts on the selection");
+});
+
+test("the header: History over its scope, a quiet search, and a close button that only dismisses, like Esc", async () => {
+  const theme = { border: "border", input: "input", accent: "accent", dim: "dim", muted: "muted" };
+  const f = await opened([S("a", 1, { cwd: "/home/u/proj/src" })], { folder: "/home/u/proj/", label: "proj", theme });
+  const scope = find(f.tree, "scope");
+  assert.deepEqual([texts(scope), scope.tooltip], [["History", "proj"], "/home/u/proj"]);
+  assert.ok(!texts(f.tree).includes("Esc"), "no raw key text");
+  assert.deepEqual([find(f.tree, "close").tooltip, find(f.tree, "close").style.accessibility_label], ["Close · Esc", "Close history"]);
+  const frame = () => find(f.tree, "search").style.border_color;
+  const spinner = () => find(f.tree, "search").items.some((n) => n.kind === "mods/workspace-chrome/spinner.svg");
+  assert.equal(frame(), "border", "a quiet frame");
+  f.on_focus({}, f.cx); f.render();
+  assert.equal(frame(), "input", "focus firms it up, never in accent");
+  f.on_blur({}, f.cx); f.render();
+  assert.equal(frame(), "border");
+  f.type("zebra");
+  assert.ok(spinner(), "a quiet spinner while text is searched");
+  f.type("");
+  assert.ok(!spinner());
+  await f.click("close");
+  assert.deepEqual([f.closed, f.runs, f.execs.map((e) => e.args[0])], [["o1"], [], ["list"]], "closing reads and launches nothing");
+  const g = await opened([S("a", 1)]);
+  find(g.tree, "history").handlers.on_key_down({ key: "escape" }, g.cx);
+  assert.deepEqual([g.closed, g.runs, g.execs.length], [["o1"], [], 1]);
+  assert.deepEqual(texts(find(g.tree, "scope")), ["History", "Chats"]);
 });
 
 test("empty and failing lists say so, and Retry reloads", async () => {
@@ -284,7 +310,7 @@ test("History is scoped: props {folder, label} go to every helper call; default 
 test("no open workspace: Resume or Enter checks the exact file, then opens a space there with that session", async () => {
   const s = S("a", 1, { path: "/s/it's $(x).jsonl" });
   const f = await opened([s]);
-  assert.deepEqual(clickable(f.tree), ["resume"]);
+  assert.deepEqual(clickable(f.tree), ["close", "resume"]);
   assert.equal(find(f.tree, "resume").tooltip, "Open a new workspace with pi --session /s/it's $(x).jsonl");
   await f.click("resume");
   assert.deepEqual(plain(f.execs.at(-1).args), ["check", "/s/it's $(x).jsonl"]);
@@ -305,7 +331,7 @@ test("open workspace in that folder: only Resume, which checks the exact file an
   const sessions = [S("b", 2, { cwd: "/w/a" }), S("a", 1)];
   const spaces = [{ id: "sp1", name: "proj", machine: null, folder: "/elsewhere", tabs: [{ id: "t1" }] }, { id: "sp2", name: "remote", machine: "tau", folder: "/w/a", tabs: [] }];
   const f = await opened(sessions, { spaces, panes: [{ tab: "t1", cwd: "/w/a/" }] });
-  assert.deepEqual(clickable(f.tree), ["resume"]);
+  assert.deepEqual(clickable(f.tree), ["close", "resume"]);
   assert.ok(!texts(f.tree).some((x) => /double-write|Workspace open/.test(x)), "no visible warning");
   assert.match(find(f.tree, "resume").tooltip, /^Open a new tab in proj with pi --session \/s\/b\.jsonl\. If that workspace is already running this conversation, two Pi sessions will write to the same file\.$/);
   await f.click("resume");
