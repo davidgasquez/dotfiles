@@ -1,16 +1,13 @@
 {
   "defaultProvider": "openai",
   "defaultModel": "gpt-6.1-sol",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "defaultTools": ["+codemode"],
-  "codemode": {
-    "mode": "only",
-    "inlineBudget": 500
-  },
   "packages": [
     "npm:@notrico/pi-fold",
     "npm:pi-web-access",
-    "npm:@gotgenes/pi-anthropic-auth"
+    "npm:@gotgenes/pi-anthropic-auth",
+    "npm:pi-codex-compaction"
   ],
   "hideThinkingBlock": true,
   "quietStartup": "header",
