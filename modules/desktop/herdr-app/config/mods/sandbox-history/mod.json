@@ -1,0 +1,9 @@
+{
+  "place": "none",
+  "title": "History",
+  "overlay": {
+    "kind": "dialog",
+    "width": 980,
+    "height": 0.82
+  }
+}
