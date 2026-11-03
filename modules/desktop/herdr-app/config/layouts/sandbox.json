@@ -29,7 +29,12 @@
               "id": "spaces",
               "type": "block",
               "content": {
-                "mod": "spaces"
+                "mod": "sandbox-spaces",
+                "props": {
+                  "projects": [
+                    { "name": "nixos", "folder": "/etc/nixos" }
+                  ]
+                }
               },
               "size": {
                 "weight": 1

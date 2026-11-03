@@ -1,4 +1,4 @@
-// Pi history: every saved Pi chat on each connected machine, as Pi's /resume "All" lists them. Type to search
+// History: every saved Pi chat on each connected machine, as Pi's /resume "All" lists them. Type to search
 // titles, first messages, folders and IDs; Enter or a click asks before resuming it with `pi --session`.
 // Opened with mod.open {name: "pi-history"}; self-contained (no shared state, no live-terminal guesses).
 
@@ -9,6 +9,7 @@ import { readSessions, resumePlan, title, matches } from "./sessions.js";
 
 const ROW = 46;
 const name = (key) => key || "Local";
+const keyOf = (s) => (s.machine ?? "") + ":" + s.path;
 
 function ago(ms) {
   const m = Math.max(0, Math.round((Date.now() - ms) / 60000));
@@ -34,9 +35,11 @@ export default class History extends View {
 
   async close() { this.closed = true; }
 
-  // Each ready machine answers on its own; a newer refresh or closing drops older answers.
+  // This computer always answers (its saved chats don't depend on the layout document); other machines once ready.
+  // Each answers on its own; a newer refresh or closing drops older answers.
   refresh(cx) {
-    const generation = ++this.generation, ready = machines().filter((m) => m.layout === "ready").map((m) => m.name);
+    const generation = ++this.generation;
+    const ready = [null, ...machines().filter((m) => m.name !== null && m.layout === "ready").map((m) => m.name)];
     const keys = new Set(ready.map((m) => m ?? ""));
     for (const key of Object.keys(this.found)) if (!keys.has(key)) delete this.found[key];
     this.errors = {};
@@ -65,6 +68,13 @@ export default class History extends View {
 
   // Checks the exact clicked session on its machine, then asks: Pi doesn't lock sessions, and History can't know
   // whether another Pi still has it open.
+  resumeKey(key, cx) {
+    const rows = this.rows(), i = rows.findIndex((s) => keyOf(s) === key);
+    if (i < 0) return;
+    this.at = i;
+    this.resume(rows[i], cx);
+  }
+
   resume(s, cx) {
     if (!s || this.pending) return;
     this.pending = s;
@@ -107,10 +117,10 @@ export default class History extends View {
       .when(Boolean(note), (el) => el.tooltip(note))
       .on_click((_e, cx) => { this.scope = key; this.at = 0; cx.notify(); })
       .child(label);
-    const row = (s, i) => h_flex().id("row-" + (s.machine ?? "") + ":" + s.path).h(ROW).px(10).gap(10).items_center().rounded(8)
+    // Virtual list rows can't register handlers; the list's on_item_click resumes by key.
+    const row = (s, i) => h_flex().id("row-" + keyOf(s)).h(ROW).px(10).gap(10).items_center().rounded(8)
       .cursor_pointer().when(i === this.at, (el) => el.bg(t.selected)).hover((el) => el.bg(t.hover))
       .tooltip(s.cwd + "\n" + s.id + "\n" + s.path)
-      .on_click((_e, cx) => { this.at = i; this.resume(s, cx); })
       .child(v_flex().flex_1().min_w(0)
         .child(div().truncate().text_color(t.foreground).child(title(s)))
         .child(div().truncate().text_size(11).text_color(t.dim)
@@ -130,7 +140,7 @@ export default class History extends View {
         cx.notify();
       })
       .child(h_flex().items_center().gap(8)
-        .child(div().flex_1().text_size(15).font_semibold().text_color(t.foreground).child("Pi history"))
+        .child(div().flex_1().text_size(15).font_semibold().text_color(t.foreground).child("History"))
         .child(div().id("refresh").px(8).h(24).flex().items_center().rounded(6).text_size(12).text_color(t.muted)
           .cursor_pointer().hover((el) => el.bg(t.hover)).on_click((_e, cx) => this.refresh(cx)).child("Refresh"))
         .child(div().text_size(11).text_color(t.dim).child("Esc")))
@@ -143,8 +153,9 @@ export default class History extends View {
       .child(div().id("list").relative().flex_1().min_h(0)
         .when(rows.length === 0, (el) => el.child(div().p(10).text_color(t.dim).child(empty)))
         .when(rows.length > 0, (el) => el
-          .child(v_virtual_list("history-rows", rows.length, ROW, (i) => (rows[i].machine ?? "") + ":" + rows[i].path,
-            (range) => rows.slice(range.start, range.end).map((s, j) => row(s, range.start + j))).track_scroll(this.scroll).size_full())
+          .child(v_virtual_list("history-rows", rows.length, ROW, (i) => keyOf(rows[i]),
+            (range) => rows.slice(range.start, range.end).map((s, j) => row(s, range.start + j)))
+            .on_item_click((key, cx) => this.resumeKey(key, cx)).track_scroll(this.scroll).size_full())
           .child(Scrollbar.vertical("history-rows").absolute().inset_0())))
       .child(h_flex().gap(8).items_center().text_size(11).text_color(t.dim)
         .child(div().flex_1().min_w(0).truncate()

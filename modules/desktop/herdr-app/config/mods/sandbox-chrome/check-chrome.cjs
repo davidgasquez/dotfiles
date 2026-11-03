@@ -1,4 +1,4 @@
-// Checks the sidebar's brand row (sandbox-chrome): the shipped workspace-chrome plus Pi history and the new-pi key.
+// Checks the sidebar's brand row (sandbox-chrome): the shipped workspace-chrome plus History and the new-pi key.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -65,7 +65,7 @@ test("the brand row shows Herdr, not the active space's name", () => {
   assert.doesNotMatch(fs.readFileSync(path.join(__dirname, "main.js"), "utf8"), /spaces\(\)/);
 });
 
-test("sandbox-chrome is the shipped workspace-chrome plus a Pi history button and the new-pi key", (t) => {
+test("sandbox-chrome is the shipped workspace-chrome plus a History button and the new-pi key", (t) => {
   const file = path.join(process.env.HERDR_APP_HOME || path.join(require("node:os").homedir(), ".config/herdr-app"), "mods/workspace-chrome/main.js");
   if (!fs.existsSync(file)) return t.skip("no shipped workspace-chrome here");
   const stock = fs.readFileSync(file, "utf8").split("mods/workspace-chrome/").join("mods/sandbox-chrome/").split("\n");
@@ -80,7 +80,7 @@ test("sandbox-chrome is the shipped workspace-chrome plus a Pi history button an
   ]);
 });
 
-test("the brand row keeps the shipped search and toggle, with Pi history between them", () => {
+test("the brand row keeps the shipped search and toggle, with History between them", () => {
   const f = chrome();
   assert.deepEqual(f.tree.items.map((n) => n.key).filter(Boolean), ["search", "history", "sidebar-toggle"]);
   find(f.tree, "search").handlers.on_click();

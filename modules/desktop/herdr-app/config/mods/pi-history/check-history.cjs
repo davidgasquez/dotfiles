@@ -164,7 +164,8 @@ test("the resume check accepts only that exact saved session and reports a missi
   } finally { f.done(); }
 });
 
-// The dialog, with gpui and herdr stubbed.
+// The dialog, with gpui and herdr stubbed. Like the app, handlers throw inside a virtual list's item renderer.
+let inItemRenderer = false;
 function element(kind) {
   const node = { kind, key: null, items: [], handlers: {}, style: {} };
   const proxy = new Proxy(node, { get(target, key) {
@@ -174,7 +175,10 @@ function element(kind) {
       else if (key === "child") node.items.push(args[0]);
       else if (key === "children") node.items.push(...args[0]);
       else if (key === "id") node.key = args[0];
-      else if (key.startsWith("on_")) node.handlers[key] = args[0];
+      else if (key.startsWith("on_")) {
+        if (inItemRenderer) throw new Error("`" + key + "` cannot be registered from a virtual list's item renderer");
+        node.handlers[key] = args[0];
+      }
       else node.style[key] = args;
       return proxy;
     };
@@ -197,7 +201,13 @@ function dialog({ machines = [{ name: null, layout: "ready" }, { name: "tau", la
     View: class {}, div: element, svg: element, v_flex: element, h_flex: element,
     Input: { new: element }, Scrollbar: { vertical: element },
     VirtualListScrollHandle: { new: () => ({ scroll_to_item(i) { f.scrolled = i; } }) },
-    v_virtual_list: (id, n, size, key, render) => { const el = element("list"); el.key = id; render({ start: 0, end: n }).forEach((r) => el.child(r)); f.keys = Array.from({ length: n }, (_, i) => key(i)); return el; },
+    v_virtual_list: (id, n, size, key, render) => {
+      const el = element("list"); el.key = id;
+      inItemRenderer = true;
+      try { render({ start: 0, end: n }).forEach((r) => el.child(r)); } finally { inItemRenderer = false; }
+      f.keys = Array.from({ length: n }, (_, i) => key(i));
+      return el;
+    },
     InputState: { new: () => ({ on: (e, fn) => { f.inputs[e] = fn; }, value: () => f.query, focus() {} }) },
     machines: () => f.machines, spaces: () => f.spaces, panes: () => f.panes,
     run: (...a) => f.runs.push(a), theme: () => ({}), props: () => ({ overlay: "o1" }),
@@ -229,7 +239,8 @@ function dialog({ machines = [{ name: null, layout: "ready" }, { name: "tau", la
   f.click = async (id) => {
     const node = find(f.tree, id);
     assert.ok(node, "missing " + id);
-    node.handlers.on_click({}, cx);
+    if (id.startsWith("row-")) find(f.tree, "history-rows").handlers.on_item_click(id.slice(4), cx);
+    else node.handlers.on_click({}, cx);
     await settle();
     f.render();
   };
@@ -245,6 +256,38 @@ test("source stays standalone: only gpui, herdr and its own helper; no shared st
   }
   assert.doesNotMatch(mainSource, /no transcript/i);
   assert.match(mainSource, /no uploads/);
+});
+
+test("the user-facing name is History, not Pi history", () => {
+  assert.equal(JSON.parse(read("mod.json")).title, "History");
+  const f = dialog();
+  f.render();
+  assert.ok(texts(f.tree).includes("History"));
+  for (const src of [mainSource, sessionsSource, read("mod.json"), fs.readFileSync(path.join(__dirname, "../sandbox-chrome/main.js"), "utf8")])
+    assert.doesNotMatch(src.replace(/^\s*\/\/.*$/gm, ""), /Pi history/i);
+});
+
+test("this computer's saved chats list even before its layout document is ready", async () => {
+  const f = dialog({ machines: [{ name: null, layout: "loading" }, { name: "tau", layout: "loading" }] });
+  assert.deepEqual(f.execs.map((e) => e.on), [null]);
+  await f.answer(null, [session("early", 1)]);
+  assert.deepEqual(rowKeys(f.tree), [":/s/early.jsonl"]);
+  const g = dialog({ machines: [] });
+  assert.deepEqual(g.execs.map((e) => e.on), [null]);
+});
+
+test("rows register no handlers in the virtual list renderer; the list's on_item_click resumes by key", async () => {
+  const f = dialog();
+  await f.answer(null, [session("a", 2), session("b", 1)]);
+  await f.answer("tau", []);
+  const list = find(f.tree, "history-rows");
+  assert.equal(typeof list.handlers.on_item_click, "function");
+  assert.ok(list.items.every((r) => Object.keys(r.handlers).length === 0));
+  assert.deepEqual(f.keys, [":/s/a.jsonl", ":/s/b.jsonl"]);
+  list.handlers.on_item_click("unknown", f.cx);
+  assert.equal(f.execs.length, 2);
+  list.handlers.on_item_click(":/s/b.jsonl", f.cx);
+  assert.equal(f.pending.at(-1).request.path, "/s/b.jsonl");
 });
 
 test("every ready machine is asked for its own list; rows merge newest first with their machine", async () => {

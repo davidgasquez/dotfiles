@@ -118,12 +118,16 @@ test("sandbox-agents is the shipped agents list plus shared pins and a right-cli
   });
 });
 
-test("the sidebar is the shipped one with only the brand row and agents list swapped for their clones", (t) => {
+test("the sidebar keeps the shipped structure with custom spaces, brand row and agents list", (t) => {
   const stock = shipped("layouts/main.json");
   if (!stock) return t.skip("no shipped main layout here");
   const ours = json("layouts/sandbox.json");
-  const clones = { "sandbox-chrome": "workspace-chrome", "sandbox-agents": "agents" };
-  const swapped = JSON.parse(JSON.stringify(ours.children[0]), (k, v) => (k === "mod" ? clones[v] ?? v : v));
+  const clones = { "sandbox-chrome": "workspace-chrome", "sandbox-agents": "agents", "sandbox-spaces": "spaces" };
+  const sidebar = JSON.parse(JSON.stringify(ours.children[0]));
+  const spaces = sidebar.children.find((n) => n.id === "sidebar-lists").children.find((n) => n.id === "spaces");
+  assert.ok(Array.isArray(spaces.content.props.projects));
+  delete spaces.content.props;
+  const swapped = JSON.parse(JSON.stringify(sidebar), (k, v) => (k === "mod" ? clones[v] ?? v : v));
   assert.deepEqual(swapped, JSON.parse(stock).children[0]);
   assert.equal("terminal_menu" in ours, false);
   assert.equal(json("keys.json")["layout:sandbox"]["ctrl-shift-a"], "sandbox-chrome.new-pi");

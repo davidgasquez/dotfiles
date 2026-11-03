@@ -1,6 +1,6 @@
 Code in these mods that comes from elsewhere
 
-- sandbox-agents, sandbox-changes, sandbox-chrome, sandbox-pane and sandbox-tabs
+- sandbox-agents, sandbox-changes, sandbox-chrome, sandbox-pane, sandbox-spaces and sandbox-tabs
   are adapted from mods shipped with the Herdr app 0.1.11 (each mod.json's
   "cloned_from" names the original). Apache License 2.0: LICENSE-Herdr.
 - name.js in sandbox-pane and sandbox-tabs, and the new-pi command in

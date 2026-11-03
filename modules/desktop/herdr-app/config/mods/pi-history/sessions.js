@@ -62,7 +62,7 @@ try {
 
 export async function readSessions(machine, request = {}) {
   const r = await exec("sh", ["-c", LOCATE, "pi-history", SCRIPT, JSON.stringify(request)], { on: machine });
-  if (r.code !== 0) throw new Error(r.stderr.trim() || "Pi history exited with " + r.code);
+  if (r.code !== 0) throw new Error(r.stderr.trim() || "History exited with " + r.code);
   return JSON.parse(r.stdout);
 }
 
