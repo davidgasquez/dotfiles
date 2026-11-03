@@ -48,6 +48,7 @@ export default class Focus extends View {
     // it had ended then, and for one that just stopped, when its run started.
     this.changed = JSON.parse(localStorage.getItem("changes") ?? "{}");
     this.workOpen = localStorage.getItem("working-open") === "true";
+    this.folded = new Set();
     // The spaces shown, as T3 scopes threads to projects; none: all of them.
     this.scope = JSON.parse(localStorage.getItem("scope") ?? "[]");
     this.scopeOpen = false;
@@ -206,6 +207,51 @@ export default class Focus extends View {
       .child(div().px(8).pt(8).pb(4).text_size(10).text_color(t.dim)
         .tooltip("Conversation references include the machine, project and live terminal address. No transcript is uploaded.")
         .child("Private references · no uploads"));
+  }
+
+  // The same depth-first branches as the shipped agents sidebar.
+  tree(all, address, lead = []) {
+    const kids = all.filter((k) => k.parent === address && k.state === "live");
+    return kids.flatMap((k, i) => {
+      const last = i === kids.length - 1;
+      return [
+        { terminal: k, lines: [...lead, last ? "└" : "├"] },
+        ...this.tree(all, k.address, [...lead, last ? "" : "│"]),
+      ];
+    });
+  }
+
+  subRow(t, sub, listed, shown) {
+    const k = sub.terminal, raw = listed.get(k.address) ?? k.status;
+    const status = raw === "error" ? "blocked" : raw;
+    const name = k.name || k.template || k.program?.name || k.address;
+    const pic = icon(k.program, 14, t.foreground), on = k.address === shown;
+    return h_flex().id(`sub-${k.address}`).pl(14).pr(4).h(26).flex_none().gap(0).items_center()
+      .rounded(8).text_size(12.5).cursor_pointer()
+      .role("button").accessibility_label(`Peek at ${name}: ${status || "unknown"}`)
+      .tooltip(`${name} · ${k.address} · ${status || "unknown"}`)
+      .when(on, (el) => el.bg(t.raised))
+      .hover((el) => el.bg(t.hover))
+      .on_mouse_down("left", (_e, cx) => cx.stop_propagation())
+      .on_click((_e, cx) => {
+        cx.stop_propagation();
+        run("terminal.peek", { terminal: k.address });
+      })
+      .children(sub.lines.map((line) => div().self_start().mt(-4).w(9).h(17).mr(4).flex_none()
+        .when(Boolean(line), (el) => el.border_l(1.5).border_color(t.input))
+        .when(line === "└" || line === "├", (el) => el.border_b(1.5).rounded_bl(6))))
+      .when(Boolean(pic), (el) => el.child(div().mr(8).child(pic)))
+      .child(div().flex_1().min_w(0).truncate().text_color(on ? t.foreground : t.muted).child(name))
+      .child(h_flex().id(`sub-status-${k.address}`).w(16).flex_none().items_center().justify_center()
+        .tooltip(status === "blocked" ? "Needs you" : status === "done" ? "Done" : status === "working" ? "Working" : status === "idle" ? "Idle" : "Unknown")
+        .child(status === "working"
+          ? svg("mods/workspace-chrome/spinner.svg").size(14).flex_none().text_color(t.working).spin(900)
+          : status === "done"
+            ? svg("mods/workspace-chrome/circle-check.svg").size(14).flex_none().text_color(t.ansi2)
+            : status === "blocked"
+              ? div().size(14).flex_none().rounded(4).bg(t.blocked + "26").text_size(10.5).font_bold()
+                .text_color(t.blocked).flex().items_center().justify_center().child("!")
+              : div().size(8).flex_none().rounded(4).border(1.5).border_color(t.idle ?? t.dim)));
   }
 
   // Ends a drag and hands the keyboard back to the pane that had it.
@@ -390,6 +436,8 @@ export default class Focus extends View {
     // `ghost`: the copy that follows the pointer, drawn without handlers or ids the list already uses.
     const card = (a, ghost) => {
       const st = state(a), on = a.focused;
+      const subs = ghost ? [] : this.tree(all, a.address);
+      const expanded = !this.folded.has(a.address);
       const machine = a.address.includes("/") ? a.address.split("/")[0] : null;
       const branch = ps.find((p) => p.pane === a.pane)?.branch;
       const going = kids.get(a.address).filter((s) => s === "working").length;
@@ -432,8 +480,21 @@ export default class Focus extends View {
         .child(h_flex().gap(8).items_center()
           // Only the one in view is bright, as in T3.
           .child(div().flex_1().min_w(0).truncate().text_size(14).text_color(on ? t.foreground : t.muted).child(title(a)))
+          .when(subs.length > 0, (el) => el.child(h_flex().id(`fold-${a.address}`).h(18).px(3).gap(3)
+            .flex_none().items_center().rounded(4).text_size(11).text_color(t.dim).cursor_pointer()
+            .role("button").accessibility_label(`${expanded ? "Hide" : "Show"} ${subs.length} sub-agents`)
+            .hover((s) => s.bg(t.hover).text_color(t.foreground))
+            .on_mouse_down("left", (_e, cx) => cx.stop_propagation())
+            .on_click((_e, cx) => {
+              cx.stop_propagation();
+              expanded ? this.folded.add(a.address) : this.folded.delete(a.address);
+              cx.notify();
+            })
+            .child(svg(`mods/workspace-chrome/chevron-${expanded ? "down" : "right"}.svg`).size(11).flex_none())
+            .when(!expanded, (el) => el.child(String(subs.length)))))
           .when(Boolean(pic), (el) => el.child(pic)))
-        .when(Boolean(meta), (el) => el.child(div().min_w(0).truncate().text_size(12).text_color(t.dim).child(meta)));
+        .when(Boolean(meta), (el) => el.child(div().min_w(0).truncate().text_size(12).text_color(t.dim).child(meta)))
+        .when(expanded && subs.length > 0, (el) => el.children(subs.map((sub) => this.subRow(t, sub, listed, focused()?.agent))));
     };
 
     // A shelf's header, folding it: label, then count and chevron at the far edge.

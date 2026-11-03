@@ -110,6 +110,88 @@ function fixture() {
   return f;
 }
 
+test("sub-agents render depth first with names, statuses and original-style branches", () => {
+  const f = fixture(); f.add("A");
+  f.terms.push(
+    { address: "child", parent: "A", state: "live", status: "working", name: "luna-hosts" },
+    { address: "nested", parent: "child", state: "live", status: "error", template: "reviewer" },
+    { address: "finished", parent: "A", state: "live", status: "done", name: "luna-checks" },
+    { address: "exited", parent: "A", state: "finished", status: "done" },
+    { address: "unrelated", parent: "B", state: "live", status: "working" },
+  );
+  f.render();
+  assert.ok(find(f.tree, "sub-child"));
+  assert.ok(find(f.tree, "sub-nested"));
+  assert.ok(find(f.tree, "sub-finished"));
+  assert.equal(find(f.tree, "sub-exited"), null);
+  assert.equal(find(f.tree, "sub-unrelated"), null);
+  assert.ok(texts(f.tree).includes("luna-hosts"));
+  assert.ok(texts(f.tree).includes("reviewer"));
+  assert.ok(texts(find(f.tree, "sub-nested")).includes("!"));
+  assert.equal(find(f.tree, "sub-finished").style.accessibility_label[0], "Peek at luna-checks: done");
+  assert.deepEqual(plain(f.mod.tree(f.terms, "A").map((s) => [s.terminal.address, s.lines])), [
+    ["child", ["├"]], ["nested", ["│", "└"]], ["finished", ["└"]],
+  ]);
+});
+
+test("sub-agent indicators distinguish working, done, idle and blocked without changing parent urgency", () => {
+  const f = fixture(); f.add("A");
+  f.env.theme = () => ({ working: "#ffaa00", ansi2: "#00ff00", idle: "#888888", dim: "#666666", blocked: "#ff0000" });
+  for (const status of ["working", "done", "idle", "error"]) {
+    f.terms.push({ address: status, parent: "A", state: "live", status });
+  }
+  f.render();
+  const working = find(f.tree, "sub-status-working"), done = find(f.tree, "sub-status-done");
+  const idle = find(f.tree, "sub-status-idle"), blocked = find(f.tree, "sub-status-error");
+  assert.equal(working.style.tooltip[0], "Working");
+  assert.equal(done.style.tooltip[0], "Done");
+  assert.equal(idle.style.tooltip[0], "Idle");
+  assert.equal(blocked.style.tooltip[0], "Needs you");
+  assert.equal(working.items[0].style.text_color[0], "#ffaa00");
+  assert.equal(working.items[0].style.spin[0], 900);
+  assert.equal(done.items[0].style.text_color[0], "#00ff00");
+  assert.equal(done.items[0].style.spin, undefined);
+  assert.equal(idle.items[0].style.border_color[0], "#888888");
+  assert.ok(texts(blocked).includes("!"));
+  assert.equal(find(f.tree, "sub-done").style.accessibility_label[0], "Peek at done: done");
+  f.terms = f.terms.filter((k) => !["working", "error"].includes(k.address));
+  f.render();
+  assert.deepEqual(f.working(), []);
+  assert.deepEqual(f.active(), ["A"]);
+});
+
+test("sub-agent folds and peek clicks do not select or drag the parent", () => {
+  const f = fixture(); f.add("A");
+  f.terms.push({ address: "tau/t7", parent: "A", state: "live", status: "idle", name: "luna-layout" });
+  f.render();
+  f.event("sub-tau/t7", "on_mouse_down:left");
+  assert.equal(f.mod.drag, undefined);
+  f.event("sub-tau/t7", "on_click");
+  assert.deepEqual(plain(f.calls), [["terminal.peek", { terminal: "tau/t7" }]]);
+  f.calls = [];
+  f.event("fold-A", "on_mouse_down:left");
+  f.event("fold-A", "on_click"); f.render();
+  assert.equal(find(f.tree, "sub-tau/t7"), null);
+  assert.ok(texts(find(f.tree, "fold-A")).includes("1"));
+  assert.equal(f.calls.length, 0);
+  f.event("fold-A", "on_click"); f.render();
+  assert.ok(find(f.tree, "sub-tau/t7"));
+});
+
+test("sub-agent trees stay visible on focused Working and pinned cards, but not drag ghosts", () => {
+  const f = fixture(), a = f.add("A", "working"); a.focused = true;
+  f.terms.push({ address: "kid", parent: "A", state: "live", status: "working" });
+  f.render();
+  assert.ok(find(find(f.tree, "shelves"), "sub-kid"));
+  f.pins = ["A"]; f.render();
+  assert.ok(find(find(f.tree, "card-A"), "sub-kid"));
+  f.event("card-A", "on_mouse_down:left");
+  f.event("t3-focus-root", "on_mouse_move", { position: { x: 20, y: 125 }, local_position: { x: 20, y: 125 } });
+  f.render();
+  assert.ok(find(f.tree, "drag-ghost"));
+  assert.equal(find(find(f.tree, "drag-ghost"), "sub-kid"), null);
+});
+
 test("done moves to the inbox immediately; resuming starts a new Working run", () => {
   const f = fixture(), a = f.add("A", "working", 100); f.add("B", "working", 200); f.mod.workOpen = true;
   f.render(); assert.deepEqual(f.working(), ["B", "A"]);
