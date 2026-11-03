@@ -60,8 +60,7 @@
     "shift-f2": "space.rename"
   },
   "layout:sandbox": {
-    "ctrl-shift-a": "t3-focus.new-pi",
-    "ctrl-shift-s": "t3-focus.archive"
+    "ctrl-shift-a": "t3-focus.new-pi"
   },
   "terminal": {
     "ctrl-backspace": "send:\u0017",
