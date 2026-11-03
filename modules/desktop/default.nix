@@ -47,6 +47,7 @@ in
     ./applications.nix
     ./zed.nix
     ./codex-desktop.nix
+    ./dictation
   ];
 
   programs.chromium = {
