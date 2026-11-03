@@ -245,7 +245,7 @@ export default class SavedSpaces extends View {
       .when(on, (el) => el.bg(t.selected)).when(!on, (el) => el.hover((st) => st.bg(t.hover)))
       .on_hover((h, cx) => this.hover(id, h, cx))
       .on_click(() => { run("space.select", { id: s.id }); run("tab.select", { id: tab.id }); })
-      .on_mouse_down("right", () => openOverlay({ mod: "menu", kind: "popup", width: 200, height: 260, props: { tab: "tab", target: { id: tab.id, space: s.id } } }))
+      .on_mouse_down("right", () => openOverlay({ mod: "sandbox-menu", kind: "popup", width: 200, height: 260, props: { tab: "tab", target: { id: tab.id, space: s.id } } }))
       .child(icon(lead(tab, ps)?.program, 14, color))
       .when(numbered && tab.index <= 9, (el) => el.child(div().flex_none().ml(-3).text_size(11).text_color(t.dim).child(String(tab.index))))
       .child(div().flex_1().min_w(0).truncate().text_color(color).child(title(tab, ps)))
