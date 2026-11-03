@@ -36,6 +36,42 @@ let
     shift
     exec "$@"
   '';
+  closeChatgptStartup = pkgs.writeShellApplication {
+    name = "close-chatgpt-startup";
+    runtimeInputs = with pkgs; [
+      coreutils
+      hyprland
+      jq
+      systemd
+    ];
+    text = ''
+      for ((attempt = 0; attempt < 300; attempt++)); do
+        kill -0 "$MAINPID" 2>/dev/null || exit 0
+        window=$(hyprctl clients -j | jq -r --argjson pid "$MAINPID" '
+          [.[] | select(.pid == $pid and .class == "chatgpt" and .mapped and (.floating | not))]
+          | .[0].address // empty
+        ')
+        items=$(busctl --user --json=short get-property \
+          org.kde.StatusNotifierWatcher /StatusNotifierWatcher \
+          org.kde.StatusNotifierWatcher RegisteredStatusNotifierItems 2>/dev/null) \
+          || items='{"data":[]}'
+        if [[ -n "$window" ]] && busctl --user --json=short list \
+          | jq -e --argjson pid "$MAINPID" --argjson items "$items" '
+              any(.[]; .pid == $pid and
+                (.name as $name | any($items.data[]; startswith($name + "/"))))
+            ' >/dev/null; then
+          sleep 5
+          if hyprctl clients -j | jq -e --argjson pid "$MAINPID" --arg window "$window" \
+            'any(.[]; .pid == $pid and .address == $window and .mapped)' >/dev/null; then
+            hyprctl dispatch "hl.dsp.window.close({window=\"address:$window\"})"
+          fi
+          exit 0
+        fi
+        sleep 0.1
+      done
+      echo "ChatGPT startup window or tray was not ready; leaving it visible." >&2
+    '';
+  };
 in
 {
   # Herdr's module loader rejects symlinked imports; keep its source files writable.
@@ -174,7 +210,8 @@ in
           Environment = app.env or [ ];
           Restart = "on-failure";
           RestartSec = 2;
-        };
+        }
+        // (app.service or { });
         Install.WantedBy = [ "graphical-session.target" ];
       })
       {
@@ -199,9 +236,13 @@ in
         };
         chatgpt = {
           name = "ChatGPT";
-          url = "https://chatgpt.com";
           exec = "${chatgpt}/bin/chatgpt";
           env = [ "CODEX_ELECTRON_START_IN_BACKGROUND=1" ];
+          service = {
+            ExecStartPre = "${waitForNetwork} https://chatgpt.com ${pkgs.coreutils}/bin/true";
+            ExecStartPost = "-${lib.getExe closeChatgptStartup}";
+            TimeoutStartSec = "infinity";
+          };
         };
       };
   xdg.dataFile."icons/hicolor/32x32/apps/chatgpt.png".source =
