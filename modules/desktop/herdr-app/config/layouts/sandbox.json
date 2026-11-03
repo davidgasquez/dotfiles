@@ -12,8 +12,8 @@
   ],
   "background": "canvas",
   "terminal_padding": [
-    14,
-    12
+    10,
+    5
   ],
   "divider": {
     "width": 1,
@@ -104,8 +104,8 @@
         {
           "id": "work-body",
           "type": "row",
-          "padding": 8,
-          "gap": 8,
+          "padding": 0,
+          "gap": 0,
           "children": [
             {
               "id": "main",
@@ -114,15 +114,15 @@
                 "tab": "active",
                 "pane": {
                   "gap": 8,
-                  "radius": 10,
+                  "radius": 0,
                   "background": "background",
                   "lone": true,
                   "border": {
-                    "width": 1,
+                    "width": 0,
                     "color": "border"
                   },
                   "focus": {
-                    "width": 1,
+                    "width": 0,
                     "color": "accent"
                   },
                   "header": {
