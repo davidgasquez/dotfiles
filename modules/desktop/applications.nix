@@ -81,6 +81,24 @@ in
       ${./herdr-app/config}/ ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/"}
   '';
 
+  home.activation.herdrAppKeys = lib.hm.dag.entryAfter [ "linkGeneration" ] (
+    lib.hm.generators.mkImpureConfigMerger {
+      inherit pkgs;
+      format = "json";
+      empty = "{}";
+      jqOperation = "$dynamic * $static";
+      path = "${config.xdg.configHome}/herdr-app/keys.json";
+      staticSettings = (pkgs.formats.json { }).generate "herdr-app-keys.json" {
+        "layout:sandbox" = {
+          ctrl-alt-z = "sandbox-tabs.open_zed";
+          ctrl-i = "sandbox-spaces.new_chat";
+          ctrl-n = "sandbox-tabs.new_pi";
+          ctrl-shift-p = "mod.open:sandbox-palette";
+        };
+      };
+    }
+  );
+
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
   home.packages = with pkgs; [
     chatgpt
