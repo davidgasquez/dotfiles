@@ -1,0 +1,9 @@
+{
+  "place": "none",
+  "title": "Pi history",
+  "overlay": {
+    "kind": "dialog",
+    "width": 760,
+    "height": 0.8
+  }
+}

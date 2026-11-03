@@ -60,7 +60,7 @@
     "shift-f2": "space.rename"
   },
   "layout:sandbox": {
-    "ctrl-shift-a": "t3-focus.new-pi"
+    "ctrl-shift-a": "sandbox-toolbar.new-pi"
   },
   "terminal": {
     "ctrl-d": "pane.close",

@@ -22,11 +22,42 @@
           "window_drag": true
         },
         {
-          "id": "sidebar-lists",
+          "id": "sidebar-toolbar",
           "type": "block",
           "content": {
-            "mod": "t3-focus"
+            "mod": "sandbox-toolbar"
+          },
+          "size": {
+            "px": 32
           }
+        },
+        {
+          "id": "sidebar-lists",
+          "type": "column",
+          "children": [
+            {
+              "id": "spaces",
+              "type": "block",
+              "content": {
+                "mod": "spaces"
+              },
+              "size": {
+                "weight": 1
+              },
+              "min": 90
+            },
+            {
+              "id": "agents",
+              "type": "block",
+              "content": {
+                "mod": "sandbox-agents"
+              },
+              "size": {
+                "weight": 1
+              },
+              "min": 90
+            }
+          ]
         },
         {
           "id": "sidebar-footer",

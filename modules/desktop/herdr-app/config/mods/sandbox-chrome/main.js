@@ -1,6 +1,6 @@
 import { View, div, image, svg } from "gpui-kit";
 import { h_flex, v_flex } from "gpui-base";
-import { theme, run, props, window, shared, setShared, updates, layout, spaces } from "herdr";
+import { theme, run, props, window, shared, setShared, updates, layout } from "herdr";
 
 function find(node, id) {
   if (node?.id === id) return node;
@@ -32,7 +32,6 @@ export default class WorkspaceChrome extends View {
   render() {
     const t = theme();
     const collapsed = narrow();
-    const project = spaces().find((s) => s.active)?.name || "Herdr";
     if (props()?.footer) {
       const row = (id, icon, label, dim, action) => h_flex().id(id).h(28).px(8).gap(9).items_center().rounded(8)
         .text_color(dim ? t.dim : t.muted).hover(s => s.bg(t.hover).text_color(t.foreground)).cursor_pointer()
@@ -47,8 +46,7 @@ export default class WorkspaceChrome extends View {
       .when(window()?.platform === "macos" && !collapsed, el => el.pl(76))
       .when(!collapsed, el => el.child(h_flex().flex_1().min_w(0).gap(8).items_center()
         .child(image("frame/welcome/herdr.png").size(20).flex_none().rounded(5))
-        .child(div().min_w(0).truncate().font_semibold().text_color(t.foreground).tooltip(project).child(project))))
-      .when(!collapsed, el => el.child(this.button("search", svg("mods/sandbox-chrome/search.svg").size(15), () => run("mod.open", { name: "picker" }))))
+        .child(div().min_w(0).truncate().font_semibold().text_color(t.foreground).child("Herdr"))))
       // On the macOS rail the traffic lights fill the row; the agents list's » unfolds it.
       .when(!(collapsed && window()?.platform === "macos"), el => el.child(this.button("sidebar-toggle", svg("mods/sandbox-chrome/sidebar.svg").size(15), toggleSidebar)));
   }
