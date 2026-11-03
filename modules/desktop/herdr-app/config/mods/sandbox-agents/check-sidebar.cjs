@@ -1,5 +1,6 @@
-// The sandbox sidebar: sandbox-agents (shipped agents, grouped or flat), sandbox-toolbar, and the title rule
-// (name.js) that sandbox-tabs and sandbox-pane share. Run: node --test config/mods/sandbox-agents/check-sidebar.cjs
+// The sandbox sidebar is Herdr's own: shipped spaces, a near-copy of the shipped agents list (sandbox-agents) and the
+// brand row (sandbox-chrome, checked in check-chrome.cjs). Also the title rule (name.js) of sandbox-tabs and sandbox-pane.
+// Run: node --test config/mods/sandbox-agents/check-sidebar.cjs
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -83,81 +84,53 @@ function fixture() {
   return f;
 }
 const agentsFixture = () => { const f = fixture(); f.mod = f.load("sandbox-agents"); return f; };
-const toolbarFixture = () => { const f = fixture(); f.mod = f.load("sandbox-toolbar"); return f; };
 
-// --- sandbox-agents ---
+const SHIPPED = path.join(process.env.HERDR_APP_HOME || path.join(require("node:os").homedir(), ".config/herdr-app"));
+const shipped = (file) => fs.existsSync(path.join(SHIPPED, file)) ? fs.readFileSync(path.join(SHIPPED, file), "utf8") : null;
+const CONFIG = path.join(MODS, "..");
+const json = (file) => JSON.parse(fs.readFileSync(path.join(CONFIG, file), "utf8"));
+const lineDiff = (from, to) => {
+  const a = from.split("\n"), b = to.split("\n");
+  return { removed: a.filter((l) => !b.includes(l)), added: b.filter((l) => !a.includes(l)) };
+};
 
-test("grouped by space is the default, with no priority sections, and the order never follows status", () => {
-  const f = agentsFixture(); f.add("A", "working"); f.add("B", "blocked"); f.add("C", "done", "s2");
-  f.render();
-  const heads = ids(f.tree).filter((k) => /^(sp|sec|pinned)-?/.test(k));
-  assert.deepEqual(heads, ["sp-s1", "sp-s2"]);
-  assert.deepEqual(f.order, ["A", "B", "C"]);
-  for (const s of ["Working", "Done", "Idle"]) assert.equal(texts(f.tree).includes(s), false, "no " + s + " section");
-  f.rows[0].status = "idle"; f.rows[2].status = "blocked"; f.render();
-  assert.deepEqual(f.order, ["A", "B", "C"], "stable: no recency churn");
+// --- stock parity ---
+
+test("sandbox-agents is the shipped agents list plus shared pins and a right-click menu", (t) => {
+  const stock = shipped("mods/agents/main.js");
+  if (!stock) return t.skip("no shipped agents mod here");
+  assert.deepEqual(lineDiff(stock, fs.readFileSync(path.join(MODS, "sandbox-agents/main.js"), "utf8")), {
+    removed: [
+      '    this.pins = JSON.parse(localStorage.getItem("pins") ?? "[]");',
+      "    this.pins = pins;",
+      '    localStorage.setItem("pins", JSON.stringify(pins));',
+      '                .on_click(() => openOverlay({ mod: "agents", kind: "popup", width: 200, height: 140, props: { sortMenu: true } }))',
+    ],
+    added: [
+      "  // Shared with conversation-menu, which pins and unpins too.",
+      "  get pins() {",
+      '    return shared("agents.pins") ?? [];',
+      '    setShared("agents.pins", pins);',
+      '        .on_mouse_down("right", (_e, cx) => {',
+      '          openOverlay({ mod: "conversation-menu", kind: "popup", width: 260, props: { target: { terminal: a.address, title: a.title } } });',
+      '                .on_click(() => openOverlay({ mod: "sandbox-agents", kind: "popup", width: 200, height: 140, props: { sortMenu: true } }))',
+    ],
+  });
 });
 
-test("flat lists pins, then agents() order, naming each row's space; an unknown or old sort reads as grouped", () => {
-  const f = agentsFixture(); f.add("A"); f.add("B", "working", "s2"); f.add("C");
-  f.shared.set("agents.pins", ["C"]);
-  f.shared.set("sandbox-agents.sort", "flat"); f.render();
-  assert.equal(ids(f.tree).some((k) => k.startsWith("sp-") || k === "pinned"), false);
-  assert.deepEqual(f.order, ["C", "A", "B"]);
-  assert.ok(texts(find(f.tree, "ag-B")).includes("Two"));
-  assert.ok(texts(find(f.tree, "ag-B")).includes("\u00b7 Fix B"));
-  f.shared.set("sandbox-agents.sort", "priority"); f.render();
-  assert.deepEqual(ids(f.tree).filter((k) => /^(sp-|sec-|pinned)/.test(k)), ["pinned", "sp-s1", "sp-s2"]);
+test("the sidebar is the shipped one with only the brand row and agents list swapped for their clones", (t) => {
+  const stock = shipped("layouts/main.json");
+  if (!stock) return t.skip("no shipped main layout here");
+  const ours = json("layouts/sandbox.json");
+  const clones = { "sandbox-chrome": "workspace-chrome", "sandbox-agents": "agents" };
+  const swapped = JSON.parse(JSON.stringify(ours.children[0]), (k, v) => (k === "mod" ? clones[v] ?? v : v));
+  assert.deepEqual(swapped, JSON.parse(stock).children[0]);
+  assert.equal("terminal_menu" in ours, false);
+  assert.equal(json("keys.json")["layout:sandbox"]["ctrl-shift-a"], "sandbox-chrome.new-pi");
+  assert.equal(fs.existsSync(path.join(MODS, "sandbox-toolbar")), false);
 });
 
-test("the sort menu offers only grouped and flat, under its own shared key", () => {
-  const f = agentsFixture(); f.add("A"); f.render();
-  f.event("ag-sort", "on_click");
-  assert.deepEqual(f.overlays, [{ mod: "sandbox-agents", kind: "popup", width: 200, height: 110, props: { sortMenu: true } }]);
-  const menu = f.load("sandbox-agents", { sortMenu: true, overlay: "o1" });
-  f.render(menu);
-  assert.deepEqual(ids(f.tree).filter((k) => k.startsWith("sort-")), ["sort-grouped", "sort-flat"]);
-  f.event("sort-flat", "on_click");
-  assert.equal(f.shared.get("sandbox-agents.sort"), "flat");
-  assert.equal(f.shared.get("agents.sort"), undefined, "the shipped agents list's sort is left alone");
-});
-
-test("titles come from name.js: Pi's own title, π prefix dropped; grouped rows don't repeat the space", () => {
-  const f = agentsFixture(); f.add("A"); f.render();
-  assert.ok(texts(find(f.tree, "ag-A")).includes("Fix A"));
-  assert.equal(texts(find(f.tree, "ag-A")).includes("One"), false);
-});
-
-test("sub-agents show depth first with branches; a click peeks without focusing; folding hides them", () => {
-  const f = agentsFixture(); f.add("A");
-  f.terms.push(
-    { address: "child", parent: "A", state: "live", status: "working", name: "luna-hosts" },
-    { address: "nested", parent: "child", state: "live", status: "error", template: "reviewer" },
-    { address: "exited", parent: "A", state: "finished", status: "done" },
-    { address: "other", parent: "B", state: "live", status: "working" },
-  );
-  f.render();
-  assert.deepEqual(plain(f.mod.tree(f.terms, "A").map((s) => [s.t.address, s.lines])), [["child", ["└"]], ["nested", ["", "└"]]]);
-  assert.ok(texts(find(f.tree, "sub-child")).includes("luna-hosts"));
-  assert.ok(texts(find(f.tree, "sub-nested")).includes("reviewer"));
-  assert.equal(find(f.tree, "sub-exited"), null);
-  assert.equal(find(f.tree, "sub-other"), null);
-  f.event("sub-nested", "on_click");
-  assert.deepEqual(f.calls, [["terminal.peek", { terminal: "nested" }]]);
-  f.calls = [];
-  f.event("fold-A", "on_click"); f.render();
-  assert.equal(find(f.tree, "sub-child"), null);
-  assert.deepEqual(f.calls, []);
-});
-
-test("status icons: working spins, blocked needs you, done is a dot, idle a ring", () => {
-  const f = agentsFixture(); f.add("W", "working"); f.add("B", "blocked"); f.add("D", "done"); f.add("I", "idle");
-  f.render();
-  assert.ok(has(find(f.tree, "ag-W"), (n) => n.style.spin?.[0] === 900 && /spinner\.svg$/.test(n.src)));
-  assert.ok(texts(find(f.tree, "ag-B")).includes("Needs you"));
-  assert.ok(has(find(f.tree, "ag-D"), (n) => n.style.bg?.[0] === "done"));
-  assert.ok(has(find(f.tree, "ag-I"), (n) => n.style.border_color?.[0] === "idle"));
-});
+// --- sandbox-agents deltas ---
 
 test("pins are the shared agents.pins: kept from before, toggled on hover, dropped when their agent ends", () => {
   const f = agentsFixture(); f.add("A"); f.add("B");
@@ -167,75 +140,32 @@ test("pins are the shared agents.pins: kept from before, toggled on hover, dropp
   f.event("ag-A", "on_hover", true); f.render();
   f.event("pin-A", "on_click");
   assert.deepEqual(f.shared.get("agents.pins"), ["B", "tau/t9", "A"]);
+  assert.equal(f.data.has("pins"), false);
   f.terms[1].state = "finished"; f.rows.splice(1, 1); f.render();
   assert.deepEqual(f.shared.get("agents.pins"), ["tau/t9", "A"], "a machine not heard from keeps its pins");
 });
 
-test("right-click opens conversation-menu for that agent, without running anything", () => {
+test("right-click opens conversation-menu (Fork) for the clicked chat row, never the focused one, running nothing", () => {
   const f = agentsFixture(); f.add("A").focused = true; f.add("tau/t7");
   f.render(); f.event("ag-tau/t7", "on_mouse_down:right");
-  assert.deepEqual(f.overlays, [{ mod: "conversation-menu", kind: "popup", width: 260, props: { target: { terminal: "tau/t7", title: "Fix tau/t7" } } }]);
+  assert.deepEqual(f.overlays, [{ mod: "conversation-menu", kind: "popup", width: 260, props: { target: { terminal: "tau/t7", title: "π - Fix tau/t7" } } }]);
   assert.deepEqual(f.calls, []);
 });
 
-// --- sandbox-toolbar ---
-
-const controls = (f) => find(f.tree, "toolbar").items.map((n) => n.key ?? n.items.find((c) => c && typeof c === "object" && c.key)?.key);
-
-test("one toolbar row: search, Pi history, machine, new agent; no duplicate search or new space", () => {
-  const f = toolbarFixture(); f.render();
-  assert.deepEqual(controls(f), ["toolbar-search", "toolbar-history", "toolbar-machine", "toolbar-new-agent"]);
-  assert.equal(ids(f.tree).filter((k) => /search/.test(k)).length, 1);
-  assert.equal(ids(f.tree).some((k) => /space/.test(k)), false);
-  f.event("toolbar-search", "on_click");
-  f.event("toolbar-history", "on_click");
-  assert.deepEqual(f.calls, [["mod.open", { name: "picker" }], ["mod.open", { name: "pi-history" }]]);
-  f.event("toolbar-new-agent", "on_click");
-  assert.deepEqual(f.overlays, [{ mod: "new-menu", kind: "popup", width: 250, height: 512 }]);
+test("the sort menu is the shipped one, opened as this clone", () => {
+  const f = agentsFixture(); f.add("A"); f.render();
+  f.event("ag-sort", "on_click");
+  assert.deepEqual(f.overlays, [{ mod: "sandbox-agents", kind: "popup", width: 200, height: 140, props: { sortMenu: true } }]);
 });
 
-test("the new-pi command starts Pi in a new tab of the shown space", async () => {
-  const f = fixture(); f.commands = ["other", "new-pi"]; f.mod = f.load("sandbox-toolbar");
-  assert.equal(f.jobs.length, 1);
-  f.jobs[0](f.cx); await new Promise(setImmediate);
-  assert.deepEqual(f.calls, [["tab.new", { name: "Pi", argv: ["pi"] }]]);
-});
-
-test("a stale toolbar command loop stops before launching Pi", async () => {
-  const f = fixture(); f.commands = ["new-pi"]; f.load("sandbox-toolbar");
-  const stale = { notify() { throw new Error("view closed"); } };
-  await assert.rejects(f.jobs[0](stale), /view closed/);
-  assert.deepEqual(f.calls, []);
-});
-
-test("the machine picker reuses a machine's space, creates one when none, and leaves offline machines alone", () => {
-  const f = toolbarFixture();
-  f.spaces.push({ id: "r1", name: "Remote", machine: "tau", tabs: [] });
-  f.render(); f.event("toolbar-machine-tau", "on_click");
-  assert.deepEqual(f.calls, [["space.select", { id: "r1" }]]);
-  f.calls = []; f.spaces.pop(); f.render(); f.event("toolbar-machine-tau", "on_click");
-  assert.deepEqual(f.calls, [["space.new", { machine: "tau" }]]);
-  f.calls = []; f.machines[1].layout = "unavailable"; f.render(); f.event("toolbar-machine-tau", "on_click");
-  assert.deepEqual(f.calls, []);
-  f.spaces = [{ id: "r1", name: "Remote", machine: "tau", active: true, tabs: [] }];
-  f.render(); f.event("toolbar-machine-local", "on_click");
-  assert.deepEqual(f.calls, [["space.new", {}]], "Local doesn't inherit the shown remote machine");
-  assert.ok(texts(find(f.tree, "toolbar-machine")).includes("tau"));
-});
-
-test("on the rail the toolbar keeps only new agent", () => {
-  const f = toolbarFixture(); f.sidebar = 44; f.render();
-  assert.deepEqual(ids(f.tree), ["toolbar", "toolbar-new-agent"]);
-});
-
-// --- name.js and the tabs/pane headers (moved from the former t3-focus checks) ---
+// --- name.js and the tabs/pane headers, outside the sidebar ---
 
 test("terminal titles beat generic Pi tabs without losing deliberate names or trusting stale bridge labels", () => {
   const f = fixture();
   const tab = { id: "tb1", name: "Pi", named: true };
   f.spaces = [{ tabs: [tab] }];
   f.terms = [{ address: "A", labels: {} }];
-  for (const mod of ["sandbox-agents", "sandbox-tabs", "sandbox-pane"]) {
+  for (const mod of ["sandbox-tabs", "sandbox-pane"]) {
     const context = vm.createContext({ ...f.env });
     vm.runInContext(fs.readFileSync(path.join(MODS, mod, "name.js"), "utf8").replace(/^import .*;\r?\n/gm, "").replace("export function", "function"), context);
     const title = context.namer(), a = { address: "A", tab: "tb1", status: "idle", title: "π - Fix login - repo", program: { key: "pi", name: "Pi", agent: true } };

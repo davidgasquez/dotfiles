@@ -1,4 +1,4 @@
-// Checks the sidebar's brand row and footer (sandbox-chrome): static Herdr branding, no search of its own.
+// Checks the sidebar's brand row (sandbox-chrome): the shipped workspace-chrome plus Pi history and the new-pi key.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -36,8 +36,8 @@ function texts(node) {
 
 const plain = (x) => JSON.parse(JSON.stringify(x));
 
-function chrome({ platform = "linux", width = 268, footer = false } = {}) {
-  const f = { calls: [], shared: {} };
+function chrome({ platform = "linux", width = 268, footer = false, commands = [] } = {}) {
+  const f = { calls: [], shared: {}, jobs: [] };
   const env = {
     View: class {}, div: element, image: element, svg: element, h_flex: element, v_flex: element,
     theme: () => ({}), props: () => (footer ? { footer: true } : {}), window: () => ({ platform }),
@@ -45,6 +45,7 @@ function chrome({ platform = "linux", width = 268, footer = false } = {}) {
     updates: () => ({ app: { ready: false } }),
     shared: (k) => f.shared[k], setShared: (k, v) => { f.shared[k] = v; },
     run: (...args) => f.calls.push(args),
+    nextCommand: () => (commands.length ? Promise.resolve(commands.shift()) : new Promise(() => {})),
     // The brand must not read the active space any more.
     spaces: () => [{ id: "s1", name: "nixos", active: true }],
   };
@@ -52,6 +53,7 @@ function chrome({ platform = "linux", width = 268, footer = false } = {}) {
     .replace(/^import .*;\r?\n/gm, "").replace("export default class", "globalThis.Mod = class");
   vm.runInContext(src, vm.createContext(env), { filename: "sandbox-chrome/main.js" });
   f.mod = new env.Mod();
+  f.mod.init({}, { spawn: (fn) => f.jobs.push(fn) });
   f.tree = f.mod.render();
   return f;
 }
@@ -63,10 +65,39 @@ test("the brand row shows Herdr, not the active space's name", () => {
   assert.doesNotMatch(fs.readFileSync(path.join(__dirname, "main.js"), "utf8"), /spaces\(\)/);
 });
 
-test("the brand row has no search of its own; the toolbar below owns it", () => {
+test("sandbox-chrome is the shipped workspace-chrome plus a Pi history button and the new-pi key", (t) => {
+  const file = path.join(process.env.HERDR_APP_HOME || path.join(require("node:os").homedir(), ".config/herdr-app"), "mods/workspace-chrome/main.js");
+  if (!fs.existsSync(file)) return t.skip("no shipped workspace-chrome here");
+  const stock = fs.readFileSync(file, "utf8").split("mods/workspace-chrome/").join("mods/sandbox-chrome/").split("\n");
+  const ours = fs.readFileSync(path.join(__dirname, "main.js"), "utf8").split("\n");
+  assert.deepEqual(stock.filter((l) => !ours.includes(l)), ['import { theme, run, props, window, shared, setShared, updates, layout } from "herdr";']);
+  assert.deepEqual(ours.filter((l) => !stock.includes(l)), [
+    'import { theme, run, props, window, shared, setShared, updates, layout, nextCommand } from "herdr";',
+    "  init(_props, cx) {", "    if (props()?.footer) return;", "    cx.spawn(async (cx) => {", "      for (;;) {",
+    "        const command = await nextCommand();", "        cx.notify();",
+    '        if (command === "new-pi") run("tab.new", { name: "Pi", argv: ["pi"] });', "      }", "    });",
+    '      .when(!collapsed, el => el.child(this.button("history", svg("mods/sandbox-chrome/clock.svg").size(15), () => run("mod.open", { name: "pi-history" }))))',
+  ]);
+});
+
+test("the brand row keeps the shipped search and toggle, with Pi history between them", () => {
   const f = chrome();
-  assert.equal(find(f.tree, "search"), null);
-  assert.ok(find(f.tree, "sidebar-toggle"));
+  assert.deepEqual(f.tree.items.map((n) => n.key).filter(Boolean), ["search", "history", "sidebar-toggle"]);
+  find(f.tree, "search").handlers.on_click();
+  find(f.tree, "history").handlers.on_click();
+  assert.deepEqual(plain(f.calls), [["mod.open", { name: "picker" }], ["mod.open", { name: "pi-history" }]]);
+  assert.equal(find(chrome({ width: 44 }).tree, "history"), null);
+});
+
+test("the new-pi key starts Pi in a new tab; a stale loop stops first; the footer doesn't listen", async () => {
+  const f = chrome({ commands: ["other", "new-pi"] });
+  assert.equal(f.jobs.length, 1);
+  f.jobs[0]({ notify() {} }); await new Promise(setImmediate);
+  assert.deepEqual(plain(f.calls), [["tab.new", { name: "Pi", argv: ["pi"] }]]);
+  const stale = chrome({ commands: ["new-pi"] });
+  await assert.rejects(stale.jobs[0]({ notify() { throw new Error("view closed"); } }), /view closed/);
+  assert.deepEqual(stale.calls, []);
+  assert.equal(chrome({ footer: true }).jobs.length, 0);
 });
 
 test("the sidebar toggle folds to the rail and stops the window drag", () => {

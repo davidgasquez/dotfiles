@@ -1,11 +1,9 @@
-// Clone of the shipped agents mod (0.1.11), kept close to it. Changed here: grouped by space or flat
-// (agents() order, no priority sections), pins shared as "agents.pins" (conversation-menu toggles them
-// too), titles from ./name.js as tabs and pane headers read them, and right-click opens conversation-menu.
+// Agents in grouped or priority views; parents take their most urgent sub-agent's place.
+// A viewed done agent stays in Done until left.
 
 import { View, div, image, svg } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
-import { agents, terminals, focused, run, theme, shared, setShared, setAgentOrder, openOverlay, closeOverlay, props, window, layout } from "herdr";
-import { namer } from "./name.js";
+import { agents, terminals, panes, focused, spaces, run, theme, shared, setShared, setAgentOrder, openOverlay, closeOverlay, props, window, layout } from "herdr";
 
 function find(node, id) {
   if (node?.id === id) return node;
@@ -28,6 +26,19 @@ function toggleSidebar() {
   run("layout.resize", { id: "sidebar", px: narrow() ? (shared("sidebar.width") ?? 268) : window()?.platform === "macos" ? 76 : 44 });
 }
 
+const clean = (s) => (s ?? "").replace(/^[^\p{L}\p{N}]+/u, "").trim();
+
+function lead(tab, all = panes()) {
+  const mine = all.filter(p => p.tab === tab.id && p.terminal);
+  return mine.find(p => p.program?.agent) ?? mine.find(p => p.focused) ?? mine[0];
+}
+
+function title(tab, l) {
+  const prog = l?.program?.name;
+  const live = clean(l?.title);
+  const telling = live && live !== prog && !/^[~/]|^[A-Za-z]:\\/.test(live) && !live.includes("@") && live.toLowerCase() !== l?.program?.key;
+  return tab.name === prog && telling ? live : tab.name;
+}
 const RANK = { blocked: 4, done: 3, working: 2, idle: 1 };
 // A sub-agent without a pane isn't in agents(): its raw word, error counting as
 // blocked. It's never done: it reports to its parent, and the parent's done is the news.
@@ -36,12 +47,12 @@ const kidStatus = (k, listed) => {
   return s === "error" ? "blocked" : s === "done" ? "idle" : s;
 };
 const SORTS = [
+  { id: "priority", label: "Priority", icon: "clock" },
   { id: "grouped", label: "Grouped by space", icon: "layers" },
-  { id: "flat", label: "Flat", icon: "terminal" },
 ];
-// Its own key: the shipped agents list (other layouts) keeps its own sort.
-const SORT_KEY = "sandbox-agents.sort";
-const sortOf = () => SORTS.find((s) => s.id === shared(SORT_KEY)) ?? SORTS[0];
+const sortOf = () => SORTS.find((s) => s.id === shared("agents.sort")) ?? SORTS[0];
+const SECTION = { 4: "Needs you", 3: "Done", 2: "Working", 1: "Idle" };
+const SECTION_STATUS = { 4: "blocked", 3: "done", 2: "working" };
 
 function duration(ms) {
   const m = Math.floor(ms / 60000);
@@ -83,6 +94,7 @@ export default class Agents extends View {
     localStorage.setItem("changed", JSON.stringify(this.changed));
   }
 
+  // Shared with conversation-menu, which pins and unpins too.
   get pins() {
     return shared("agents.pins") ?? [];
   }
@@ -105,6 +117,20 @@ export default class Agents extends View {
     return this.changed[a.address]?.at ?? 0;
   }
 
+  // Looking at a done agent makes it idle; it stays with Done until you leave
+  // it rather than drop away under you. Any other change moves it at once.
+  hold(list) {
+    const cur = list.find((a) => a.focused);
+    const same = cur && cur.address === this.held?.address;
+    // Arriving, or any change but done turning idle, sets what it was.
+    if (!same || cur.status !== "idle") this.held = cur ? { address: cur.address, rank: RANK[cur.status] ?? 0 } : null;
+  }
+
+  rank(a) {
+    const sawDone = a.address === this.held?.address && this.held.rank === RANK.done && a.status === "idle";
+    return sawDone ? RANK.done : RANK[a.status] ?? 0;
+  }
+
   sortMenu(t) {
     const on = sortOf().id;
     return v_flex()
@@ -123,7 +149,7 @@ export default class Agents extends View {
         .text_color(t.foreground)
         .hover((el) => el.bg(t.hover))
         .on_click(() => {
-          setShared(SORT_KEY, s.id);
+          setShared("agents.sort", s.id);
           closeOverlay(props().overlay);
         })
         .child(svg(`mods/workspace-chrome/${s.icon}.svg`).size(14).flex_none().text_color(t.muted))
@@ -195,9 +221,11 @@ export default class Agents extends View {
     const shown = focused()?.agent;
     const now = Date.now();
     this.track(list, now);
-    // Flat keeps agents() order (space, tab, pane): rows never move as states change.
-    const flat = sort.id === "flat";
-    const title = namer();
+    this.hold(list);
+    const byPriority = sort.id === "priority";
+    const urgency = new Map(list.map((a) => [a.address, Math.max(this.rank(a), ...this.tree(all, a.address).map((s) => RANK[kidStatus(s.t, this.listed)] ?? 0))]));
+    const rankOf = (a) => urgency.get(a.address);
+    if (byPriority) list = [...list].sort((x, y) => rankOf(y) - rankOf(x) || this.since(y) - this.since(x) || y.seq - x.seq);
     this.prunePins(all);
     const pinned = this.pins.map((p) => list.find((a) => a.address === p)).filter(Boolean);
     const rest = list.filter((a) => !this.pins.includes(a.address));
@@ -208,7 +236,7 @@ export default class Agents extends View {
       const subs = collapsed ? [] : this.tree(all, a.address);
       const r = row(a, i, subs);
       if (this.folded.has(a.address)) return [r];
-      return [r, ...subs.map((s) => this.subRow(t, s, shown, false))];
+      return [r, ...subs.map((s) => this.subRow(t, s, shown, byPriority))];
     };
 
     // The fold chevron; folded, the count too, colored by the most urgent one.
@@ -237,9 +265,24 @@ export default class Agents extends View {
         .when(!open, (el) => el.child(String(subs.length)));
     };
 
+    // A row reads "space \u00b7 detail": the detail is a tab someone named or the
+    // agent's own title, never an automatic tab number unless two rows would
+    // otherwise read the same.
+    const tabs = spaces().flatMap(s => s.tabs);
+    const label = (a) => {
+      const tab = tabs.find(tab => tab.id === a.tab);
+      return tab ? title(tab, lead(tab)) : a.title || a.program?.name || "";
+    };
+    const detail = new Map(list.map(a => [a.address, /^\d+$/.test(label(a)) ? null : label(a)]));
+    const seen = {};
+    for (const a of list) { const k = `${a.space_name}\u0000${detail.get(a.address) ?? ""}`; seen[k] = (seen[k] ?? 0) + 1; }
+    for (const a of list) {
+      if (detail.get(a.address) == null && seen[`${a.space_name}\u0000`] > 1) detail.set(a.address, label(a));
+    }
+
     const row = (a, i, subs = []) => {
       const pic = icon(a.program, 16, t.foreground);
-      const more = title(a);
+      const more = detail.get(a.address);
       // An agent on another machine (`vps/t7`) says which.
       const machine = a.address.includes("/") ? a.address.split("/")[0] : null;
       if (collapsed) {
@@ -275,9 +318,10 @@ export default class Agents extends View {
           cx.notify();
         })
         .child(svg(`mods/workspace-chrome/${isPinned ? "pin-off" : "pin"}.svg`).size(13));
-      // Under a space header the space goes without saying. Without one (flat, pinned) the row names its space.
-      const full = (flat || isPinned) && Boolean(a.space_name);
-      const name = full ? a.space_name : more;
+      // Under a space header the space goes without saying; an automatic tab number says nothing.
+      // Without a space header above (priority, pinned) the row names its space.
+      const full = byPriority || isPinned;
+      const name = full ? a.space_name || label(a) : more ?? (/^\d+$/.test(label(a)) ? a.program?.name || label(a) : label(a));
       return h_flex()
         .id(`ag-${a.address}`)
         .px(8)
@@ -295,10 +339,9 @@ export default class Agents extends View {
           cx.notify();
         })
         .on_click(() => run("pane.focus", { pane: a.pane }))
-        // The menu acts on this agent, never the focused one.
         .on_mouse_down("right", (_e, cx) => {
           cx.stop_propagation();
-          openOverlay({ mod: "conversation-menu", kind: "popup", width: 260, props: { target: { terminal: a.address, title: more } } });
+          openOverlay({ mod: "conversation-menu", kind: "popup", width: 260, props: { target: { terminal: a.address, title: a.title } } });
         })
         .when(Boolean(pic), el => el.child(div().id(`agent-fold-${a.address}`)
           .when(subs.length > 0, el => el.on_click((_e, cx) => {
@@ -307,21 +350,23 @@ export default class Agents extends View {
             cx.notify();
           })).child(pic)))
         .child(h_flex().flex_1().min_w(0).gap(5).items_center()
-          .child(div().min_w(0).max_w(full ? 120 : 200).truncate().text_color(idle ? t.muted : t.foreground).child(name))
+          .child(div().min_w(0).max_w(full && more ? 120 : 200).truncate().text_color(idle ? t.muted : t.foreground).child(name))
           .when(full && Boolean(more), el => el.child(div().flex_1().min_w(0).truncate().text_color(t.dim).child(`\u00b7 ${more}`))))
         .when(Boolean(machine), el => el.child(div().text_size(10).text_color(t.dim).child(machine)))
         .when(subs.length > 0, el => el.child(fold(a, subs)))
         .when(this.hovered === a.address, el => el.child(pin))
         .when(this.hovered !== a.address && Boolean(when), el => el.child(div().flex_none().text_size(11).text_color(t.dim).child(duration(now - when))))
-        .child(this.status(t, a));
+        .child(this.status(t, a, byPriority && !isPinned));
     };
 
-    // Groups in list order. Agents of a space are next to each other in agents(), so neighbours make a group.
+    // Groups in list order: spaces (grouped) or priority sections. Agents of a
+    // space are next to each other in agents(), so neighbours make a group.
     const groups = pinned.length ? [{ id: "pinned", label: "Pinned", status: null, members: pinned }] : [];
     for (const a of rest) {
-      const id = `sp-${a.space}`;
+      const r = rankOf(a) || RANK.idle;
+      const id = byPriority ? `sec-${r}` : `sp-${a.space}`;
       if (groups.at(-1)?.id === id) groups.at(-1).members.push(a);
-      else groups.push({ id, label: a.space_name || "", status: null, members: [a] });
+      else groups.push({ id, label: byPriority ? SECTION[r] : a.space_name || "", status: byPriority ? SECTION_STATUS[r] : null, members: [a] });
     }
 
     // A group's header; it folds the group. Folded, it says how many and the most urgent state.
@@ -345,13 +390,13 @@ export default class Agents extends View {
           cx.notify();
         })
         .child(div().truncate().text_color(t[g.status] ?? t.dim).child(g.label))
-        .when(!open, (el) => el.child(div().text_color(t.dim).child(String(g.members.length))))
+        .when(byPriority || !open, (el) => el.child(div().text_color(t.dim).child(String(g.members.length))))
         .child(div().flex_1())
         .when(!open, (el) => el
-          .when(top && top !== "idle", (el) => el.child(this.status(t, { status: top }, true)))
+          .when(!byPriority && top && top !== "idle", (el) => el.child(this.status(t, { status: top }, true)))
           .child(svg("mods/workspace-chrome/chevron-right.svg").size(11).flex_none().text_color(t.dim)));
     };
-    const rows = collapsed || flat
+    const rows = collapsed
       ? list.flatMap(withKids)
       : groups.flatMap((g) => [header(g), ...(this.folded.has(g.id) ? [] : g.members.flatMap(withKids))]);
 
@@ -379,7 +424,7 @@ export default class Agents extends View {
                 .text_size(11)
                 .text_color(t.dim)
                 .hover((s) => s.text_color(t.foreground))
-                .on_click(() => openOverlay({ mod: "sandbox-agents", kind: "popup", width: 200, height: 110, props: { sortMenu: true } }))
+                .on_click(() => openOverlay({ mod: "sandbox-agents", kind: "popup", width: 200, height: 140, props: { sortMenu: true } }))
                 .tooltip(`Sort agents: ${sort.label}`)
                 .child(svg(`mods/workspace-chrome/${sort.icon}.svg`).size(14)),
             ),

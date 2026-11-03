@@ -3,8 +3,8 @@ Code in these mods that comes from elsewhere
 - sandbox-agents, sandbox-changes, sandbox-chrome, sandbox-pane and sandbox-tabs
   are adapted from mods shipped with the Herdr app 0.1.11 (each mod.json's
   "cloned_from" names the original). Apache License 2.0: LICENSE-Herdr.
-- name.js in sandbox-agents, sandbox-pane and sandbox-tabs, and parts of
-  sandbox-toolbar (the machine picker and the new-pi command), are adapted from
+- name.js in sandbox-pane and sandbox-tabs, and the new-pi command in
+  sandbox-chrome, are adapted from
   herdr-t3-focus by JinJieBeWater (GitHub JinJieBeWater/herdr-t3-focus, commit
   d3558f2), by way of the former t3-focus mod. Apache License 2.0, the same
   license text as LICENSE-Herdr.

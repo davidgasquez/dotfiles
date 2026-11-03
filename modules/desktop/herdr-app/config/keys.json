@@ -60,7 +60,7 @@
     "shift-f2": "space.rename"
   },
   "layout:sandbox": {
-    "ctrl-shift-a": "sandbox-toolbar.new-pi"
+    "ctrl-shift-a": "sandbox-chrome.new-pi"
   },
   "terminal": {
     "ctrl-d": "pane.close",
