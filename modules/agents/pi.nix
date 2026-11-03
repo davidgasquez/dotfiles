@@ -19,8 +19,6 @@
     settings = builtins.fromJSON (builtins.readFile ./pi.json);
     keybindings = {
       "app.message.followUp" = "ctrl+enter";
-      # Herdr's conversation-menu presses this to open Pi's native /fork picker.
-      "app.session.fork" = "ctrl+alt+shift+f";
     };
   };
 

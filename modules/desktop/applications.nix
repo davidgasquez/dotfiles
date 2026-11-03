@@ -19,9 +19,6 @@ let
   herdrApp = pkgs.callPackage ./herdr-app {
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app;
   };
-  herdrMods = builtins.attrNames (
-    lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./herdr-app/config/mods)
-  );
   chromeWarm = pkgs.writeText "chrome-warm.json" (
     builtins.toJSON {
       external_crx = ./chrome-warm/extension.crx;
@@ -74,26 +71,11 @@ let
   };
 in
 {
-  # Herdr's module loader rejects symlinked imports; keep its source files writable.
+  # Herdr reloads its layouts and keys live; keep them writable.
   home.activation.herdrAppConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    if [ -L ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/mods"} ]; then
-      errorEcho "Refusing to synchronize symlinked Herdr mods"
-      exit 1
-    fi
     run ${lib.getExe pkgs.rsync} \
       --recursive --checksum --perms --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
-      --exclude='mods/*/' \
       ${./herdr-app/config}/ ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/"}
-    for mod in ${lib.escapeShellArgs herdrMods}; do
-      if [ -L ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/mods"}/"$mod" ]; then
-        errorEcho "Refusing to synchronize symlinked Herdr mod: $mod"
-        exit 1
-      fi
-      run ${lib.getExe pkgs.rsync} \
-        --recursive --checksum --perms --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
-        --delete --exclude=gpui-kit.d.ts --exclude=jsconfig.json --exclude='.*' --exclude=node_modules \
-        ${./herdr-app/config}/mods/"$mod"/ ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/mods"}/"$mod"/
-    done
   '';
 
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";

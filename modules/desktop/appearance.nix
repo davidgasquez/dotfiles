@@ -55,7 +55,6 @@ in
       staticSettings = (pkgs.formats.json { }).generate "herdr-app-settings.json" {
         theme = "catppuccin-frappe";
         appearance = "dark";
-        minimum_contrast = 1;
       };
     }
   );
