@@ -1,4 +1,4 @@
-// A live conversation's context menu, opened as a popup by any agents list:
+// Conversation and terminal context menus. Agents lists open a popup with:
 // openOverlay({ mod: "conversation-menu", kind: "popup", width: 260, props: { target: { terminal, title } } }).
 // Every action uses target.terminal, the right-clicked conversation, never the focused one.
 import { View, div, svg } from "gpui-kit";
@@ -21,9 +21,28 @@ export default class ConversationMenu extends View {
   }
 
   items() {
-    const { terminal: address, title } = this.target();
+    const { terminal: address, title, pane } = this.target();
     const agent = address && agents().find((a) => a.address === address);
-    const term = agent && terminals().find((t) => t.address === address && t.state === "live");
+    const term = address && terminals().find((t) => t.address === address && t.state === "live");
+    const fork = forkState(address);
+    const forkItems = fork.pi ? [{ id: "fork", label: this.forking ? "Opening fork picker…" : "Fork conversation…",
+      icon: icon("git-branch"), enabled: fork.ok && !this.forking, hint: fork.ok ? FORK_HINT : fork.why }] : [];
+    if (props()?.tab === "pane") {
+      const action = (id, label, glyph, command, args) => ({ id, label, icon: icon(glyph), enabled: true,
+        action: () => run(command, args) });
+      const parent = term?.parent && terminals().find((t) => t.address === term.parent);
+      const toProgram = term?.labels?.["herdr.right-click"] === "program";
+      return [
+        action("split-right", "Split right", "panel-right", "pane.split", { direction: "right", pane }),
+        action("split-down", "Split down", "panel-right", "pane.split", { direction: "down", pane }),
+        action("zoom", "Zoom", "square", "pane.zoom", { pane }),
+        ...forkItems,
+        ...(term ? [action("right-click", toProgram ? "Use Herdr right-click menu" : "Send right-clicks to pane", "terminal",
+          "terminal.right_click", { terminal: address, to: toProgram ? "menu" : "program" })] : []),
+        ...(parent ? [action("park", `Send back to ${parent.name || parent.address}`, "terminal", "terminal.park", { terminal: address })] : []),
+        action("close", "Close pane", "x", "pane.close", { pane }),
+      ];
+    }
     if (!agent || !term) return [];
     const machine = address.includes("/") ? address.split("/")[0] : "Local";
     const cwd = panes().find((p) => p.terminal === address)?.cwd || term.cwd || "";
@@ -35,13 +54,11 @@ export default class ConversationMenu extends View {
     ].filter(Boolean).join("\n");
     const copy = (id, label, value, glyph) => ({ id, label, icon: icon(glyph), enabled: Boolean(value),
       action: (cx) => cx.write_to_clipboard(value) });
-    const fork = forkState(address);
     const pinned = (shared("agents.pins") ?? []).includes(address);
     return [
       { id: "open", label: "Open conversation", icon: icon("terminal"), enabled: true,
         action: () => run("agent.focus", { terminal: address }) },
-      ...(fork.pi ? [{ id: "fork", label: this.forking ? "Opening fork picker…" : "Fork conversation…",
-        icon: icon("git-branch"), enabled: fork.ok && !this.forking, hint: fork.ok ? FORK_HINT : fork.why }] : []),
+      ...forkItems,
       copy("reference", "Copy conversation reference", reference, "layers"),
       copy("address", "Copy terminal address", address, "terminal"),
       copy("project", "Copy project path", cwd, "folder"),
@@ -76,7 +93,7 @@ export default class ConversationMenu extends View {
   }
 
   render() {
-    const t = theme(), items = this.items(), dividers = new Set(["reference", "pin"]);
+    const t = theme(), items = this.items(), dividers = new Set(["reference", "pin", "close"]);
     return v_flex().id("conversation-menu").w_full().min_h(0).p(5).bg(t.popover).text_size(12.8)
       .track_focus(this.focus)
       .on_key_down((e, cx) => {
@@ -89,7 +106,7 @@ export default class ConversationMenu extends View {
         cx.stop_propagation();
         cx.notify();
       })
-      .child(div().px(8).pt(4).pb(6).text_size(11).text_color(t.dim).truncate().child(this.target().title || "Conversation"))
+      .when(props()?.tab !== "pane", (el) => el.child(div().px(8).pt(4).pb(6).text_size(11).text_color(t.dim).truncate().child(this.target().title || "Conversation")))
       .when(!items.length, (el) => el.child(div().px(8).py(8).text_color(t.dim).child("This conversation is no longer open.")))
       .children(items.map((item, i) => v_flex()
         .when(dividers.has(item.id), (el) => el.child(div().mx(7).my(4).h(1).bg(t.border)))
