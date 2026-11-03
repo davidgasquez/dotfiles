@@ -16,6 +16,12 @@ let
     });
   chatgpt = withOzone pkgs.chatgpt;
   spotify = withOzone pkgs.spotify;
+  herdrApp = pkgs.callPackage ./herdr-app {
+    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app;
+  };
+  herdrMods = builtins.attrNames (
+    lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./herdr-app/config/mods)
+  );
   chromeWarm = pkgs.writeText "chrome-warm.json" (
     builtins.toJSON {
       external_crx = ./chrome-warm/extension.crx;
@@ -32,10 +38,32 @@ let
   '';
 in
 {
+  # Herdr's module loader rejects symlinked imports; keep its source files writable.
+  home.activation.herdrAppConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    if [ -L ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/mods"} ]; then
+      errorEcho "Refusing to synchronize symlinked Herdr mods"
+      exit 1
+    fi
+    run ${lib.getExe pkgs.rsync} \
+      --recursive --checksum --perms --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
+      --exclude='mods/*/' \
+      ${./herdr-app/config}/ ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/"}
+    for mod in ${lib.escapeShellArgs herdrMods}; do
+      if [ -L ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/mods"}/"$mod" ]; then
+        errorEcho "Refusing to synchronize symlinked Herdr mod: $mod"
+        exit 1
+      fi
+      run ${lib.getExe pkgs.rsync} \
+        --recursive --checksum --perms --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
+        --delete --exclude=gpui-kit.d.ts --exclude=jsconfig.json --exclude='.*' --exclude=node_modules \
+        ${./herdr-app/config}/mods/"$mod"/ ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/mods"}/"$mod"/
+    done
+  '';
+
   home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
   home.packages = with pkgs; [
     chatgpt
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app
+    herdrApp
     proton-pass-cli
     seahorse
     spotify
@@ -150,6 +178,11 @@ in
         Install.WantedBy = [ "graphical-session.target" ];
       })
       {
+        herdr-app = {
+          name = "Herdr";
+          exec = "${herdrApp}/bin/herdr-app";
+          env = [ "HERDR_START_HIDDEN=1" ];
+        };
         chrome-background = {
           name = "Google Chrome";
           exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --no-startup-window";

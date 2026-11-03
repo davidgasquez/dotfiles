@@ -2,3 +2,5 @@
 *.local
 *.local.*
 .env
+/modules/desktop/herdr-app/config/mods/*/gpui-kit.d.ts
+/modules/desktop/herdr-app/config/mods/*/jsconfig.json

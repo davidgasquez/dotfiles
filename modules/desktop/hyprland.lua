@@ -84,6 +84,7 @@ local powerSubmap = "power · L bloquear · S suspender · Q salir · R reinicia
 local resizeSubmap = "Redimensionar · ← ↓ ↑ → · Esc salir"
 
 hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("uwsm app -- chatgpt"), { description = "Open ChatGPT" })
+hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("uwsm app -- herdr-app"), { description = "Open Herdr" })
 
 hl.bind(
   mainMod .. " + RETURN",

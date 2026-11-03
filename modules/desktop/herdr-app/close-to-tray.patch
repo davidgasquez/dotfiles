@@ -1,0 +1,440 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index cbc5fea..927e205 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -291,6 +291,15 @@ version = "1.4.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "c3d036a3c4ab069c7b410a2ce876bd74808d2d0888a82667669f8e783a898bf1"
+ 
++[[package]]
++name = "arc-swap"
++version = "1.9.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "380962b3d93b99642e50b9febf72c071e97e8b32d86eae9cf4ef582bb960ae6e"
++dependencies = [
++ "rustversion",
++]
++
+ [[package]]
+ name = "arg_enum_proc_macro"
+ version = "0.3.4"
+@@ -589,7 +598,7 @@ dependencies = [
+  "log",
+  "num-rational",
+  "num-traits",
+- "pastey",
++ "pastey 0.1.1",
+  "rayon",
+  "thiserror 2.0.20",
+  "v_frame",
+@@ -3708,6 +3717,7 @@ dependencies = [
+  "gpui-pre-windows",
+  "gpui-shell",
+  "image",
++ "ksni",
+  "libc",
+  "notify",
+  "png 0.17.16",
+@@ -4348,6 +4358,26 @@ dependencies = [
+  "libc",
+ ]
+ 
++[[package]]
++name = "ksni"
++version = "0.3.7"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1bcc1cb43797140f74b711f1c4a49f48a7a7429f211c5fb78264e7bcd1e99caf"
++dependencies = [
++ "arc-swap",
++ "async-executor",
++ "async-io",
++ "async-lock",
++ "crossbeam-queue",
++ "futures-channel",
++ "futures-lite",
++ "futures-util",
++ "pastey 0.2.1",
++ "serde",
++ "task-local",
++ "zbus",
++]
++
+ [[package]]
+ name = "kurbo"
+ version = "0.13.1"
+@@ -5867,6 +5897,12 @@ version = "0.1.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "35fb2e5f958ec131621fdd531e9fc186ed768cbe395337403ae56c17a74c68ec"
+ 
++[[package]]
++name = "pastey"
++version = "0.2.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "b867cad97c0791bbd3aaa6472142568c6c9e8f71937e98379f584cfb0cf35bec"
++
+ [[package]]
+ name = "pathfinder_geometry"
+ version = "0.5.1"
+@@ -8032,6 +8068,15 @@ version = "0.13.5"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca"
+ 
++[[package]]
++name = "task-local"
++version = "0.1.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "2972044a9e5e448a506a7ff6f0d03b566d8ef4cd6918a58fc59835a0f8666626"
++dependencies = [
++ "pin-project-lite",
++]
++
+ [[package]]
+ name = "tauri-winrt-notification"
+ version = "0.7.3"
+diff --git a/Cargo.toml b/Cargo.toml
+index 2fa587a..6d4f631 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -47,6 +47,7 @@ gpui = { package = "gpui-pre", version = "=0.3.8", features = ["test-support"] }
+ gpui-shell = { path = "vendor/gpui-kit/crates/shell", features = ["render-test-support"] }
+ 
+ [target.'cfg(target_os = "linux")'.dependencies]
++ksni = { version = "=0.3.7", default-features = false, features = ["async-io", "blocking"] }
+ gpui_linux = { package = "gpui-pre-linux", version = "=0.3.8", features = ["render-to-image"] }
+ 
+ [target.'cfg(target_os = "macos")'.dependencies]
+diff --git a/src/commands.rs b/src/commands.rs
+index 1db18f7..6cfb448 100644
+--- a/src/commands.rs
++++ b/src/commands.rs
+@@ -94,11 +94,11 @@ pub const COMMANDS: &[Command] = &[
+     cmd("app.zoom_out", &[], "Make everything smaller."),
+     cmd("app.zoom_reset", &[], "Back to normal size."),
+     cmd("app.update", &[], "Restart into the update Herdr downloaded (your terminals keep running)."),
+-    cmd("app.quit", &[], "Quit (macOS)."),
++    cmd("app.quit", &[], "Quit Herdr (terminals keep running)."),
+     cmd("app.hide", &[], "Hide the app (macOS)."),
+     cmd("app.hide_others", &[], "Hide other apps (macOS)."),
+     cmd("app.show_all", &[], "Show all apps (macOS)."),
+-    cmd("window.close", &[], "Close the window (on Linux, quits)."),
++    cmd("window.close", &[], "Hide in the system tray when available, otherwise close the window."),
+     cmd("window.minimize", &[], "Minimize the window."),
+     cmd("window.maximize", &[], "Maximize the window, or back."),
+ ];
+diff --git a/src/control.rs b/src/control.rs
+index 5833134..67da32b 100644
+--- a/src/control.rs
++++ b/src/control.rs
+@@ -62,6 +62,8 @@ pub fn raise_running() -> bool {
+ 
+ fn raise_running_at(path: &std::path::Path) -> bool {
+     let Ok(mut stream) = UnixStream::connect(path) else { return false };
++    // Autostart must not raise an independently launched instance, even an older build.
++    if std::env::var("HERDR_START_HIDDEN").as_deref() == Ok("1") { return true; }
+     let _ = stream.set_read_timeout(Some(Duration::from_secs(3)));
+     if stream.write_all(format!("{}\n", json!({ "raise": true })).as_bytes()).is_ok() {
+         let _ = BufReader::new(&stream).read_line(&mut String::new());
+diff --git a/src/main.rs b/src/main.rs
+index d3348d4..f5d5993 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -35,6 +35,8 @@ mod update_notes;
+ mod vt;
+ mod win32_keys;
+ mod window;
++#[cfg(target_os = "linux")]
++mod tray;
+ 
+ use gpui::*;
+ 
+@@ -198,6 +200,8 @@ fn main() {
+ 
+ /// The main window, on a connected core.
+ pub fn open_main(core: std::sync::Arc<hc::Core>, requests: async_channel::Receiver<mods::Request>, cx: &mut App) {
++            #[cfg(target_os = "linux")]
++            if let Some(tx) = mods::request_sender() { tray::start(tx); }
+             let (window_bounds, display_id) = place::initial(cx);
+             let options = WindowOptions {
+                 window_bounds: Some(window_bounds),
+diff --git a/src/spawn.rs b/src/spawn.rs
+index 0987554..c5fd7e4 100644
+--- a/src/spawn.rs
++++ b/src/spawn.rs
+@@ -7,6 +7,7 @@ use std::process::Command;
+ pub fn command(program: impl AsRef<OsStr>) -> Command {
+     #[allow(unused_mut)]
+     let mut cmd = Command::new(program);
++    cmd.env_remove("HERDR_START_HIDDEN");
+     #[cfg(windows)]
+     {
+         use std::os::windows::process::CommandExt;
+diff --git a/src/tray.rs b/src/tray.rs
+new file mode 100644
+index 0000000..f500232
+--- /dev/null
++++ b/src/tray.rs
+@@ -0,0 +1,196 @@
++use std::sync::atomic::{AtomicBool, Ordering};
++use std::sync::{Mutex, OnceLock};
++use std::time::{Duration, Instant};
++
++use async_channel::Sender;
++use ksni::blocking::TrayMethods;
++use serde_json::{Value, json};
++
++use crate::mods::Request;
++
++static READY: AtomicBool = AtomicBool::new(false);
++static HIDDEN: AtomicBool = AtomicBool::new(false);
++static STARTUP_CANCELLED: AtomicBool = AtomicBool::new(false);
++static VISIBILITY: Mutex<()> = Mutex::new(());
++static HANDLE: OnceLock<ksni::blocking::Handle<Tray>> = OnceLock::new();
++
++struct Tray {
++    requests: Sender<Request>,
++    online: AtomicBool,
++}
++
++impl Tray {
++    fn show(&self) {
++        let (reply, _) = std::sync::mpsc::channel();
++        let _ = self.requests.try_send(Request::Control {
++            cmd: json!({"raise": true}),
++            reply,
++        });
++    }
++}
++
++impl ksni::Tray for Tray {
++    fn id(&self) -> String {
++        "herdr-app".into()
++    }
++    fn title(&self) -> String {
++        "Herdr".into()
++    }
++    fn icon_name(&self) -> String {
++        "@icon@".into()
++    }
++
++    fn activate(&mut self, _: i32, _: i32) {
++        self.show();
++    }
++    fn secondary_activate(&mut self, _: i32, _: i32) {
++        self.show();
++    }
++
++    fn menu(&self) -> Vec<ksni::MenuItem<Self>> {
++        use ksni::menu::StandardItem;
++        vec![
++            StandardItem {
++                label: "Show Herdr".into(),
++                activate: Box::new(|tray: &mut Self| tray.show()),
++                ..Default::default()
++            }
++            .into(),
++            StandardItem {
++                label: "Quit".into(),
++                activate: Box::new(|tray: &mut Self| {
++                    let _ = tray.requests.try_send(Request::Run {
++                        name: "app.quit".into(),
++                        args: Value::Null,
++                    });
++                }),
++                ..Default::default()
++            }
++            .into(),
++        ]
++    }
++
++    fn watcher_online(&self) {
++        self.online.store(true, Ordering::SeqCst);
++        READY.store(true, Ordering::SeqCst);
++    }
++
++    fn watcher_offline(&self, _: ksni::OfflineReason) -> bool {
++        self.online.store(false, Ordering::SeqCst);
++        READY.store(false, Ordering::SeqCst);
++        if HIDDEN.load(Ordering::SeqCst) {
++            self.show();
++        }
++        true
++    }
++}
++
++pub fn start(requests: Sender<Request>) {
++    if std::env::var_os("HYPRLAND_INSTANCE_SIGNATURE").is_none() {
++        return;
++    }
++    let start_hidden = std::env::var("HERDR_START_HIDDEN").as_deref() == Ok("1");
++    let deadline = Instant::now() + Duration::from_secs(3);
++    std::thread::spawn(move || {
++        match (Tray {
++            requests,
++            online: AtomicBool::new(true),
++        })
++        .assume_sni_available(true)
++        .spawn()
++        {
++            Ok(handle) => {
++                handle.update(|tray| {
++                    READY.store(tray.online.load(Ordering::SeqCst), Ordering::SeqCst)
++                });
++                let _ = HANDLE.set(handle);
++                // A mapping failure leaves the app visible, never closed. Late watchers don't hide it.
++                if start_hidden {
++                    while Instant::now() < deadline
++                        && !STARTUP_CANCELLED.load(Ordering::SeqCst)
++                    {
++                        if READY.load(Ordering::SeqCst) {
++                            if hide_window(true) {
++                                if STARTUP_CANCELLED.load(Ordering::SeqCst) {
++                                    show();
++                                }
++                                break;
++                            }
++                        }
++                        std::thread::sleep(Duration::from_millis(200));
++                    }
++                    cancel_startup_hide();
++                }
++            }
++            Err(error) => tracing::warn!("system tray unavailable; close will quit: {error}"),
++        }
++    });
++}
++
++pub fn cancel_startup_hide() {
++    STARTUP_CANCELLED.store(true, Ordering::SeqCst);
++}
++
++fn hyprctl(args: &[&str]) -> Option<String> {
++    let output = crate::spawn::command("@timeout@")
++        .args(["1", "@hyprctl@"])
++        .args(args)
++        .output()
++        .ok()?;
++    output
++        .status
++        .success()
++        .then(|| String::from_utf8_lossy(&output.stdout).trim().to_owned())
++}
++
++pub fn hide() -> bool {
++    cancel_startup_hide();
++    hide_window(false)
++}
++
++fn hide_window(startup: bool) -> bool {
++    let _visibility = VISIBILITY.lock().unwrap();
++    if !READY.load(Ordering::SeqCst) || (startup && STARTUP_CANCELLED.load(Ordering::SeqCst)) {
++        return false;
++    }
++    let workspace = format!("special:herdr-{}", std::process::id());
++    let command = format!(
++        "hl.dsp.window.move({{ window = \"pid:{}\", workspace = \"{}\", follow = false }})",
++        std::process::id(),
++        workspace
++    );
++    let hidden = hyprctl(&["dispatch", &command]).as_deref() == Some("ok")
++        && hyprctl(&["-j", "clients"])
++            .and_then(|clients| serde_json::from_str::<Vec<Value>>(&clients).ok())
++            .is_some_and(|clients| clients.iter().any(|window| {
++                window["pid"].as_u64() == Some(u64::from(std::process::id()))
++                    && window["workspace"]["name"].as_str() == Some(workspace.as_str())
++            }));
++    HIDDEN.store(hidden, Ordering::SeqCst);
++    if hidden && !READY.load(Ordering::SeqCst) {
++        drop(_visibility);
++        show();
++        return false;
++    }
++    hidden
++}
++
++pub fn show() {
++    cancel_startup_hide();
++    let _visibility = VISIBILITY.lock().unwrap();
++    if !HIDDEN.load(Ordering::SeqCst) {
++        return;
++    }
++    let command = format!(
++        "hl.dsp.window.move({{ window = \"pid:{}\", workspace = hl.get_active_workspace() }})",
++        std::process::id()
++    );
++    if hyprctl(&["dispatch", &command]).as_deref() == Some("ok") {
++        HIDDEN.store(false, Ordering::SeqCst);
++        let command = format!(
++            "hl.dsp.focus({{ window = \"pid:{}\" }})",
++            std::process::id()
++        );
++        let _ = hyprctl(&["dispatch", &command]);
++    }
++}
+diff --git a/src/window.rs b/src/window.rs
+index dcd4d89..8a7dc2c 100644
+--- a/src/window.rs
++++ b/src/window.rs
+@@ -530,6 +530,8 @@ impl AppWindow {
+         }));
+         let closing = cx.weak_entity();
+         window.on_window_should_close(cx, move |window, cx| {
++            #[cfg(target_os = "linux")]
++            if crate::tray::hide() { return false; }
+             // macOS: the red button hides the app instead, so alerts keep ringing;
+             // the Dock icon or a new launch brings it back, Cmd+Q quits.
+             if cfg!(target_os = "macos") {
+@@ -3440,6 +3442,8 @@ impl AppWindow {
+         }
+         // Herdr was launched again: this window comes to the front instead.
+         if cmd.get("raise").is_some() {
++            #[cfg(target_os = "linux")]
++            crate::tray::show();
+             cx.activate(true);
+             window.activate_window();
+             return json!({ "ok": true });
+@@ -4505,12 +4509,18 @@ impl Render for AppWindow {
+                 }
+             }))
+             .capture_key_down(cx.listener(|this, ev: &KeyDownEvent, _, cx| {
++                #[cfg(target_os = "linux")]
++                crate::tray::cancel_startup_hide();
+                 if ev.keystroke.key == "escape" && this.pane_drag.is_some() {
+                     this.cancel_pane_drag(cx);
+                     cx.stop_propagation();
+                 }
+             }))
+-            .capture_any_mouse_down(cx.listener(|this, ev: &MouseDownEvent, _, _| this.pointer = ev.position))
++            .capture_any_mouse_down(cx.listener(|this, ev: &MouseDownEvent, _, _| {
++                #[cfg(target_os = "linux")]
++                crate::tray::cancel_startup_hide();
++                this.pointer = ev.position;
++            }))
+             .on_mouse_move(cx.listener(|this, ev: &MouseMoveEvent, window, cx| {
+                 this.drag_window(ev, window);
+                 if this.drag.is_none() {
+diff --git a/src/window/titlebar.rs b/src/window/titlebar.rs
+index 1319016..f39020a 100644
+--- a/src/window/titlebar.rs
++++ b/src/window/titlebar.rs
+@@ -198,6 +198,8 @@ impl AppWindow {
+     pub(super) fn window_command(&mut self, name: &str, window: &mut Window, cx: &mut Context<Self>) {
+         match name {
+             "window.close" => {
++                #[cfg(target_os = "linux")]
++                if crate::tray::hide() { return; }
+                 self.drain_documents(window, cx);
+                 self.close_mods_now(std::time::Instant::now() + Duration::from_millis(250), window, cx);
+                 crate::place::save(window, cx);
+@@ -204,7 +206,11 @@ impl AppWindow {
+                 window.remove_window();
+             }
+-            "window.minimize" => window.minimize_window(),
++            "window.minimize" => {
++                #[cfg(target_os = "linux")]
++                if crate::tray::hide() { return; }
++                window.minimize_window();
++            }
+             #[cfg(windows)]
+             "window.maximize" => win::toggle_maximize(window),
+             #[cfg(not(windows))]
+             "window.maximize" => window.zoom_window(),

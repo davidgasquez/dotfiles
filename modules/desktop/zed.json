@@ -1,5 +1,6 @@
 {
   "cli_default_open_behavior": "new_window",
+  "remove_trailing_whitespace_on_save": true,
   "project_panel": {
     "dock": "left"
   },
