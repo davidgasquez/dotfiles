@@ -31,7 +31,10 @@ in
   };
 
   systemd.services.pihole-ftl.serviceConfig.EnvironmentFile =
-    "/home/david/.config/pihole/environment";
+    "/var/lib/secrets/pihole-environment";
+  systemd.tmpfiles.rules = [
+    "d /var/lib/secrets 0700 root root -"
+  ];
 
   systemd.services.pihole-ftl-setup = {
     wantedBy = [ "multi-user.target" ];
