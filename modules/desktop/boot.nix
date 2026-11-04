@@ -5,7 +5,7 @@
 }:
 
 {
-  boot.tmp.cleanOnBoot = true;
+  boot.tmp.useTmpfs = true;
 
   boot.loader.efi.canTouchEfiVariables = true;
   fileSystems."/boot".options = lib.mkForce [
