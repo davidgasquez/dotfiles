@@ -130,6 +130,7 @@ in
     seahorse
     spotify
     slack
+    (callPackage ./slacrawl.nix { })
     file-roller
     xfce4-settings
   ];

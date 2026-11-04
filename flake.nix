@@ -43,6 +43,10 @@
         system: nixpkgs.legacyPackages.${system}.nixfmt
       );
 
+      packages = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system: {
+        slacrawl = nixpkgs.legacyPackages.${system}.callPackage ./modules/desktop/slacrawl.nix { };
+      });
+
       nixosConfigurations = {
         helix = mkHost "helix";
         tau = mkHost "tau";
