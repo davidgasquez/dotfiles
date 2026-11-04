@@ -200,6 +200,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
+  name = "tile-chrome-picture-in-picture",
+  match = { class = "^$", title = "^Picture in picture$" },
+  tile = true,
+  no_max_size = true,
+})
+
+hl.window_rule({
   name  = "suppress-maximize-events",
   match = { class = ".*" },
   suppress_event = "maximize",
