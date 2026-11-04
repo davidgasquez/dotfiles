@@ -42,7 +42,7 @@ function harness(mod, extra = {}) {
   const cx = {
     notify() {}, stop_propagation() {}, focus_handle: () => ({ focus() {} }),
     spawn: (fn) => { fn(cx); },
-    timer: { after: (ms, fn) => { const t = { ms, fn, cancelled: false, cancel() { t.cancelled = true; } }; f.timers.push(t); return t; } },
+    timer: { after: (ms, fn) => { const t = { ms, fn, cancelled: false, cancel() { t.cancelled = true; } }; f.timers.push(t); return t; }, every() {} },
   };
   const env = {
     View: class {}, div: element, svg: element, v_flex: element, h_flex: element,
@@ -62,7 +62,7 @@ function harness(mod, extra = {}) {
     notify: (n) => f.notes.push(n), pickFolder: (o) => new Promise((resolve) => f.picks.push({ o, resolve })),
     exec: (cmd, args) => new Promise((resolve) => f.execs.push({ cmd, args, resolve })),
     shared: () => f.saved ?? [], setShared() {}, agents: () => [], terminals: () => [], focused: () => null,
-    layout: () => null, setAgentOrder() {}, nextCommand: () => new Promise(() => {}), openOverlay: (o) => (f.overlays ??= []).push(plain(o)),
+    layout: () => null, setAgentOrder() {}, machines: () => f.machines ?? [{ name: null, layout: "ready" }], window: () => null, nextCommand: () => new Promise(() => {}), openOverlay: (o) => (f.overlays ??= []).push(plain(o)),
   };
   const context = vm.createContext(env);
   vm.runInContext(source(mod), context, { filename: mod });
@@ -447,4 +447,48 @@ test("Spaces: new chats get a durable folder from pi-chats; dated and legacy /tm
   f.execs[1].resolve({ code: 1, stdout: "", stderr: "EACCES" });
   await settle();
   assert.deepEqual([f.runs.length, f.notes[0].body], [1, "EACCES"]);
+});
+
+test("Spaces: saved and remote rows share New terminal and New Pi chat; remote ones open a tab in the clicked space", () => {
+  const proj = { name: "proj", folder: "/home/u/proj", color: "ansi6" };
+  const live = { name: "live", folder: "/home/u/live", color: "ansi3" };
+  const spaces = [
+    { id: "l1", name: "live", folder: "/home/u/live", machine: null, tabs: [{ id: "lt" }] },
+    { id: "s9", name: "misc", folder: "/made/here", machine: null, tabs: [] },
+    { id: "tau/a", name: "first", folder: "/srv/a", machine: "tau", tabs: [] },
+    { id: "tau/b", name: "second", folder: "/srv/b", machine: "tau", tabs: [{ id: "tau/tb" }] },
+    { id: "vps/c", name: "down", folder: "/srv/c", machine: "vps", tabs: [] },
+  ];
+  const machines = [{ name: null, layout: "ready" }, { name: "tau", layout: "ready" }, { name: "vps", layout: "unavailable" }];
+  const f = harness("sandbox-spaces", { saved: [proj, live], spaces, machines, props: {} }).init();
+  const press = (row, id) => { f.mod.hovered = row; f.render(); find(f.tree, id).handlers.on_click({}, f.cx); };
+  const tips = (id) => [find(f.tree, "term-" + id)?.tooltip, find(f.tree, "pi-" + id)?.tooltip];
+
+  press("saved-0", "term-0");
+  press("saved-0", "pi-0");
+  press("saved-1", "term-1");
+  press("saved-1", "pi-1");
+  assert.deepEqual(tips(1), ["New terminal", "New Pi chat"]);
+  assert.deepEqual(f.runs.splice(0), [
+    ["space.new", { name: "proj", folder: "/home/u/proj" }],
+    ["space.new", { name: "proj", folder: "/home/u/proj", argv: ["exec", "pi"] }],
+    ["space.select", { id: "l1" }], ["tab.new", { space: "l1", folder: "/home/u/live" }],
+    ["space.select", { id: "l1" }], ["tab.new", { space: "l1", folder: "/home/u/live", argv: ["exec", "pi"] }],
+  ], "saved folders launch as before");
+
+  press("space-tau/b", "term-tau/b");
+  assert.deepEqual(tips("tau/b"), ["New terminal", "New Pi chat"]);
+  assert.equal(find(f.tree, "term-tau/a"), null, "only the hovered row");
+  press("space-tau/b", "pi-tau/b");
+  assert.deepEqual(f.runs.splice(0), [
+    ["space.select", { id: "tau/b" }], ["tab.new", { space: "tau/b" }],
+    ["space.select", { id: "tau/b" }], ["tab.new", { space: "tau/b", argv: ["exec", "pi"] }],
+  ], "the clicked space, on its own machine");
+  assert.equal(find(f.tree, "hist-tau/b").handlers.on_click, undefined, "History stays local-only");
+
+  f.mod.hovered = "space-s9"; f.render();
+  assert.deepEqual([tips("s9"), typeof find(f.tree, "hist-s9").handlers.on_click], [[undefined, undefined], "function"], "local other rows unchanged");
+  f.mod.hovered = "space-vps/c"; f.render();
+  assert.deepEqual(tips("vps/c"), [undefined, undefined], "no launch on an unavailable machine");
+  assert.deepEqual(f.runs, []);
 });
