@@ -123,6 +123,7 @@ hl.bind(mainMod .. " + SHIFT + W", function()
   end
 end, { description = "Open or focus WhatsApp" })
 hl.bind("F9", hl.dsp.exec_cmd("dictate"), { description = "Toggle dictation" })
+hl.bind("ALT + F9", hl.dsp.exec_cmd("uwsm app -- audio-record"), { description = "Start or stop meeting recording" })
 hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history"))
 hl.bind(mainMod .. " + CTRL + SHIFT + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history --delete"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())

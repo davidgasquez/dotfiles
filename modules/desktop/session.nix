@@ -10,6 +10,7 @@
 let
   inherit (config.gtk) font;
   recordingDirectory = "${config.xdg.userDirs.videos}/Recordings";
+  audioRecordingDirectory = "${config.xdg.userDirs.music}/Recordings";
   lock = pkgs.writeShellApplication {
     name = "lock-session";
     runtimeInputs = with pkgs; [
@@ -46,6 +47,22 @@ in
           systemctl --user stop screen-record.service
         else
           systemctl --user start screen-record.service
+        fi
+      '';
+    })
+    (writeShellApplication {
+      name = "audio-record";
+      runtimeInputs = [
+        systemd
+        util-linux
+      ];
+      text = ''
+        exec 9>"$XDG_RUNTIME_DIR/audio-record.lock"
+        flock -n 9 || exit 0
+        if systemctl --user is-active --quiet audio-record.service; then
+          systemctl --user stop audio-record.service
+        else
+          systemctl --user start audio-record.service
         fi
       '';
     })
@@ -179,6 +196,53 @@ in
       '';
       KillSignal = "SIGINT";
       KillMode = "mixed";
+      TimeoutStopSec = 15;
+      UMask = "0077";
+    };
+  };
+
+  systemd.user.services.audio-record = {
+    Unit = {
+      Description = "Record desktop audio and microphone";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+      Requisite = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "exec";
+      ExecStart = lib.getExe (
+        pkgs.writeShellApplication {
+          name = "audio-record-start";
+          runtimeInputs = with pkgs; [
+            coreutils
+            ffmpeg
+            pulseaudio
+          ];
+          text = ''
+            mkdir -p ${lib.escapeShellArg audioRecordingDirectory}
+            microphone=$(pactl get-default-source)
+            monitor=$(pactl get-default-sink).monitor
+            filename=${lib.escapeShellArg audioRecordingDirectory}/meeting-$(date +%Y-%m-%d_%H-%M-%S-%3N).flac
+            exec ffmpeg -nostdin -hide_banner -loglevel warning -n \
+              -thread_queue_size 1024 -f pulse -i "$microphone" \
+              -thread_queue_size 1024 -f pulse -i "$monitor" \
+              -filter_complex '[0:a][1:a]amix=inputs=2:duration=longest:normalize=1[audio]' \
+              -map '[audio]' -ar 48000 -ac 2 -c:a flac "$filename"
+          '';
+        }
+      );
+      ExecStopPost = pkgs.writeShellScript "audio-record-notify" ''
+        if [ "$SERVICE_RESULT" = success ]; then
+          ${pkgs.libnotify}/bin/notify-send --app-name="Meeting recording" \
+            "Recording saved" ${lib.escapeShellArg audioRecordingDirectory}
+        else
+          ${pkgs.libnotify}/bin/notify-send --app-name="Meeting recording" --urgency=critical \
+            "Recording failed" "See journalctl --user -u audio-record.service for details."
+        fi
+      '';
+      KillSignal = "SIGINT";
+      KillMode = "mixed";
+      SuccessExitStatus = 255;
       TimeoutStopSec = 15;
       UMask = "0077";
     };

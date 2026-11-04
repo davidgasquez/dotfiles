@@ -22,6 +22,7 @@ in
       modules-center = [ "mpris" ];
       modules-right = [
         "custom/screen-record"
+        "custom/audio-record"
         "wireplumber"
         "group/tray-expander"
         "clock"
@@ -40,6 +41,13 @@ in
         hide-empty-text = true;
         tooltip-format = "Recording screen · Click or Alt+Print to stop";
         on-click = "${pkgs.systemd}/bin/systemctl --user stop screen-record.service";
+      };
+      "custom/audio-record" = {
+        exec = "if ${pkgs.systemd}/bin/systemctl --user is-active --quiet audio-record.service; then echo '󰍬 REC'; fi";
+        interval = 1;
+        hide-empty-text = true;
+        tooltip-format = "Recording desktop audio + microphone · Click or Alt+F9 to stop";
+        on-click = "${pkgs.systemd}/bin/systemctl --user stop audio-record.service";
       };
       clock = {
         format = "{:%a %d %b  %H:%M}";
@@ -131,14 +139,14 @@ in
       #workspaces button.active { background: @surface0; color: @accent; }
       #workspaces button.urgent { background: @red; color: @base; }
       .modules-right { margin: 4px 10px 4px 0; }
-      #mpris, #battery, #backlight, #custom-screen-record, #wireplumber, #tray-expander, #clock {
+      #mpris, #battery, #backlight, #custom-screen-record, #custom-audio-record, #wireplumber, #tray-expander, #clock {
         background: @surface0;
         border-radius: 4px;
         color: @subtext0;
       }
-      #battery, #backlight, #custom-screen-record, #wireplumber, #tray-expander { margin-right: 4px; }
-      #battery, #backlight, #custom-screen-record, #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
-      #custom-screen-record { color: @red; }
+      #battery, #backlight, #custom-screen-record, #custom-audio-record, #wireplumber, #tray-expander { margin-right: 4px; }
+      #battery, #backlight, #custom-screen-record, #custom-audio-record, #wireplumber, #custom-expand-icon, #tray { padding: 0 8px; }
+      #custom-screen-record, #custom-audio-record { color: @red; }
       #mpris { margin: 4px 12px; padding: 0 10px; }
       #mpris.paused { color: @overlay1; }
       #clock { padding: 0 10px; color: @text; }
