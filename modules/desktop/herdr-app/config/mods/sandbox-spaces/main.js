@@ -350,7 +350,7 @@ export default class SavedSpaces extends View {
       .child(div().w(22).flex_none().flex().justify_center().child(mark(t, s.status) ?? div()));
   }
 
-  machine(m) {
+  machine(m, ps) {
     const t = theme();
     const ready = m.layout === "ready";
     const label = h_flex().min_w(0).gap(6).items_center()
@@ -359,7 +359,13 @@ export default class SavedSpaces extends View {
       .when(!ready, (el) => el.child(div().flex_none().text_color(t.dim).opacity(0.7).child(m.layout === "loading" ? "Loading…" : "Unavailable")));
     return [
       this.section("remote-new-" + m.name, label, "New space on " + m.name, ready ? () => run("space.new", { machine: m.name }) : null),
-      ...m.spaces.map((s) => this.other(s)),
+      ...m.spaces.flatMap((s) => {
+        const key = "s:" + s.id;
+        return [
+          this.other(s).when(s.tabs.length > 0, (el) => el.child(this.fold("fold-" + s.id, key, s.tabs.length, s.status))),
+          ...(this.folded.has(key) ? [] : s.tabs.flatMap((tab) => this.chat(s, tab, ps, 35, true))),
+        ];
+      }),
     ];
   }
 
@@ -447,6 +453,7 @@ export default class SavedSpaces extends View {
     setAgentOrder(order.flatMap((id) => all.filter((a) => a.tab === id).map((a) => a.address)));
     if (narrow()) return this.rail(g);
     const chats = g.chats.flatMap((s) => s.tabs.flatMap((tab) => this.chat(s, tab, g.ps, 8)));
+    const remote = g.remote.flatMap((m) => this.machine(m, g.ps));
     return v_flex().size_full().min_h(0).bg(t.chrome).text_size(13)
       .child(v_flex().id("spaces-list").flex_1().min_h(0).px(8).pb(8).overflow_y_scrollbar()
         .child(this.section("add-space", "Spaces", "Add space", pick))
@@ -454,8 +461,8 @@ export default class SavedSpaces extends View {
         .when(!g.list.length, (el) => el.child(div().id("add-first").h(28).px(8).flex().items_center().rounded(7)
           .text_size(12).text_color(t.dim).hover((s) => s.bg(t.hover)).on_click((_e, cx) => pick(cx)).child("Add a folder…")))
         .when(g.other.length > 0, (el) => el.child(this.section("other", "Other")).children(g.other.map((s) => this.other(s)))))
-      .when(g.remote.length > 0, (el) => el.child(v_flex().id("remote-list").flex_none().h(Math.min(200, 5 + g.remote.reduce((height, m) => height + 31 + 30 * m.spaces.length, 0))).px(8).pb(4).border_t(1).border_color(t.border)
-        .overflow_y_scrollbar().children(g.remote.flatMap((m) => this.machine(m)))))
+      .when(g.remote.length > 0, (el) => el.child(v_flex().id("remote-list").flex_none().h(Math.min(200, 5 + 30 * remote.length + g.remote.length)).px(8).pb(4).border_t(1).border_color(t.border)
+        .overflow_y_scrollbar().children(remote)))
       .child(v_flex().flex_none().px(8).pb(8).border_t(1).border_color(t.border)
         .child(this.section("new-chat", "Chats", "New Pi chat (Ctrl+I)", newChat,
           this.button("history", svg(ICONS + "/clock.svg").size(13), "Chats history", chatHistory)))
