@@ -35,6 +35,7 @@ in
       "claude-code"
       "spotify"
       "slack"
+      "superwhisper"
       "steam"
       "steam-unwrapped"
     ];
