@@ -257,6 +257,13 @@ export default class SavedSpaces extends View {
       .on_click((_e, cx) => { cx.stop_propagation(); action(cx); }).child(child);
   }
 
+  launchers(key, launch) {
+    return [
+      this.button("term-" + key, svg(ICONS + "/terminal.svg").size(13), "New terminal", () => launch()),
+      this.button("pi-" + key, svg("icons/pi.svg").size(13), "New Pi chat", () => launch(PI)),
+    ];
+  }
+
   section(id, label, tip, action, extra) {
     const t = theme();
     return h_flex().h(31).flex_none().pl(8).pr(2).pt(6).items_center().justify_between()
@@ -322,8 +329,7 @@ export default class SavedSpaces extends View {
         .child(this.named(p.name, this.diffs[where(null, p.folder)], true))
         .when(shown, (el) => el
           .child(this.button("hist-" + i, svg(ICONS + "/clock.svg").size(13), "History", () => history(p.folder, p.name)))
-          .child(this.button("term-" + i, svg(ICONS + "/terminal.svg").size(13), "New terminal", () => start(p)))
-          .child(this.button("pi-" + i, svg("icons/pi.svg").size(13), "New Pi chat", () => start(p, PI))))
+          .children(this.launchers(i, (argv) => start(p, argv))))
         .when(folded && !shown && top !== "idle", (el) => el.child(div().w(22).flex_none().flex().justify_center().child(mark(t, top) ?? div())))
         .when(tabs.length > 0 && (shown || folded), (el) => el.child(this.fold("fold-" + i, key, tabs.length, top))),
       ...(folded ? [] : tabs.flatMap(([s, tab]) => this.chat(s, tab, ps, 35, true))),
@@ -347,6 +353,10 @@ export default class SavedSpaces extends View {
       .child(avatar(s.name, colors[s.id]))
       .child(this.named(s.name, this.diffs[where(s.machine, place(s, panes()))], false))
       .when(this.hovered === id, (el) => el.child(hist))
+      .when(this.hovered === id && Boolean(s.machine) && layoutOf(s.machine) === "ready", (el) => el.children(this.launchers(s.id, (argv) => {
+        run("space.select", { id: s.id });
+        run("tab.new", { space: s.id, ...(argv ? { argv } : {}) });
+      })))
       .child(div().w(22).flex_none().flex().justify_center().child(mark(t, s.status) ?? div()));
   }
 
