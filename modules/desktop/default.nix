@@ -20,6 +20,7 @@ in
   };
   systemd.services.NetworkManager-wait-online.enable = false;
   services.resolved.enable = true;
+  services.tailscale.extraSetFlags = [ "--operator=david" ];
   hardware.bluetooth.enable = true;
   console.keyMap = "es";
   users.users.david.extraGroups = [ "networkmanager" ];
