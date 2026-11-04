@@ -104,28 +104,6 @@ in
     chatgpt
     herdrApp
     piChats
-    (writeShellApplication {
-      name = "herdr-chat";
-      runtimeInputs = [
-        herdrApp
-        coreutils
-        piChats
-        systemd
-      ];
-      text = ''
-        systemctl --user start herdr-app.service
-        for ((attempt = 0; attempt < 100; attempt++)); do
-          if herdr-app status >/dev/null 2>&1; then
-            folder=$(pi-chats new)
-            herdr-app "do" space.new --folder "$folder" --argv '["exec","pi"]'
-            exec herdr-app
-          fi
-          sleep 0.1
-        done
-        echo "Herdr did not become ready for a new chat." >&2
-        exit 1
-      '';
-    })
     proton-pass-cli
     seahorse
     spotify
