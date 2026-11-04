@@ -1,0 +1,5 @@
+/config/AGENTS.md
+/config/**/gpui-kit.d.ts
+/config/**/herdr.d.ts
+/config/**/jsconfig.json
+/config/layouts/.state/
