@@ -106,6 +106,7 @@ in
     piChats
     proton-pass-cli
     seahorse
+    signal-desktop
     spotify
     slack
     (callPackage ./slacrawl.nix { })
