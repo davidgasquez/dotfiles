@@ -30,8 +30,7 @@ in
     ports = [ 80 ];
   };
 
-  systemd.services.pihole-ftl.serviceConfig.EnvironmentFile =
-    "/var/lib/secrets/pihole-environment";
+  systemd.services.pihole-ftl.serviceConfig.EnvironmentFile = "/var/lib/secrets/pihole-environment";
   systemd.tmpfiles.rules = [
     "d /var/lib/secrets 0700 root root -"
   ];

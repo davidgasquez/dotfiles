@@ -24,7 +24,7 @@ This shared NixOS flake configures `helix` and `zephyr` (`x86_64-linux`, desktop
 
 ## Commits and Pull Requests
 
-Use `<gitmoji> <short description>` for both commit subjects and PR titles. Use one actual emoji, an imperative verb, and no trailing period or `feat:`/`fix:` prefixes.
+Format changed Nix files with `nix fmt -- <files>` before committing. Use `<gitmoji> <short description>` for both commit subjects and PR titles. Use one actual emoji, an imperative verb, and no trailing period or `feat:`/`fix:` prefixes.
 
 Examples:
 
