@@ -106,7 +106,7 @@ in
     piChats
     proton-pass-cli
     seahorse
-    signal-desktop
+    (callPackage ./signal-desktop.nix { inherit (config.catppuccin) flavor; })
     spotify
     slack
     (callPackage ./slacrawl.nix { })
