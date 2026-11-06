@@ -159,6 +159,16 @@
           "content": {
             "mod": "sandbox-status"
           }
+        },
+        {
+          "id": "notify",
+          "type": "block",
+          "size": {
+            "px": 0
+          },
+          "content": {
+            "mod": "sandbox-notify"
+          }
         }
       ]
     }

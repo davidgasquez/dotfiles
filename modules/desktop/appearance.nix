@@ -111,19 +111,23 @@ in
     settings = {
       anchor = "top-right";
       font = "${font.name} ${toString font.size}";
-      width = 360;
+      format = "<b>%s</b>\\n<span foreground='${palette.subtext0.hex}'>%b</span>";
+      width = 380;
+      height = 120;
       margin = 12;
-      padding = "14,16";
+      padding = 12;
       border-size = 1;
-      border-radius = 8;
-      max-icon-size = 32;
+      border-radius = 6;
+      max-icon-size = 48;
+      icon-border-radius = 4;
       max-visible = 3;
       icon-path = lib.concatStringsSep ":" [
         "${config.gtk.iconTheme.package}/share/icons/${config.gtk.iconTheme.name}"
         "${config.gtk.iconTheme.package}/share/icons/Papirus"
         "${config.xdg.dataHome}/icons/hicolor"
       ];
-      default-timeout = 7500;
+      default-timeout = 12000;
+      "".border-color = palette.${config.catppuccin.accent}.hex;
       "urgency=critical" = {
         border-color = palette.red.hex;
         default-timeout = 0;
