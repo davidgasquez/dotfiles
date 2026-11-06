@@ -180,6 +180,27 @@ test("selecting by click or keys only selects: nothing is read or launched until
   assert.deepEqual(clickable(f.tree), ["close", "resume"], "the header only dismisses; the footer acts on the selection");
 });
 
+test("double-clicking a row resumes it like Resume; slow or different-row clicks only select, once at a time", async () => {
+  const f = await opened([S("b", 20), S("a", 10)]);
+  let now = 1000;
+  vm.runInContext("Date", f.ctx).now = () => now;
+  const click = (key, ms = 0) => { now += ms; find(f.tree, "history-rows").handlers.on_item_click(key, f.cx); f.render(); };
+  const checks = () => f.execs.filter((e) => e.args[0] === "check").map((e) => e.args[1]);
+  click("/s/a.jsonl");
+  click("/s/a.jsonl", 600);
+  click("/s/b.jsonl", 100);
+  assert.deepEqual([f.mod.selected, checks()], ["/s/b.jsonl", []], "too slow, then another row: selection only");
+  click("/s/b.jsonl", 200);
+  click("/s/b.jsonl", 100);
+  click("/s/b.jsonl", 100);
+  click("/s/a.jsonl", 100);
+  click("/s/a.jsonl", 100);
+  f.on_submit({}, f.cx);
+  assert.deepEqual([checks(), f.runs], [["/s/b.jsonl"], []], "one check while busy");
+  await f.answer("check", { id: "b", cwd: "/w/b", cwdExists: true });
+  assert.deepEqual([f.closed, f.runs], [["o1"], [["space.new", { folder: "/w/b", argv: ["exec", "pi", "--session", "/s/b.jsonl"] }]]]);
+});
+
 test("the header: History over its scope, a quiet search, and a close button that only dismisses, like Esc", async () => {
   const theme = { border: "border", input: "input", accent: "accent", dim: "dim", muted: "muted" };
   const f = await opened([S("a", 1, { cwd: "/home/u/proj/src" })], { folder: "/home/u/proj/", label: "proj", theme });

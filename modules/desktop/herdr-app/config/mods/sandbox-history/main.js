@@ -3,7 +3,7 @@
 // filter by title and folder at once and, after a pause, by what you and Pi wrote (pi-chats
 // reads Pi's own session files; tool output and prompts aren't searched). One line per
 // conversation, whose hover shows how its active branch opened and where it is now;
-// selecting starts nothing, the footer's Resume does: it runs "pi --session <that file>".
+// selecting starts nothing, the footer's Resume (or a double-click) does: it runs "pi --session <that file>".
 
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex, InputState, Input, Scrollbar, VirtualListScrollHandle, v_virtual_list } from "gpui-base";
@@ -15,6 +15,7 @@ const DEBOUNCE = 300;
 const ICONS = "mods/workspace-chrome";
 const FOLDER = 140;
 const COLS = 72;
+const DOUBLE = 500;
 
 export const words = (q) => q.toLowerCase().split(/\s+/).filter(Boolean);
 export const titleOf = (s) => s.name || s.first || "(no text)";
@@ -300,6 +301,16 @@ export default class History extends View {
     cx.notify();
   }
 
+  // The list reports only clicked keys, so a second click on the same row soon after resumes it.
+  click(key, cx) {
+    const now = Date.now();
+    const again = this.clicked?.key === key && now - this.clicked.at < DOUBLE;
+    this.clicked = again ? null : { key, at: now };
+    this.select(key);
+    if (again) this.primary(cx);
+    cx.notify();
+  }
+
   primary(cx) {
     const s = this.current();
     if (s) this.resume(s, openAt(s.cwd), cx);
@@ -394,7 +405,7 @@ export default class History extends View {
         .when(rows.length > 0, (el) => el
           .child(v_virtual_list("history-rows", rows.length, ROW, (i) => rows[i].path,
             (range) => rows.slice(range.start, range.end).map(row))
-            .on_item_click((key, cx) => { this.select(key); cx.notify(); }).track_scroll(this.scroll).size_full())
+            .on_item_click((key, cx) => this.click(key, cx)).track_scroll(this.scroll).size_full())
           .child(Scrollbar.vertical("history-rows").absolute().inset_0())))
       .child(h_flex().flex_none().min_h(40).px(12).py(6).gap(10).items_center().border_t(1).border_color(t.border).text_size(11).text_color(t.dim)
         .child(div().id("status").flex_1().min_w(0).truncate().tooltip(status).child(status))
