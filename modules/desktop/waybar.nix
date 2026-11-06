@@ -36,15 +36,15 @@ in
         tooltip = false;
       };
       "custom/screen-record" = {
-        exec = "if ${pkgs.systemd}/bin/systemctl --user is-active --quiet screen-record.service; then echo '󰻂 REC'; fi";
-        interval = 1;
+        exec = "case $(${pkgs.systemd}/bin/systemctl --user is-active screen-record.service) in active|activating|reloading|refreshing) echo '󰻂 REC';; esac";
+        signal = 8;
         hide-empty-text = true;
         tooltip-format = "Recording screen · Click or Alt+Print to stop";
         on-click = "${pkgs.systemd}/bin/systemctl --user stop screen-record.service";
       };
       "custom/audio-record" = {
-        exec = "if ${pkgs.systemd}/bin/systemctl --user is-active --quiet audio-record.service; then echo '󰍬 REC'; fi";
-        interval = 1;
+        exec = "case $(${pkgs.systemd}/bin/systemctl --user is-active audio-record.service) in active|activating|reloading|refreshing) echo '󰍬 REC';; esac";
+        signal = 9;
         hide-empty-text = true;
         tooltip-format = "Recording desktop audio + microphone · Click or Alt+F9 to stop";
         on-click = "${pkgs.systemd}/bin/systemctl --user stop audio-record.service";
@@ -85,7 +85,7 @@ in
           ""
         ];
         on-click = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        on-click-right = "${pkgs.uwsm}/bin/uwsm app -- ${pkgs.pavucontrol}/bin/pavucontrol";
+        on-click-right = "${pkgs.uwsm}/bin/uwsm-app -- ${pkgs.pavucontrol}/bin/pavucontrol";
       };
       "group/tray-expander" = {
         orientation = "inherit";

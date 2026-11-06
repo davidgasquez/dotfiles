@@ -10,7 +10,6 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   zramSwap.enable = true;
-  systemd.oomd.enableUserSlices = true;
 
   programs.zsh = {
     enable = true;

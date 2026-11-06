@@ -158,6 +158,11 @@ in
     wantedBy = [ "graphical-session.target" ];
     enableDefaultPath = false;
   };
+  systemd.user.slices.app.sliceConfig = {
+    ManagedOOMMemoryPressure = "kill";
+    ManagedOOMMemoryPressureLimit = "80%";
+    ManagedOOMSwap = "kill";
+  };
 
   services.greetd = {
     enable = true;

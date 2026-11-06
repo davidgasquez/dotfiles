@@ -25,10 +25,6 @@ hl.config({
     blur = { enabled = false },
   },
 
-  debug = {
-    damage_tracking = 0,
-  },
-
   dwindle = {
     preserve_split = true,
     force_split = 2,
@@ -83,8 +79,8 @@ local mainMod = "SUPER"
 local powerSubmap = "power · L bloquear · S suspender · Q salir · R reiniciar · P apagar"
 local resizeSubmap = "Redimensionar · ← ↓ ↑ → · Esc salir"
 
-hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("uwsm app -- chatgpt"), { description = "Open ChatGPT" })
-hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("uwsm app -- herdr-app"), { description = "Open Herdr" })
+hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("uwsm-app -- chatgpt"), { description = "Open ChatGPT" })
+hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("uwsm-app -- herdr-app"), { description = "Open Herdr" })
 
 hl.bind(
   mainMod .. " + RETURN",
@@ -104,16 +100,16 @@ hl.define_submap(powerSubmap, "reset", function()
   hl.bind("RETURN", hl.dsp.submap("reset"))
   hl.bind("catchall", hl.dsp.submap("reset"))
 end)
-hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd("uwsm app -- thunar"))
+hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd("uwsm-app -- thunar"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd("uwsm app -- fuzzel"))
-hl.bind(mainMod .. " + SHIFT + BACKSPACE", hl.dsp.exec_cmd("uwsm app -- open-project"), { description = "Open project in Zed" })
-hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd([[uwsm app -- zeditor --new -- "$HOME/projects/personal"]]), { description = "Open personal project" })
-hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd([[uwsm app -- zeditor --new -- "$HOME/projects/nixos"]]), { description = "Open NixOS project" })
-hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd([[uwsm app -- zeditor --new -- "$HOME/projects/handbook"]]), { description = "Open handbook project" })
+hl.bind(mainMod .. " + BACKSPACE", hl.dsp.exec_cmd("uwsm-app -- fuzzel"))
+hl.bind(mainMod .. " + SHIFT + BACKSPACE", hl.dsp.exec_cmd("uwsm-app -- open-project"), { description = "Open project in Zed" })
+hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/personal"]]), { description = "Open personal project" })
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/nixos"]]), { description = "Open NixOS project" })
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/handbook"]]), { description = "Open handbook project" })
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("uwsm-app -- google-chrome-stable --new-window"), { description = "Open browser" })
-hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("uwsm app -- google-chrome-stable --app=https://app.todoist.com/app/today"), { description = "Open Todoist" })
+hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("uwsm-app -- google-chrome-stable --app=https://app.todoist.com/app/today"), { description = "Open Todoist" })
 hl.bind(mainMod .. " + SHIFT + W", function()
   local window = hl.get_window("class:^chrome-web[.]whatsapp[.]com__-.*$")
   if window then
@@ -123,17 +119,17 @@ hl.bind(mainMod .. " + SHIFT + W", function()
   end
 end, { description = "Open or focus WhatsApp" })
 hl.bind("F9", hl.dsp.exec_cmd("superwhisper record"), { description = "Toggle dictation" })
-hl.bind("ALT + F9", hl.dsp.exec_cmd("uwsm app -- audio-record"), { description = "Start or stop meeting recording" })
-hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history"))
-hl.bind(mainMod .. " + CTRL + SHIFT + V", hl.dsp.exec_cmd("uwsm app -- clipboard-history --delete"))
+hl.bind("ALT + F9", hl.dsp.exec_cmd("uwsm-app -- audio-record"), { description = "Start or stop meeting recording" })
+hl.bind(mainMod .. " + CTRL + V", hl.dsp.exec_cmd("uwsm-app -- clipboard-history"))
+hl.bind(mainMod .. " + CTRL + SHIFT + V", hl.dsp.exec_cmd("uwsm-app -- clipboard-history --delete"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 
-hl.bind("PRINT", hl.dsp.exec_cmd("uwsm app -- hyprshot -m output"))
-hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("uwsm app -- hyprshot -m region"))
-hl.bind("CTRL + PRINT", hl.dsp.exec_cmd("uwsm app -- hyprshot -m window"))
-hl.bind("ALT + PRINT", hl.dsp.exec_cmd("uwsm app -- screen-record"), { description = "Start or stop screen recording" })
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("uwsm app -- hyprshot -m region"))
+hl.bind("PRINT", hl.dsp.exec_cmd("uwsm-app -- hyprshot -m output"))
+hl.bind("SHIFT + PRINT", hl.dsp.exec_cmd("uwsm-app -- hyprshot -m region"))
+hl.bind("CTRL + PRINT", hl.dsp.exec_cmd("uwsm-app -- hyprshot -m window"))
+hl.bind("ALT + PRINT", hl.dsp.exec_cmd("uwsm-app -- screen-record"), { description = "Start or stop screen recording" })
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("uwsm-app -- hyprshot -m region"))
 
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))

@@ -11,6 +11,9 @@ let
   inherit (config.gtk) font;
   recordingDirectory = "${config.xdg.userDirs.videos}/Recordings";
   audioRecordingDirectory = "${config.xdg.userDirs.music}/Recordings";
+  signalWaybar =
+    signal:
+    "-${pkgs.systemd}/bin/systemctl --user kill --kill-whom=main --signal=SIGRTMIN+${toString signal} waybar.service";
   lock = pkgs.writeShellApplication {
     name = "lock-session";
     runtimeInputs = with pkgs; [
@@ -122,7 +125,7 @@ in
         font = "${font.name}:size=${toString (font.size + 1)}";
         icon-theme = config.gtk.iconTheme.name;
         terminal = "${lib.getExe config.programs.ghostty.package} +new-window -e";
-        launch-prefix = "${pkgs.uwsm}/bin/uwsm app --";
+        launch-prefix = "${pkgs.uwsm}/bin/uwsm-app --";
         lines = 10;
         minimal-lines = true;
         width = 56;
@@ -185,15 +188,19 @@ in
           '';
         }
       );
-      ExecStopPost = pkgs.writeShellScript "screen-record-notify" ''
-        if [ "$SERVICE_RESULT" = success ]; then
-          ${pkgs.libnotify}/bin/notify-send --app-name="Screen recording" \
-            "Recording saved" ${lib.escapeShellArg recordingDirectory}
-        else
-          ${pkgs.libnotify}/bin/notify-send --app-name="Screen recording" --urgency=critical \
-            "Screen recording failed" "See journalctl --user -u screen-record.service for details."
-        fi
-      '';
+      ExecStartPost = signalWaybar 8;
+      ExecStopPost = [
+        (signalWaybar 8)
+        (pkgs.writeShellScript "screen-record-notify" ''
+          if [ "$SERVICE_RESULT" = success ]; then
+            ${pkgs.libnotify}/bin/notify-send --app-name="Screen recording" \
+              "Recording saved" ${lib.escapeShellArg recordingDirectory}
+          else
+            ${pkgs.libnotify}/bin/notify-send --app-name="Screen recording" --urgency=critical \
+              "Screen recording failed" "See journalctl --user -u screen-record.service for details."
+          fi
+        '')
+      ];
       KillSignal = "SIGINT";
       KillMode = "mixed";
       TimeoutStopSec = 15;
@@ -231,15 +238,19 @@ in
           '';
         }
       );
-      ExecStopPost = pkgs.writeShellScript "audio-record-notify" ''
-        if [ "$SERVICE_RESULT" = success ]; then
-          ${pkgs.libnotify}/bin/notify-send --app-name="Meeting recording" \
-            "Recording saved" ${lib.escapeShellArg audioRecordingDirectory}
-        else
-          ${pkgs.libnotify}/bin/notify-send --app-name="Meeting recording" --urgency=critical \
-            "Recording failed" "See journalctl --user -u audio-record.service for details."
-        fi
-      '';
+      ExecStartPost = signalWaybar 9;
+      ExecStopPost = [
+        (signalWaybar 9)
+        (pkgs.writeShellScript "audio-record-notify" ''
+          if [ "$SERVICE_RESULT" = success ]; then
+            ${pkgs.libnotify}/bin/notify-send --app-name="Meeting recording" \
+              "Recording saved" ${lib.escapeShellArg audioRecordingDirectory}
+          else
+            ${pkgs.libnotify}/bin/notify-send --app-name="Meeting recording" --urgency=critical \
+              "Recording failed" "See journalctl --user -u audio-record.service for details."
+          fi
+        '')
+      ];
       KillSignal = "SIGINT";
       KillMode = "mixed";
       SuccessExitStatus = 255;

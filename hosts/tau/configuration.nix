@@ -16,7 +16,10 @@
   system.stateVersion = "26.11";
   home-manager.users.david.imports = [ ./home.nix ];
 
-  systemd.oomd.enableSystemSlice = true;
+  systemd.oomd = {
+    enableSystemSlice = true;
+    enableUserSlices = true;
+  };
 
   users.mutableUsers = false;
   users.users.david = {
