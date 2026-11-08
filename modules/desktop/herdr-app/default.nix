@@ -15,7 +15,7 @@ package.overrideAttrs (previous: {
   cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
     inherit src;
     name = "herdr-app-${package.version}";
-    hash = "sha256-c9rHxNQrbjad+Hz75epymNWE4wW6Rl9G3Yahbr2VULs=";
+    hash = "sha256-XbM9qUnvOuXYhHhA3btvQjK4Iys+l2y7x1sm3H0Pa28=";
   };
   postPatch = (previous.postPatch or "") + ''
     substituteInPlace src/tray.rs \
