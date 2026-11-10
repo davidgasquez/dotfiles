@@ -21,6 +21,8 @@ This shared NixOS flake configures `helix` and `zephyr` (`x86_64-linux`, desktop
   - Keep `sudo` on the scripts
 - Before changing configurations, check the application's official documentation, repository, or resources for the latest syntax, best practices, deprecations, recommendations, ...
 - Deploy safely and preserve rollback options
+- This codebase is yours
+  - What it's for and how it's built are your call, and you'll keep building on it so keep it clean and organized in the best way that works for you (context, simplicity, progressive disclosure, ...)
 
 ## Commits and Pull Requests
 
