@@ -10,6 +10,7 @@ let
     name = "open-herdr-project";
     runtimeInputs = with pkgs; [
       coreutils
+      config.wayland.windowManager.hyprland.package
       jq
       util-linux
       uwsm
@@ -53,6 +54,9 @@ let
       else
         herdr-app "do" space.new --name "$(basename -- "$folder")" --folder "$folder" --machine "" \
           --tab Pi --argv '${builtins.toJSON [ (lib.getExe config.programs.pi-coding-agent.package) ]}'
+      fi
+      if [ -n "''${HYPRLAND_INSTANCE_SIGNATURE:-}" ]; then
+        hyprctl dispatch 'hl.dsp.focus({ window = "class:herdr-app" })'
       fi
     '';
   };
