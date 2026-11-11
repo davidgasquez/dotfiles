@@ -472,7 +472,8 @@ test("Spaces: new chats get a durable folder from pi-chats; dated and legacy /tm
   assert.deepEqual([f.runs.length, f.notes[0].body], [1, "EACCES"]);
 });
 
-test("Spaces: saved and remote rows share New terminal and New Pi chat; remote ones open a tab in the clicked space", () => {
+const PI_ = ["exec", "pi"];
+const launchWorld = () => {
   const proj = { name: "proj", folder: "/home/u/proj", color: "ansi6" };
   const live = { name: "live", folder: "/home/u/live", color: "ansi3" };
   const spaces = [
@@ -482,38 +483,117 @@ test("Spaces: saved and remote rows share New terminal and New Pi chat; remote o
     { id: "tau/b", name: "second", folder: "/srv/b", machine: "tau", tabs: [{ id: "tau/tb" }] },
     { id: "vps/c", name: "down", folder: "/srv/c", machine: "vps", tabs: [] },
   ];
+  const panes = [{ tab: "tau/tb", cwd: "/srv/b/src", terminal: "tau/t1" }];
   const machines = [{ name: null, layout: "ready" }, { name: "tau", layout: "ready" }, { name: "vps", layout: "unavailable" }];
-  const f = harness("sandbox-spaces", { saved: [proj, live], spaces, machines, props: {} }).init();
-  const press = (row, id) => { f.mod.hovered = row; f.render(); find(f.tree, id).handlers.on_click({}, f.cx); };
-  const tips = (id) => [find(f.tree, "term-" + id)?.tooltip, find(f.tree, "pi-" + id)?.tooltip];
+  const f = harness("sandbox-spaces", { saved: [proj, live], spaces, panes, machines, props: {} }).init();
+  f.execs.splice(0);
+  f.press = (row, id) => { f.mod.hovered = row; f.render(); find(f.tree, id).handlers.on_click({}, f.cx); };
+  f.tips = (id) => [find(f.tree, "commit-" + id)?.tooltip, find(f.tree, "pi-" + id)?.tooltip];
+  // Answers the oldest pending git rev-parse with a repo top.
+  f.top = async (top, code = 0) => {
+    const e = f.execs.find((e) => e.cmd === "git" && !e.done);
+    assert.ok(e, "no pending git");
+    e.done = true;
+    e.resolve(code === 0 ? { code, stdout: top + "\n", stderr: "" } : { code, stdout: "", stderr: top });
+    await settle();
+  };
+  return f;
+};
+const gits = (f) => plain(f.execs.filter((e) => e.cmd === "git").map((e) => [e.args, e.options]));
 
-  press("saved-0", "term-0");
-  press("saved-0", "pi-0");
-  press("saved-1", "term-1");
-  press("saved-1", "pi-1");
-  assert.deepEqual(tips(1), ["New terminal", "New Pi chat"]);
+test("Spaces: saved and remote rows offer Commit & push and New Pi chat; New Pi chat opens where it did", () => {
+  const f = launchWorld();
+  f.press("saved-0", "pi-0");
+  f.press("saved-1", "pi-1");
+  assert.deepEqual(f.tips(1), ["Commit & push", "New Pi chat"]);
+  assert.equal(find(f.tree, "term-1"), null, "no New terminal button");
+  f.press("space-tau/b", "pi-tau/b");
+  assert.deepEqual(f.tips("tau/b"), ["Commit & push", "New Pi chat"]);
+  assert.equal(find(f.tree, "commit-tau/a"), null, "only the hovered row");
   assert.deepEqual(f.runs.splice(0), [
-    ["space.new", { name: "proj", folder: "/home/u/proj" }],
-    ["space.new", { name: "proj", folder: "/home/u/proj", argv: ["exec", "pi"] }],
-    ["space.select", { id: "l1" }], ["tab.new", { space: "l1", folder: "/home/u/live" }],
-    ["space.select", { id: "l1" }], ["tab.new", { space: "l1", folder: "/home/u/live", argv: ["exec", "pi"] }],
-  ], "saved folders launch as before");
-
-  press("space-tau/b", "term-tau/b");
-  assert.deepEqual(tips("tau/b"), ["New terminal", "New Pi chat"]);
-  assert.equal(find(f.tree, "term-tau/a"), null, "only the hovered row");
-  press("space-tau/b", "pi-tau/b");
-  assert.deepEqual(f.runs.splice(0), [
-    ["space.select", { id: "tau/b" }], ["tab.new", { space: "tau/b" }],
-    ["space.select", { id: "tau/b" }], ["tab.new", { space: "tau/b", argv: ["exec", "pi"] }],
-  ], "the clicked space, on its own machine");
+    ["space.new", { name: "proj", machine: "", folder: "/home/u/proj", argv: PI_ }],
+    ["space.select", { id: "l1" }], ["tab.new", { space: "l1", folder: "/home/u/live", argv: PI_ }],
+    ["space.select", { id: "tau/b" }], ["tab.new", { space: "tau/b", argv: PI_ }],
+  ]);
   assert.equal(find(f.tree, "hist-tau/b").handlers.on_click, undefined, "History stays local-only");
 
   f.mod.hovered = "space-s9"; f.render();
-  assert.deepEqual([tips("s9"), typeof find(f.tree, "hist-s9").handlers.on_click], [[undefined, undefined], "function"], "local other rows unchanged");
+  assert.deepEqual([f.tips("s9"), typeof find(f.tree, "hist-s9").handlers.on_click], [[undefined, undefined], "function"], "local other rows unchanged");
   f.mod.hovered = "space-vps/c"; f.render();
-  assert.deepEqual(tips("vps/c"), [undefined, undefined], "no launch on an unavailable machine");
-  assert.deepEqual(f.runs, []);
+  assert.deepEqual(f.tips("vps/c"), [undefined, undefined], "no launch on an unavailable machine");
+  assert.deepEqual([f.runs, f.execs], [[], []]);
+
+  const menu = harness("sandbox-spaces", { saved: f.saved, spaces: f.spaces, props: { overlay: "m", menu: { saved: "/home/u/proj" } } }).init();
+  menu.render();
+  find(menu.tree, "m-term").handlers.on_click({}, menu.cx);
+  assert.deepEqual(menu.runs, [["space.new", { name: "proj", machine: "", folder: "/home/u/proj" }]], "the menu keeps New terminal");
+});
+
+test("Spaces: Commit & push opens a named Pi tab at the repo top on the row's machine, with its task", async () => {
+  const f = launchWorld();
+  f.press("saved-0", "commit-0");
+  f.press("saved-1", "commit-1");
+  f.press("space-tau/b", "commit-tau/b");
+  assert.deepEqual(gits(f), [
+    [["rev-parse", "--show-toplevel"], { cwd: "/home/u/proj", on: null }],
+    [["rev-parse", "--show-toplevel"], { cwd: "/home/u/live", on: null }],
+    [["rev-parse", "--show-toplevel"], { cwd: "/srv/b/src", on: "tau" }],
+  ], "git runs where each row's folder is");
+  assert.deepEqual(f.runs, [], "nothing opens before git answers");
+  await f.top("/home/u/proj");
+  await f.top("/home/u/live");
+  await f.top("/srv/b");
+  const task = f.runs.find((r) => r[0] === "space.new")[1].task;
+  assert.deepEqual(f.runs.map(([name, args]) => [name, args.task ? { ...args, task: "…" } : args]), [
+    ["space.new", { name: "proj", machine: "", tab: "Commit & push", folder: "/home/u/proj", argv: PI_, task: "…" }],
+    ["space.select", { id: "l1" }], ["tab.new", { space: "l1", name: "Commit & push", folder: "/home/u/live", argv: PI_, task: "…" }],
+    ["space.select", { id: "tau/b" }], ["tab.new", { space: "tau/b", name: "Commit & push", folder: "/srv/b", argv: PI_, task: "…" }],
+  ]);
+  assert.ok(f.runs.filter((r) => r[1].task).every((r) => r[1].task === task), "one task for all");
+  for (const word of [/Fetch/, /secrets/, /atomic commits/, /safely integrate upstream/, /push the current branch/, /summarize/, /Ask only if blocked or unsure/, /Never force push or discard work/])
+    assert.match(task, word);
+});
+
+test("Spaces: one Commit & push per repo: a second click shows the open tab; other repos and machines still start", async () => {
+  const f = launchWorld();
+  f.press("saved-1", "commit-1");
+  f.press("saved-1", "commit-1");
+  await f.top("/home/u/live");
+  await f.top("/home/u/live");
+  assert.equal(f.runs.filter((r) => r[0] === "tab.new").length, 1, "a double click while starting opens one");
+  f.runs.splice(0);
+  f.timers.find((t) => t.ms === 5000).fn(f.cx);
+
+  // The started tab shows up: led by its Pi at the repo top, even from a subfolder click.
+  f.spaces[0].tabs.push({ id: "ct", name: "Commit & push", named: true, status: "working" });
+  f.panes.push({ tab: "ct", cwd: "/home/u/live", terminal: "t5", program: { agent: true } });
+  f.press("saved-1", "commit-1");
+  await f.top("/home/u/live");
+  assert.deepEqual(f.runs.splice(0), [["space.select", { id: "l1" }], ["tab.select", { id: "ct" }]]);
+
+  // Same path on another machine is another repo.
+  f.spaces[3].folder = "/home/u/live";
+  f.panes[0].cwd = "/home/u/live";
+  f.press("space-tau/b", "commit-tau/b");
+  await f.top("/home/u/live");
+  assert.deepEqual(f.runs.splice(0).map((r) => r[0]), ["space.select", "tab.new"]);
+
+  // Closed: a new run starts.
+  f.spaces[0].tabs.pop();
+  f.press("saved-1", "commit-1");
+  await f.top("/home/u/live");
+  assert.deepEqual(f.runs.splice(0).map((r) => r[0]), ["space.select", "tab.new"]);
+});
+
+test("Spaces: Commit & push outside a repo or on an unreachable machine says why and opens nothing", async () => {
+  const f = launchWorld();
+  f.press("saved-0", "commit-0");
+  await f.top("fatal: not a git repository", 128);
+  f.press("space-tau/b", "commit-tau/b");
+  f.execs.find((e) => !e.done).reject(new Error("tau unreachable"));
+  await settle();
+  assert.deepEqual([f.runs, f.notes.map((n) => [n.level, n.body])],
+    [[], [["error", "fatal: not a git repository"], ["error", "tau unreachable"]]]);
 });
 
 // Two local tabs, each led by a Pi; the second tab's Pi isn't its focused pane.

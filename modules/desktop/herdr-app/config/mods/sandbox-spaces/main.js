@@ -9,6 +9,10 @@ import { spaces, panes, agents, terminals, focused, run, exec, theme, shared, se
 import { DIFF, tally } from "./git.js";
 
 const PI = ["exec", "pi"];
+const COMMIT = "Commit & push";
+const COMMIT_TASK = "Fetch, review all changes for secrets, create atomic commits, "
+  + "safely integrate upstream, and push the current branch. Never force push or discard work. "
+  + "Ask only if blocked or unsure; summarize the result.";
 const ICONS = "mods/workspace-chrome";
 const MARK = { ansi6: "#22a99a", ansi3: "#e3814f", ansi4: "#5b8def", ansi5: "#8b7cf6", ansi2: "#3fae6a", ansi1: "#d9649a" };
 
@@ -81,12 +85,24 @@ function grouped() {
   return { ps, list, of, chats, other, remote: machine };
 }
 
-function start(entry, argv) {
+// A saved folder's new tab: in its first live space, else in a new space on this computer.
+function start(entry, { name, ...tab } = {}) {
   const live = grouped().of.get(entry.folder)?.[0];
-  const agent = argv ? { argv } : {};
-  if (!live) return run("space.new", { name: entry.name, folder: entry.folder, ...agent });
+  tab = { folder: entry.folder, ...tab };
+  if (!live) return run("space.new", { name: entry.name, machine: "", ...(name ? { tab: name } : {}), ...tab });
   run("space.select", { id: live.id });
-  run("tab.new", { space: live.id, folder: entry.folder, ...agent });
+  run("tab.new", { space: live.id, ...(name ? { name } : {}), ...tab });
+}
+
+// A Commit & push tab already open in repo top on machine on.
+function committing(on, top) {
+  const ps = panes();
+  for (const s of spaces()) {
+    if ((s.machine ?? null) !== (on ?? null)) continue;
+    const tab = s.tabs.find((tab) => tab.name === COMMIT && trim(lead(tab, ps)?.cwd || s.folder) === top);
+    if (tab) return { s, tab };
+  }
+  return null;
 }
 
 async function chatNow() {
@@ -169,6 +185,7 @@ export default class SavedSpaces extends View {
     this.hovered = null;
     this.folded = new Set(JSON.parse(localStorage.getItem("folded") ?? "[]"));
     this.diffs = {};
+    this.starting = new Set();
     const p = props() ?? {};
     if (p.rename) {
       this.input = InputState.new({ value: saved().find((x) => x.folder === p.rename)?.name ?? "" });
@@ -257,10 +274,35 @@ export default class SavedSpaces extends View {
       .on_click((_e, cx) => { cx.stop_propagation(); action(cx); }).child(child);
   }
 
-  launchers(key, launch) {
+  // A Pi tab in cwd's repo that commits and pushes it; one per repo, else the open one is shown.
+  commit(on, cwd, launch, cx) {
+    cx.spawn(async (cx) => {
+      let top;
+      try {
+        const r = await exec("git", ["rev-parse", "--show-toplevel"], { cwd, on });
+        if (r.code !== 0) throw new Error(r.stderr.trim() || "git exited with " + r.code);
+        top = trim(r.stdout.trim());
+      } catch (e) {
+        return notify({ title: "Couldn't commit & push " + base(cwd), body: String(e?.message ?? e), level: "error" });
+      }
+      const key = where(on, top);
+      const open = committing(on, top);
+      if (open) {
+        run("space.select", { id: open.s.id });
+        run("tab.select", { id: open.tab.id });
+        return;
+      }
+      if (this.starting.has(key)) return;
+      this.starting.add(key);
+      cx.timer.after(5000, () => this.starting.delete(key));
+      launch({ name: COMMIT, folder: top, argv: PI, task: COMMIT_TASK });
+    });
+  }
+
+  launchers(key, on, cwd, launch) {
     return [
-      this.button("term-" + key, svg(ICONS + "/terminal.svg").size(13), "New terminal", () => launch()),
-      this.button("pi-" + key, svg("icons/pi.svg").size(13), "New Pi chat", () => launch(PI)),
+      this.button("commit-" + key, svg(ICONS + "/git-branch.svg").size(13), COMMIT, (cx) => this.commit(on, cwd, launch, cx)),
+      this.button("pi-" + key, svg("icons/pi.svg").size(13), "New Pi chat", () => launch({ argv: PI })),
     ];
   }
 
@@ -323,13 +365,13 @@ export default class SavedSpaces extends View {
       h_flex().id(id).h(30).flex_none().px(8).pr(4).gap(9).items_center().rounded(8)
         .hover((st) => st.bg(t.hover))
         .on_hover((h, cx) => this.hover(id, h, cx))
-        .on_click((_e, cx) => (tabs.length ? this.toggle(key, cx) : start(p, PI)))
+        .on_click((_e, cx) => (tabs.length ? this.toggle(key, cx) : start(p, { argv: PI })))
         .on_mouse_down("right", () => savedMenu(p))
         .child(avatar(p.name, p.color))
         .child(this.named(p.name, this.diffs[where(null, p.folder)], true))
         .when(shown, (el) => el
           .child(this.button("hist-" + i, svg(ICONS + "/clock.svg").size(13), "History", () => history(p.folder, p.name)))
-          .children(this.launchers(i, (argv) => start(p, argv))))
+          .children(this.launchers(i, null, p.folder, (tab) => start(p, tab))))
         .when(folded && !shown && top !== "idle", (el) => el.child(div().w(22).flex_none().flex().justify_center().child(mark(t, top) ?? div())))
         .when(tabs.length > 0 && (shown || folded), (el) => el.child(this.fold("fold-" + i, key, tabs.length, top))),
       ...(folded ? [] : tabs.flatMap(([s, tab]) => this.chat(s, tab, ps, 35, true))),
@@ -353,9 +395,9 @@ export default class SavedSpaces extends View {
       .child(avatar(s.name, colors[s.id]))
       .child(this.named(s.name, this.diffs[where(s.machine, place(s, panes()))], false))
       .when(this.hovered === id, (el) => el.child(hist))
-      .when(this.hovered === id && Boolean(s.machine) && layoutOf(s.machine) === "ready", (el) => el.children(this.launchers(s.id, (argv) => {
+      .when(this.hovered === id && Boolean(s.machine) && layoutOf(s.machine) === "ready", (el) => el.children(this.launchers(s.id, s.machine, place(s, panes()), (tab) => {
         run("space.select", { id: s.id });
-        run("tab.new", { space: s.id, ...(argv ? { argv } : {}) });
+        run("tab.new", { space: s.id, ...tab });
       })))
       .child(div().w(22).flex_none().flex().justify_center().child(mark(t, s.status) ?? div()));
   }
@@ -383,7 +425,7 @@ export default class SavedSpaces extends View {
     const t = theme();
     return v_flex().size_full().min_h(0).bg(t.chrome).items_center().gap(6).pt(8).overflow_y_scrollbar()
       .children(g.list.map((p, i) => div().id("rail-" + i).tooltip(p.name)
-        .on_click(() => { const live = g.of.get(p.folder)[0]; live ? run("space.select", { id: live.id }) : start(p, PI); })
+        .on_click(() => { const live = g.of.get(p.folder)[0]; live ? run("space.select", { id: live.id }) : start(p, { argv: PI }); })
         .on_mouse_down("right", () => savedMenu(p))
         .child(avatar(p.name, p.color, 22))))
       .children(g.remote.map((m) => this.button("rail-remote-" + m.name, svg(ICONS + "/server.svg").size(14),
@@ -403,7 +445,7 @@ export default class SavedSpaces extends View {
     if (m.saved) {
       const p = saved().find((x) => x.folder === m.saved);
       if (p) items = [
-        item("m-pi", "New Pi chat", () => start(p, PI)),
+        item("m-pi", "New Pi chat", () => start(p, { argv: PI })),
         item("m-term", "New terminal", () => start(p)),
         item("m-history", "History", () => history(p.folder, p.name)),
         item("m-rename", "Rename…", () => openOverlay({ mod: "sandbox-spaces", kind: "dialog", width: 380, height: 190, props: { rename: p.folder } })),
