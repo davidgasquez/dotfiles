@@ -6,6 +6,15 @@
 }:
 
 {
+  nixpkgs.overlays = [
+    (final: prev: {
+      codex = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system}.codex;
+      tectonic-unwrapped = prev.tectonic-unwrapped.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [ final.aws-lc ];
+      });
+    })
+  ];
+
   time.timeZone = "Europe/Madrid";
   i18n.defaultLocale = "en_US.UTF-8";
 
