@@ -6,7 +6,7 @@
 
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex, InputState, Input } from "gpui-base";
-import { commands, layouts, keys, run, theme, props, closeOverlay, openOverlay, shared, window as win } from "herdr";
+import { commands, layouts, keys, run, theme, props, closeOverlay, openOverlay, shared, window as win, focused, spaces, panes, terminals, exec, notify } from "herdr";
 
 // The list keeps one height while you move: rows and group titles have fixed
 // heights, and the window shows as many as fit in LIST_H.
@@ -70,6 +70,25 @@ const HIDDEN = new Set([
   "app.palette", "app.hide", "app.hide_others", "app.show_all", "app.theme", "app.settings",
 ]);
 
+// Why that Pi can't take F6 now, or null: it must still be live, local, in that tab, and waiting.
+function unforkable({ space, tab, terminal }) {
+  const s = spaces().find((s) => s.id === space);
+  const p = panes().find((p) => p.tab === tab && p.terminal === terminal);
+  if (!s || s.machine || !s.tabs.some((c) => c.id === tab) || !p) return "That conversation is no longer in its tab.";
+  if (p.app !== "pi") return "That pane is no longer Pi.";
+  if (!terminals().some((t) => t.address === terminal && t.state === "live")) return "That Pi has ended.";
+  if (p.status !== "idle" && p.status !== "done") return "Pi is busy; try again once it's waiting for you.";
+  return null;
+}
+
+// The focused pane's own local Pi, never another one in the window.
+function focusedPi() {
+  const f = focused();
+  const p = f?.pane && panes().find((p) => p.pane === f.pane && p.tab === f.tab && p.terminal === f.terminal);
+  const local = !spaces().find((s) => s.id === f?.space)?.machine;
+  return p?.app === "pi" && local ? { space: f.space, tab: f.tab, terminal: p.terminal } : null;
+}
+
 function titleOf(name) {
   const [noun, verb] = name.split(".");
   return { group: noun.charAt(0).toUpperCase() + noun.slice(1), title: `${verb.replace(/_/g, " ")} ${noun}`.replace(/^./, (c) => c.toUpperCase()) };
@@ -84,6 +103,8 @@ function entries() {
     .map(([name, args, group, title, words]) => ({ name, args, group, title, words }));
   list.push({ name: "sandbox-tabs.open_zed", args: {}, group: "App", title: "Open in Zed", words: "editor folder project" });
   list.push({ name: "sandbox-tabs.new_pi", args: {}, group: "Tab", title: "New Pi chat", words: "start conversation same project space" });
+  const pi = focusedPi();
+  if (pi) list.push({ name: "chat.fork", args: {}, target: pi, group: "Tab", title: "Fork focused Pi conversation", words: "branch fork snapshot pi conversation" });
   list.push({ name: "mod.open", args: { name: "sandbox-history" }, group: "App", title: "Chats history", words: "history conversations chats sessions resume search pi past standalone" });
   for (const l of layouts()) {
     const t = { main: "Herdr", terminals: "Terminals", win98: "Herdr 98" }[l] ?? l.charAt(0).toUpperCase() + l.slice(1);
@@ -136,7 +157,7 @@ export default class Palette extends View {
     this.query = "";
     this.input = InputState.new({ placeholder: "Type a command…" });
     this.input.on("change", (_e, cx) => { this.query = this.input.value(); this.at = 0; cx.notify(); });
-    this.input.on("submit", () => this.go(this.rows()[this.at]?.e));
+    this.input.on("submit", (_e, cx) => this.go(this.rows()[this.at]?.e, cx));
     this.input.focus();
     cx.timer.after(600, () => this.input.focus());
     this.at = 0;
@@ -150,10 +171,11 @@ export default class Palette extends View {
     closeOverlay(props().overlay);
   }
 
-  go(e) {
-    if (!e) return;
+  go(e, cx) {
+    if (!e || this.forking) return;
     this.recent = [e.id, ...this.recent.filter((r) => r !== e.id)].slice(0, 20);
     localStorage.setItem("recent", JSON.stringify(this.recent));
+    if (e.name === "chat.fork") return this.fork(e.target, cx);
     this.close();
     if (e.name === "mod.clone") {
       openOverlay({ mod: "prompt", kind: "dialog", width: 380, props: {
@@ -163,6 +185,23 @@ export default class Palette extends View {
     } else {
       run(e.name, e.name === "layout.clone" ? { name: shared("layout") ?? "main" } : e.args);
     }
+  }
+
+  // Presses F6 (Pi's /branch) in the captured Pi, waiting while open: this copy's tasks end
+  // with it. Pi says whether the fork opened.
+  fork(target, cx) {
+    this.forking = true;
+    cx.spawn(async () => {
+      try {
+        const why = unforkable(target);
+        if (why) throw new Error(why);
+        const r = await exec("hc", ["keys", target.terminal, "f6"], { timeout: 15000 });
+        if (r.code !== 0) throw new Error(r.stderr.trim() || r.stdout.trim() || `hc keys exited with ${r.code}`);
+      } catch (e) {
+        notify({ title: "Couldn't ask Pi to fork", body: e?.message ?? String(e), level: "error" });
+      }
+      this.close();
+    });
   }
 
   // The rows to show: grouped when empty, ranked while typing.
@@ -260,7 +299,7 @@ export default class Palette extends View {
           .text_size(12.8)
           .when(on, (el) => el.bg(t.selected))
           .hover((s) => s.bg(t.hover))
-          .on_click(() => this.go(r.e))
+          .on_click((_e, cx) => this.go(r.e, cx))
           .child(div().flex_1().min_w(0).child(this.title(t, r.e.title, r.hits, on)))
           .when(Boolean(this.query), (el) => el.child(div().text_size(11.5).text_color(t.dim).child(r.e.group)))
           .when(Boolean(k), (el) => el.child(key(k))),

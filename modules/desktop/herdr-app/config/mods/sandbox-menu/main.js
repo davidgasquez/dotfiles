@@ -1,12 +1,24 @@
 // Context menus (Herdr's items). Opened as a popup with
 // props { tab: "pane" | "tab" | "space" | "global", target }.
 // ↑/↓ move, Enter runs, Esc closes. An item is [label, command, args];
-// a command "worktree" opens the worktree dialog instead, "chat.copy" copies its text.
+// a command "worktree" opens the worktree dialog instead, "chat.copy" copies its text,
+// "chat.fork" presses F6 (Pi's /branch) in that tab's own local Pi and closes once it's delivered.
 
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
 import { run, props, closeOverlay, openOverlay, theme, keys, terminals, spaces, panes, exec, notify } from "herdr";
-import { chatLink } from "./link.js";
+import { chatLink, lead } from "./link.js";
+
+// Why that Pi can't take F6 now, or null: it must still be live, local, in that tab, and waiting.
+function unforkable({ space, tab, terminal }) {
+  const s = spaces().find((s) => s.id === space);
+  const p = panes().find((p) => p.tab === tab && p.terminal === terminal);
+  if (!s || s.machine || !s.tabs.some((c) => c.id === tab) || !p) return "That conversation is no longer in its tab.";
+  if (p.app !== "pi") return "That pane is no longer Pi.";
+  if (!terminals().some((t) => t.address === terminal && t.state === "live")) return "That Pi has ended.";
+  if (p.status !== "idle" && p.status !== "done") return "Pi is busy; try again once it's waiting for you.";
+  return null;
+}
 
 // Where a space is now: its first terminal's live folder, else where it was made.
 function place(s) {
@@ -52,10 +64,12 @@ function items(p, git) {
       const space = spaces().find((s) => s.id === tg.space);
       const tab = space?.tabs.find((c) => c.id === tg.id);
       const link = tab && chatLink(space, tab, panes());
+      const pi = tab && !space.machine && lead(tab, panes());
       return [
         ["Rename", "tab.rename", { id: tg.id }],
         ["New tab", "tab.new", { space: tg.space }],
         ...(link ? [["Copy link to chat", "chat.copy", { text: link }]] : []),
+        ...(pi?.app === "pi" ? [["Fork conversation", "chat.fork", { space: tg.space, tab: tg.id, terminal: pi.terminal }]] : []),
         ["Close", "tab.close", { id: tg.id }],
       ];
     }
@@ -79,7 +93,7 @@ function items(p, git) {
 }
 
 function menuIcon(command) {
-  const name = command.endsWith(".close") ? "x" : command.endsWith(".rename") ? "square-pen" : command.endsWith(".new") ? "plus" : command === "worktree" ? "git-branch" : command === "chat.copy" ? "file-text" : command === "app.help" ? "terminal" : command === "app.theme" ? "settings" : command === "pane.split" ? "panel-right" : command === "pane.zoom" ? "square" : "terminal";
+  const name = command.endsWith(".close") ? "x" : command.endsWith(".rename") ? "square-pen" : command.endsWith(".new") ? "plus" : command === "worktree" ? "git-branch" : command === "chat.copy" ? "file-text" : command === "chat.fork" ? "git-branch" : command === "app.help" ? "terminal" : command === "app.theme" ? "settings" : command === "pane.split" ? "panel-right" : command === "pane.zoom" ? "square" : "terminal";
   return `mods/workspace-chrome/${name}.svg`;
 }
 
@@ -107,14 +121,31 @@ export default class Menu extends View {
       });
   }
 
-  choose(i, cx) {
-    const it = items(props(), this.git)[i];
-    if (!it) return;
+  // `it` is the item as shown, so a list that changed since can't swap in another.
+  choose(it, cx) {
+    if (!it || this.forking) return;
+    if (it[1] === "chat.fork") return this.fork(it[2], cx);
     if (it[1] === "chat.copy") cx.write_to_clipboard(it[2].text);
     closeOverlay(props()?.overlay);
     if (it[1] === "chat.copy") notify({ title: "Copied link to chat", level: "success" });
     else if (it[1] === "worktree") openOverlay({ mod: "worktree", kind: "dialog", ...(it[2].action === "open" ? { width: 560, height: 480 } : { width: 440, height: 260 }), props: it[2] });
     else run(it[1], it[2]);
+  }
+
+  // Waits for the key while open: this copy's tasks end with it. Pi says whether the fork opened.
+  fork(target, cx) {
+    this.forking = true;
+    cx.spawn(async () => {
+      try {
+        const why = unforkable(target);
+        if (why) throw new Error(why);
+        const r = await exec("hc", ["keys", target.terminal, "f6"], { timeout: 15000 });
+        if (r.code !== 0) throw new Error(r.stderr.trim() || r.stdout.trim() || `hc keys exited with ${r.code}`);
+      } catch (e) {
+        notify({ title: "Couldn't ask Pi to fork", body: e?.message ?? String(e), level: "error" });
+      }
+      closeOverlay(props()?.overlay);
+    });
   }
 
   render(cx) {
@@ -131,7 +162,7 @@ export default class Menu extends View {
       .on_key_down((e, cx) => {
         if (e.key === "down") this.at = (this.at + 1) % list.length;
         else if (e.key === "up") this.at = (this.at + list.length - 1) % list.length;
-        else if (e.key === "enter") this.choose(this.at, cx);
+        else if (e.key === "enter") this.choose(list[this.at], cx);
         else if (e.key === "escape") closeOverlay(props().overlay);
         else return;
         cx.notify();
@@ -151,7 +182,7 @@ export default class Menu extends View {
             .text_color(t.foreground)
             .when(i === this.at, (el) => el.bg(t.selected))
             .hover((s) => s.bg(t.hover))
-            .on_click((_e, cx) => this.choose(i, cx))
+            .on_click((_e, cx) => this.choose(it, cx))
             .child(svg(menuIcon(it[1])).size(14).flex_none().text_color(t.muted))
             .child(div().flex_1().child(it[0]))
             .child(div().text_size(11).text_color(t.dim).child(shortcut(it[1], it[2])))),

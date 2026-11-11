@@ -1,11 +1,11 @@
-// node --test: the History and Spaces mods with gpui and herdr stubbed.
+// node --test: the History, Spaces, Menu and Palette mods with gpui and herdr stubbed.
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { test } from "node:test";
 import vm from "node:vm";
 
 const MODS = new URL("../config/mods/", import.meta.url);
-const source = (mod) => fs.readFileSync(new URL(mod + "/main.js", MODS), "utf8")
+const source = (mod, file = "main.js") => fs.readFileSync(new URL(mod + "/" + file, MODS), "utf8")
   .replace(/^import [^;]+;\r?\n/gm, "")
   .replace(/^export (async function|function|const) /gm, "$1 ")
   .replace("export default class", "globalThis.Mod = class");
@@ -60,12 +60,14 @@ function harness(mod, extra = {}) {
     spaces: () => f.spaces, panes: () => f.panes, home: () => "/home/u", props: () => f.props ?? { overlay: "o1" },
     run: (...a) => f.runs.push(plain(a)), theme: () => f.theme ?? {}, closeOverlay: (id) => f.closed.push(id),
     notify: (n) => f.notes.push(n), pickFolder: (o) => new Promise((resolve) => f.picks.push({ o, resolve })),
-    exec: (cmd, args) => new Promise((resolve) => f.execs.push({ cmd, args, resolve })),
-    shared: () => f.saved ?? [], setShared() {}, agents: () => [], terminals: () => [], focused: () => null,
+    exec: (cmd, args, options) => new Promise((resolve, reject) => f.execs.push({ cmd, args, options, resolve, reject })),
+    shared: () => f.saved ?? [], setShared() {}, agents: () => [], terminals: () => f.terminals ?? [], focused: () => f.focused ?? null,
+    keys: () => [], commands: () => [], layouts: () => [],
     layout: () => null, setAgentOrder() {}, machines: () => f.machines ?? [{ name: null, layout: "ready" }], window: () => null, nextCommand: () => new Promise(() => {}), openOverlay: (o) => (f.overlays ??= []).push(plain(o)),
   };
   const context = vm.createContext(env);
   vm.runInContext(source(mod), context, { filename: mod });
+  for (const file of extra.files ?? []) vm.runInContext(source(mod, file), context, { filename: file });
   f.ctx = context;
   f.cx = cx;
   f.mod = new context.Mod();
@@ -512,4 +514,128 @@ test("Spaces: saved and remote rows share New terminal and New Pi chat; remote o
   f.mod.hovered = "space-vps/c"; f.render();
   assert.deepEqual(tips("vps/c"), [undefined, undefined], "no launch on an unavailable machine");
   assert.deepEqual(f.runs, []);
+});
+
+// Two local tabs, each led by a Pi; the second tab's Pi isn't its focused pane.
+const forkWorld = () => ({
+  spaces: [
+    { id: "sp1", machine: null, tabs: [{ id: "tb1" }, { id: "tb2" }] },
+    { id: "tau/sp", machine: "tau", tabs: [{ id: "tau/tb" }] },
+  ],
+  panes: [
+    { pane: "p1", tab: "tb1", terminal: "t1", app: "pi", status: "idle", program: { agent: true }, focused: true },
+    { pane: "p2", tab: "tb2", terminal: "t2", app: null, status: null, program: { agent: false }, focused: true },
+    { pane: "p3", tab: "tb2", terminal: "t3", app: "pi", status: "done", program: { agent: true }, focused: false },
+    { pane: "p4", tab: "tau/tb", terminal: "tau/t4", app: "pi", status: "idle", program: { agent: true }, focused: true },
+  ],
+  terminals: ["t1", "t2", "t3", "tau/t4"].map((address) => ({ address, state: "live" })),
+});
+const menuOn = (tab, space = "sp1", world = forkWorld()) => {
+  const f = harness("sandbox-menu", { ...world, files: ["link.js"], props: { overlay: "m", tab: "tab", target: { id: tab, space } } }).init();
+  f.render();
+  return f;
+};
+const labels = (f) => [...Array(9).keys()].map((i) => find(f.tree, `mi-${i}`)).filter(Boolean).map((n) => texts(n)[0]);
+const keyPresses = (f) => f.execs.map((e) => [e.cmd, ...e.args]);
+
+test("Menu: Fork conversation presses F6 in the clicked tab's own Pi and closes only once it's delivered", async () => {
+  const f = menuOn("tb2");
+  assert.deepEqual(labels(f), ["Rename", "New tab", "Copy link to chat", "Fork conversation", "Close"]);
+  await f.click("mi-3");
+  await f.click("mi-3");
+  assert.deepEqual(keyPresses(f), [["hc", "keys", "t3", "f6"]], "the clicked tab's Pi, not the focused shell or the active tab; once");
+  assert.equal(f.execs[0].options.timeout, 15000);
+  assert.deepEqual([f.closed, f.runs, f.notes], [[], [], []], "stays open while the key goes");
+  f.execs[0].resolve({ code: 0, stdout: "{}", stderr: "" });
+  await settle();
+  assert.deepEqual([f.closed, f.runs, f.notes], [["m"], [], []], "no claim that the fork opened: Pi says so");
+});
+
+test("Menu: no Fork for a shell-led, other-agent or remote tab", () => {
+  const world = forkWorld();
+  world.panes[0] = { ...world.panes[0], app: "claude" };
+  assert.ok(!labels(menuOn("tb1", "sp1", world)).includes("Fork conversation"));
+  world.panes = world.panes.filter((p) => p.pane !== "p3");
+  assert.ok(!labels(menuOn("tb2", "sp1", world)).includes("Fork conversation"));
+  assert.ok(!labels(menuOn("tau/tb", "tau/sp")).includes("Fork conversation"));
+});
+
+for (const [name, change, why] of [
+  ["busy", (w) => { w.panes[2].status = "working"; }, "Pi is busy; try again once it's waiting for you."],
+  ["blocked", (w) => { w.panes[2].status = "blocked"; }, "Pi is busy; try again once it's waiting for you."],
+  ["moved to another tab", (w) => { w.panes[2].tab = "tb1"; }, "That conversation is no longer in its tab."],
+  ["now another program", (w) => { w.panes[2].app = "claude"; }, "That pane is no longer Pi."],
+  ["ended", (w) => { w.terminals[2].state = "finished"; }, "That Pi has ended."],
+]) {
+  test(`Menu: a shown Fork whose Pi is ${name} by the click presses nothing and runs nothing else`, async () => {
+    const f = menuOn("tb2");
+    change(f);
+    await f.click("mi-3");
+    assert.deepEqual([f.execs, f.runs, f.closed], [[], [], ["m"]]);
+    assert.deepEqual(plain(f.notes), [{ title: "Couldn't ask Pi to fork", body: why, level: "error" }]);
+  });
+}
+
+test("Menu: Enter acts on the item shown, not whatever slid into its place", async () => {
+  const f = menuOn("tb2");
+  f.mod.at = 3;
+  f.render();
+  f.panes.splice(2, 1);
+  find(f.tree, "menu").handlers.on_key_down({ key: "enter" }, f.cx);
+  await settle();
+  assert.deepEqual([f.runs, f.execs], [[], []], "not Close");
+  assert.equal(f.notes[0].body, "That conversation is no longer in its tab.");
+});
+
+for (const [name, fail, body] of [
+  ["exits nonzero", (e) => e.resolve({ code: 1, stdout: "", stderr: "finished: t3 has exited\n" }), "finished: t3 has exited"],
+  ["times out", (e) => e.reject(new Error("timed out after 15000 ms")), "timed out after 15000 ms"],
+]) {
+  test(`Menu: when hc keys ${name} it says so once, without retrying`, async () => {
+    const f = menuOn("tb2");
+    await f.click("mi-3");
+    fail(f.execs[0]);
+    await settle();
+    assert.deepEqual([f.execs.length, f.closed, plain(f.notes)], [1, ["m"], [{ title: "Couldn't ask Pi to fork", body, level: "error" }]]);
+  });
+}
+
+const paletteOn = (focus, world = forkWorld()) => {
+  const f = harness("sandbox-palette", { ...world, focused: focus, props: { overlay: "pal" } });
+  f.ctx.win = () => null;
+  f.init();
+  f.type("fork");
+  return f;
+};
+const forkRow = (f) => f.mod.rows().find((r) => r.e.name === "chat.fork")?.e;
+
+test("Palette: Fork focused Pi conversation targets the focused pane's own Pi, captured when chosen", async () => {
+  const f = paletteOn({ space: "sp1", tab: "tb1", pane: "p1", terminal: "t1" });
+  assert.deepEqual(plain(forkRow(f)), { name: "chat.fork", args: {}, target: { space: "sp1", tab: "tb1", terminal: "t1" }, group: "Tab", title: "Fork focused Pi conversation", words: "branch fork snapshot pi conversation", id: "chat.fork:{}" });
+  f.on_submit({}, f.cx);
+  f.focused = { space: "sp1", tab: "tb2", pane: "p3", terminal: "t3" };
+  f.on_submit({}, f.cx);
+  assert.deepEqual(keyPresses(f), [["hc", "keys", "t1", "f6"]], "once, and never retargeted");
+  assert.deepEqual([f.closed, f.runs], [[], []]);
+  f.execs[0].resolve({ code: 0, stdout: "", stderr: "" });
+  await settle();
+  assert.deepEqual([f.closed, f.runs, f.notes], [["pal"], [], []]);
+});
+
+test("Palette: no Fork entry unless the focused model pane itself is a local Pi", () => {
+  for (const focus of [
+    null,
+    { space: "sp1", tab: "tb2", pane: "p2", terminal: "t2" },
+    { space: "sp1", tab: "tb1", pane: null, terminal: "t1" },
+    { space: "tau/sp", tab: "tau/tb", pane: "p4", terminal: "tau/t4" },
+  ]) assert.equal(forkRow(paletteOn(focus)), undefined, JSON.stringify(focus));
+});
+
+test("Palette: a stale row whose Pi got busy presses nothing and says why", async () => {
+  const f = paletteOn({ space: "sp1", tab: "tb1", pane: "p1", terminal: "t1" });
+  f.panes[0].status = "working";
+  find(f.tree, "pl-0").handlers.on_click({}, f.cx);
+  await settle();
+  assert.deepEqual([f.execs, f.runs, f.closed], [[], [], ["pal"]]);
+  assert.equal(f.notes[0].body, "Pi is busy; try again once it's waiting for you.");
 });
