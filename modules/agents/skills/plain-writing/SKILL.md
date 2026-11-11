@@ -8,6 +8,17 @@ disable-model-invocation: true
 
 Write so that a smart reader who lacks your context understands the text in one pass. For docs, READMEs, and RFCs, also pick a structure from [technical-writing](https://github.com/backnotprop/pstack/blob/main/skills/technical-writing/SKILL.md). After drafting, reread the text as that reader and fix whatever they would stumble on.
 
+## Orwell's Rules for Writing
+
+From George Orwell, "Politics and the English Language" (1946):
+
+1. Never use a metaphor, simile, or other figure of speech which you are used to seeing in print.
+2. Never use a long word where a short one will do.
+3. If it is possible to cut a word out, always cut it out.
+4. Never use the passive where you can use the active.
+5. Never use a foreign phrase, a scientific word, or a jargon word if you can think of an everyday English equivalent.
+6. Break any of these rules sooner than say anything outright barbarous.
+
 ## Structure
 
 - Lead with the point. In chat, restate the problem in a sentence before saying what changed, and skip the history.
@@ -41,6 +52,17 @@ Readers scan the first two words of each item and assume that every difference b
   - After: `Adding KV persistence`, `Fixing login bug`
 - Put the words that tell items apart first: `Shipped: order #1001`, not `Your order #1001 has shipped`.
 - Give every item the same structure, vocabulary, and kind of detail, with verbs whose tone matches the purpose, such as "Users complain" for problems.
+
+## Response Style
+
+- Answer in plain language, like one person talking to another.
+- Keep answers short and concise: the direct answer first, in a few sentences.
+- Skip background, caveats, and long lists unless the user asks for more detail.
+- If something important doesn't fit, offer to expand in one line instead of including it.
+- Do not omit critical information, but prefer brevity.
+- Use the real name for things: the code identifier, the user's own words, or a concise description or appositive. Don't make up labels like "the switch-back note".
+- Avoid nonce terms, and avoid cataphors with unclear antecedents or referents.
+- Don't say "it", "that", and similar words unless the referent is obvious. Prefer precision.
 
 ## Formatting
 
