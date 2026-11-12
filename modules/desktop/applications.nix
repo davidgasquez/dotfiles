@@ -103,6 +103,23 @@ in
   home.packages = with pkgs; [
     chatgpt
     herdrApp
+    (pkgs.writeShellScriptBin "herdr-pi" ''
+      set -euo pipefail
+      folder=$(${pkgs.coreutils}/bin/realpath -e -- "$PWD")
+      spaces=$(${lib.getExe herdrApp} ls)
+      space=$(${lib.getExe pkgs.jq} -r --arg folder "$folder" '
+        [.spaces[] | select((.machine == null or .machine == "") and .folder == $folder)]
+        | first | .id // empty
+      ' <<< "$spaces")
+      if [ -n "$space" ]; then
+        exec ${lib.getExe herdrApp} do tab.new --space "$space" --name Pi --folder "$folder" \
+          --argv '${builtins.toJSON [ (lib.getExe config.programs.pi-coding-agent.package) ]}'
+      else
+        exec ${lib.getExe herdrApp} do space.new \
+          --name "$(${pkgs.coreutils}/bin/basename -- "$folder")" --folder "$folder" --machine "" \
+          --tab Pi --argv '${builtins.toJSON [ (lib.getExe config.programs.pi-coding-agent.package) ]}'
+      fi
+    '')
     piChats
     proton-pass-cli
     seahorse
