@@ -105,9 +105,13 @@ in
     }
   );
 
-  home.sessionVariables.PROTON_PASS_LINUX_KEYRING = "dbus";
+  home.sessionVariables = {
+    GOG_KEYRING_SERVICE_NAME = "Default_Keyring";
+    PROTON_PASS_LINUX_KEYRING = "dbus";
+  };
   home.packages = with pkgs; [
     chatgpt
+    gogcli
     herdrApp
     (writeShellApplication {
       name = "herdr-new-chat";
