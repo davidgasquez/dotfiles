@@ -45,6 +45,13 @@
 
       packages = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system: {
         slacrawl = nixpkgs.legacyPackages.${system}.callPackage ./modules/desktop/slacrawl.nix { };
+        herdr-app = nixpkgs.legacyPackages.${system}.callPackage ./modules/desktop/herdr-app {
+          package = inputs.llm-agents.packages.${system}.herdr-app;
+        };
+      });
+
+      checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system: {
+        herdr-app-cargo-deps = inputs.self.packages.${system}.herdr-app.cargoDeps;
       });
 
       nixosConfigurations = {

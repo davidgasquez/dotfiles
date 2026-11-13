@@ -22,6 +22,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           nix flake update --commit-lock-file --option commit-lock-file-summary "⬆️ Update system"
+      - name: Update Herdr cargo vendor hash
+        run: |
+          modules/desktop/herdr-app/update-cargo-hash.sh
+          git diff --quiet || git commit -am "⬆️ Update Herdr cargo vendor hash"
       - name: Check all flake outputs (no system builds)
         run: nix flake check --all-systems --no-update-lock-file
       - name: Push
