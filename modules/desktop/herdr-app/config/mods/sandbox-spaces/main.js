@@ -120,6 +120,11 @@ const history = (folder, label) =>
   openOverlay({ mod: "sandbox-history", kind: "dialog", width: 980, height: 0.82, props: { folder, label } });
 const chatHistory = () => history(chats(), "Chats");
 
+const pickChat = (open) => {
+  if (open) closeOverlay(open);
+  return openOverlay({ mod: "sandbox-palette", kind: "popup", at: "top", offset: 60, width: 620, height: 0.85, props: { chat: true } });
+};
+
 function newChat(cx) {
   cx.spawn(chatNow);
 }
@@ -195,7 +200,12 @@ export default class SavedSpaces extends View {
     }
     if (!p.rename && !p.menu) {
       cx.spawn(async () => {
-        for (;;) if ((await nextCommand()) === "new_chat") await chatNow();
+        for (;;) {
+          const command = await nextCommand();
+          if (command === "new_chat") await chatNow();
+          // Popups aren't deduplicated: one picker, so Ctrl+N confirms once.
+          else if (command === "pick_chat") this.picker = pickChat(this.picker);
+        }
       });
       this.refreshDiffs(cx);
       cx.timer.every(5000, (cx) => this.refreshDiffs(cx));

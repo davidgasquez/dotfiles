@@ -91,10 +91,11 @@ in
       staticSettings = (pkgs.formats.json { }).generate "herdr-app-keys.json" {
         "layout:sandbox" = {
           ctrl-alt-z = "sandbox-tabs.open_zed";
-          ctrl-i = "sandbox-spaces.new_chat";
+          ctrl-i = "sandbox-spaces.pick_chat";
           ctrl-n = "sandbox-tabs.new_pi";
           ctrl-shift-p = "mod.open:sandbox-palette";
         };
+        "mod:sandbox-palette".ctrl-n = "sandbox-palette.confirm";
       };
     }
   );
