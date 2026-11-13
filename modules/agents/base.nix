@@ -6,6 +6,7 @@
 }:
 
 let
+  memex = pkgs.callPackage ./memex.nix { };
   qmd = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.qmd;
   agentSkills = pkgs.runCommand "agent-skills" { } ''
     cp -r ${./skills} "$out"
@@ -24,6 +25,7 @@ in
 
   home.packages = [
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core
+    memex
     (pkgs.symlinkJoin {
       inherit (qmd) name meta;
       paths = [ qmd ];
