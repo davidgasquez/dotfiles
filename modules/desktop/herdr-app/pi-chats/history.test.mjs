@@ -596,6 +596,44 @@ test("Spaces: Commit & push outside a repo or on an unreachable machine says why
     [[], [["error", "fatal: not a git repository"], ["error", "tau unreachable"]]]);
 });
 
+const keyed = (n) => !n || typeof n !== "object" ? [] : [...(n.key ? [n.key] : []), ...n.items.flatMap(keyed)];
+
+for (const [where, on, list] of [["Other", null, "spaces-list"], ["remote", "tau", "remote-list"]]) {
+  test(`Spaces: ${where} spaces list their tabs with nested live sub-agents, each folding and clicking like saved ones`, async () => {
+    const at = (id) => (on ? on + "/" : "") + id;
+    const tabs = [{ id: at("ta"), index: 1, name: "alpha", named: true }, { id: at("tb"), index: 2, name: "beta", named: true }];
+    const f = harness("sandbox-spaces", {
+      props: {},
+      machines: [{ name: null, layout: "ready" }, { name: "tau", layout: "ready" }],
+      spaces: [{ id: at("sp"), name: "misc", folder: "/made/here", machine: on, status: "working", tabs }],
+      panes: [{ tab: at("ta"), cwd: "/made/here", terminal: at("t1") }, { tab: at("tb"), cwd: "/made/here", terminal: at("t2") }],
+      terminals: [
+        { address: at("t1"), state: "live" }, { address: at("t2"), state: "live" },
+        { address: at("k1"), parent: at("t1"), name: "scout", state: "live" },
+        { address: at("k2"), parent: at("k1"), name: "deep", state: "live" },
+        { address: at("kx"), parent: at("t1"), name: "gone", state: "finished" },
+        { address: at("k3"), parent: at("t2"), name: "helper", state: "live" },
+      ],
+    }).init();
+    f.render();
+    const rows = () => keyed(find(f.tree, list)).filter((k) => /^(space|fold|chat|sub)-/.test(k));
+    assert.deepEqual(rows(), ["space-sp", "fold-sp", "chat-ta", "fold-ta", "sub-k1", "sub-k2", "chat-tb", "fold-tb", "sub-k3"].map((k) => k.replace("-", "-" + at(""))));
+    assert.ok(["alpha", "beta", "scout", "deep", "helper"].every((x) => texts(find(f.tree, list)).includes(x)));
+    await f.click("chat-" + at("tb"));
+    await f.click("sub-" + at("k2"));
+    await f.click("space-" + at("sp"));
+    assert.deepEqual(f.runs, [["space.select", { id: at("sp") }], ["tab.select", { id: at("tb") }], ["terminal.peek", { terminal: at("k2") }], ["space.select", { id: at("sp") }]]);
+    await f.click("fold-" + at("ta"));
+    assert.deepEqual(texts(find(f.tree, "fold-" + at("ta"))), ["2"], "a folded chat counts its hidden sub-agents");
+    assert.ok(!rows().includes("sub-" + at("k1")) && rows().includes("sub-" + at("k3")));
+    await f.click("fold-" + at("sp"));
+    assert.deepEqual(rows(), ["space-" + at("sp"), "fold-" + at("sp")]);
+    assert.deepEqual(texts(find(f.tree, "fold-" + at("sp"))), ["2"]);
+    await f.click("fold-" + at("sp"));
+    assert.deepEqual(rows(), ["space-sp", "fold-sp", "chat-ta", "fold-ta", "chat-tb", "fold-tb", "sub-k3"].map((k) => k.replace("-", "-" + at(""))), "unfolding the space keeps its chat folded");
+  });
+}
+
 // Two local tabs, each led by a Pi; the second tab's Pi isn't its focused pane.
 const forkWorld = () => ({
   spaces: [

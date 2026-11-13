@@ -402,6 +402,14 @@ export default class SavedSpaces extends View {
       .child(div().w(22).flex_none().flex().justify_center().child(mark(t, s.status) ?? div()));
   }
 
+  space(s, ps) {
+    const key = "s:" + s.id;
+    return [
+      this.other(s).when(s.tabs.length > 0, (el) => el.child(this.fold("fold-" + s.id, key, s.tabs.length, s.status))),
+      ...(this.folded.has(key) ? [] : s.tabs.flatMap((tab) => this.chat(s, tab, ps, 35, true))),
+    ];
+  }
+
   machine(m, ps) {
     const t = theme();
     const ready = m.layout === "ready";
@@ -411,13 +419,7 @@ export default class SavedSpaces extends View {
       .when(!ready, (el) => el.child(div().flex_none().text_color(t.dim).opacity(0.7).child(m.layout === "loading" ? "Loading…" : "Unavailable")));
     return [
       this.section("remote-new-" + m.name, label, "New space on " + m.name, ready ? () => run("space.new", { machine: m.name }) : null),
-      ...m.spaces.flatMap((s) => {
-        const key = "s:" + s.id;
-        return [
-          this.other(s).when(s.tabs.length > 0, (el) => el.child(this.fold("fold-" + s.id, key, s.tabs.length, s.status))),
-          ...(this.folded.has(key) ? [] : s.tabs.flatMap((tab) => this.chat(s, tab, ps, 35, true))),
-        ];
-      }),
+      ...m.spaces.flatMap((s) => this.space(s, ps)),
     ];
   }
 
@@ -512,7 +514,7 @@ export default class SavedSpaces extends View {
         .children(g.list.flatMap((x, i) => this.entry(x, i, g.of.get(x.folder), g.ps)))
         .when(!g.list.length, (el) => el.child(div().id("add-first").h(28).px(8).flex().items_center().rounded(7)
           .text_size(12).text_color(t.dim).hover((s) => s.bg(t.hover)).on_click((_e, cx) => pick(cx)).child("Add a folder…")))
-        .when(g.other.length > 0, (el) => el.child(this.section("other", "Other")).children(g.other.map((s) => this.other(s)))))
+        .when(g.other.length > 0, (el) => el.child(this.section("other", "Other")).children(g.other.flatMap((s) => this.space(s, g.ps)))))
       .when(g.remote.length > 0, (el) => el.child(v_flex().id("remote-list").flex_none().h(Math.min(200, 5 + 30 * remote.length + g.remote.length)).px(8).pb(4).border_t(1).border_color(t.border)
         .overflow_y_scrollbar().children(remote)))
       .child(v_flex().flex_none().px(8).pb(8).border_t(1).border_color(t.border)
