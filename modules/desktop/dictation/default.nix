@@ -2,6 +2,7 @@
 
 let
   superwhisper = pkgs.callPackage ./superwhisper.nix { };
+  transcribe-cpp = pkgs.callPackage ./transcribe-cpp.nix { };
   executable = lib.getExe superwhisper;
   preferences = pkgs.writeText "superwhisper-preferences.json" (
     builtins.toJSON {
@@ -15,7 +16,15 @@ let
   );
 in
 {
-  home.packages = [ superwhisper ];
+  home.packages = [
+    superwhisper
+    transcribe-cpp
+  ];
+
+  xdg.dataFile."transcribe-cpp/parakeet-ultra.gguf".source = pkgs.fetchurl {
+    url = "https://huggingface.co/handy-computer/parakeet-ultra-gguf/resolve/a1539be1b849ea7463b88343e5277b373d0c4ea9/parakeet-ultra-Q8_0.gguf";
+    hash = "sha256-AHpZdh6SWHefGJ3zlrUNErg7tbeeZt9LlVwjDS8qClk=";
+  };
 
   xdg.desktopEntries."com.superwhisper.Superwhisper" = {
     name = "Superwhisper";

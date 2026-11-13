@@ -229,12 +229,13 @@ in
             mkdir -p ${lib.escapeShellArg audioRecordingDirectory}
             microphone=$(pactl get-default-source)
             monitor=$(pactl get-default-sink).monitor
-            filename=${lib.escapeShellArg audioRecordingDirectory}/meeting-$(date +%Y-%m-%d_%H-%M-%S-%3N).flac
+            filename=${lib.escapeShellArg audioRecordingDirectory}/meeting-$(date +%Y-%m-%d_%H-%M-%S-%3N).mka
             exec ffmpeg -nostdin -hide_banner -loglevel warning -n \
-              -thread_queue_size 1024 -f pulse -i "$microphone" \
-              -thread_queue_size 1024 -f pulse -i "$monitor" \
-              -filter_complex '[0:a][1:a]amix=inputs=2:duration=longest:normalize=1[audio]' \
-              -map '[audio]' -ar 48000 -ac 2 -c:a flac "$filename"
+              -thread_queue_size 1024 -nofind_stream_info -f pulse -i "$microphone" \
+              -thread_queue_size 1024 -nofind_stream_info -f pulse -i "$monitor" \
+              -map 0:a -map 1:a -c:a flac \
+              -metadata:s:a:0 title=Microphone -metadata:s:a:1 title=System \
+              -avoid_negative_ts make_zero "$filename"
           '';
         }
       );
