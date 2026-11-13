@@ -6,7 +6,7 @@
 
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex, InputState, Input } from "gpui-base";
-import { commands, layouts, keys, run, theme, props, closeOverlay, openOverlay, shared, window as win, focused, spaces, panes, terminals, exec, notify, machines, home, nextCommand } from "herdr";
+import { commands, layouts, keys, run, theme, props, closeOverlay, openOverlay, shared, window as win, focused, spaces, panes, terminals, exec, notify } from "herdr";
 
 // The list keeps one height while you move: rows and group titles have fixed
 // heights, and the window shows as many as fit in LIST_H.
@@ -119,32 +119,6 @@ function entries() {
   return list.map((e) => ({ ...e, id: `${e.name}:${JSON.stringify(e.args)}` }));
 }
 
-// Where a new Pi chat can go: a standalone Sandbox chat, or a fresh tab in any reachable space.
-function destinations() {
-  const ps = panes();
-  const ready = new Set(machines().filter((m) => m.layout === "ready").map((m) => m.name));
-  const h = home();
-  const localPath = (path) => path === h || path.startsWith(h + "/") ? "~" + path.slice(h.length) : path;
-  const at = (s) => {
-    const tabs = new Set(s.tabs.map((t) => t.id));
-    return ps.find((p) => tabs.has(p.tab) && p.cwd)?.cwd || s.folder || "~";
-  };
-  const openSpaces = spaces().filter((s) => !s.machine || ready.has(s.machine));
-  const localFolders = new Set(openSpaces.filter((s) => !s.machine).flatMap((s) => [s.folder, at(s)]));
-  const saved = shared("sandbox-spaces.saved") ?? [];
-  return [
-    { name: "sandbox-spaces.new_chat", args: {}, id: "sandbox", title: "Sandbox", detail: "New standalone chat", alias: "i" },
-    ...openSpaces.map((s) => ({
-      name: "tab.new", args: { space: s.id, argv: ["exec", "pi"] }, id: `space:${s.id}`, title: s.name,
-      detail: s.machine ? `${s.machine}:${at(s)}` : `local:${localPath(at(s))}`,
-    })),
-    ...saved.filter(({ folder }) => !localFolders.has(folder)).map(({ name, folder }) => ({
-      name: "space.new", args: { name, folder, machine: "", argv: ["exec", "pi"] },
-      id: `folder:${folder}`, title: name, detail: `local:${localPath(folder)}`,
-    })),
-  ];
-}
-
 // The key bound to an entry: `name` or `name:value` in keys.json.
 function keyOf(e, bound) {
   const v = Object.values(e.args)[0];
@@ -180,34 +154,17 @@ function fuzzy(q, text) {
 
 export default class Palette extends View {
   init(_props, cx) {
-    this.chat = Boolean(props()?.chat);
     this.query = "";
-    this.input = InputState.new({ placeholder: this.chat ? "New Pi chat in…" : "Type a command…" });
+    this.input = InputState.new({ placeholder: "Type a command…" });
     this.input.on("change", (_e, cx) => { this.query = this.input.value(); this.at = 0; cx.notify(); });
     this.input.on("submit", (_e, cx) => this.go(this.rows()[this.at]?.e, cx));
-    // Whether this copy's search has the keyboard: confirm reaches every shown copy, and a newer
-    // palette or picker over this one takes the keyboard (blur) before the late refocus.
-    this.typing = true;
-    this.input.on("focus", () => { this.typing = true; });
-    this.input.on("blur", () => { this.typing = false; });
     this.input.focus();
-    cx.timer.after(600, () => { if (this.typing) this.input.focus(); });
+    cx.timer.after(600, () => this.input.focus());
     this.at = 0;
     // How far the list is scrolled, px.
     this.scroll = 0;
     this.recent = JSON.parse(localStorage.getItem("recent") ?? "[]");
     this.handle = cx.focus_handle();
-    // Ctrl+N confirms a destination when the picker has the keyboard.
-    cx.spawn(async (cx) => {
-      for (;;) {
-        if ((await nextCommand()) !== "confirm" || !this.typing) continue;
-        if (this.chat) this.go(this.rows()[this.at]?.e, cx);
-        else {
-          this.close();
-          run("sandbox-spaces.pick_chat");
-        }
-      }
-    });
   }
 
   close() {
@@ -215,12 +172,7 @@ export default class Palette extends View {
   }
 
   go(e, cx) {
-    if (!e || this.forking || this.chosen) return;
-    if (this.chat) {
-      this.chosen = true;
-      this.close();
-      return run(e.name, e.args);
-    }
+    if (!e || this.forking) return;
     this.recent = [e.id, ...this.recent.filter((r) => r !== e.id)].slice(0, 20);
     localStorage.setItem("recent", JSON.stringify(this.recent));
     if (e.name === "chat.fork") return this.fork(e.target, cx);
@@ -254,9 +206,8 @@ export default class Palette extends View {
 
   // The rows to show: grouped when empty, ranked while typing.
   rows() {
-    const q = this.query.trim().toLowerCase().replace(/\s+/g, "");
-    if (this.chat) return this.places(q);
     const all = entries();
+    const q = this.query.trim().toLowerCase().replace(/\s+/g, "");
     if (!q) {
       const recent = this.recent.map((id) => all.find((e) => e.id === id)).filter(Boolean).slice(0, 5);
       const rest = GROUPS.slice(1).flatMap((g) => all.filter((e) => e.group === g && !recent.includes(e)));
@@ -273,22 +224,6 @@ export default class Palette extends View {
       })
       .filter(Boolean)
       .sort((a, b) => b.score - a.score || (rank(a.e) < 0 ? 99 : rank(a.e)) - (rank(b.e) < 0 ? 99 : rank(b.e)));
-  }
-
-  // Destinations: Sandbox first when empty or for its alias; else names starting with the query, then fuzzy.
-  places(q) {
-    const all = destinations();
-    if (!q) return all.map((e) => ({ e }));
-    return all
-      .map((e) => {
-        if (e.alias === q) return { e, first: 2, score: 0, hits: [] };
-        const title = fuzzy(q, e.title);
-        const more = fuzzy(q, `${e.title} ${e.detail}`);
-        const best = title ?? (more && { score: more.score - 4, hits: [] });
-        return best && { e, first: e.title.toLowerCase().startsWith(q) ? 1 : 0, score: best.score, hits: best.hits };
-      })
-      .filter(Boolean)
-      .sort((a, b) => b.first - a.first || b.score - a.score);
   }
 
   title(t, text, hits, on) {
@@ -320,7 +255,7 @@ export default class Palette extends View {
     const tops = [];
     let y = 0;
     rows.forEach((r, i) => {
-      const head = Boolean(r.head) && !this.query && (i === 0 || r.head !== rows[i - 1].head);
+      const head = !this.query && (i === 0 || r.head !== rows[i - 1].head);
       tops.push({ head, title: y, row: y + (head ? HEAD_H : 0) });
       y += (head ? HEAD_H : 0) + ROW_H;
     });
@@ -366,8 +301,7 @@ export default class Palette extends View {
           .hover((s) => s.bg(t.hover))
           .on_click((_e, cx) => this.go(r.e, cx))
           .child(div().flex_1().min_w(0).child(this.title(t, r.e.title, r.hits, on)))
-          .when(Boolean(r.e.detail), (el) => el.child(div().max_w(280).truncate().text_size(11.5).text_color(t.dim).child(r.e.detail)))
-          .when(Boolean(this.query) && !r.e.detail, (el) => el.child(div().text_size(11.5).text_color(t.dim).child(r.e.group)))
+          .when(Boolean(this.query), (el) => el.child(div().text_size(11.5).text_color(t.dim).child(r.e.group)))
           .when(Boolean(k), (el) => el.child(key(k))),
       );
     });
@@ -423,7 +357,7 @@ export default class Palette extends View {
                 cx.notify();
               })
               .children(fixed ? list : [v_flex().children(list)])
-          : div().px(16).py(14).text_size(13).text_color(t.dim).child(this.chat ? `No space matches "${this.query}".` : `Nothing matches "${this.query}". Places are in the picker.`),
+          : div().px(16).py(14).text_size(13).text_color(t.dim).child(`Nothing matches "${this.query}". Places are in the picker.`),
       );
   }
 }

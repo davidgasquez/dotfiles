@@ -86,16 +86,21 @@ in
       inherit pkgs;
       format = "json";
       empty = "{}";
-      jqOperation = "$dynamic * $static";
+      jqOperation = ''
+        $dynamic * $static
+        | if .["mod:sandbox-palette"]["ctrl-n"] == "sandbox-palette.confirm"
+          then del(.["mod:sandbox-palette"]["ctrl-n"])
+          else .
+          end
+      '';
       path = "${config.xdg.configHome}/herdr-app/keys.json";
       staticSettings = (pkgs.formats.json { }).generate "herdr-app-keys.json" {
         "layout:sandbox" = {
           ctrl-alt-z = "sandbox-tabs.open_zed";
-          ctrl-i = "terminal";
-          ctrl-n = "sandbox-spaces.pick_chat";
+          ctrl-i = "sandbox-spaces.new_chat";
+          ctrl-n = "sandbox-tabs.new_pi";
           ctrl-shift-p = "mod.open:sandbox-palette";
         };
-        "mod:sandbox-palette".ctrl-n = "sandbox-palette.confirm";
       };
     }
   );
@@ -104,17 +109,49 @@ in
   home.packages = with pkgs; [
     chatgpt
     herdrApp
-    (pkgs.writeShellScriptBin "herdr-new-chat" ''
-      ${lib.getExe' pkgs.uwsm "uwsm-app"} -- ${lib.getExe herdrApp} &
-      for ((attempt = 0; attempt < 50; attempt++)); do
-        if ${lib.getExe herdrApp} status >/dev/null 2>&1; then
-          ${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.focus({ window = "class:^herdr-app$" })'
-          exec ${lib.getExe herdrApp} do sandbox-spaces.pick_chat
+    (writeShellApplication {
+      name = "herdr-new-chat";
+      runtimeInputs = [
+        config.programs.fuzzel.package
+        herdrApp
+        uwsm
+        hyprland
+        coreutils
+        findutils
+      ];
+      text = ''
+        projects=()
+        if [[ -d "$HOME/projects" ]]; then
+          mapfile -t projects < <(find -L "$HOME/projects" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
         fi
-        ${lib.getExe' pkgs.coreutils "sleep"} 0.1
-      done
-      exec ${lib.getExe herdrApp} do sandbox-spaces.pick_chat
-    '')
+        choice=$(
+          {
+            printf 'sandbox\0icon\x1ffolder-temp\n'
+            for project in "''${projects[@]}"; do
+              printf '%s\0icon\x1ffolder-development\n' "$project"
+            done
+          } | fuzzel --dmenu --index --only-match --no-run-if-empty \
+            --prompt='~/projects › ' --placeholder='New Pi chat'
+        ) || exit 0
+        if [[ "$choice" != 0 ]]; then
+          cd -- "$HOME/projects/''${projects[choice - 1]}"
+        fi
+
+        uwsm-app -- herdr-app &
+        for ((attempt = 0; attempt < 50; attempt++)); do
+          if herdr-app status >/dev/null 2>&1; then
+            hyprctl dispatch 'hl.dsp.focus({ window = "class:^herdr-app$" })'
+            if [[ "$choice" == 0 ]]; then
+              exec herdr-app "do" sandbox-spaces.new_chat
+            fi
+            exec herdr-pi
+          fi
+          sleep 0.1
+        done
+        echo "Herdr did not become ready" >&2
+        exit 1
+      '';
+    })
     (pkgs.writeShellScriptBin "herdr-pi" ''
       set -euo pipefail
       folder=$(${pkgs.coreutils}/bin/realpath -e -- "$PWD")

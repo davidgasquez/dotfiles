@@ -120,11 +120,6 @@ const history = (folder, label) =>
   openOverlay({ mod: "sandbox-history", kind: "dialog", width: 980, height: 0.82, props: { folder, label } });
 const chatHistory = () => history(chats(), "Chats");
 
-const pickChat = (open) => {
-  if (open) closeOverlay(open);
-  return openOverlay({ mod: "sandbox-palette", kind: "popup", at: "top", offset: 60, width: 620, height: 0.85, props: { chat: true } });
-};
-
 function newChat(cx) {
   cx.spawn(chatNow);
 }
@@ -200,12 +195,7 @@ export default class SavedSpaces extends View {
     }
     if (!p.rename && !p.menu) {
       cx.spawn(async () => {
-        for (;;) {
-          const command = await nextCommand();
-          if (command === "new_chat") await chatNow();
-          // Popups aren't deduplicated: one picker, so Ctrl+N confirms once.
-          else if (command === "pick_chat") this.picker = pickChat(this.picker);
-        }
+        for (;;) if ((await nextCommand()) === "new_chat") await chatNow();
       });
       this.refreshDiffs(cx);
       cx.timer.every(5000, (cx) => this.refreshDiffs(cx));
@@ -526,7 +516,7 @@ export default class SavedSpaces extends View {
       .when(g.remote.length > 0, (el) => el.child(v_flex().id("remote-list").flex_none().h(Math.min(200, 5 + 30 * remote.length + g.remote.length)).px(8).pb(4).border_t(1).border_color(t.border)
         .overflow_y_scrollbar().children(remote)))
       .child(v_flex().flex_none().px(8).pb(8).border_t(1).border_color(t.border)
-        .child(this.section("new-chat", "Chats", "New standalone Pi chat", newChat,
+        .child(this.section("new-chat", "Chats", "New Pi chat (Ctrl+I)", newChat,
           this.button("history", svg(ICONS + "/clock.svg").size(13), "Chats history", chatHistory)))
         .when(chats.length > 0, (el) => el.child(v_flex().id("chats-list").max_h(240).overflow_y_scrollbar().children(chats))));
   }

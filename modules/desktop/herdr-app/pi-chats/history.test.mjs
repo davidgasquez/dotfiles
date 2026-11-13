@@ -55,7 +55,7 @@ function harness(mod, extra = {}) {
       el.rendered = Array.from({ length: n }, (_, i) => key(i));
       return el;
     },
-    InputState: { new: () => ({ on: (e, fn) => { f["on_" + e] = fn; }, value: () => f.query, focus() { f.focuses = (f.focuses ?? 0) + 1; } }) },
+    InputState: { new: () => ({ on: (e, fn) => { f["on_" + e] = fn; }, value: () => f.query, focus() {} }) },
     localStorage: { getItem: () => null, setItem() {} },
     spaces: () => f.spaces, panes: () => f.panes, home: () => "/home/u", props: () => f.props ?? { overlay: "o1" },
     run: (...a) => f.runs.push(plain(a)), theme: () => f.theme ?? {}, closeOverlay: (id) => f.closed.push(id),
@@ -63,7 +63,7 @@ function harness(mod, extra = {}) {
     exec: (cmd, args, options) => new Promise((resolve, reject) => f.execs.push({ cmd, args, options, resolve, reject })),
     shared: () => f.saved ?? [], setShared() {}, agents: () => [], terminals: () => f.terminals ?? [], focused: () => f.focused ?? null,
     keys: () => [], commands: () => [], layouts: () => [],
-    layout: () => null, setAgentOrder() {}, machines: () => f.machines ?? [{ name: null, layout: "ready" }], window: () => null, nextCommand: () => new Promise((resolve) => (f.waiting ??= []).push(resolve)), openOverlay: (o) => (f.overlays ??= []).push(plain(o)),
+    layout: () => null, setAgentOrder() {}, machines: () => f.machines ?? [{ name: null, layout: "ready" }], window: () => null, nextCommand: () => new Promise(() => {}), openOverlay: (o) => (f.overlays ??= []).push(plain(o)),
   };
   const context = vm.createContext(env);
   vm.runInContext(source(mod), context, { filename: mod });
@@ -89,7 +89,6 @@ function harness(mod, extra = {}) {
     await settle();
     f.render();
   };
-  f.send = async (command) => { f.waiting.shift()(command); await settle(); f.render(); };
   f.click = async (id) => { const n = find(f.tree, id); assert.ok(n, "missing " + id); n.handlers.on_click({}, cx); await settle(); f.render(); };
   return f;
 }
@@ -719,122 +718,4 @@ test("Palette: a stale row whose Pi got busy presses nothing and says why", asyn
   await settle();
   assert.deepEqual([f.execs, f.runs, f.closed], [[], [], ["pal"]]);
   assert.equal(f.notes[0].body, "Pi is busy; try again once it's waiting for you.");
-});
-
-// Two spaces named nixos: one here, one on tau, told apart by machine and path.
-const chatWorld = () => ({
-  spaces: [
-    { id: "w1", name: "web", folder: "/home/u/web", machine: null, tabs: [{ id: "wt" }] },
-    { id: "n1", name: "nixos", folder: "/etc/nixos", machine: null, tabs: [{ id: "nt" }] },
-    { id: "tau/n2", name: "nixos", folder: "/etc/nixos", machine: "tau", tabs: [] },
-    { id: "s1", name: "sandbox-notes", folder: "/home/u/notes", machine: null, tabs: [] },
-    { id: "vps/x", name: "nix-down", folder: "/srv", machine: "vps", tabs: [] },
-  ],
-  panes: [{ tab: "wt", cwd: "/home/u/web/src", terminal: "t1" }],
-  machines: [{ name: null, layout: "ready" }, { name: "tau", layout: "ready" }, { name: "vps", layout: "unavailable" }],
-  props: { overlay: "pick", chat: true },
-});
-const picker = () => { const f = harness("sandbox-palette", chatWorld()).init(); f.render(); return f; };
-const shown = (f) => plain(f.mod.rows().map((r) => [r.e.title, r.e.detail]));
-const keyDown = (f, key) => { find(f.tree, "palette").handlers.on_key_down({ key }, f.cx); f.render(); };
-
-test("Chat picker: empty lists Sandbox selected first, then reachable spaces with machine and path", () => {
-  const f = picker();
-  assert.deepEqual(shown(f), [
-    ["Sandbox", "New standalone chat"], ["web", "local:~/web/src"], ["nixos", "local:/etc/nixos"],
-    ["nixos", "tau:/etc/nixos"], ["sandbox-notes", "local:~/notes"],
-  ]);
-  assert.ok(texts(find(f.tree, "pl-3")).includes("tau:/etc/nixos"));
-  assert.ok("bg" in find(f.tree, "pl-0").style && !("bg" in find(f.tree, "pl-1").style), "Sandbox is selected");
-  assert.equal(f.mod.at, 0);
-});
-
-test("Chat picker: i is Sandbox; n and nixos rank names starting with them first", () => {
-  const f = picker();
-  f.type("i");
-  assert.deepEqual(shown(f)[0], ["Sandbox", "New standalone chat"]);
-  f.type("n");
-  assert.deepEqual(shown(f).slice(0, 2).map(([t]) => t), ["nixos", "nixos"]);
-  assert.ok(shown(f).findIndex(([t]) => t === "sandbox-notes") > 1);
-  f.type("nixos");
-  assert.deepEqual(shown(f), [["nixos", "local:/etc/nixos"], ["nixos", "tau:/etc/nixos"]]);
-});
-
-test("Chat picker: Enter on the empty query starts a Sandbox chat through the existing flow, once", async () => {
-  const f = picker();
-  f.on_submit({}, f.cx);
-  f.on_submit({}, f.cx);
-  await f.send("confirm");
-  assert.deepEqual([f.runs, f.closed], [[["sandbox-spaces.new_chat", {}]], ["pick"]]);
-});
-
-test("Chat picker: arrows move and Ctrl+N opens a Pi tab in that space's own id, once", async () => {
-  const f = picker();
-  f.type("nixos");
-  keyDown(f, "down");
-  await f.send("confirm");
-  f.on_submit({}, f.cx);
-  assert.deepEqual([f.runs, f.closed], [[["tab.new", { space: "tau/n2", argv: ["exec", "pi"] }]], ["pick"]]);
-});
-
-test("Chat picker: Escape only dismisses; Ctrl+N in the command palette opens the chat picker", async () => {
-  const f = picker();
-  keyDown(f, "escape");
-  assert.deepEqual([f.runs, f.closed], [[], ["pick"]]);
-  const p = harness("sandbox-palette", { props: { overlay: "pal" } });
-  p.ctx.win = () => null;
-  p.init();
-  p.render();
-  await p.send("confirm");
-  assert.deepEqual([p.runs, p.closed], [[["sandbox-spaces.pick_chat"]], ["pal"]]);
-});
-
-test("Spaces: pick_chat opens one chat picker, replacing its last; new_chat keeps the direct Sandbox flow", async () => {
-  const f = harness("sandbox-spaces", { props: {} }).init();
-  const picker = { mod: "sandbox-palette", kind: "popup", at: "top", offset: 60, width: 620, height: 0.85, props: { chat: true } };
-  f.waiting.shift()("pick_chat");
-  await settle();
-  assert.deepEqual([f.overlays, f.closed], [[picker], []]);
-  f.waiting.shift()("pick_chat");
-  await settle();
-  assert.deepEqual([f.overlays, f.closed], [[picker, picker], [1]], "the first picker closes before the second opens");
-  f.waiting.shift()("new_chat");
-  await settle();
-  assert.deepEqual(plain(f.execs.filter((e) => e.cmd === "pi-chats").map((e) => [e.cmd, e.args])), [["pi-chats", ["new"]]]);
-});
-
-test("Ctrl+N reaches only the copy whose search has the keyboard, with a palette and a picker open at once", async () => {
-  const palette = harness("sandbox-palette", { ...chatWorld(), props: { overlay: "pal" } });
-  palette.ctx.win = () => null;
-  palette.init();
-  palette.render();
-  const pick = picker();
-  // The picker over the palette takes the keyboard; both copies get every confirm.
-  palette.on_blur({}, palette.cx);
-  const both = async () => { await palette.send("confirm"); await pick.send("confirm"); };
-  await both();
-  assert.deepEqual([palette.runs, pick.runs], [[], [["sandbox-spaces.new_chat", {}]]]);
-  // The picker closed (no more confirms for it); the palette has the keyboard again.
-  palette.on_focus({}, palette.cx);
-  await palette.send("confirm");
-  assert.deepEqual(palette.runs, [["sandbox-spaces.pick_chat"]]);
-});
-
-test("Chat picker: a saved project can be opened with no live spaces", () => {
-  const f = harness("sandbox-palette", {
-    ...chatWorld(), spaces: [], panes: [], saved: [{ name: "nixos", folder: "/etc/nixos" }],
-  }).init();
-  f.type("n");
-  assert.deepEqual(shown(f)[0], ["nixos", "local:/etc/nixos"]);
-  f.on_submit({}, f.cx);
-  assert.deepEqual(f.runs, [["space.new", { name: "nixos", folder: "/etc/nixos", machine: "", argv: ["exec", "pi"] }]]);
-});
-
-test("the late refocus only reclaims the keyboard for a copy nothing newer has taken it from", async () => {
-  const kept = picker();
-  const taken = picker();
-  taken.on_blur({}, taken.cx);
-  await kept.fire(600);
-  await taken.fire(600);
-  assert.deepEqual([kept.focuses, taken.focuses], [2, 1], "init focuses once; only the unblurred copy again");
 });
