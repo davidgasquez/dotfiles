@@ -104,6 +104,17 @@ in
   home.packages = with pkgs; [
     chatgpt
     herdrApp
+    (pkgs.writeShellScriptBin "herdr-new-chat" ''
+      ${lib.getExe' pkgs.uwsm "uwsm-app"} -- ${lib.getExe herdrApp} &
+      for ((attempt = 0; attempt < 50; attempt++)); do
+        if ${lib.getExe herdrApp} status >/dev/null 2>&1; then
+          ${lib.getExe' pkgs.hyprland "hyprctl"} dispatch 'hl.dsp.focus({ window = "class:^herdr-app$" })'
+          exec ${lib.getExe herdrApp} do sandbox-spaces.pick_chat
+        fi
+        ${lib.getExe' pkgs.coreutils "sleep"} 0.1
+      done
+      exec ${lib.getExe herdrApp} do sandbox-spaces.pick_chat
+    '')
     (pkgs.writeShellScriptBin "herdr-pi" ''
       set -euo pipefail
       folder=$(${pkgs.coreutils}/bin/realpath -e -- "$PWD")
