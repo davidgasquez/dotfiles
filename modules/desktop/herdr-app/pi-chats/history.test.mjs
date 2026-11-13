@@ -777,7 +777,7 @@ test("Chat picker: arrows move and Ctrl+N opens a Pi tab in that space's own id,
   assert.deepEqual([f.runs, f.closed], [[["tab.new", { space: "tau/n2", argv: ["exec", "pi"] }]], ["pick"]]);
 });
 
-test("Chat picker: Escape only dismisses; the command palette keeps Ctrl+N as New Pi chat in the active space, staying open", async () => {
+test("Chat picker: Escape only dismisses; Ctrl+N in the command palette opens the chat picker", async () => {
   const f = picker();
   keyDown(f, "escape");
   assert.deepEqual([f.runs, f.closed], [[], ["pick"]]);
@@ -786,7 +786,7 @@ test("Chat picker: Escape only dismisses; the command palette keeps Ctrl+N as Ne
   p.init();
   p.render();
   await p.send("confirm");
-  assert.deepEqual([p.runs, p.closed], [[["sandbox-tabs.new_pi"]], []]);
+  assert.deepEqual([p.runs, p.closed], [[["sandbox-spaces.pick_chat"]], ["pal"]]);
 });
 
 test("Spaces: pick_chat opens one chat picker, replacing its last; new_chat keeps the direct Sandbox flow", async () => {
@@ -817,7 +817,17 @@ test("Ctrl+N reaches only the copy whose search has the keyboard, with a palette
   // The picker closed (no more confirms for it); the palette has the keyboard again.
   palette.on_focus({}, palette.cx);
   await palette.send("confirm");
-  assert.deepEqual(palette.runs, [["sandbox-tabs.new_pi"]]);
+  assert.deepEqual(palette.runs, [["sandbox-spaces.pick_chat"]]);
+});
+
+test("Chat picker: a saved project can be opened with no live spaces", () => {
+  const f = harness("sandbox-palette", {
+    ...chatWorld(), spaces: [], panes: [], saved: [{ name: "nixos", folder: "/etc/nixos" }],
+  }).init();
+  f.type("n");
+  assert.deepEqual(shown(f)[0], ["nixos", "local:/etc/nixos"]);
+  f.on_submit({}, f.cx);
+  assert.deepEqual(f.runs, [["space.new", { name: "nixos", folder: "/etc/nixos", machine: "", argv: ["exec", "pi"] }]]);
 });
 
 test("the late refocus only reclaims the keyboard for a copy nothing newer has taken it from", async () => {

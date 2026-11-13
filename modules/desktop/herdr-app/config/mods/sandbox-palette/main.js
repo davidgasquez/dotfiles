@@ -123,16 +123,24 @@ function entries() {
 function destinations() {
   const ps = panes();
   const ready = new Set(machines().filter((m) => m.layout === "ready").map((m) => m.name));
+  const h = home();
+  const localPath = (path) => path === h || path.startsWith(h + "/") ? "~" + path.slice(h.length) : path;
   const at = (s) => {
     const tabs = new Set(s.tabs.map((t) => t.id));
-    const path = ps.find((p) => tabs.has(p.tab) && p.cwd)?.cwd || s.folder || "~";
-    const h = home();
-    return !s.machine && (path === h || path.startsWith(h + "/")) ? "~" + path.slice(h.length) : path;
+    return ps.find((p) => tabs.has(p.tab) && p.cwd)?.cwd || s.folder || "~";
   };
+  const openSpaces = spaces().filter((s) => !s.machine || ready.has(s.machine));
+  const localFolders = new Set(openSpaces.filter((s) => !s.machine).flatMap((s) => [s.folder, at(s)]));
+  const saved = shared("sandbox-spaces.saved") ?? [];
   return [
     { name: "sandbox-spaces.new_chat", args: {}, id: "sandbox", title: "Sandbox", detail: "New standalone chat", alias: "i" },
-    ...spaces().filter((s) => !s.machine || ready.has(s.machine)).map((s) => ({
-      name: "tab.new", args: { space: s.id, argv: ["exec", "pi"] }, id: `space:${s.id}`, title: s.name, detail: `${s.machine ?? "local"}:${at(s)}`,
+    ...openSpaces.map((s) => ({
+      name: "tab.new", args: { space: s.id, argv: ["exec", "pi"] }, id: `space:${s.id}`, title: s.name,
+      detail: s.machine ? `${s.machine}:${at(s)}` : `local:${localPath(at(s))}`,
+    })),
+    ...saved.filter(({ folder }) => !localFolders.has(folder)).map(({ name, folder }) => ({
+      name: "space.new", args: { name, folder, machine: "", argv: ["exec", "pi"] },
+      id: `folder:${folder}`, title: name, detail: `local:${localPath(folder)}`,
     })),
   ];
 }
@@ -189,12 +197,15 @@ export default class Palette extends View {
     this.scroll = 0;
     this.recent = JSON.parse(localStorage.getItem("recent") ?? "[]");
     this.handle = cx.focus_handle();
-    // Ctrl+N (mod:sandbox-palette): the picker's other Enter; the command palette keeps the layout's new_pi.
+    // Ctrl+N confirms a destination when the picker has the keyboard.
     cx.spawn(async (cx) => {
       for (;;) {
         if ((await nextCommand()) !== "confirm" || !this.typing) continue;
         if (this.chat) this.go(this.rows()[this.at]?.e, cx);
-        else run("sandbox-tabs.new_pi");
+        else {
+          this.close();
+          run("sandbox-spaces.pick_chat");
+        }
       }
     });
   }
