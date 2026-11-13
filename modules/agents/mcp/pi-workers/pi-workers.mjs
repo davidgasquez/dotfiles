@@ -8,7 +8,7 @@ const hcBin = process.env.PI_WORKERS_HC ?? "hc";
 const run = promisify(execFile);
 const watches = new Map();
 const instructions =
-  "Launch, steer, and clean up workers as the delegate skill and `hc --skill` describe. After each `hc run`, call hc_watch with the returned terminal. Brief notices (completed, blocked, error, cancelled, exited) then arrive in this chat automatically; do not poll or `hc wait` on watched terminals. Notices carry no output: collect it with `hc read --lines 100 <terminal>` and verify actual results. Call hc_watch again to see the latest notice or delivery error, or after a watch lost notice.";
+  "In a local desktop chat, call hc_watch with each worker address returned by `hc run`. Register again if a watch is lost. If you need the result and the notice hasn't arrived, use `hc wait <terminal>`, including when registration or delivery fails. Notices carry status only. Collect and verify results with `hc read --lines 100 <terminal>`. See the subagents skill and `hc --skill` for the worker lifecycle.";
 const tool = {
   name: "hc_watch",
   description:
