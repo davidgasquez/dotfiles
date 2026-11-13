@@ -11,6 +11,12 @@
   nixpkgs.config.allowUnfreePredicate = pkg: lib.getName pkg == "claude-code";
 
   networking.hostName = "tau";
+  networking.nameservers = [
+    "9.9.9.9"
+    "149.112.112.112"
+  ];
+  networking.resolvconf.extraConfig = "allow_keys=static";
+  services.pihole-ftl.enable = false;
   systemd.defaultUnit = "multi-user.target";
   fonts.fontconfig.enable = false;
   system.stateVersion = "26.11";
@@ -43,5 +49,6 @@
 
   services.tailscale = {
     openFirewall = true;
+    extraSetFlags = [ "--accept-dns=false" ];
   };
 }

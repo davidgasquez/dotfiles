@@ -1,14 +1,7 @@
 { config, lib, ... }:
 
-let
-  quad9 = [
-    "9.9.9.9"
-    "149.112.112.112"
-  ];
-in
-{
+lib.mkIf config.services.pihole-ftl.enable {
   services.pihole-ftl = {
-    enable = true;
     lists = [
       { url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"; }
       {
@@ -18,7 +11,7 @@ in
     ];
     settings = {
       dns = {
-        upstreams = quad9;
+        upstreams = config.networking.nameservers;
         listeningMode = "ALL";
       };
       database.maxDBdays = 7;
@@ -56,10 +49,6 @@ in
       ExecStart = "${lib.getExe config.services.pihole-ftl.piholePackage} -g";
     };
   };
-
-  services.tailscale.extraSetFlags = [ "--accept-dns=false" ];
-  networking.nameservers = quad9;
-  networking.resolvconf.extraConfig = "allow_keys=static";
 
   networking.firewall.interfaces.end0 = {
     allowedTCPPorts = [ 53 ];
