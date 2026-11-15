@@ -67,6 +67,9 @@ in
     extraEnv.STEAM_FORCE_DESKTOPUI_SCALING = "1.666667";
   };
 
+  programs.gamemode.enable = true;
+  users.users.david.extraGroups = [ "gamemode" ];
+
   services.power-profiles-daemon.enable = true;
   services.asusd.asusdConfig.text = ''
     (
