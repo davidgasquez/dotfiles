@@ -63,6 +63,10 @@ in
   networking.hostName = "zephyr";
   boot.loader.limine.style.interface.resolution = "2560x1600";
 
+  programs.steam.package = pkgs.steam.override {
+    extraEnv.STEAM_FORCE_DESKTOPUI_SCALING = "1.666667";
+  };
+
   services.power-profiles-daemon.enable = true;
   services.asusd.asusdConfig.text = ''
     (

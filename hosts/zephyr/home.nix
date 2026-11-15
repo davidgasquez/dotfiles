@@ -29,6 +29,8 @@ in
     "--enable-features=AcceleratedVideoEncoder"
   ];
   wayland.windowManager.hyprland.extraConfig = lib.mkAfter ''
+    hl.config({ xwayland = { force_zero_scaling = true } })
+
     for _, output in ipairs({ "eDP-1", "eDP-2" }) do
       hl.monitor({ output = output, mode = "highrr", position = "auto", scale = 5 / 3 })
     end
