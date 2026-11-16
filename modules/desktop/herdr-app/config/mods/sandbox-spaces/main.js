@@ -83,7 +83,10 @@ function grouped() {
     else if (isChat(at) || isChat(s.folder)) chats.push(s);
     else other.push(s);
   }
-  const machine = [...remote.keys()].sort().map((name) => ({ name, spaces: remote.get(name), layout: layoutOf(name) }));
+  const machine = [...remote.keys()].sort().map((name) => {
+    const layout = layoutOf(name);
+    return { name, spaces: layout === "ready" ? remote.get(name) : [], layout };
+  });
   return { ps, list, of, chats, other, remote: machine };
 }
 
