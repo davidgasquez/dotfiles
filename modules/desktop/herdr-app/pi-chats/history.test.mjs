@@ -26,7 +26,7 @@ function element(kind) {
       else if (key.startsWith("on_")) {
         if (inItemRenderer) throw new Error(key + " in a virtual list renderer");
         node.handlers[key] = args[0];
-      } else node.style[key] = args.length ? args[0] : true;
+      } else node.style[key] = args.length > 1 ? args : args.length ? args[0] : true;
       return proxy;
     };
   } });
@@ -45,8 +45,9 @@ function harness(mod, extra = {}) {
     timer: { after: (ms, fn) => { const t = { ms, fn, cancelled: false, cancel() { t.cancelled = true; } }; f.timers.push(t); return t; }, every() {} },
   };
   const env = {
-    View: class {}, div: element, svg: element, v_flex: element, h_flex: element,
+    View: class {}, div: element, svg: element, v_flex: element, h_flex: element, v_resizable: element, resizable_panel: element,
     Input: { new: element }, Scrollbar: { vertical: element },
+    ScrollHandle: { new: () => ({ scroll_to_item() {} }) },
     VirtualListScrollHandle: { new: () => ({ scroll_to_item(i) { f.scrolled = i; } }) },
     v_virtual_list: (id, n, size, key, render) => {
       const el = element("list"); el.key = id;
@@ -633,6 +634,77 @@ for (const [where, on, list] of [["Other", null, "spaces-list"], ["remote", "tau
     assert.deepEqual(rows(), ["space-sp", "fold-sp", "chat-ta", "fold-ta", "chat-tb", "fold-tb", "sub-k3"].map((k) => k.replace("-", "-" + at(""))), "unfolding the space keeps its chat folded");
   });
 }
+
+// A sidebar with remote spaces whose laid-out heights the test reports, as on_size_change would.
+const remoteWorld = () => {
+  const f = harness("sandbox-spaces", {
+    props: {},
+    saved: [{ name: "proj", folder: "/home/u/proj", color: "ansi6" }],
+    machines: [{ name: null, layout: "ready" }, { name: "tau", layout: "ready" }],
+    spaces: [{ id: "tau/a", name: "api", folder: "/srv/a", machine: "tau", tabs: [{ id: "tau/ta" }, { id: "tau/tb" }] }],
+  }).init();
+  f.notified = 0;
+  f.cx.notify = () => { f.notified++; };
+  f.render();
+  f.size = (sizes) => {
+    for (const [id, height] of Object.entries(sizes)) find(f.tree, id).handlers.on_size_change({ width: 240, height }, f.cx);
+    f.render();
+  };
+  f.group = () => {
+    const walk = (n) => !n || typeof n !== "object" ? null : String(n.kind).startsWith("spaces-remote-") ? n : n.items.reduce((h, c) => h ?? walk(c), null);
+    return walk(f.tree);
+  };
+  // The remote panel's height, its drag range and the group id its sizes live under.
+  f.remote = () => { const panel = f.group().items[1]; return [panel.style.size, panel.style.size_range, f.group().kind]; };
+  f.drag = (height) => { f.group().handlers.on_resize([600 - height, height], f.cx); f.render(); };
+  return f;
+};
+
+test("Spaces: remote spaces fit their measured rows in the room local spaces leave, with no fixed cap", () => {
+  const f = remoteWorld();
+  assert.deepEqual(f.remote(), [0, [0, 0], "spaces-remote-0-0"], "nothing reserved before layout");
+  f.size({ "spaces-body": 600, "spaces-rows": 180, "remote-rows": 95 });
+  assert.deepEqual(f.remote(), [95, [36, 95], "spaces-remote-600-95"]);
+  f.size({ "remote-rows": 330 });
+  assert.deepEqual(f.remote(), [330, [36, 330], "spaces-remote-600-330"], "more remote chats grow it past the old 200");
+  f.size({ "remote-rows": 64 });
+  assert.deepEqual(f.remote(), [64, [36, 64], "spaces-remote-600-64"], "closed remote chats give the room back");
+  const notified = f.notified;
+  f.size({ "spaces-body": 600, "spaces-rows": 180, "remote-rows": 64 });
+  assert.equal(f.notified, notified, "an unchanged size renders nothing again");
+  for (const id of ["spaces-list", "remote-list"]) assert.ok(find(f.tree, id).style.track_scroll, id + " keeps its scroll across group ids");
+});
+
+test("Spaces: local spaces win the room; remote ones shrink to one scrolling row, also in a low window", () => {
+  const f = remoteWorld();
+  f.size({ "spaces-body": 600, "spaces-rows": 520, "remote-rows": 330 });
+  assert.deepEqual(f.remote(), [80, [36, 80], "spaces-remote-600-80"]);
+  f.size({ "spaces-rows": 900 });
+  assert.deepEqual(f.remote(), [36, [36, 36], "spaces-remote-600-36"], "a long local list scrolls itself and leaves remote its minimum");
+  f.size({ "spaces-body": 220, "spaces-rows": 120 });
+  assert.deepEqual(f.remote().slice(0, 2), [100, [36, 100]], "a low window keeps local rows whole first");
+  f.size({ "spaces-rows": 20 });
+  assert.deepEqual(f.remote().slice(0, 2), [160, [36, 160]], "local keeps its own minimum");
+});
+
+test("Spaces: a drag caps remote spaces, yet closing chats or a growing local list still refit them", () => {
+  const f = remoteWorld();
+  f.size({ "spaces-body": 600, "spaces-rows": 180, "remote-rows": 330 });
+  f.drag(150);
+  assert.deepEqual(f.remote(), [150, [36, 330], "spaces-remote-600-150"], "the drag holds");
+  f.size({ "remote-rows": 95 });
+  assert.deepEqual(f.remote(), [95, [36, 95], "spaces-remote-600-95"], "closing chats after a drag shrinks to the rows");
+  f.size({ "remote-rows": 330 });
+  assert.equal(f.remote()[0], 150, "reopened chats grow back only to the dragged height");
+  f.size({ "spaces-rows": 500 });
+  assert.deepEqual(f.remote().slice(0, 2), [100, [36, 100]], "local spaces still win over the drag");
+  f.size({ "spaces-rows": 180 });
+  assert.equal(f.remote()[0], 150);
+  f.drag(330);
+  assert.deepEqual(f.remote(), [330, [36, 330], "spaces-remote-600-330"], "dragging back to the fit returns to auto");
+  f.size({ "remote-rows": 400 });
+  assert.equal(f.remote()[0], 400);
+});
 
 // Two local tabs, each led by a Pi; the second tab's Pi isn't its focused pane.
 const forkWorld = () => ({

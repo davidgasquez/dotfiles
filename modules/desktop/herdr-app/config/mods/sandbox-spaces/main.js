@@ -4,7 +4,7 @@
 // stays listed with nothing running: clicking it starts Pi there, else folds it.
 
 import { View, div, svg } from "gpui-kit";
-import { v_flex, h_flex, InputState, Input } from "gpui-base";
+import { v_flex, h_flex, InputState, Input, ScrollHandle, v_resizable, resizable_panel } from "gpui-base";
 import { spaces, panes, agents, terminals, focused, run, exec, theme, shared, setShared, pickFolder, openOverlay, closeOverlay, props, setAgentOrder, layout, nextCommand, notify, home, machines, window } from "herdr";
 import { DIFF, tally } from "./git.js";
 
@@ -14,6 +14,8 @@ const COMMIT_TASK = "Fetch, review all changes for secrets, create atomic commit
   + "safely integrate upstream, and push the current branch. Never force push or discard work. "
   + "Ask only if blocked or unsure; summarize the result.";
 const ICONS = "mods/workspace-chrome";
+const LOCAL_MIN = 60;
+const REMOTE_MIN = 36;
 const MARK = { ansi6: "#22a99a", ansi3: "#e3814f", ansi4: "#5b8def", ansi5: "#8b7cf6", ansi2: "#3fae6a", ansi1: "#d9649a" };
 
 const trim = (path) => path.replace(/\/+$/, "") || "/";
@@ -186,6 +188,8 @@ export default class SavedSpaces extends View {
     this.folded = new Set(JSON.parse(localStorage.getItem("folded") ?? "[]"));
     this.diffs = {};
     this.starting = new Set();
+    this.remoteCap = null;
+    this.measured = {};
     const p = props() ?? {};
     if (p.rename) {
       this.input = InputState.new({ value: saved().find((x) => x.folder === p.rename)?.name ?? "" });
@@ -199,6 +203,8 @@ export default class SavedSpaces extends View {
       });
       this.refreshDiffs(cx);
       cx.timer.every(5000, (cx) => this.refreshDiffs(cx));
+      this.listScroll = ScrollHandle.new();
+      this.remoteScroll = ScrollHandle.new();
     }
     if (p.rename || p.menu) {
       this.handle = cx.focus_handle();
@@ -241,6 +247,16 @@ export default class SavedSpaces extends View {
         .when(d.add > 0, (el) => el.child(div().text_color(t.ansi2 + "b3").child("+" + short(d.add))))
         .when(d.del > 0, (el) => el.child(div().text_color(t.ansi1 + "b3").child("-" + short(d.del))))
         .when(!d.add && !d.del, (el) => el.child(div().text_color(t.dim).child("~" + short(d.files))))));
+  }
+
+  // Laid-out heights, rendered again only when one changes.
+  measure(key) {
+    return (size, cx) => {
+      const h = Math.round(size.height);
+      if (this.measured[key] === h) return;
+      this.measured[key] = h;
+      cx.notify();
+    };
   }
 
   hover(id, on, cx) {
@@ -508,15 +524,28 @@ export default class SavedSpaces extends View {
     if (narrow()) return this.rail(g);
     const chats = g.chats.flatMap((s) => s.tabs.flatMap((tab) => this.chat(s, tab, g.ps, 8)));
     const remote = g.remote.flatMap((m) => this.machine(m, g.ps));
-    return v_flex().size_full().min_h(0).bg(t.chrome).text_size(13)
-      .child(v_flex().id("spaces-list").flex_1().min_h(0).px(8).pb(8).overflow_y_scrollbar()
+    // Remote spaces fit their rows in what this computer's spaces leave free, else
+    // shrink and scroll; a drag below that fit caps them until dragged back up.
+    const { body = 0, local = 0, remote: rows = 0 } = this.measured;
+    const auto = Math.min(rows, Math.max(REMOTE_MIN, body - Math.max(LOCAL_MIN, local)));
+    const fit = Math.min(auto, this.remoteCap ?? auto);
+    const list = v_flex().id("spaces-list").size_full().min_h(0).px(8).overflow_y_scrollbar().track_scroll(this.listScroll)
+      .child(v_flex().id("spaces-rows").flex_none().pb(8).on_size_change(this.measure("local"))
         .child(this.section("add-space", "Spaces", "Add space", pick))
         .children(g.list.flatMap((x, i) => this.entry(x, i, g.of.get(x.folder), g.ps)))
         .when(!g.list.length, (el) => el.child(div().id("add-first").h(28).px(8).flex().items_center().rounded(7)
           .text_size(12).text_color(t.dim).hover((s) => s.bg(t.hover)).on_click((_e, cx) => pick(cx)).child("Add a folder…")))
-        .when(g.other.length > 0, (el) => el.child(this.section("other", "Other")).children(g.other.flatMap((s) => this.space(s, g.ps)))))
-      .when(g.remote.length > 0, (el) => el.child(v_flex().id("remote-list").flex_none().h(Math.min(200, 5 + 30 * remote.length + g.remote.length)).px(8).pb(4).border_t(1).border_color(t.border)
-        .overflow_y_scrollbar().children(remote)))
+        .when(g.other.length > 0, (el) => el.child(this.section("other", "Other")).children(g.other.flatMap((s) => this.space(s, g.ps)))));
+    return v_flex().size_full().min_h(0).bg(t.chrome).text_size(13)
+      .child(v_flex().id("spaces-body").flex_1().min_h(0).on_size_change(this.measure("body"))
+        .when(!g.remote.length, (el) => el.child(list))
+        // Panel sizes live under the group's id: a new fit or height starts it afresh.
+        .when(g.remote.length > 0, (el) => el.child(v_resizable(`spaces-remote-${body}-${fit}`).size_full()
+          .on_resize((sizes, cx) => { this.remoteCap = sizes[1] < auto - 1 ? Math.round(sizes[1]) : null; cx.notify(); })
+          .child(resizable_panel().size_range(LOCAL_MIN).child(list))
+          .child(resizable_panel().size(fit).size_range(Math.min(REMOTE_MIN, auto), auto)
+            .child(v_flex().id("remote-list").size_full().min_h(0).px(8).overflow_y_scrollbar().track_scroll(this.remoteScroll)
+              .child(v_flex().id("remote-rows").flex_none().pb(4).on_size_change(this.measure("remote")).children(remote)))))))
       .child(v_flex().flex_none().px(8).pb(8).border_t(1).border_color(t.border)
         .child(this.section("new-chat", "Chats", "New Pi chat (Ctrl+I)", newChat,
           this.button("history", svg(ICONS + "/clock.svg").size(13), "Chats history", chatHistory)))
