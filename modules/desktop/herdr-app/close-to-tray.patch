@@ -1,5 +1,5 @@
 diff --git a/Cargo.lock b/Cargo.lock
-index cbc5fea..927e205 100644
+index 6108bf8..98f311d 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
 @@ -291,6 +291,15 @@ version = "1.4.2"
@@ -27,15 +27,15 @@ index cbc5fea..927e205 100644
   "rayon",
   "thiserror 2.0.20",
   "v_frame",
-@@ -3708,6 +3717,7 @@ dependencies = [
+@@ -3712,6 +3721,7 @@ dependencies = [
   "gpui-pre-windows",
   "gpui-shell",
   "image",
 + "ksni",
   "libc",
   "notify",
-  "png 0.17.16",
-@@ -4348,6 +4358,26 @@ dependencies = [
+  "objc2 0.6.4",
+@@ -4358,6 +4368,26 @@ dependencies = [
   "libc",
  ]
  
@@ -62,7 +62,7 @@ index cbc5fea..927e205 100644
  [[package]]
  name = "kurbo"
  version = "0.13.1"
-@@ -5867,6 +5897,12 @@ version = "0.1.1"
+@@ -5877,6 +5907,12 @@ version = "0.1.1"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "35fb2e5f958ec131621fdd531e9fc186ed768cbe395337403ae56c17a74c68ec"
  
@@ -75,7 +75,7 @@ index cbc5fea..927e205 100644
  [[package]]
  name = "pathfinder_geometry"
  version = "0.5.1"
-@@ -8032,6 +8068,15 @@ version = "0.13.5"
+@@ -8042,6 +8078,15 @@ version = "0.13.5"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca"
  
@@ -92,11 +92,11 @@ index cbc5fea..927e205 100644
  name = "tauri-winrt-notification"
  version = "0.7.3"
 diff --git a/Cargo.toml b/Cargo.toml
-index 2fa587a..6d4f631 100644
+index ae5281a..1e5fa42 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
-@@ -47,6 +47,7 @@ gpui = { package = "gpui-pre", version = "=0.3.8", features = ["test-support"] }
- gpui-shell = { path = "vendor/gpui-kit/crates/shell", features = ["render-test-support"] }
+@@ -53,6 +53,7 @@ swash = "=0.2.10"
+ tiny-skia = { version = "=0.11.4", default-features = false, features = ["std", "simd"] }
  
  [target.'cfg(target_os = "linux")'.dependencies]
 +ksni = { version = "=0.3.7", default-features = false, features = ["async-io", "blocking"] }
@@ -104,10 +104,10 @@ index 2fa587a..6d4f631 100644
  
  [target.'cfg(target_os = "macos")'.dependencies]
 diff --git a/src/commands.rs b/src/commands.rs
-index 1db18f7..6cfb448 100644
+index 612b882..810dcf5 100644
 --- a/src/commands.rs
 +++ b/src/commands.rs
-@@ -94,11 +94,11 @@ pub const COMMANDS: &[Command] = &[
+@@ -101,11 +101,11 @@ pub const COMMANDS: &[Command] = &[
      cmd("app.zoom_out", &[], "Make everything smaller."),
      cmd("app.zoom_reset", &[], "Back to normal size."),
      cmd("app.update", &[], "Restart into the update Herdr downloaded (your terminals keep running)."),
@@ -122,7 +122,7 @@ index 1db18f7..6cfb448 100644
      cmd("window.maximize", &[], "Maximize the window, or back."),
  ];
 diff --git a/src/control.rs b/src/control.rs
-index 5833134..67da32b 100644
+index 167c920..2a63e30 100644
 --- a/src/control.rs
 +++ b/src/control.rs
 @@ -62,6 +62,8 @@ pub fn raise_running() -> bool {
@@ -135,10 +135,10 @@ index 5833134..67da32b 100644
      if stream.write_all(format!("{}\n", json!({ "raise": true })).as_bytes()).is_ok() {
          let _ = BufReader::new(&stream).read_line(&mut String::new());
 diff --git a/src/main.rs b/src/main.rs
-index d3348d4..f5d5993 100644
+index d74430e..6ae76e8 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -35,6 +35,8 @@ mod update_notes;
+@@ -40,6 +40,8 @@ mod update_notes;
  mod vt;
  mod win32_keys;
  mod window;
@@ -147,7 +147,7 @@ index d3348d4..f5d5993 100644
  
  use gpui::*;
  
-@@ -198,6 +200,8 @@ fn main() {
+@@ -213,6 +215,8 @@ fn main() {
  
  /// The main window, on a connected core.
  pub fn open_main(core: std::sync::Arc<hc::Core>, requests: async_channel::Receiver<mods::Request>, cx: &mut App) {
@@ -170,7 +170,7 @@ index 0987554..c5fd7e4 100644
          use std::os::windows::process::CommandExt;
 diff --git a/src/tray.rs b/src/tray.rs
 new file mode 100644
-index 0000000..f500232
+index 0000000..9ddca64
 --- /dev/null
 +++ b/src/tray.rs
 @@ -0,0 +1,195 @@
@@ -370,10 +370,10 @@ index 0000000..f500232
 +    let _ = hyprctl(&["dispatch", &command]);
 +}
 diff --git a/src/window.rs b/src/window.rs
-index dcd4d89..8a7dc2c 100644
+index 41c07e8..0e6ec35 100644
 --- a/src/window.rs
 +++ b/src/window.rs
-@@ -530,6 +530,8 @@ impl AppWindow {
+@@ -593,6 +593,8 @@ impl AppWindow {
          }));
          let closing = cx.weak_entity();
          window.on_window_should_close(cx, move |window, cx| {
@@ -382,7 +382,7 @@ index dcd4d89..8a7dc2c 100644
              // macOS: the red button hides the app instead, so alerts keep ringing;
              // the Dock icon or a new launch brings it back, Cmd+Q quits.
              if cfg!(target_os = "macos") {
-@@ -3440,6 +3442,8 @@ impl AppWindow {
+@@ -3929,6 +3931,8 @@ impl AppWindow {
          }
          // Herdr was launched again: this window comes to the front instead.
          if cmd.get("raise").is_some() {
@@ -391,15 +391,17 @@ index dcd4d89..8a7dc2c 100644
              cx.activate(true);
              window.activate_window();
              return json!({ "ok": true });
-@@ -4505,12 +4509,18 @@ impl Render for AppWindow {
+@@ -5242,6 +5246,8 @@ impl Render for AppWindow {
                  }
              }))
-             .capture_key_down(cx.listener(|this, ev: &KeyDownEvent, _, cx| {
+             .capture_key_down(cx.listener(|this, ev: &KeyDownEvent, window, cx| {
 +                #[cfg(target_os = "linux")]
 +                crate::tray::cancel_startup_hide();
-                 if ev.keystroke.key == "escape" && this.pane_drag.is_some() {
-                     this.cancel_pane_drag(cx);
-                     cx.stop_propagation();
+                 if ev.keystroke.key == "escape" {
+                     if this.pane_drag.is_some() {
+                         this.cancel_pane_drag(cx);
+@@ -5251,7 +5257,11 @@ impl Render for AppWindow {
+                     }
                  }
              }))
 -            .capture_any_mouse_down(cx.listener(|this, ev: &MouseDownEvent, _, _| this.pointer = ev.position))
@@ -412,10 +414,10 @@ index dcd4d89..8a7dc2c 100644
                  this.drag_window(ev, window);
                  if this.drag.is_none() {
 diff --git a/src/window/titlebar.rs b/src/window/titlebar.rs
-index 1319016..f39020a 100644
+index 2459d9a..2a2697b 100644
 --- a/src/window/titlebar.rs
 +++ b/src/window/titlebar.rs
-@@ -198,6 +198,8 @@ impl AppWindow {
+@@ -208,12 +208,18 @@ impl AppWindow {
      pub(super) fn window_command(&mut self, name: &str, window: &mut Window, cx: &mut Context<Self>) {
          match name {
              "window.close" => {
@@ -424,7 +426,6 @@ index 1319016..f39020a 100644
                  self.drain_documents(window, cx);
                  self.close_mods_now(std::time::Instant::now() + Duration::from_millis(250), window, cx);
                  crate::place::save(window, cx);
-@@ -204,7 +206,11 @@ impl AppWindow {
                  window.remove_window();
              }
 -            "window.minimize" => window.minimize_window(),
@@ -436,4 +437,3 @@ index 1319016..f39020a 100644
              #[cfg(windows)]
              "window.maximize" => win::toggle_maximize(window),
              #[cfg(not(windows))]
-             "window.maximize" => window.zoom_window(),
