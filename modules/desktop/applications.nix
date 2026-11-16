@@ -112,7 +112,7 @@ in
   home.packages = with pkgs; [
     chatgpt
     gogcli
-    (callPackage ./grok-bot.nix { })
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot
     herdrApp
     (writeShellApplication {
       name = "herdr-new-chat";
