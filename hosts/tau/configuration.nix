@@ -27,6 +27,8 @@
     enableUserSlices = true;
   };
 
+  security.sudo.wheelNeedsPassword = false;
+
   users.mutableUsers = false;
   users.users.david = {
     linger = true;
