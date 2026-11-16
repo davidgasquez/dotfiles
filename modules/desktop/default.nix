@@ -33,6 +33,7 @@ in
       "google-chrome"
       "chatgpt"
       "claude-code"
+      "grok-bot"
       "spotify"
       "slack"
       "superwhisper"
