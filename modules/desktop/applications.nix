@@ -112,6 +112,7 @@ in
   home.packages = with pkgs; [
     chatgpt
     gogcli
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot
     herdrApp
     (writeShellApplication {
       name = "herdr-new-chat";
@@ -257,9 +258,11 @@ in
       "video/mp4" = "mpv.desktop";
       "video/webm" = "mpv.desktop";
       "video/x-matroska" = "mpv.desktop";
+      "x-scheme-handler/grokbot" = "grok-bot.desktop";
       "x-scheme-handler/http" = "google-chrome.desktop";
       "x-scheme-handler/https" = "google-chrome.desktop";
       "x-scheme-handler/mailto" = "google-chrome.desktop";
+      "x-scheme-handler/sand" = "grok-bot.desktop";
     };
   };
   xdg.configFile."systemd/user/graphical-session.target.wants/app-com.mitchellh.ghostty.service".source =
