@@ -41,6 +41,9 @@ in
   home.packages = [
     herdrCore
     memex
+    pkgs.file
+    pkgs.poppler-utils
+    pkgs.unzip
     (pkgs.symlinkJoin {
       inherit (qmd) name meta;
       paths = [ qmd ];
