@@ -6,6 +6,10 @@
 }:
 
 let
+  piArgv = builtins.toJSON [
+    "exec"
+    (lib.getExe config.programs.pi-coding-agent.package)
+  ];
   openHerdrProject = pkgs.writeShellApplication {
     name = "open-herdr-project";
     runtimeInputs = with pkgs; [
@@ -49,11 +53,11 @@ let
           herdr-app "do" agent.focus --terminal "$terminal"
         else
           herdr-app "do" tab.new --space "$space" --name Pi --folder "$folder" \
-            --argv '${builtins.toJSON [ (lib.getExe config.programs.pi-coding-agent.package) ]}'
+            --argv '${piArgv}'
         fi
       else
         herdr-app "do" space.new --name "$(basename -- "$folder")" --folder "$folder" --machine "" \
-          --tab Pi --argv '${builtins.toJSON [ (lib.getExe config.programs.pi-coding-agent.package) ]}'
+          --tab Pi --argv '${piArgv}'
       fi
       if [ -n "''${HYPRLAND_INSTANCE_SIGNATURE:-}" ]; then
         hyprctl dispatch 'hl.dsp.focus({ window = "class:herdr-app" })'

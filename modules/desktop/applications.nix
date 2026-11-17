@@ -16,6 +16,10 @@ let
     });
   chatgpt = withOzone pkgs.chatgpt;
   spotify = withOzone pkgs.spotify;
+  piArgv = builtins.toJSON [
+    "exec"
+    (lib.getExe config.programs.pi-coding-agent.package)
+  ];
   herdrApp = pkgs.callPackage ./herdr-app {
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app;
   };
@@ -167,11 +171,11 @@ in
       ' <<< "$spaces")
       if [ -n "$space" ]; then
         exec ${lib.getExe herdrApp} do tab.new --space "$space" --name Pi --folder "$folder" \
-          --argv '${builtins.toJSON [ (lib.getExe config.programs.pi-coding-agent.package) ]}'
+          --argv '${piArgv}'
       else
         exec ${lib.getExe herdrApp} do space.new \
           --name "$(${pkgs.coreutils}/bin/basename -- "$folder")" --folder "$folder" --machine "" \
-          --tab Pi --argv '${builtins.toJSON [ (lib.getExe config.programs.pi-coding-agent.package) ]}'
+          --tab Pi --argv '${piArgv}'
       fi
     '')
     piChats

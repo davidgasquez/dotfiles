@@ -39,6 +39,9 @@ if (reply.stderr) process.stderr.write(reply.stderr);
 process.stdout.write(typeof reply.stdout === "string" ? reply.stdout : JSON.stringify(reply.stdout ?? ""));
 process.exit(reply.code ?? 0);
 `, { mode: 0o755 });
+fs.writeFileSync(path.join(bin, "hc"), `#!${process.execPath}
+require("node:fs").appendFileSync(${JSON.stringify(log)}, JSON.stringify(["hc", ...process.argv.slice(2)]) + "\\n");
+`, { mode: 0o755 });
 
 const ID = "t1zz";
 const layout = (terminals) => ({
@@ -235,6 +238,24 @@ test("registers nothing outside a Herdr terminal", () => {
   for (const id of ["", "../x"]) {
     assert.deepEqual(load({ env: { HC_TERMINAL_ID: id } }), { handlers: {}, commands: {}, shortcuts: {} });
   }
+});
+
+test("labels the terminal with its current session file", async () => {
+  const PATH = process.env.PATH;
+  process.env.PATH = bin;
+  fs.rmSync(log, { force: true });
+  try {
+    const { handlers } = load();
+    for (const file of ["/s/a.jsonl", undefined]) {
+      await handlers.session_start({}, { sessionManager: { getSessionFile: () => file } });
+    }
+  } finally {
+    process.env.PATH = PATH;
+  }
+  assert.deepEqual(read(log), [
+    ["hc", "label", ID, "pi.session=/s/a.jsonl"],
+    ["hc", "label", ID, "pi.session="],
+  ]);
 });
 
 test("keeps the final reply preview for the terminal", () => {

@@ -244,4 +244,10 @@ export default function herdrExtension(pi: ExtensionAPI): void {
 
   registerPreview(pi, terminal);
   registerBranch(pi, terminal);
+  pi.on("session_start", async (_event, ctx) => {
+    const file = ctx.sessionManager.getSessionFile() ?? "";
+    await execFileAsync("hc", ["label", terminal, `pi.session=${file}`], {
+      timeout: HERDR_APP_TIMEOUT_MS,
+    }).catch(() => {});
+  });
 }
