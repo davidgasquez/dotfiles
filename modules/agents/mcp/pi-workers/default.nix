@@ -10,7 +10,7 @@ let
     export PI_WORKERS_HC=${
       lib.getExe inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core
     }
-    exec ${lib.getExe pkgs.nodejs_22} ${./pi-workers.mjs}
+    exec ${lib.getExe pkgs.nodejs_24} ${./pi-workers.mjs}
   '';
 in
 {

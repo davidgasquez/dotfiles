@@ -7,11 +7,8 @@
 
 {
   nixpkgs.overlays = [
-    (final: prev: {
+    (_final: prev: {
       codex = inputs.llm-agents.packages.${prev.stdenv.hostPlatform.system}.codex;
-      tectonic-unwrapped = prev.tectonic-unwrapped.overrideAttrs (old: {
-        buildInputs = old.buildInputs ++ [ final.aws-lc ];
-      });
     })
   ];
 

@@ -96,6 +96,10 @@ in
           then del(.["mod:sandbox-palette"]["ctrl-n"])
           else .
           end
+        | if .["layout:sandbox"]["ctrl-shift-a"] == "sandbox-chrome.new-pi"
+          then del(.["layout:sandbox"]["ctrl-shift-a"])
+          else .
+          end
       '';
       path = "${config.xdg.configHome}/herdr-app/keys.json";
       staticSettings = (pkgs.formats.json { }).generate "herdr-app-keys.json" {

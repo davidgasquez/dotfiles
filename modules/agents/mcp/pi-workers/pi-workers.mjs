@@ -1,7 +1,6 @@
 import { execFile, spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { createConnection } from "node:net";
-import { createInterface } from "node:readline";
 import { promisify } from "node:util";
 
 const hcBin = process.env.PI_WORKERS_HC ?? "hc";
@@ -23,16 +22,25 @@ const tool = {
   },
 };
 
-// MCP stdio and hc events are JSON lines; readline splits only on CR/LF, never U+2028/U+2029.
+// MCP stdio and hc events are LF-delimited JSON; readline would also split on U+2028/U+2029,
+// which JSON strings may contain. A trailing CR is JSON whitespace.
 function readJsonLines(stream, onRecord, onError) {
-  createInterface({ input: stream }).on("line", (line) => {
+  let buffer = "";
+  function parse(line) {
     if (!line.trim()) return;
     try {
       onRecord(JSON.parse(line));
     } catch (error) {
       onError(error);
     }
+  }
+  stream.setEncoding("utf8");
+  stream.on("data", (chunk) => {
+    const lines = (buffer + chunk).split("\n");
+    buffer = lines.pop();
+    lines.forEach(parse);
   });
+  stream.on("end", () => parse(buffer));
 }
 
 function owner(metadata = {}) {

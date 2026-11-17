@@ -302,7 +302,7 @@ in
   services.hypridle = {
     enable = true;
     settings.general = {
-      lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${lib.getExe lock}";
+      lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${pkgs.uwsm}/bin/uwsm-app -s s -- ${lib.getExe lock}";
       on_lock_cmd = "${pkgs.systemd}/bin/systemctl --user restart lock-screen-off.timer";
       on_unlock_cmd = "${pkgs.systemd}/bin/systemctl --user stop lock-screen-off.timer lock-screen-off.service";
       before_sleep_cmd = "${pkgs.systemd}/bin/loginctl lock-session";

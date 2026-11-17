@@ -14,7 +14,7 @@ let
     name = "open-herdr-project";
     runtimeInputs = with pkgs; [
       coreutils
-      config.wayland.windowManager.hyprland.package
+      hyprland
       jq
       util-linux
       uwsm

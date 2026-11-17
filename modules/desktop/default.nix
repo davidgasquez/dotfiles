@@ -26,6 +26,7 @@ in
   users.users.david.extraGroups = [ "networkmanager" ];
   users.users.david.linger = true;
   programs.nix-ld.enable = true;
+  programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 
   nixpkgs.config.allowUnfreePredicate =
     pkg:
