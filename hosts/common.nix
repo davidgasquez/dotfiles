@@ -70,13 +70,20 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "github:davidgasquez/dotfiles/main#${config.networking.hostName}";
+    flake = "/etc/nixos#${config.networking.hostName}";
     upgrade = false;
     flags = [ "--no-update-lock-file" ];
   };
-  systemd.services.nixos-upgrade.serviceConfig = {
-    Nice = 10;
-    IOSchedulingClass = "idle";
+  systemd.services.nixos-upgrade = {
+    preStart = ''
+      git=(${pkgs.util-linux}/bin/runuser -u david -- env HOME=${config.users.users.david.home} git -C /etc/nixos)
+      test "$("''${git[@]}" branch --show-current)" = main
+      "''${git[@]}" pull --ff-only --no-rebase --no-autostash origin main
+    '';
+    serviceConfig = {
+      Nice = 10;
+      IOSchedulingClass = "idle";
+    };
   };
 
   programs.git = {
