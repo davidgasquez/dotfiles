@@ -119,7 +119,9 @@ in
   };
   home.packages = with pkgs; [
     chatgpt
-    gogcli
+    inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.gogcli
+    todoist-cli
+    inputs.nix-openclaw-tools.packages.${pkgs.stdenv.hostPlatform.system}.wacli
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot
     herdrApp
     (writeShellApplication {

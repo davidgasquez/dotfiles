@@ -84,6 +84,9 @@ explicitly needs raw payloads.
 Calendar lists invitees. Meet lists actual attendees. For recurring links,
 choose the conference by time from `meet history`.
 
+`gog keep` requires a Google Workspace service account with domain-wide
+delegation. For personal Gmail notes, use [Google Keep](https://keep.google.com/) directly.
+
 ## Writes
 
 Before writes, identify the account, object id, and exact mutation. Prefer
@@ -143,6 +146,6 @@ gog <service> <command> --help
 gog schema <service> <command> --json
 ```
 
-See the [command reference](https://github.com/openclaw/gogcli/tree/v0.47.1/docs/commands)
-and [upstream agent guide](https://github.com/openclaw/gogcli/blob/v0.47.1/docs/agent-skills.md)
+See the [command reference](https://github.com/openclaw/gogcli/tree/v0.48.1/docs/commands)
+and [upstream agent guide](https://github.com/openclaw/gogcli/blob/v0.48.1/docs/agent-skills.md)
 for service-specific examples.

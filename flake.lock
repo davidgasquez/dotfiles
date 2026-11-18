@@ -137,6 +137,26 @@
         "type": "github"
       }
     },
+    "nix-openclaw-tools": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794881352,
+        "narHash": "sha256-YmbjFxm98Iac232ZjHi75uKL99EUO097MXdxGVzw++w=",
+        "owner": "openclaw",
+        "repo": "nix-openclaw-tools",
+        "rev": "e9ed931c3f3a116aab2a86314f664d2667bdee6b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "openclaw",
+        "repo": "nix-openclaw-tools",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "inputs": {
         "nixpkgs": [
@@ -189,6 +209,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1794993867,
+        "narHash": "sha256-73At+PgsItvDAzEqdAR++/yvXgmCwvno6FeKxx8R/OQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "6b890a979edd75e24463ef948b43b7fbdbcaf9a0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1794750194,
@@ -233,8 +269,10 @@
         "disko": "disko",
         "home-manager": "home-manager",
         "llm-agents": "llm-agents",
+        "nix-openclaw-tools": "nix-openclaw-tools",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-master": "nixpkgs-master",
         "pi": "pi"
       }
     },

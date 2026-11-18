@@ -19,7 +19,7 @@ export default function customOpenAIExtension(pi: ExtensionAPI): void {
     const text = isRecord(event.payload.text) ? event.payload.text : {};
     return {
       ...event.payload,
-      service_tier: "priority",
+      service_tier: ctx.model.id === "gpt-6.2-sol" ? "ultrafast" : "priority",
       text: { ...text, verbosity: "low" },
     };
   });
