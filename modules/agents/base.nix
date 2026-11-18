@@ -70,7 +70,7 @@ in
     enable = true;
     mutableSettings = true;
     settings = {
-      model = "gpt-6.1-sol";
+      model = "gpt-6.2-sol";
       model_reasoning_effort = "medium";
       service_tier = "priority";
       sandbox_mode = "danger-full-access";
