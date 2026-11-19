@@ -49,7 +49,7 @@ let
 
       rclone sync . personal-drive: \
         --filter-from ${filters} \
-        --backup-dir "personal-drive:.personal-sync-backups/$(date -u +%Y%m%dT%H%M%S.%NZ)" \
+        --drive-use-trash \
         --checksum --max-delete 10 --verbose "$@"
     '';
   };
