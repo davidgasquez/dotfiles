@@ -22,8 +22,13 @@ Read `hc --skill` before delegating.
 
 ## Guidelines
 
-- For coding, use Pi with on medium
+- For coding, use Pi with Opus on medium
 - As an oracle, use Pi with Astra on xhigh
-- For research and exploration, run both Sol 6.1 and Opus 5.5 on high with Pi
-- Pi model flags: Opus is `--provider anthropic --model claude-opus-5-5`, Sol is `--provider openai --model gpt-6.2-sol`, Astra is `--provider openai --model gpt-6.2-astra`
+- For writting (readme, docs, issues, ...) use Neon
+- For research and exploration, run both Sol and Opus on high with Pi
+- Pi model flags
+  - Opus is `--provider anthropic --model claude-opus-5-5`
+  - Sol is `--provider openai --model gpt-6.2-sol`
+  - Astra is `--provider openai --model gpt-6.2-astra`
+  - Neon is `--provider google --model gemini-4-neon`
 - By default use `pi`, when specified, use `codex` or `claude` CLIs
