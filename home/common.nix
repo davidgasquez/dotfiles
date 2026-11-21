@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./projects-pull.nix ];
+
   home.packages = with pkgs; [
     bat
     eza
