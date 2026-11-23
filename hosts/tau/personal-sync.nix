@@ -6,7 +6,6 @@ let
     - /.personal-sync-backups/**
     - .git
     - .git/**
-    - **/.git/**
     - .gitignore
     - .gitattributes
     - .DS_Store
@@ -34,7 +33,6 @@ let
       pkgs.git-lfs
       pkgs.gh
       pkgs.rclone
-      pkgs.coreutils
     ];
     text = ''
       cd "$STATE_DIRECTORY"

@@ -20,9 +20,8 @@ let
     "exec"
     (lib.getExe config.programs.pi-coding-agent.package)
   ];
-  herdrApp = pkgs.callPackage ./herdr-app {
-    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app;
-  };
+  flakePackages = inputs.self.packages.${pkgs.stdenv.hostPlatform.system};
+  herdrApp = flakePackages.herdr-app;
   piChats = pkgs.writeShellScriptBin "pi-chats" ''
     exec ${lib.getExe pkgs.nodejs_24} ${./herdr-app/pi-chats/pi-chats.mjs} "$@"
   '';
@@ -193,7 +192,7 @@ in
     (callPackage ./signal-desktop.nix { inherit (config.catppuccin) flavor; })
     spotify
     slack
-    (callPackage ./slacrawl.nix { })
+    flakePackages.slacrawl
     file-roller
     xfce4-settings
   ];

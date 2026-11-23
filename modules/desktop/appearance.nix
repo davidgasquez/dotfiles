@@ -97,7 +97,6 @@ in
       size = 11;
     };
   };
-  dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
   qt = {
     enable = true;
     platformTheme.name = "qtct";

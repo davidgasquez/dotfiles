@@ -68,6 +68,7 @@ in
 
   programs.codex = {
     enable = true;
+    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
     mutableSettings = true;
     settings = {
       model = "gpt-6.2-sol";
