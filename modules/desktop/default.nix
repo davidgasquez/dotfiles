@@ -33,6 +33,7 @@ in
     builtins.elem (lib.getName pkg) [
       "google-chrome"
       "chatgpt"
+      "chatgpt-primary-runtime"
       "claude-code"
       "spotify"
       "slack"

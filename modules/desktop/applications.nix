@@ -49,12 +49,15 @@ let
       systemd
     ];
     text = ''
+      windows() {
+        hyprctl clients -j | jq -r --argjson pid "$MAINPID" '
+          .[] | select(.pid == $pid and .class == "chatgpt" and .mapped and (.floating | not))
+          | .address
+        '
+      }
       for ((attempt = 0; attempt < 300; attempt++)); do
         kill -0 "$MAINPID" 2>/dev/null || exit 0
-        window=$(hyprctl clients -j | jq -r --argjson pid "$MAINPID" '
-          [.[] | select(.pid == $pid and .class == "chatgpt" and .mapped and (.floating | not))]
-          | .[0].address // empty
-        ')
+        window=$(windows)
         items=$(busctl --user --json=short get-property \
           org.kde.StatusNotifierWatcher /StatusNotifierWatcher \
           org.kde.StatusNotifierWatcher RegisteredStatusNotifierItems 2>/dev/null) \
@@ -64,11 +67,11 @@ let
               any(.[]; .pid == $pid and
                 (.name as $name | any($items.data[]; startswith($name + "/"))))
             ' >/dev/null; then
+          # The startup window is replaced by the account window shortly after it appears.
           sleep 5
-          if hyprctl clients -j | jq -e --argjson pid "$MAINPID" --arg window "$window" \
-            'any(.[]; .pid == $pid and .address == $window and .mapped)' >/dev/null; then
+          for window in $(windows); do
             hyprctl dispatch "hl.dsp.window.close({window=\"address:$window\"})"
-          fi
+          done
           exit 0
         fi
         sleep 0.1
