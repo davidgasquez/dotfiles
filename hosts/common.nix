@@ -37,7 +37,10 @@
 
   services.tailscale = {
     enable = true;
-    extraSetFlags = [ "--ssh" ];
+    extraSetFlags = [
+      "--ssh"
+      "--operator=david"
+    ];
   };
   systemd.services.tailscaled-set = {
     wantedBy = [ "multi-user.target" ];

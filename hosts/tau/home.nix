@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -10,6 +11,15 @@
 
   home.stateVersion = "26.11";
   home.packages = [ pkgs.rclone ];
+
+  programs.t3code = {
+    enable = true;
+    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code;
+    server = {
+      enable = true;
+      extraArgs = [ "--tailscale-serve" ];
+    };
+  };
 
   systemd.user.services.codex-remote-control = {
     Unit.Description = "Codex remote control for tau";
