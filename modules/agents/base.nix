@@ -33,6 +33,7 @@ let
 in
 {
   imports = [
+    ./codex.nix
     ./pi.nix
   ];
 
@@ -62,25 +63,4 @@ in
       source = "${agentSkills}/${name}";
     }
   ) (builtins.readDir ./skills);
-
-  programs.codex = {
-    enable = true;
-    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex;
-    mutableSettings = true;
-    settings = {
-      model = "gpt-6.2-sol";
-      model_reasoning_effort = "medium";
-      service_tier = "priority";
-      sandbox_mode = "danger-full-access";
-      approval_policy = "never";
-      sandbox_workspace_write.network_access = true;
-      web_search = "live";
-      projects."/etc/nixos".trust_level = "trusted";
-      apps = {
-        connector_openai_hotline.enabled = false;
-        connector_openai_safety_settings.enabled = false;
-        connector_openai_chatgpt_pets.enabled = false;
-      };
-    };
-  };
 }
