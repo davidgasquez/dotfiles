@@ -24,7 +24,6 @@
   home.sessionVariables.PI_SKIP_VERSION_CHECK = "1";
 
   home.packages = [
-    pkgs.claude-code
     pkgs.libnotify
   ];
 

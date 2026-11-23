@@ -1,6 +1,7 @@
 ---
 name: todoist
 description: Manage Todoist tasks, projects, labels, and reminders using the official td CLI. Use for Todoist inbox, today, upcoming tasks, and project organization.
+disable-model-invocation: true
 ---
 
 # Todoist

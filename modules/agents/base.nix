@@ -33,6 +33,7 @@ let
 in
 {
   imports = [
+    ./claude.nix
     ./codex.nix
     ./pi.nix
   ];
@@ -57,10 +58,8 @@ in
     shell = ["${lib.getExe herdrRecoverShell}"]
   '';
 
-  home.file = lib.mapAttrs' (
-    name: _:
-    lib.nameValuePair ".agents/skills/${name}" {
-      source = "${agentSkills}/${name}";
-    }
-  ) (builtins.readDir ./skills);
+  home.file = lib.concatMapAttrs (name: _: {
+    ".agents/skills/${name}".source = "${agentSkills}/${name}";
+    ".claude/skills/${name}".source = "${agentSkills}/${name}";
+  }) (builtins.readDir ./skills);
 }
