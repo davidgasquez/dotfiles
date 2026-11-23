@@ -9,7 +9,6 @@
     "npm:@gotgenes/pi-anthropic-auth",
     "npm:pi-codex-compaction"
   ],
-  "extensions": ["-extensions/herdr.ts"],
   "hideThinkingBlock": true,
   "quietStartup": "header",
   "warnings": {

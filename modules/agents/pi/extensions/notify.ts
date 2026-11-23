@@ -133,8 +133,6 @@ function restoreEnabled(ctx: ExtensionContext): boolean | undefined {
 }
 
 export default function notifyExtension(pi: ExtensionAPI): void {
-  if (process.env.HC_TERMINAL_ID) return;
-
   let enabled = false;
 
   const showStatus = (ctx: ExtensionContext) =>

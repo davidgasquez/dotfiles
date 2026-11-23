@@ -52,22 +52,6 @@ in
     };
   };
 
-  xdg.configFile."herdr-app/themes/catppuccin-frappe.json".source =
-    ./herdr-app/catppuccin-frappe.json;
-  home.activation.herdrAppSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] (
-    lib.hm.generators.mkImpureConfigMerger {
-      inherit pkgs;
-      format = "json";
-      empty = "{}";
-      jqOperation = "$dynamic * $static";
-      path = "${config.xdg.configHome}/herdr-app/settings.json";
-      staticSettings = (pkgs.formats.json { }).generate "herdr-app-settings.json" {
-        theme = "catppuccin-frappe";
-        appearance = "dark";
-      };
-    }
-  );
-
   home.pointerCursor = {
     enable = true;
     size = 24;

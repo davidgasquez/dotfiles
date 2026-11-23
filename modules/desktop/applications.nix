@@ -16,12 +16,7 @@ let
     });
   chatgpt = withOzone pkgs.chatgpt;
   spotify = withOzone pkgs.spotify;
-  piArgv = builtins.toJSON [
-    "exec"
-    (lib.getExe config.programs.pi-coding-agent.package)
-  ];
   flakePackages = inputs.self.packages.${pkgs.stdenv.hostPlatform.system};
-  herdrApp = flakePackages.herdr-app;
   grokBot = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot;
   t3code = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code;
   parkedAppLauncher =
@@ -75,9 +70,6 @@ let
       hyprctl eval 'hl.dispatch(hl.dsp.send_shortcut({ mods = "CTRL ALT", key = "N" }))'
     '';
   };
-  piChats = pkgs.writeShellScriptBin "pi-chats" ''
-    exec ${lib.getExe pkgs.nodejs_24} ${./herdr-app/pi-chats/pi-chats.mjs} "$@"
-  '';
   chromeWarm = pkgs.writeText "chrome-warm.json" (
     builtins.toJSON {
       external_crx = ./chrome-warm/extension.crx;
@@ -133,41 +125,6 @@ let
   };
 in
 {
-  # Herdr reloads its layouts and keys live; keep them writable.
-  home.activation.herdrAppConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    run ${lib.getExe pkgs.rsync} \
-      --recursive --checksum --perms --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
-      ${./herdr-app/config}/ ${lib.escapeShellArg "${config.xdg.configHome}/herdr-app/"}
-  '';
-
-  home.activation.herdrAppKeys = lib.hm.dag.entryAfter [ "linkGeneration" ] (
-    lib.hm.generators.mkImpureConfigMerger {
-      inherit pkgs;
-      format = "json";
-      empty = "{}";
-      jqOperation = ''
-        $dynamic * $static
-        | if .["mod:sandbox-palette"]["ctrl-n"] == "sandbox-palette.confirm"
-          then del(.["mod:sandbox-palette"]["ctrl-n"])
-          else .
-          end
-        | if .["layout:sandbox"]["ctrl-shift-a"] == "sandbox-chrome.new-pi"
-          then del(.["layout:sandbox"]["ctrl-shift-a"])
-          else .
-          end
-      '';
-      path = "${config.xdg.configHome}/herdr-app/keys.json";
-      staticSettings = (pkgs.formats.json { }).generate "herdr-app-keys.json" {
-        "layout:sandbox" = {
-          ctrl-alt-z = "sandbox-tabs.open_zed";
-          ctrl-i = "sandbox-spaces.new_chat";
-          ctrl-n = "sandbox-tabs.new_pi";
-          ctrl-shift-p = "mod.open:sandbox-palette";
-        };
-      };
-    }
-  );
-
   home.sessionVariables = {
     GOG_KEYRING_SERVICE_NAME = "Default_Keyring";
     PROTON_PASS_LINUX_KEYRING = "dbus";
@@ -178,68 +135,6 @@ in
     todoist-cli
     inputs.nix-openclaw-tools.packages.${pkgs.stdenv.hostPlatform.system}.wacli
     grokBot
-    herdrApp
-    (writeShellApplication {
-      name = "herdr-new-chat";
-      runtimeInputs = [
-        config.programs.fuzzel.package
-        herdrApp
-        uwsm
-        hyprland
-        coreutils
-        findutils
-      ];
-      text = ''
-        projects=()
-        if [[ -d "$HOME/projects" ]]; then
-          mapfile -t projects < <(find -L "$HOME/projects" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
-        fi
-        choice=$(
-          {
-            printf 'sandbox\0icon\x1ffolder-temp\n'
-            for project in "''${projects[@]}"; do
-              printf '%s\0icon\x1ffolder-development\n' "$project"
-            done
-          } | fuzzel --dmenu --index --only-match --no-run-if-empty \
-            --prompt='~/projects › ' --placeholder='New Pi chat'
-        ) || exit 0
-        if [[ "$choice" != 0 ]]; then
-          cd -- "$HOME/projects/''${projects[choice - 1]}"
-        fi
-
-        uwsm-app -- herdr-app &
-        for ((attempt = 0; attempt < 50; attempt++)); do
-          if herdr-app status >/dev/null 2>&1; then
-            hyprctl dispatch 'hl.dsp.focus({ window = "class:^herdr-app$" })'
-            if [[ "$choice" == 0 ]]; then
-              exec herdr-app "do" sandbox-spaces.new_chat
-            fi
-            exec herdr-pi
-          fi
-          sleep 0.1
-        done
-        echo "Herdr did not become ready" >&2
-        exit 1
-      '';
-    })
-    (pkgs.writeShellScriptBin "herdr-pi" ''
-      set -euo pipefail
-      folder=$(${pkgs.coreutils}/bin/realpath -e -- "$PWD")
-      spaces=$(${lib.getExe herdrApp} ls)
-      space=$(${lib.getExe pkgs.jq} -r --arg folder "$folder" '
-        [.spaces[] | select((.machine == null or .machine == "") and .folder == $folder)]
-        | first | .id // empty
-      ' <<< "$spaces")
-      if [ -n "$space" ]; then
-        exec ${lib.getExe herdrApp} do tab.new --space "$space" --name Pi --folder "$folder" \
-          --argv '${piArgv}'
-      else
-        exec ${lib.getExe herdrApp} do space.new \
-          --name "$(${pkgs.coreutils}/bin/basename -- "$folder")" --folder "$folder" --machine "" \
-          --tab Pi --argv '${piArgv}'
-      fi
-    '')
-    piChats
     proton-pass-cli
     seahorse
     (callPackage ./signal-desktop.nix { inherit (config.catppuccin) flavor; })
@@ -389,11 +284,6 @@ in
         Install.WantedBy = [ "graphical-session.target" ];
       })
       {
-        herdr-app = {
-          name = "Herdr";
-          exec = "${herdrApp}/bin/herdr-app";
-          env = [ "HERDR_START_HIDDEN=1" ];
-        };
         grok-bot = {
           name = "Grok Bot";
           exec = lib.getExe grokBot;
