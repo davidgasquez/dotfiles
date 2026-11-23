@@ -24,7 +24,6 @@ in
   hardware.bluetooth.enable = true;
   console.keyMap = "es";
   users.users.david.extraGroups = [ "networkmanager" ];
-  users.users.david.linger = true;
   programs.nix-ld.enable = true;
   programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 
@@ -34,7 +33,6 @@ in
       "google-chrome"
       "chatgpt"
       "chatgpt-primary-runtime"
-      "claude-code"
       "spotify"
       "slack"
       "superwhisper"

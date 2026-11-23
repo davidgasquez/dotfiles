@@ -15,8 +15,6 @@ hl.config({
       inactive_border = "rgb(737994)",
     },
     resize_on_border = true,
-    allow_tearing = false,
-    layout = "dwindle",
   },
 
   decoration = {
@@ -139,7 +137,7 @@ hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -
 hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/nixos"]]), { description = "Open NixOS project" })
 hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/handbook"]]), { description = "Open handbook project" })
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("uwsm-app -- google-chrome-stable --new-window"), { description = "Open browser" })
-hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("uwsm-app -- google-chrome-stable --app=https://app.todoist.com/app/today"), { description = "Open Todoist" })
+hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("uwsm-app -- todoist.desktop"), { description = "Open Todoist" })
 hl.bind(mainMod .. " + SHIFT + W", function()
   local window = hl.get_window("class:^chrome-web[.]whatsapp[.]com__-.*$")
   if window then

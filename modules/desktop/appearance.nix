@@ -82,9 +82,7 @@ in
         accents = [ config.catppuccin.accent ];
       };
     };
-    gtk4.extraCss = ''
-      @import url("${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css");
-    '';
+    gtk4.theme = config.gtk.theme;
     font = {
       name = "Inter";
       size = 11;
@@ -119,7 +117,6 @@ in
         "${config.xdg.dataHome}/icons/hicolor"
       ];
       default-timeout = 12000;
-      "".border-color = palette.${config.catppuccin.accent}.hex;
       "urgency=critical" = {
         border-color = palette.red.hex;
         default-timeout = 0;

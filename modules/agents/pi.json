@@ -1,7 +1,6 @@
 {
   "defaultProvider": "openai",
   "defaultModel": "gpt-6.2-sol",
-  "defaultThinkingLevel": "medium",
   "defaultTools": ["+codemode"],
   "packages": [
     { "source": "npm:@notrico/pi-fold", "extensions": [] },

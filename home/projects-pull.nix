@@ -6,7 +6,6 @@ let
     runtimeInputs = [
       pkgs.gitMinimal
       pkgs.git-lfs
-      pkgs.gh
       pkgs.openssh
       pkgs.findutils
       pkgs.coreutils

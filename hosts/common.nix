@@ -19,6 +19,7 @@
     isNormalUser = true;
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
+    linger = true;
   };
 
   security.sudo.extraRules = [

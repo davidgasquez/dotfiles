@@ -14,6 +14,24 @@ let
   signalWaybar =
     signal:
     "-${pkgs.systemd}/bin/systemctl --user kill --kill-whom=main --signal=SIGRTMIN+${toString signal} waybar.service";
+  toggleService =
+    name:
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = with pkgs; [
+        systemd
+        util-linux
+      ];
+      text = ''
+        exec 9>"$XDG_RUNTIME_DIR/${name}.lock"
+        flock -n 9 || exit 0
+        if systemctl --user is-active --quiet ${name}.service; then
+          systemctl --user stop ${name}.service
+        else
+          systemctl --user start ${name}.service
+        fi
+      '';
+    };
   lock = pkgs.writeShellApplication {
     name = "lock-session";
     runtimeInputs = with pkgs; [
@@ -37,38 +55,8 @@ in
     brightnessctl
     wl-clipboard
     pavucontrol
-    (writeShellApplication {
-      name = "screen-record";
-      runtimeInputs = [
-        systemd
-        util-linux
-      ];
-      text = ''
-        exec 9>"$XDG_RUNTIME_DIR/screen-record.lock"
-        flock -n 9 || exit 0
-        if systemctl --user is-active --quiet screen-record.service; then
-          systemctl --user stop screen-record.service
-        else
-          systemctl --user start screen-record.service
-        fi
-      '';
-    })
-    (writeShellApplication {
-      name = "audio-record";
-      runtimeInputs = [
-        systemd
-        util-linux
-      ];
-      text = ''
-        exec 9>"$XDG_RUNTIME_DIR/audio-record.lock"
-        flock -n 9 || exit 0
-        if systemctl --user is-active --quiet audio-record.service; then
-          systemctl --user stop audio-record.service
-        else
-          systemctl --user start audio-record.service
-        fi
-      '';
-    })
+    (toggleService "screen-record")
+    (toggleService "audio-record")
     (writeShellApplication {
       name = "open-project";
       runtimeInputs = [

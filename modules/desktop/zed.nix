@@ -41,10 +41,16 @@ in
       }
       {
         context = "Workspace || Terminal";
-        bindings."ctrl-shift-a" = [
-          "task::Spawn"
-          { task_name = "Open Project in T3 Code"; }
-        ];
+        bindings = {
+          "ctrl-shift-a" = [
+            "task::Spawn"
+            { task_name = "Open Project in T3 Code"; }
+          ];
+          "ctrl-_" = [
+            "task::Spawn"
+            { task_name = "Open External Terminal"; }
+          ];
+        };
       }
       {
         context = "Editor";
@@ -56,13 +62,6 @@ in
           "ctrl-shift-up" = "editor::MoveLineUp";
           "ctrl-shift-down" = "editor::MoveLineDown";
         };
-      }
-      {
-        context = "Workspace || Terminal";
-        bindings."ctrl-_" = [
-          "task::Spawn"
-          { task_name = "Open External Terminal"; }
-        ];
       }
     ];
     userTasks = [
@@ -78,8 +77,6 @@ in
         cwd = "$ZED_WORKTREE_ROOT";
         reveal = "no_focus";
         hide = "on_success";
-        use_new_terminal = false;
-        allow_concurrent_runs = false;
         show_summary = false;
         show_command = false;
         save = "all";

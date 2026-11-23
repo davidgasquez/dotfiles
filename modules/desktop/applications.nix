@@ -131,7 +131,7 @@ in
   };
   home.packages = with pkgs; [
     chatgpt
-    inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.gogcli
+    gogcli
     todoist-cli
     inputs.nix-openclaw-tools.packages.${pkgs.stdenv.hostPlatform.system}.wacli
     grokBot
@@ -221,7 +221,6 @@ in
     exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --app=https://app.todoist.com/app/today";
     icon = "todoist";
     categories = [ "Office" ];
-    terminal = false;
   };
   xdg.desktopEntries.whatsapp = {
     name = "WhatsApp";
@@ -231,7 +230,6 @@ in
       "Network"
       "InstantMessaging"
     ];
-    terminal = false;
   };
   programs.mangohud.enable = true;
   programs.mpv = {

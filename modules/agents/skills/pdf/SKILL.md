@@ -13,4 +13,4 @@ disable-model-invocation: true
 
 ## Working with PDFs
 
-If you need to generate or do something extra, use `uvx` to run packages like `reportlab`, `pdfplumber`, `pypdf`.
+If you need to generate or do something extra, use `nix run 'nixpkgs#uv' -- tool run` to run packages like `reportlab`, `pdfplumber`, `pypdf`.

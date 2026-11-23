@@ -13,7 +13,6 @@
     package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
       nodejs_22 = pkgs.nodejs_24;
     };
-    extraPackages = [ pkgs.gitMinimal ];
     mutableSettings = true;
     settings = lib.importJSON ./pi.json;
     keybindings = {

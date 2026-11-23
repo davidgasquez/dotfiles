@@ -44,7 +44,6 @@ in
     end)
   '';
 
-  services.hypridle.settings.general.ignore_wayland_inhibit = false;
   services.hypridle.settings.listener = [
     {
       timeout = 60;

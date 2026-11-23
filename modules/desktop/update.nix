@@ -19,7 +19,6 @@ in
 
   systemd.services.nixos-upgrade-notify = {
     description = "Notify and diagnose a failed NixOS upgrade";
-    path = [ pkgs.systemd ];
     serviceConfig = {
       Type = "oneshot";
       User = "david";

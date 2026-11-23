@@ -6,7 +6,6 @@
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
     mutableSettings = true;
     settings = {
-      "$schema" = "https://json.schemastore.org/claude-code-settings.json";
       theme = "dark";
       modelSettings."claude-opus-5-5".effortLevel = "high";
       skillOverrides = {

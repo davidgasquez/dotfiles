@@ -10,7 +10,7 @@ The declarative home for my system and dotfiles, where they live in harmony, mos
 - **Terminal:** [Ghostty](https://ghostty.org/)
 - **Theme:** [Catppuccin](https://github.com/catppuccin/catppuccin) (Frappé)
 - **Shell:** `zsh` with [Starship](https://starship.rs/)
-- **Coding:** Zed, Codex, and Pi
+- **Coding:** Zed, T3 Code, Codex, Claude Code, and Pi
 
 ## 📦 Configuration
 
@@ -29,7 +29,7 @@ sudo -n nixos-rebuild build --flake . --no-link
 sudo -n nixos-rebuild switch --flake .
 ```
 
-A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. All hosts rebuild directly from GitHub `main`, without changing the local checkout. Helix and Zephyr apply updates shortly after boot and hourly, catching up missed checks after sleep. Running applications pick up updates when restarted, and kernel updates require a reboot; the desktops never reboot automatically. Tau keeps its overnight maintenance window.
+A nightly GitHub workflow updates and checks `flake.lock`, then pushes it. Before each automatic upgrade, every host fast-forwards its `/etc/nixos` checkout from `origin/main` and rebuilds it without updating the lock file. Helix and Zephyr upgrade daily, catch up missed runs after sleep, and on failure start a T3 Code diagnosis thread. Running applications pick up updates when restarted, and kernel updates require a reboot; the desktops never reboot automatically. Tau upgrades at 02:00 and may reboot between 02:00 and 05:00.
 
 ## 📜 License
 

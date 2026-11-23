@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 Deliver a verified remote result or a durable checkpoint plus an exact resume command. Use the official CLI through `uvx kaggle`; Kaggle is an ephemeral Linux batch runner, not an unrestricted server. Respect the user's runtime, privacy, and budget choices.
 
+Locally, replace `uvx` with `nix run 'nixpkgs#uv' -- tool run` and `uv` with `nix run 'nixpkgs#uv' --`.
+
 ## Establish the run
 
 - Inspect the actual entrypoint, dependencies, inputs, expected outputs, and existing checkpoint support. Accept an argument vector and working directory, not an interpolated shell command.

@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     llm-agents.url = "github:numtide/llm-agents.nix";
     nix-openclaw-tools = {
       url = "github:openclaw/nix-openclaw-tools";

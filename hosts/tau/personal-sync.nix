@@ -31,7 +31,6 @@ let
     runtimeInputs = [
       pkgs.gitMinimal
       pkgs.git-lfs
-      pkgs.gh
       pkgs.rclone
     ];
     text = ''

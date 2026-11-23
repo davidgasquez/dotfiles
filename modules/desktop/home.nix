@@ -22,13 +22,11 @@
   programs.git.signing = {
     key = config.programs.gpg.settings.default-key;
     format = "openpgp";
-    signByDefault = false;
   };
 
   programs.direnv = {
     enable = true;
     enableGitIntegration = true;
-    enableZshIntegration = true;
     nix-direnv.enable = true;
     config.global.log_filter = "^$";
     config.whitelist.prefix = [ "${config.home.homeDirectory}/projects/" ];

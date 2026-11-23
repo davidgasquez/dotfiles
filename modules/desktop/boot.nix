@@ -13,7 +13,6 @@
     "dmask=0077"
   ];
 
-  boot.loader.timeout = 5;
   boot.plymouth = {
     enable = true;
     theme = "spinner";
@@ -28,13 +27,9 @@
     "vt.global_cursor_default=0"
   ];
 
-  boot.loader.systemd-boot.enable = false;
   boot.loader.limine = {
     enable = true;
     maxGenerations = 10;
-    enableEditor = false;
-    enrollConfig = true;
-    validateChecksums = true;
     panicOnChecksumMismatch = true;
     style = {
       wallpapers = [ ];
