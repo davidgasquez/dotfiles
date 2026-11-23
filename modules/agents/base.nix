@@ -34,7 +34,6 @@ in
 {
   imports = [
     ./pi.nix
-    ./mcp/pi-workers
   ];
 
   home.packages = [
