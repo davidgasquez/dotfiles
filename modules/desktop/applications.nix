@@ -22,6 +22,59 @@ let
   ];
   flakePackages = inputs.self.packages.${pkgs.stdenv.hostPlatform.system};
   herdrApp = flakePackages.herdr-app;
+  grokBot = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot;
+  t3code = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code;
+  parkedAppLauncher =
+    {
+      name,
+      workspace,
+      service,
+      executable,
+    }:
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = with pkgs; [
+        coreutils
+        hyprland
+        systemd
+      ];
+      text = ''
+        for ((attempt = 0; attempt < 300; attempt++)); do
+          if hyprctl eval 'show_parked_app("${workspace}")' >/dev/null 2>&1; then
+            if (( $# > 0 )); then
+              exec ${executable} "$@"
+            fi
+            exit 0
+          fi
+          if (( attempt == 0 )); then
+            systemctl --user start ${service}.service
+          fi
+          sleep 0.1
+        done
+        echo 'Window did not appear; check journalctl --user -u ${service}.service.' >&2
+        exit 1
+      '';
+    };
+  grokBotLauncher = parkedAppLauncher {
+    name = "grok-bot-show";
+    workspace = "grok";
+    service = "grok-bot";
+    executable = lib.getExe grokBot;
+  };
+  t3codeLauncher = parkedAppLauncher {
+    name = "t3code-desktop";
+    workspace = "t3code";
+    service = "t3code";
+    executable = "${t3code.desktop}/bin/t3code-desktop";
+  };
+  t3codeNewThread = pkgs.writeShellApplication {
+    name = "t3code-new-thread";
+    runtimeInputs = [ pkgs.hyprland ];
+    text = ''
+      ${lib.getExe t3codeLauncher}
+      hyprctl eval 'hl.dispatch(hl.dsp.send_shortcut({ mods = "CTRL ALT", key = "N" }))'
+    '';
+  };
   piChats = pkgs.writeShellScriptBin "pi-chats" ''
     exec ${lib.getExe pkgs.nodejs_24} ${./herdr-app/pi-chats/pi-chats.mjs} "$@"
   '';
@@ -124,7 +177,7 @@ in
     inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.gogcli
     todoist-cli
     inputs.nix-openclaw-tools.packages.${pkgs.stdenv.hostPlatform.system}.wacli
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot
+    grokBot
     herdrApp
     (writeShellApplication {
       name = "herdr-new-chat";
@@ -193,9 +246,27 @@ in
     spotify
     slack
     flakePackages.slacrawl
+    t3code.desktop
+    (lib.hiPrio t3codeLauncher)
+    t3codeNewThread
     file-roller
     xfce4-settings
   ];
+
+  programs.t3code = {
+    enable = true;
+    package = t3code;
+    keybindings = [
+      {
+        key = "ctrl+tab";
+        command = "thread.next";
+      }
+      {
+        key = "ctrl+shift+tab";
+        command = "thread.previous";
+      }
+    ];
+  };
 
   programs.ghostty = {
     enable = true;
@@ -238,6 +309,18 @@ in
     });
     commandLineArgs = [ "--disable-features=WebUIOmniboxDynamicAiModeButton" ];
   };
+  xdg.desktopEntries.grok-bot = {
+    name = "Grok Bot";
+    exec = "${lib.getExe grokBotLauncher} %U";
+    icon = "grok-bot";
+    categories = [ "Development" ];
+    mimeType = [
+      "x-scheme-handler/grokbot"
+      "x-scheme-handler/sand"
+    ];
+    settings.StartupWMClass = "grok-bot";
+  };
+
   xdg.desktopEntries.todoist = {
     name = "Todoist";
     exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --app=https://app.todoist.com/app/today";
@@ -310,6 +393,16 @@ in
           name = "Herdr";
           exec = "${herdrApp}/bin/herdr-app";
           env = [ "HERDR_START_HIDDEN=1" ];
+        };
+        grok-bot = {
+          name = "Grok Bot";
+          exec = lib.getExe grokBot;
+          service.Restart = "always";
+        };
+        t3code = {
+          name = "T3 Code";
+          exec = "${t3code.desktop}/bin/t3code-desktop";
+          env = [ "T3CODE_CLOUDFLARED_PATH=${lib.getExe pkgs.cloudflared}" ];
         };
         chrome-background = {
           name = "Google Chrome";

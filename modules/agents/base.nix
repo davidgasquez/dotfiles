@@ -6,7 +6,6 @@
 }:
 
 let
-  memex = pkgs.callPackage ./memex.nix { };
   qmd = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.qmd;
   herdrCore = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core;
   herdrRecoverShell = pkgs.writeShellApplication {
@@ -40,7 +39,6 @@ in
 
   home.packages = [
     herdrCore
-    memex
     pkgs.file
     pkgs.poppler-utils
     pkgs.unzip

@@ -43,6 +43,15 @@ in
     waybar.enable = true;
   };
 
+  programs.t3code = {
+    userSettings.defaultTheme = "catppuccin-frappe";
+    clientSettings.glassOpacity = 100;
+    themes.catppuccin-frappe = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/SunkenInTime/t3-themes/81470c594bb9f7c7337fb2de98fb361eb100e444/themes/catppuccin-frappe.json";
+      hash = "sha256-KVoP7WKOrkRLxKVx/afTSoXQXY2BLpJRpAD89b3paLk=";
+    };
+  };
+
   xdg.configFile."herdr-app/themes/catppuccin-frappe.json".source =
     ./herdr-app/catppuccin-frappe.json;
   home.activation.herdrAppSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] (

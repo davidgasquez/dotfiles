@@ -4,11 +4,12 @@
   "defaultThinkingLevel": "medium",
   "defaultTools": ["+codemode"],
   "packages": [
-    "npm:@notrico/pi-fold",
+    { "source": "npm:@notrico/pi-fold", "extensions": [] },
     "npm:pi-web-access",
     "npm:@gotgenes/pi-anthropic-auth",
     "npm:pi-codex-compaction"
   ],
+  "extensions": ["-extensions/herdr.ts"],
   "hideThinkingBlock": true,
   "quietStartup": "header",
   "warnings": {

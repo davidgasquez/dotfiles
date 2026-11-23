@@ -79,14 +79,44 @@ local mainMod = "SUPER"
 local powerSubmap = "power · L bloquear · S suspender · Q salir · R reiniciar · P apagar"
 local resizeSubmap = "Redimensionar · ← ↓ ↑ → · Esc salir"
 
-hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("uwsm-app -- herdr-app"), { description = "Open Herdr" })
-hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("herdr-new-chat"), { description = "New Herdr chat" })
+hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("t3code-desktop"), { description = "Open T3 Code" })
+hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("t3code-new-thread"), { description = "New T3 Code thread without a project" })
 
 hl.bind(
   mainMod .. " + RETURN",
   hl.dsp.exec_cmd([[@gapplication@ action com.mitchellh.ghostty new-window-command @ghosttyNewWindowArgs@]])
 )
-hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.close(), { description = "Close window" })
+local function parked_workspace(window)
+  if not window then return end
+  if window.initial_class == "com.t3tools.T3Code"
+    and (window.initial_title == "T3 Code" or window.initial_title == "T3 Code (Beta)") then
+    return "t3code"
+  end
+  if window.initial_class == "grok-bot" and window.initial_title == "Grok Bot" then
+    return "grok"
+  end
+end
+
+function show_parked_app(workspace)
+  for _, window in ipairs(hl.get_windows()) do
+    if parked_workspace(window) == workspace then
+      hl.dispatch(hl.dsp.window.move({ window = window, workspace = hl.get_active_workspace(), follow = false }))
+      hl.dispatch(hl.dsp.focus({ window = window }))
+      return
+    end
+  end
+  error("No window for " .. workspace)
+end
+
+hl.bind(mainMod .. " + SHIFT + Q", function()
+  local window = hl.get_active_window()
+  local workspace = parked_workspace(window)
+  if workspace then
+    hl.dispatch(hl.dsp.window.move({ window = window, workspace = "special:" .. workspace, follow = false }))
+  else
+    hl.dispatch(hl.dsp.window.close())
+  end
+end, { description = "Close window or hide T3 Code or Grok Bot" })
 
 hl.bind(mainMod .. " + M", hl.dsp.submap(powerSubmap))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.submap(powerSubmap))
@@ -200,6 +230,20 @@ hl.window_rule({
   match = { class = "^$", title = "^Picture in picture$" },
   tile = true,
   no_max_size = true,
+})
+
+hl.window_rule({
+  name = "grok-park",
+  match = { initial_class = "^grok-bot$", initial_title = "^Grok Bot$" },
+  workspace = "special:grok silent",
+  no_initial_focus = true,
+})
+
+hl.window_rule({
+  name = "t3code-park",
+  match = { initial_class = "^com[.]t3tools[.]T3Code$", initial_title = "^T3 Code( [(]Beta[)])?$" },
+  workspace = "special:t3code silent",
+  no_initial_focus = true,
 })
 
 hl.window_rule({
