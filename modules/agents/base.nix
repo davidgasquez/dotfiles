@@ -21,6 +21,7 @@ in
     ./claude.nix
     ./codex.nix
     ./pi.nix
+    ./t3code.nix
   ];
 
   home.packages = [

@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -12,13 +11,9 @@
   home.stateVersion = "26.11";
   home.packages = [ pkgs.rclone ];
 
-  programs.t3code = {
+  programs.t3code.server = {
     enable = true;
-    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code;
-    server = {
-      enable = true;
-      extraArgs = [ "--tailscale-serve" ];
-    };
+    extraArgs = [ "--tailscale-serve" ];
   };
 
   systemd.user.services.codex-remote-control = {

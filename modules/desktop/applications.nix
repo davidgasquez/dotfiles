@@ -149,8 +149,6 @@ in
   ];
 
   programs.t3code = {
-    enable = true;
-    package = t3code;
     keybindings = [
       {
         key = "ctrl+tab";
