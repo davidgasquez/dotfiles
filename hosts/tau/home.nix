@@ -15,9 +15,6 @@
     enable = true;
     extraArgs = [ "--tailscale-serve" ];
   };
-  systemd.user.services.t3code.Service.Environment = [
-    "T3CODE_CLOUDFLARED_PATH=${lib.getExe pkgs.cloudflared}"
-  ];
 
   systemd.user.services.codex-remote-control = {
     Unit.Description = "Codex remote control for tau";
