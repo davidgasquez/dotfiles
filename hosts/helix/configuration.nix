@@ -24,6 +24,7 @@
   };
 
   networking.hostName = "helix";
+  powerManagement.cpuFreqGovernor = "performance";
 
   networking.networkmanager = {
     connectionConfig."ipv4.dad-timeout" = 200;
