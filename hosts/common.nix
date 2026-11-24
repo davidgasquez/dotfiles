@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -75,6 +76,12 @@
     options = "--delete-older-than 30d";
   };
   nix.optimise.automatic = true;
+
+  services.journald.settings.Journal = {
+    SystemMaxUse = lib.mkDefault "500M";
+    RuntimeMaxUse = lib.mkDefault "100M";
+    MaxRetentionSec = lib.mkDefault "14day";
+  };
 
   system.autoUpgrade = {
     enable = true;
