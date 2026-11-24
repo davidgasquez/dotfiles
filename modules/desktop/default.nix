@@ -14,9 +14,27 @@ in
     ./update.nix
   ];
 
+  boot.kernelModules = [
+    "tcp_bbr"
+    "sch_fq"
+  ];
+  boot.kernel.sysctl = {
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
+    "net.core.rmem_default" = 1048576;
+    "net.core.wmem_default" = 1048576;
+    "net.core.rmem_max" = 67108864;
+    "net.core.wmem_max" = 67108864;
+    "net.ipv4.tcp_rmem" = "4096 131072 67108864";
+    "net.ipv4.tcp_wmem" = "4096 131072 67108864";
+    "net.core.netdev_max_backlog" = 16384;
+    "net.ipv4.tcp_mtu_probing" = 1;
+  };
+
   networking.networkmanager = {
     enable = true;
     dns = "systemd-resolved";
+    wifi.powersave = false;
   };
   systemd.services.NetworkManager-wait-online.enable = false;
   services.resolved.enable = true;
