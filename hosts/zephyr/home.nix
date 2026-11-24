@@ -18,6 +18,41 @@ let
       fi
     '';
   };
+  acPowerSync = pkgs.writeShellApplication {
+    name = "ac-power-sync";
+    runtimeInputs = with pkgs; [
+      brightnessctl
+      hyprland
+      systemd
+    ];
+    text = ''
+      last_online=""
+
+      apply() {
+        local online mode
+        read -r online < /sys/class/power_supply/AC0/online
+        if [ "$online" = "$last_online" ]; then
+          return
+        fi
+        if [ "$online" = 1 ]; then
+          mode="highrr"
+        else
+          mode="2560x1600@60"
+          if [ -n "$last_online" ]; then
+            brightnessctl -q -d asus::kbd_backlight set 0
+            brightnessctl -q -d asus::kbd_backlight -s set 0
+          fi
+        fi
+        last_online=$online
+        hyprctl eval "for _, output in ipairs({ \"eDP-1\", \"eDP-2\" }) do hl.monitor({ output = output, mode = \"$mode\", position = \"auto\", scale = 5 / 3 }) end" >/dev/null
+      }
+
+      apply
+      while IFS= read -r _; do
+        apply
+      done < <(udevadm monitor --udev --subsystem-match=power_supply)
+    '';
+  };
 in
 {
   home.stateVersion = "26.05";
@@ -49,8 +84,17 @@ in
   wayland.windowManager.hyprland.extraConfig = lib.mkAfter ''
     hl.config({ xwayland = { force_zero_scaling = true } })
 
+    local function on_ac()
+      local file = io.open("/sys/class/power_supply/AC0/online", "r")
+      if not file then return true end
+      local online = file:read("*l") == "1"
+      file:close()
+      return online
+    end
+
+    local internal_mode = on_ac() and "highrr" or "2560x1600@60"
     for _, output in ipairs({ "eDP-1", "eDP-2" }) do
-      hl.monitor({ output = output, mode = "highrr", position = "auto", scale = 5 / 3 })
+      hl.monitor({ output = output, mode = internal_mode, position = "auto", scale = 5 / 3 })
     end
     hl.monitor({ output = "HDMI-A-1", mode = "3840x2160@60", position = "auto", scale = 5 / 3 })
 
@@ -58,9 +102,25 @@ in
     hl.bind("XF86KbdBrightnessDown", hl.dsp.exec_cmd("${pkgs.brightnessctl}/bin/brightnessctl -q -d asus::kbd_backlight set 1-"), { locked = true, repeating = true })
 
     hl.on("hyprland.start", function()
-      hl.exec_cmd("${pkgs.brightnessctl}/bin/brightnessctl -q -d asus::kbd_backlight set 3")
+      hl.exec_cmd("${pkgs.brightnessctl}/bin/brightnessctl -q -d asus::kbd_backlight set " .. (on_ac() and "3" or "0"))
     end)
   '';
+
+  systemd.user.services.ac-power-sync = {
+    Unit = {
+      Description = "Sync internal display refresh rate and keyboard backlight with AC power";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+      Requisite = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "exec";
+      ExecStart = lib.getExe acPowerSync;
+      Restart = "on-failure";
+      RestartSec = 2;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
 
   services.hypridle.settings.listener = [
     {
