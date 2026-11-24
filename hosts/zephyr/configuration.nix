@@ -141,6 +141,8 @@ in
     HandleLidSwitchExternalPower = "suspend";
     HandleLidSwitchDocked = "ignore";
   };
+  systemd.services.nixos-upgrade.unitConfig.ConditionACPower = true;
+  systemd.services.nix-gc.unitConfig.ConditionACPower = true;
 
   users.users.david.hashedPasswordFile = "/var/lib/secrets/david-password-hash";
 
