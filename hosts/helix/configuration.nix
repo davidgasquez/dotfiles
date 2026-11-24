@@ -9,6 +9,8 @@
     ../../modules/agents/llama-cpp.nix
   ];
 
+  fileSystems."/".options = [ "noatime" ];
+
   fileSystems."/mnt/sandbox" = {
     device = "/dev/disk/by-uuid/2DC244C63A30DA61";
     fsType = "ntfs3";

@@ -21,11 +21,15 @@
             type = "luks";
             name = "zephyr-root";
             passwordFile = "/run/zephyr-disk-password";
-            settings.allowDiscards = true;
+            settings = {
+              allowDiscards = true;
+              bypassWorkqueues = true;
+            };
             content = {
               type = "filesystem";
               format = "ext4";
               mountpoint = "/";
+              mountOptions = [ "noatime" ];
             };
           };
         };

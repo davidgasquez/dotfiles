@@ -3,6 +3,7 @@
   boot.initrd.systemd.tpm2.enable = true;
   boot.initrd.luks.devices."helix-root" = {
     allowDiscards = true;
+    bypassWorkqueues = true;
     crypttabExtraOpts = [ "tpm2-device=auto" ];
   };
 
