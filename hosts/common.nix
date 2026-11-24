@@ -47,18 +47,22 @@
     serviceConfig.RemainAfterExit = true;
   };
   programs.ssh.extraConfig = ''
-    Host helix tau
+    Host helix tau zephyr
       User david
   '';
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-  nix.settings.extra-substituters = [ "https://cache.numtide.com" ];
-  nix.settings.extra-trusted-public-keys = [
-    "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+    ];
+    min-free = "2G";
+    max-free = "5G";
+  };
   nix.gc = {
     automatic = true;
     dates = "weekly";
