@@ -214,6 +214,16 @@ in
     settings.StartupWMClass = "grok-bot";
   };
 
+  xdg.desktopEntries.t3code = {
+    name = "T3 Code (Beta)";
+    exec = "${lib.getExe t3codeLauncher} %U";
+    icon = "t3code";
+    comment = "Control surface for coding agents";
+    categories = [ "Development" ];
+    mimeType = [ "x-scheme-handler/t3code" ];
+    settings.StartupWMClass = "com.t3tools.T3Code";
+  };
+
   xdg.desktopEntries.todoist = {
     name = "Todoist";
     exec = "${config.programs.google-chrome.finalPackage}/bin/google-chrome-stable --app=https://app.todoist.com/app/today";
@@ -249,6 +259,7 @@ in
       "x-scheme-handler/https" = "google-chrome.desktop";
       "x-scheme-handler/mailto" = "google-chrome.desktop";
       "x-scheme-handler/sand" = "grok-bot.desktop";
+      "x-scheme-handler/t3code" = "t3code.desktop";
     };
   };
   xdg.configFile."systemd/user/graphical-session.target.wants/app-com.mitchellh.ghostty.service".source =
