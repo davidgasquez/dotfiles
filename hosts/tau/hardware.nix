@@ -9,6 +9,10 @@
   boot.initrd.systemd.tpm2.enable = false;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [ "8250.nr_uarts=1" ];
+  boot.kernel.sysctl = {
+    "vm.dirty_background_bytes" = 16777216;
+    "vm.dirty_bytes" = 67108864;
+  };
   hardware.deviceTree.name = "broadcom/bcm2712-d-rpi-5-b.dtb";
   hardware.wirelessRegulatoryDatabase = true;
 

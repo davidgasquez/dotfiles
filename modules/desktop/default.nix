@@ -29,6 +29,8 @@ in
     "net.ipv4.tcp_wmem" = "4096 131072 67108864";
     "net.core.netdev_max_backlog" = 16384;
     "net.ipv4.tcp_mtu_probing" = 1;
+    "vm.dirty_background_bytes" = 67108864;
+    "vm.dirty_bytes" = 268435456;
   };
 
   networking.networkmanager = {
