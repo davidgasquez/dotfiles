@@ -65,6 +65,9 @@ in
 
   programs.steam.package = pkgs.steam.override {
     extraEnv.STEAM_FORCE_DESKTOPUI_SCALING = "1.666667";
+    extraProfile = ''
+      unset MESA_VK_DEVICE_SELECT
+    '';
   };
 
   programs.gamemode.enable = true;

@@ -24,6 +24,24 @@ in
 
   services.poweralertd.enable = true;
 
+  home.sessionVariables = {
+    MESA_VK_DEVICE_SELECT = "1002:1681!";
+    GAMEMODERUNEXEC = "env -u MESA_VK_DEVICE_SELECT DRI_PRIME=1!";
+  };
+  xdg.configFile."uwsm/env-hyprland".text = ''
+    _aq_drm_devices=""
+    for _card in /dev/dri/by-path/pci-0000:07:00.0-card /dev/dri/by-path/pci-0000:03:00.0-card; do
+      if [ -e "$_card" ]; then
+        _resolved=$(${pkgs.coreutils}/bin/readlink -f "$_card")
+        _aq_drm_devices="''${_aq_drm_devices:+$_aq_drm_devices:}$_resolved"
+      fi
+    done
+    if [ -n "$_aq_drm_devices" ]; then
+      export AQ_DRM_DEVICES="$_aq_drm_devices"
+    fi
+    unset _aq_drm_devices _card _resolved
+  '';
+
   programs.google-chrome.commandLineArgs = [
     "--render-node-override=/dev/dri/by-path/pci-0000:07:00.0-render"
     "--enable-features=AcceleratedVideoEncoder"
