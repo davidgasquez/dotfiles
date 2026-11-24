@@ -18,7 +18,7 @@ let
   spotify = withOzone pkgs.spotify;
   flakePackages = inputs.self.packages.${pkgs.stdenv.hostPlatform.system};
   grokBot = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.grok-bot;
-  t3code = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.t3code;
+  t3code = config.programs.t3code.package;
   parkedAppLauncher =
     {
       name,
