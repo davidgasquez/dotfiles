@@ -91,6 +91,7 @@ in
     PROTON_PASS_LINUX_KEYRING = "dbus";
   };
   home.packages = with pkgs; [
+    agent-browser
     chatgpt
     gogcli
     todoist-cli
