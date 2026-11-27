@@ -256,7 +256,28 @@
         "nix-openclaw-tools": "nix-openclaw-tools",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
-        "pi": "pi"
+        "pi": "pi",
+        "superwhisper": "superwhisper"
+      }
+    },
+    "superwhisper": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794863940,
+        "narHash": "sha256-CbJod9IjuHdP5U9G97wDuxILWRDBQ8vpsTgOskKaE5Y=",
+        "owner": "superultrainc",
+        "repo": "superwhisper-linux-releases",
+        "rev": "a9d98f48c2f81723ed11db096215aeb762fa0e16",
+        "type": "github"
+      },
+      "original": {
+        "owner": "superultrainc",
+        "repo": "superwhisper-linux-releases",
+        "type": "github"
       }
     },
     "systems": {

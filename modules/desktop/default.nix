@@ -54,7 +54,6 @@ in
       "chatgpt-primary-runtime"
       "spotify"
       "slack"
-      "superwhisper"
       "steam"
       "steam-unwrapped"
     ];

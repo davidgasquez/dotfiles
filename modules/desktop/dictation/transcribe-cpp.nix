@@ -13,13 +13,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "transcribe-cpp";
-  version = "0.4.2";
+  version = "0.5.1";
 
   src = fetchFromGitHub {
     owner = "handy-computer";
     repo = "transcribe.cpp";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-6zEPd1DA9A19l9rUPzY5SRz5nmQZN/3cDzqbwOG02A0=";
+    hash = "sha256-9aeSQaZd+Vovr8fjWTa/soJ56az7obqVjPWdEWs6yB4=";
   };
 
   nativeBuildInputs = [
@@ -37,6 +37,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   cmakeFlags = [
     (lib.cmakeBool "TRANSCRIBE_VULKAN" true)
+    (lib.cmakeBool "TRANSCRIBE_USE_SYSTEM_BLAS" true)
     (lib.cmakeBool "TRANSCRIBE_BUILD_TESTS" false)
     (lib.cmakeBool "TRANSCRIBE_INSTALL" false)
     (lib.cmakeBool "GGML_NATIVE" false)

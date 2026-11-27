@@ -1,7 +1,12 @@
-{ lib, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
-  superwhisper = pkgs.callPackage ./superwhisper.nix { };
+  superwhisper = inputs.superwhisper.packages.${pkgs.stdenv.hostPlatform.system}.default;
   transcribe-cpp = pkgs.callPackage ./transcribe-cpp.nix { };
   executable = lib.getExe superwhisper;
   preferences = pkgs.writeText "superwhisper-preferences.json" (
@@ -24,18 +29,6 @@ in
   xdg.dataFile."transcribe-cpp/parakeet-ultra.gguf".source = pkgs.fetchurl {
     url = "https://huggingface.co/handy-computer/parakeet-ultra-gguf/resolve/a1539be1b849ea7463b88343e5277b373d0c4ea9/parakeet-ultra-Q8_0.gguf";
     hash = "sha256-AHpZdh6SWHefGJ3zlrUNErg7tbeeZt9LlVwjDS8qClk=";
-  };
-
-  xdg.desktopEntries."com.superwhisper.Superwhisper" = {
-    name = "Superwhisper";
-    comment = "Voice dictation";
-    exec = "${executable} settings --window";
-    icon = "superwhisper";
-    categories = [
-      "Utility"
-      "Accessibility"
-    ];
-    settings.StartupWMClass = "com.superwhisper.Superwhisper";
   };
 
   systemd.user.services.superwhisper = {

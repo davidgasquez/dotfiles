@@ -12,16 +12,16 @@
 
 buildGo127Module (finalAttrs: {
   pname = "slacrawl";
-  version = "0.10.5";
+  version = "0.12.0";
 
   src = fetchFromGitHub {
     owner = "openclaw";
     repo = "slacrawl";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-0jyzdftsi4GldEhURBEnHkLDCdMB/0O1tkesEPeCS3I=";
+    hash = "sha256-4UAG/xLQViQPcHqvbsS2kHbMPYJsyZ/Pxs7oCZxh7Mw=";
   };
 
-  vendorHash = "sha256-cOawSmp/tbVAwvEgnOHC/pmImZWBOYBpXIc8oV6dB+o=";
+  vendorHash = "sha256-x71s3C5WONHMokjrqXn6PWXMSGsgPkDjKP43q272MiM=";
   subPackages = [ "cmd/slacrawl" ];
 
   env = {
