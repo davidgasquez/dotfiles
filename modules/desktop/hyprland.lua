@@ -136,6 +136,7 @@ hl.bind(mainMod .. " + SHIFT + BACKSPACE", hl.dsp.exec_cmd("uwsm-app -- open-pro
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/personal"]]), { description = "Open personal project" })
 hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/nixos"]]), { description = "Open NixOS project" })
 hl.bind(mainMod .. " + SHIFT + H", hl.dsp.exec_cmd([[uwsm-app -- zeditor --new -- "$HOME/projects/handbook"]]), { description = "Open handbook project" })
+hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd("uwsm-app -- grok-bot.desktop"), { description = "Open Grok Bot" })
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("uwsm-app -- google-chrome-stable --new-window"), { description = "Open browser" })
 hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("uwsm-app -- todoist.desktop"), { description = "Open Todoist" })
 hl.bind(mainMod .. " + SHIFT + W", function()
